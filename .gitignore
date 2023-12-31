@@ -1,0 +1,5 @@
+.DS_Store
+browser_action.html
+node_modules/
+scripts/translations.json
+web-ext-artifacts/

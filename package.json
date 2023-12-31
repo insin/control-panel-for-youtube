@@ -1,0 +1,44 @@
+{
+  "scripts": {
+    "create-browser-action": "node ./scripts/create-browser-action.js",
+    "create-store-description": "node ./scripts/create-store-description.mjs",
+    "release": "node ./scripts/release.js",
+    "prebuild": "npm run create-browser-action",
+    "build": "web-ext build",
+    "lint": "web-ext lint",
+    "start": "npm run firefox",
+    "prefirefox": "npm run create-browser-action",
+    "firefox": "web-ext run --start-url https://www.youtube.com",
+    "prechrome": "npm run create-browser-action",
+    "chrome": "web-ext run --target chromium --start-url https://www.youtube.com",
+    "preedge": "npm run create-browser-action",
+    "edge": "web-ext run --target chromium --chromium-binary \"C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe\" --start-url https://www.youtube.com",
+    "preedge-mac": "npm run create-browser-action",
+    "edge-mac": "web-ext run --target chromium --chromium-binary \"/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge\" --start-url https://www.youtube.com",
+    "preandroid": "npm run create-browser-action",
+    "android": "web-ext run -t firefox-android --firefox-apk org.mozilla.fenix"
+  },
+  "webExt": {
+    "ignoreFiles": [
+      "PRIVACY_POLICY.md",
+      "README.md",
+      "icons/chrome-web-store-icon.png",
+      "icons/icon.svg",
+      "icons/icon256.png",
+      "icons/icon512.png",
+      "icons/toolbar-*.png",
+      "jsconfig.json",
+      "package.json",
+      "safari/",
+      "screenshots/",
+      "scripts/"
+    ]
+  },
+  "devDependencies": {
+    "@types/chrome": "0.0.x",
+    "@types/greasemonkey": "4.x",
+    "clipboardy": "3.x",
+    "semver": "7.x",
+    "web-ext": "7.x"
+  }
+}

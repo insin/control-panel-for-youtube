@@ -1,0 +1,27 @@
+{
+  "extensionDescription": {
+    "message": "Hide unwanted content on YouTube",
+    "description": "<= 112 characters"
+  },
+  "extensionName": {
+    "message": "Control Panel for YouTube"
+  },
+  "hideLive": {
+    "message": "Hide Live videos"
+  },
+  "hideShorts": {
+    "message": "Hide Shorts"
+  },
+  "hideStreamed": {
+    "message": "Hide Streamed videos"
+  },
+  "hideUpcoming": {
+    "message": "Hide Upcoming videos"
+  },
+  "redirectShorts": {
+    "message": "Redirect Shorts to the normal player"
+  },
+  "shorts": {
+    "message": "Shorts"
+  }
+}
