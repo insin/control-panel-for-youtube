@@ -12,7 +12,7 @@ body {
 }
 
 body.browserAction {
-  min-width: 450px;
+  min-width: 400px;
 }
 body.iOS.browserAction {
   min-width: 0;
@@ -88,8 +88,7 @@ section.group > section > p {
     font-size: 15px;
   }
   body.browserAction {
-    min-width: auto;
-    max-width: 450px;
+    max-width: 400px;
   }
   section:not(:first-of-type) {
     border-color: #d7d7db;
