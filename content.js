@@ -7,16 +7,36 @@
 // @version     1
 // ==/UserScript==
 let debug = true
-let isSafari = navigator.userAgent.includes('Safari/') && !/Chrom(e|ium)\//.test(navigator.userAgent)
+
 let mobile = location.hostname == 'm.youtube.com'
 let desktop = !mobile
 let version = mobile ? 'mobile' : 'desktop'
 
+function log(...args) {
+  if (debug) {
+    console.log('🙋', ...args)
+  }
+}
+
+function warn(...args) {
+  if (debug) {
+    console.log('❗️', ...args)
+  }
+}
+
 //#region Config
 /** @type {import("./types").Config} */
 let config = {
+  disableAutoplay: true,
+  enabled: true,
+  hideChat: false,
+  hideComments: false,
+  hideEndCards: false,
+  hideEndVideos: false,
   hideLive: false,
+  hideRelated: false,
   hideShorts: true,
+  hideSponsored: true,
   hideStreamed: false,
   hideUpcoming: false,
   redirectShorts: true,
@@ -42,10 +62,64 @@ function dedent(str) {
   return str.replace(/(\r?\n)[ \t]+$/, '$1')
 }
 
-function log(...args) {
-  if (debug) {
-    console.log('🙋', ...args)
-  }
+/**
+ * @typedef {{
+ *   name?: string
+ *   stopIf?: () => boolean
+ *   timeout?: number
+ *   context?: Document | HTMLElement
+ * }} GetElementOptions
+ *
+ * @param {string} selector
+ * @param {GetElementOptions} options
+ * @returns {Promise<HTMLElement | null>}
+ */
+function getElement(selector, {
+ name = null,
+ stopIf = null,
+ timeout = Infinity,
+ context = document,
+} = {}) {
+ return new Promise((resolve) => {
+   let startTime = Date.now()
+   let rafId
+   let timeoutId
+
+   function stop($element, reason) {
+     if ($element == null) {
+       warn(`stopped waiting for ${name || selector} after ${reason}`)
+     }
+     else if (Date.now() > startTime) {
+       log(`${name || selector} appeared after ${Date.now() - startTime}ms`)
+     }
+     if (rafId) {
+       cancelAnimationFrame(rafId)
+     }
+     if (timeoutId) {
+       clearTimeout(timeoutId)
+     }
+     resolve($element)
+   }
+
+   if (timeout !== Infinity) {
+     timeoutId = setTimeout(stop, timeout, null, `${timeout}ms timeout`)
+   }
+
+   function queryElement() {
+     let $element = context.querySelector(selector)
+     if ($element) {
+       stop($element)
+     }
+     else if (stopIf?.() === true) {
+       stop(null, 'stopIf condition met')
+     }
+     else {
+       rafId = requestAnimationFrame(queryElement)
+     }
+   }
+
+   queryElement()
+ })
 }
 
 /**
@@ -82,8 +156,48 @@ const configureCss = (() => {
     if ($style == null) {
       $style = addStyle()
     }
+    if (!config.enabled) {
+      $style.textContent = ''
+      return
+    }
     let cssRules = []
     let hideCssSelectors = []
+
+    if (config.disableAutoplay) {
+      if (desktop) {
+        hideCssSelectors.push('button[data-tooltip-target-id="ytp-autonav-toggle-button"]')
+      }
+      if (mobile) {
+        hideCssSelectors.push('button.ytm-autonav-toggle-button-container')
+      }
+    }
+
+    if (config.hideChat) {
+      if (desktop) {
+        hideCssSelectors.push('#chat-container')
+      }
+    }
+
+    if (config.hideComments) {
+      if (desktop) {
+        hideCssSelectors.push('#comments')
+      }
+      if (mobile) {
+        hideCssSelectors.push('ytm-item-section-renderer[section-identifier="comments-entry-point"]')
+      }
+    }
+
+    if (config.hideEndCards) {
+      if (desktop) {
+        hideCssSelectors.push('#movie_player .ytp-ce-element')
+      }
+    }
+
+    if (config.hideEndVideos) {
+      if (desktop) {
+        hideCssSelectors.push('#movie_player .ytp-endscreen-content')
+      }
+    }
 
     if (config.hideLive) {
       if (desktop) {
@@ -91,6 +205,23 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push('ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])')
+      }
+    }
+
+    // if (config.hideOpenApp) {
+      if (mobile) {
+        // Mobile replaces the sign-in link with an "Open app" button when
+        // watching a video while logged-out.
+        hideCssSelectors.push('html.watch-scroll .mobile-topbar-header-sign-in-button')
+      }
+    // }
+
+    if (config.hideRelated) {
+      if (desktop) {
+        hideCssSelectors.push('#related')
+      }
+      if (mobile) {
+        hideCssSelectors.push('ytm-item-section-renderer[section-identifier="related-items"]')
       }
     }
 
@@ -109,6 +240,8 @@ const configureCss = (() => {
           'ytd-reel-shelf-renderer',
           // Shorts in search results
           'ytd-video-renderer:has(a[href^="/shorts"])',
+          // Shorts tab in channel profiles
+          'ytd-browse yt-tab-shape[tab-title="Shorts"]',
         )
       }
       if (mobile) {
@@ -121,6 +254,32 @@ const configureCss = (() => {
           'ytm-reel-shelf-renderer',
           // Shorts in search results
           'ytm-video-with-context-renderer:has(a[href^="/shorts"])',
+          // Shorts tab in channel profiles
+          'ytm-browse yt-tab-shape[tab-title="Shorts"]',
+        )
+      }
+    }
+
+    if (config.hideSponsored) {
+      if (desktop) {
+        hideCssSelectors.push(
+          // Big promo on the Home screen
+          '#masthead-ad',
+          // Video listings
+          'ytd-rich-item-renderer:has(> .ytd-rich-item-renderer > ytd-ad-slot-renderer)',
+          // Search results
+          '#contents.style-scope.ytd-search-pyv-renderer',
+          'ytd-ad-slot-renderer.style-scope.ytd-item-section-renderer',
+          // Above Watch Next videos
+          '#player-ads',
+          // Watch Next videos
+          '#items > ytd-ad-slot-renderer',
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(
+          // Search results
+          'ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)'
         )
       }
     }
@@ -157,20 +316,66 @@ const configureCss = (() => {
 //#endregion
 
 //#region Tweak functions
-function observeTitle() {
-  let $title = document.querySelector('title')
+async function disableAutoplay() {
+  let currentUrl = location.href
+  /** @type {GetElementOptions} */
+  let config = {name: 'Autoplay button', stopIf: () => currentUrl != location.href}
+  if (desktop) {
+    let $autoplayButton = await getElement('button[data-tooltip-target-id="ytp-autonav-toggle-button"]', config)
+    // On desktop, initial Autoplay button HTML has style="display: none" and is
+    // always checked on. Once it's displayed, we can determine its real state
+    // and take action if needed.
+    let observer
+    observer = observeElement($autoplayButton, () => {
+      if ($autoplayButton.style.display != 'none') {
+        if ($autoplayButton?.querySelector('.ytp-autonav-toggle-button[aria-checked="true"]')) {
+          log('turning Autoplay off')
+          $autoplayButton.click()
+        }
+        observer?.disconnect()
+      }
+    }, 'autoplay button style', {attributes: true, attributeFilter: ['style']})
+  }
+  if (mobile) {
+    let $autoplayButton = await getElement('button.ytm-autonav-toggle-button-container', config)
+    // The Autoplay button always seems to load async on mobile, so we can check
+    // it once available.
+    if ($autoplayButton?.getAttribute('aria-pressed') == 'true') {
+      log('turning Autoplay off')
+      $autoplayButton.click()
+    }
+  }
+}
+
+async function observeTitle() {
+  let $title = await getElement('title', {name: '<title>'})
+  let currentUrl
   observeElement($title, () => {
-    redirectShort()
+    if (currentUrl != null && currentUrl == location.href) {
+      return
+    }
+    currentUrl = location.href
+    handleCurrentUrl()
   }, '<title>')
 }
 
-function redirectShort() {
-  if (config.redirectShorts && location.pathname.startsWith('/shorts/')) {
-    log('redirecting Short to normal player')
-    let videoId = location.pathname.split('/').at(-1)
-    let search = location.search ? location.search.replace('?', '&') : ''
-    location.replace(`/watch?v=${videoId}${search}`)
+function handleCurrentUrl() {
+  if (location.pathname.startsWith('/shorts/')) {
+    if (config.redirectShorts) {
+      redirectShort()
+    }
+  } else if (location.pathname == '/watch') {
+    if (config.disableAutoplay) {
+      disableAutoplay()
+    }
   }
+}
+
+function redirectShort() {
+  log('redirecting Short to normal player')
+  let videoId = location.pathname.split('/').at(-1)
+  let search = location.search ? location.search.replace('?', '&') : ''
+  location.replace(`/watch?v=${videoId}${search}`)
 }
 //#endregion
 
@@ -184,7 +389,7 @@ function configChanged(changes) {
   log('config changed', changes)
 
   configureCss()
-  redirectShort()
+  handleCurrentUrl()
 }
 
 if (

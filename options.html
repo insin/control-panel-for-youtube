@@ -9,10 +9,30 @@
 <body>
   <form>
     <section class="group">
+      <label class="checkbox">
+        <span style="display: flex; align-items: center; gap: 1em;">
+          <img src="icons/icon48.png" style="height: 1.5em;">
+          <span id="enabled">Control Panel for YouTube enabled</span>
+        </span>
+        <input type="checkbox" name="enabled">
+        <span class="toggle"></span>
+      </label>
+    </section>
+    <section class="group labelled">
+      <label id="videoListings">
+        Video listings
+      </label>
       <section class="checkbox">
         <label>
           <span id="hideShorts">Hide Shorts</span>
           <input type="checkbox" name="hideShorts">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox">
+        <label>
+          <span id="hideSponsored">Hide Sponsored videos & Promos</span>
+          <input type="checkbox" name="hideSponsored">
           <span class="toggle"></span>
         </label>
       </section>
@@ -34,6 +54,53 @@
         <label>
           <span id="hideUpcoming">Hide Upcoming videos</span>
           <input type="checkbox" name="hideUpcoming">
+          <span class="toggle"></span>
+        </label>
+      </section>
+    </section>
+    <section class="group labelled">
+      <label id="videoPage">
+        Video page
+      </label>
+      <section class="checkbox">
+        <label>
+          <span id="disableAutoplay">Disable Autoplay</span>
+          <input type="checkbox" name="disableAutoplay">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox">
+        <label>
+          <span id="hideRelated">Hide Related videos</span>
+          <input type="checkbox" name="hideRelated">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox">
+        <label>
+          <span id="hideEndCards">Hide end screen cards</span>
+          <input type="checkbox" name="hideEndCards">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox">
+        <label>
+          <span id="hideEndVideos">Hide end screen videos</span>
+          <input type="checkbox" name="hideEndVideos">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox">
+        <label>
+          <span id="hideComments">Hide Comments</span>
+          <input type="checkbox" name="hideComments">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox">
+        <label>
+          <span id="hideChat">Hide Chat</span>
+          <input type="checkbox" name="hideChat">
           <span class="toggle"></span>
         </label>
       </section>

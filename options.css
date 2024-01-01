@@ -8,7 +8,7 @@ body {
   margin: 0;
   /* XXX These are defaults for Chrome, do something else instead */
   font-size: 13px;
-  font-family: Roboto, "Segoe UI", Tahoma, sans-serif;
+  font-family: system-ui, sans-serif;
 }
 
 body.browserAction {
@@ -74,8 +74,17 @@ section.group > section > p {
 
 /* Firefox overrides */
 @-moz-document url-prefix() {
+  /* https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Browser_styles#manifest_v3_migration */
+  html, body {
+    box-sizing: border-box;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+  }
   body {
-    font-family: inherit;
     font-size: 15px;
   }
   body.browserAction {
@@ -97,7 +106,6 @@ section.group > section > p {
 
 /* Edge overrides */
 body.edge {
-  font-family: "system-ui", sans-serif;
   font-size: 14px;
 }
 body.edge section:not(:first-of-type) {
@@ -113,7 +121,6 @@ body.edge section.group > section > * {
 
 /* Safari overrides */
 body.safari {
-  font-family: system-ui;
   -webkit-user-select: none;
 }
 

@@ -1,4 +1,10 @@
 {
+  "disableAutoplay": {
+    "message": "Disable Autoplay"
+  },
+  "enabled": {
+    "message": "Control Panel for YouTube enabled"
+  },
   "extensionDescription": {
     "message": "Hide unwanted content on YouTube",
     "description": "<= 112 characters"
@@ -6,11 +12,29 @@
   "extensionName": {
     "message": "Control Panel for YouTube"
   },
+  "hideChat": {
+    "message": "Hide Chat"
+  },
+  "hideComments": {
+    "message": "Hide Comments"
+  },
+  "hideEndCards": {
+    "message": "Hide end screen cards"
+  },
+  "hideEndVideos": {
+    "message": "Hide end screen videos"
+  },
   "hideLive": {
     "message": "Hide Live videos"
   },
+  "hideRelated": {
+    "message": "Hide Related videos"
+  },
   "hideShorts": {
     "message": "Hide Shorts"
+  },
+  "hideSponsored": {
+    "message": "Hide Sponsored videos & Promos"
   },
   "hideStreamed": {
     "message": "Hide Streamed videos"
@@ -23,5 +47,11 @@
   },
   "shorts": {
     "message": "Shorts"
+  },
+  "videoListings": {
+    "message": "Video listings"
+  },
+  "videoPage": {
+    "message": "Video page"
   }
 }

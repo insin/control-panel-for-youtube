@@ -1,11 +1,20 @@
 document.title = chrome.i18n.getMessage('extensionName')
 
 for (let translationId of [
+  'disableAutoplay',
+  'enabled',
+  'hideComments',
+  'hideEndCards',
+  'hideEndVideos',
   'hideLive',
+  'hideRelated',
   'hideShorts',
+  'hideSponsored',
   'hideStreamed',
   'hideUpcoming',
   'redirectShorts',
+  'videoListings',
+  'videoPage',
 ]) {
   document.getElementById(translationId).textContent = chrome.i18n.getMessage(translationId)
 }
@@ -32,8 +41,16 @@ function setFormValue(prop, value) {
 
 /** @type {import("./types").Config} */
 let defaultConfig = {
+  disableAutoplay: true,
+  enabled: true,
+  hideChat: false,
+  hideComments: false,
+  hideEndCards: false,
+  hideEndVideos: false,
   hideLive: false,
+  hideRelated: false,
   hideShorts: true,
+  hideSponsored: true,
   hideStreamed: false,
   hideUpcoming: false,
   redirectShorts: true,
