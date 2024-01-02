@@ -79,6 +79,17 @@ function dedent(str) {
   return str.replace(/(\r?\n)[ \t]+$/, '$1')
 }
 
+function disconnectPageObserver(name) {
+  for (let i = pageObservers.length -1; i >= 0; i--) {
+    let observer = pageObservers[i]
+    if ('name' in observer && observer.name == name) {
+      observer.disconnect()
+      pageObservers.splice(i, 1)
+      log(`disconnected ${name} observer`)
+    }
+  }
+}
+
 function getCurrentUrl() {
   return location.origin + location.pathname + location.search
 }
@@ -419,33 +430,57 @@ const configureCss = (() => {
 
 //#region Tweak functions
 async function disableAutoplay() {
-  /** @type {GetElementOptions} */
-  let options = {name: 'Autoplay button', stopIf: currentUrlIsNot(getCurrentUrl())}
   if (desktop) {
-    let $autoplayButton = await getElement('button[data-tooltip-target-id="ytp-autonav-toggle-button"]', options)
+    let $autoplayButton = await getElement('button[data-tooltip-target-id="ytp-autonav-toggle-button"]', {
+      name: 'Autoplay button',
+      stopIf: currentUrlIsNot(getCurrentUrl()),
+    })
+    if (!$autoplayButton) return
+
     // On desktop, initial Autoplay button HTML has style="display: none" and is
     // always checked on. Once it's displayed, we can determine its real state
     // and take action if needed.
-    let observer
-    observer = observeElement($autoplayButton, () => {
-      if ($autoplayButton.style.display != 'none') {
-        if ($autoplayButton?.querySelector('.ytp-autonav-toggle-button[aria-checked="true"]')) {
+    pageObservers.push(
+      observeElement($autoplayButton, () => {
+        if ($autoplayButton.style.display == 'none') return
+
+        if ($autoplayButton.querySelector('.ytp-autonav-toggle-button[aria-checked="true"]')) {
           log('turning Autoplay off')
           $autoplayButton.click()
+        } else {
+          log('Autoplay is already off')
         }
-        observer?.disconnect()
-      }
-    }, 'autoplay button style', {attributes: true, attributeFilter: ['style']})
+
+        disconnectPageObserver('Autoplay button style')
+      }, 'Autoplay button style', {attributes: true, attributeFilter: ['style']})
+    )
   }
+
   if (mobile) {
-    // TODO Observe #player-control-container > ytm-custom-control for initial appearance instead
-    let $autoplayButton = await getElement('button.ytm-autonav-toggle-button-container', options)
-    // The Autoplay button always seems to load async on mobile, so we can check
-    // it once available.
-    if ($autoplayButton?.getAttribute('aria-pressed') == 'true') {
-      log('turning Autoplay off')
-      $autoplayButton.click()
-    }
+    // Appearance of the Autoplay button may be delayed until interaction
+    let $customControl = await getElement('#player-control-container > ytm-custom-control', {
+      name: 'Autoplay control container',
+      stopIf: currentUrlIsNot(getCurrentUrl()),
+    })
+    if (!$customControl) return
+
+    pageObservers.push(
+      observeElement($customControl, () => {
+        if ($customControl.childElementCount == 0) return
+
+        let $autoplayButton = /** @type {HTMLElement} */ ($customControl.querySelector('button.ytm-autonav-toggle-button-container'))
+        if (!$autoplayButton) return
+
+        if ($autoplayButton.getAttribute('aria-pressed') == 'true') {
+          log('turning Autoplay off')
+          $autoplayButton.click()
+        } else {
+          log('Autoplay is already off')
+        }
+
+        disconnectPageObserver('Autoplay control container')
+      }, 'Autoplay control container')
+    )
   }
 }
 
