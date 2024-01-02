@@ -1,5 +1,6 @@
 :root {
   color-scheme: light dark;
+  --border-color: #f0f0f0;
 }
 
 body {
@@ -51,7 +52,7 @@ section.group > label:not(.checkbox) {
 }
 
 section:not(:first-of-type) {
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--border-color);
 }
 
 section.group > section {
@@ -89,6 +90,10 @@ body.disabled form > section ~ section {
   visibility: hidden;
 }
 
+body.disabled form > section {
+  border-bottom: 1px solid var(--border-color);
+}
+
 /* Firefox overrides */
 @-moz-document url-prefix() {
   /* https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Browser_styles#manifest_v3_migration */
@@ -108,8 +113,8 @@ body.disabled form > section ~ section {
     min-width: auto;
     max-width: 400px;
   }
-  section:not(:first-of-type) {
-    border-color: #d7d7db;
+  section {
+    --border-color: #d7d7db;
   }
   section.group > p,
   section.group > section > * {
@@ -125,8 +130,8 @@ body.disabled form > section ~ section {
 body.edge {
   font-size: 14px;
 }
-body.edge section:not(:first-of-type) {
-  border-color: #B6B6B6;
+body.edge section {
+  --border-color: #B6B6B6;
 }
 body.edge section.group > label {
   font-weight: 600;
@@ -363,8 +368,8 @@ body.iOS.safari .checkbox input:focus + .toggle {
     background-color: #292a2d;
     color: #e8eaed;
   }
-  section:not(:first-of-type) {
-    border-color: #3f4042;
+  section {
+    --border-color: #3f4042;
   }
   section.group > p,
   section.group > section > * {
@@ -379,8 +384,8 @@ body.iOS.safari .checkbox input:focus + .toggle {
   body.edge section.group > label {
     color: #fff;
   }
-  body.edge section:not(:first-of-type) {
-    border-color: #737373;
+  body.edge section {
+    --border-color: #737373;
   }
   body.edge section.group > p,
   body.edge section.group > section > * {
@@ -392,8 +397,8 @@ body.iOS.safari .checkbox input:focus + .toggle {
     body {
       background-color: #23222b;
     }
-    section:not(:first-of-type) {
-      border-color: #4e4d54;
+    section {
+      --border-color: #4e4d54;
     }
     section.group > p,
     section.group > section > * {
@@ -415,7 +420,7 @@ body.iOS.safari .checkbox input:focus + .toggle {
     color: rgb(115, 115, 121);
   }
   body.iOS.safari section.group section {
-    border-color: rgb(35, 35, 37);
+    --border-color: rgb(35, 35, 37);
   }
   body.iOS.safari p {
     color: rgb(132, 132, 138) !important;
