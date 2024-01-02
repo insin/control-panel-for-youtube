@@ -299,10 +299,14 @@ const configureCss = (() => {
           // Search results
           '#contents.style-scope.ytd-search-pyv-renderer',
           'ytd-ad-slot-renderer.style-scope.ytd-item-section-renderer',
-          // Above Watch Next videos
+          // Above Related videos
           '#player-ads',
-          // Watch Next videos
+          // In Related videos
           '#items > ytd-ad-slot-renderer',
+          // Tickets
+          '#ticket-shelf',
+          // Merch
+          'ytd-merch-shelf-renderer',
         )
       }
       if (mobile) {
