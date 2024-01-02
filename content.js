@@ -64,6 +64,10 @@ function addStyle() {
   return $style
 }
 
+function currentUrlIsNot(currentUrl) {
+  return () => currentUrl != getCurrentUrl()
+}
+
 /**
  * @param {string} str
  * @return {string}
@@ -150,12 +154,7 @@ function getElement(selector, {
  * @return {MutationObserver}
  */
 function observeElement($element, callback, name, options = {childList: true}) {
-  if (options.childList && callback.length > 0) {
-    log(`observing ${name}`, $element)
-  } else {
-    log (`observing ${name}`)
-  }
-
+  log (`observing ${name}`)
   let observer = new MutationObserver(callback)
   callback([], observer)
   observer.observe($element, options)
@@ -420,9 +419,8 @@ const configureCss = (() => {
 
 //#region Tweak functions
 async function disableAutoplay() {
-  let currentUrl = getCurrentUrl()
   /** @type {GetElementOptions} */
-  let options = {name: 'Autoplay button', stopIf: () => currentUrl != getCurrentUrl()}
+  let options = {name: 'Autoplay button', stopIf: currentUrlIsNot(getCurrentUrl())}
   if (desktop) {
     let $autoplayButton = await getElement('button[data-tooltip-target-id="ytp-autonav-toggle-button"]', options)
     // On desktop, initial Autoplay button HTML has style="display: none" and is
@@ -440,6 +438,7 @@ async function disableAutoplay() {
     }, 'autoplay button style', {attributes: true, attributeFilter: ['style']})
   }
   if (mobile) {
+    // TODO Observe #player-control-container > ytm-custom-control for initial appearance instead
     let $autoplayButton = await getElement('button.ytm-autonav-toggle-button-container', options)
     // The Autoplay button always seems to load async on mobile, so we can check
     // it once available.
@@ -450,20 +449,58 @@ async function disableAutoplay() {
   }
 }
 
-async function observeBottomSheetOpenAppItem() {
-  let $bottomSheet = await getElement('bottom-sheet-container', {name: 'bottom sheet'})
-  pageObservers.push(
-    observeElement($bottomSheet, () => {
-      let menuItems = $bottomSheet.querySelectorAll('ytm-menu-item')
-      for (let $menuItem of menuItems) {
-        if ($menuItem.textContent == 'Open App') {
-          $menuItem.classList.add('open-app-menu-item')
-          break
-        }
+const observeOpenAppMenuItem = (() => {
+  /** @param {Element} $el */
+  function tagOpenAppMenuItem($el) {
+    let menuItems = $el.querySelectorAll('ytm-menu-item')
+    for (let $menuItem of menuItems) {
+      if ($menuItem.textContent == 'Open App') {
+        log('tagging Open App item')
+        $menuItem.classList.add('open-app-menu-item')
+        break
       }
-    }, 'bottom sheet')
-  )
-}
+    }
+  }
+
+  /**
+   * Depending on resolution, mobile menus appear in <bottom-sheet-container>
+   * (lower res) or as a child of <body> (higher res).
+   */
+  return async function observeOpenAppMenuItem() {
+    let $body = await getElement('body', {
+      name: '<body>',
+      stopIf: currentUrlIsNot(getCurrentUrl()),
+    })
+    if (!$body) return
+
+    pageObservers.push(
+      observeElement($body, (mutations) => {
+        for (let mutation of mutations) {
+          for (let $el of mutation.addedNodes) {
+            if ($el instanceof Element && $el.id == 'menu') {
+              tagOpenAppMenuItem($el)
+              return
+            }
+          }
+        }
+      }, '<body> for Open App menu item')
+    )
+
+    let $bottomSheet = await getElement('bottom-sheet-container', {
+      name: 'bottom sheet',
+      stopIf: currentUrlIsNot(getCurrentUrl()),
+    })
+    if (!$bottomSheet) return
+
+    pageObservers.push(
+      observeElement($bottomSheet, () => {
+        if ($bottomSheet.childElementCount > 0) {
+          tagOpenAppMenuItem($bottomSheet)
+        }
+      }, 'bottom sheet for Open App menu item')
+    )
+  }
+})()
 
 /**
  * Detect navigation between pages for features which apply to specific pages.
@@ -501,12 +538,12 @@ function handleCurrentUrl() {
       disableAutoplay()
     }
     if (mobile && config.hideOpenApp) {
-      observeBottomSheetOpenAppItem()
+      observeOpenAppMenuItem()
     }
   }
   else if (location.pathname == '/results') {
     if (mobile && config.hideOpenApp) {
-      observeBottomSheetOpenAppItem()
+      observeOpenAppMenuItem()
     }
   }
 }
