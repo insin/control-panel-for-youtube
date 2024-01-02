@@ -93,6 +93,7 @@ section.group > section > p {
     font-size: 15px;
   }
   body.browserAction {
+    min-width: auto;
     max-width: 400px;
   }
   section:not(:first-of-type) {
