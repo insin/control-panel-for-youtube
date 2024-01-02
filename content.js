@@ -314,7 +314,9 @@ const configureCss = (() => {
       if (mobile) {
         hideCssSelectors.push(
           // Search results
-          'ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)'
+          'ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
+          // Directly under video
+          'ytm-companion-slot:has(> ytm-companion-ad-renderer)',
         )
       }
     }
