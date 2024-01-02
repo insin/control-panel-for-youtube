@@ -201,7 +201,12 @@ const configureCss = (() => {
 
     if (config.hideLive) {
       if (desktop) {
-        hideCssSelectors.push('ytd-rich-item-renderer:has(ytd-thumbnail[is-live-video])')
+        hideCssSelectors.push(
+          // Grid item (Home, Subscriptions)
+          'ytd-rich-item-renderer:has(ytd-thumbnail[is-live-video])',
+          // List item (Search)
+          'ytd-video-renderer:has(ytd-thumbnail[is-live-video])',
+        )
       }
       if (mobile) {
         hideCssSelectors.push('ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])')
@@ -286,7 +291,12 @@ const configureCss = (() => {
 
     if (config.hideStreamed) {
       if (desktop) {
-        hideCssSelectors.push('ytd-rich-item-renderer:has(a#video-title-link[aria-label*="views Streamed"])')
+        hideCssSelectors.push(
+          // Grid item (Home, Subscriptions)
+          'ytd-rich-item-renderer:has(a#video-title-link[aria-label*="views Streamed"])',
+          // List item (Search)
+          'ytd-video-renderer:has(a#video-title[aria-label*="views Streamed"])'
+        )
       }
       if (mobile) {
         hideCssSelectors.push('ytm-video-with-context-renderer:has(span.yt-core-attributed-string[aria-label*="views Streamed"])')
