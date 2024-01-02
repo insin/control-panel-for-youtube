@@ -384,6 +384,8 @@ const configureCss = (() => {
           'html.watch-scroll .mobile-topbar-header-sign-in-button',
           // The overflow menu has an Open App menu item we'll add this class to
           'ytm-menu-item.open-app-menu-item',
+          // The last item in the full screen menu is Open App
+          '#menu .multi-page-menu-system-link-list:has(+ ytm-privacy-tos-footer-renderer)',
         )
       }
     }
@@ -433,14 +435,17 @@ async function disableAutoplay() {
   }
 }
 
-/**
- * @param {(el: HTMLElement) => void} callback
- */
-async function observeBottomSheet(callback) {
+async function observeBottomSheetOpenAppItem() {
   let $bottomSheet = await getElement('bottom-sheet-container', {name: 'bottom sheet'})
   pageObservers.push(
     observeElement($bottomSheet, () => {
-      callback($bottomSheet)
+      let menuItems = $bottomSheet.querySelectorAll('ytm-menu-item')
+      for (let $menuItem of menuItems) {
+        if ($menuItem.textContent == 'Open App') {
+          $menuItem.classList.add('open-app-menu-item')
+          break
+        }
+      }
     }, 'bottom sheet')
   )
 }
@@ -481,15 +486,12 @@ function handleCurrentUrl() {
       disableAutoplay()
     }
     if (mobile && config.hideOpenApp) {
-      observeBottomSheet(($bottomSheet) => {
-        let menuItems = $bottomSheet.querySelectorAll('ytm-menu-item')
-        for (let $menuItem of menuItems) {
-          if ($menuItem.textContent == 'Open App') {
-            $menuItem.classList.add('open-app-menu-item')
-            break
-          }
-        }
-      })
+      observeBottomSheetOpenAppItem()
+    }
+  }
+  else if (location.pathname == '/results') {
+    if (mobile && config.hideOpenApp) {
+      observeBottomSheetOpenAppItem()
     }
   }
 }
