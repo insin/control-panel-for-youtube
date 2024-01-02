@@ -1,0 +1,85 @@
+* {
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  cursor: default;
+}
+
+:root {
+  color-scheme: light dark;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  font: -apple-system-short-body;
+}
+
+body:not(.platform-mac, .platform-ios) :is(.platform-mac, .platform-ios),
+body:not(.state-on, .state-off) :is(.state-on, .state-off),
+body.platform-ios .platform-mac,
+body.platform-mac .platform-ios,
+body.state-on :is(.state-off, .state-unknown),
+body.state-off :is(.state-on, .state-unknown) {
+  display: none;
+}
+
+.app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  text-align: center;
+}
+
+.ad {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: .5rem;
+  border: 1px solid;
+  border-radius: 1.5rem;
+  font-size: .875rem;
+  margin: 0 1rem 1rem 1rem;
+  padding: .75rem 1rem 1rem .5rem;
+  max-width: 26rem;
+}
+
+button {
+  font-size: 1rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.-mb-2 {
+  margin-bottom: -.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}

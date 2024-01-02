@@ -3,10 +3,10 @@
     "message": "Disable Autoplay"
   },
   "enabled": {
-    "message": "Control Panel for YouTube enabled"
+    "message": "Enabled"
   },
   "extensionDescription": {
-    "message": "Hide unwanted content on YouTube",
+    "message": "Gives you more control over YouTube by adding missing options and UI improvements",
     "description": "<= 112 characters"
   },
   "extensionName": {

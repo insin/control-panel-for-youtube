@@ -1,0 +1,1039 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FBE8607B2B42F1E40053AD2F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE8607A2B42F1E40053AD2F /* AppDelegate.swift */; };
+		FBE8607D2B42F1E40053AD2F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE8607C2B42F1E40053AD2F /* SceneDelegate.swift */; };
+		FBE860802B42F1E40053AD2F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FBE8607E2B42F1E40053AD2F /* LaunchScreen.storyboard */; };
+		FBE860832B42F1E40053AD2F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FBE860812B42F1E40053AD2F /* Main.storyboard */; };
+		FBE8608C2B42F1E40053AD2F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE8608B2B42F1E40053AD2F /* AppDelegate.swift */; };
+		FBE8608F2B42F1E40053AD2F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FBE8608D2B42F1E40053AD2F /* Main.storyboard */; };
+		FBE860962B42F1E40053AD2F /* Control Panel for YouTube Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FBE860952B42F1E40053AD2F /* Control Panel for YouTube Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FBE860A02B42F1E40053AD2F /* Control Panel for YouTube Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FBE8609F2B42F1E40053AD2F /* Control Panel for YouTube Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FBE860A62B42F1E40053AD2F /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = FBE860612B42F1E30053AD2F /* Main.html */; };
+		FBE860A72B42F1E40053AD2F /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = FBE860612B42F1E30053AD2F /* Main.html */; };
+		FBE860A82B42F1E40053AD2F /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE860632B42F1E30053AD2F /* Icon.png */; };
+		FBE860A92B42F1E40053AD2F /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE860632B42F1E30053AD2F /* Icon.png */; };
+		FBE860AA2B42F1E40053AD2F /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = FBE860642B42F1E30053AD2F /* Style.css */; };
+		FBE860AB2B42F1E40053AD2F /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = FBE860642B42F1E30053AD2F /* Style.css */; };
+		FBE860AC2B42F1E40053AD2F /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = FBE860652B42F1E30053AD2F /* Script.js */; };
+		FBE860AD2B42F1E40053AD2F /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = FBE860652B42F1E30053AD2F /* Script.js */; };
+		FBE860AE2B42F1E40053AD2F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE860662B42F1E30053AD2F /* ViewController.swift */; };
+		FBE860AF2B42F1E40053AD2F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE860662B42F1E30053AD2F /* ViewController.swift */; };
+		FBE860B02B42F1E40053AD2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBE860672B42F1E40053AD2F /* Assets.xcassets */; };
+		FBE860B12B42F1E40053AD2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBE860672B42F1E40053AD2F /* Assets.xcassets */; };
+		FBE860B22B42F1E40053AD2F /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE860692B42F1E40053AD2F /* SafariWebExtensionHandler.swift */; };
+		FBE860B32B42F1E40053AD2F /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE860692B42F1E40053AD2F /* SafariWebExtensionHandler.swift */; };
+		FBE860B82B42F1E40053AD2F /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = FBE8606D2B42F1E40053AD2F /* manifest.json */; };
+		FBE860B92B42F1E40053AD2F /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = FBE8606D2B42F1E40053AD2F /* manifest.json */; };
+		FBE860D92B438ACE0053AD2F /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = FBE860D42B438ACE0053AD2F /* content.js */; };
+		FBE860DA2B438ACE0053AD2F /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = FBE860D42B438ACE0053AD2F /* content.js */; };
+		FBE860DB2B438ACE0053AD2F /* browser_action.html in Resources */ = {isa = PBXBuildFile; fileRef = FBE860D52B438ACE0053AD2F /* browser_action.html */; };
+		FBE860DC2B438ACE0053AD2F /* browser_action.html in Resources */ = {isa = PBXBuildFile; fileRef = FBE860D52B438ACE0053AD2F /* browser_action.html */; };
+		FBE860DD2B438ACE0053AD2F /* options.html in Resources */ = {isa = PBXBuildFile; fileRef = FBE860D62B438ACE0053AD2F /* options.html */; };
+		FBE860DE2B438ACE0053AD2F /* options.html in Resources */ = {isa = PBXBuildFile; fileRef = FBE860D62B438ACE0053AD2F /* options.html */; };
+		FBE860DF2B438ACE0053AD2F /* options.js in Resources */ = {isa = PBXBuildFile; fileRef = FBE860D72B438ACE0053AD2F /* options.js */; };
+		FBE860E02B438ACE0053AD2F /* options.js in Resources */ = {isa = PBXBuildFile; fileRef = FBE860D72B438ACE0053AD2F /* options.js */; };
+		FBE860E12B438ACE0053AD2F /* options.css in Resources */ = {isa = PBXBuildFile; fileRef = FBE860D82B438ACE0053AD2F /* options.css */; };
+		FBE860E22B438ACE0053AD2F /* options.css in Resources */ = {isa = PBXBuildFile; fileRef = FBE860D82B438ACE0053AD2F /* options.css */; };
+		FBE861052B438C950053AD2F /* _locales in Resources */ = {isa = PBXBuildFile; fileRef = FBE861042B438C950053AD2F /* _locales */; };
+		FBE861062B438C950053AD2F /* _locales in Resources */ = {isa = PBXBuildFile; fileRef = FBE861042B438C950053AD2F /* _locales */; };
+		FBE8610A2B439B0D0053AD2F /* Ad.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861072B439AF10053AD2F /* Ad.png */; };
+		FBE8610B2B439B0E0053AD2F /* Ad.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861072B439AF10053AD2F /* Ad.png */; };
+		FBE861CE2B43A6F80053AD2F /* toolbar-icon48.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861C32B43A6F80053AD2F /* toolbar-icon48.png */; };
+		FBE861CF2B43A6F80053AD2F /* toolbar-icon48.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861C32B43A6F80053AD2F /* toolbar-icon48.png */; };
+		FBE861D02B43A6F80053AD2F /* icon512.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861C42B43A6F80053AD2F /* icon512.png */; };
+		FBE861D12B43A6F80053AD2F /* icon512.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861C42B43A6F80053AD2F /* icon512.png */; };
+		FBE861D22B43A6F80053AD2F /* toolbar-icon19.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861C52B43A6F80053AD2F /* toolbar-icon19.png */; };
+		FBE861D32B43A6F80053AD2F /* toolbar-icon19.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861C52B43A6F80053AD2F /* toolbar-icon19.png */; };
+		FBE861D42B43A6F80053AD2F /* toolbar-icon38.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861C62B43A6F80053AD2F /* toolbar-icon38.png */; };
+		FBE861D52B43A6F80053AD2F /* toolbar-icon38.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861C62B43A6F80053AD2F /* toolbar-icon38.png */; };
+		FBE861D62B43A6F80053AD2F /* icon128.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861C72B43A6F80053AD2F /* icon128.png */; };
+		FBE861D72B43A6F80053AD2F /* icon128.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861C72B43A6F80053AD2F /* icon128.png */; };
+		FBE861D82B43A6F80053AD2F /* icon96.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861C82B43A6F80053AD2F /* icon96.png */; };
+		FBE861D92B43A6F80053AD2F /* icon96.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861C82B43A6F80053AD2F /* icon96.png */; };
+		FBE861DA2B43A6F80053AD2F /* icon256.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861C92B43A6F80053AD2F /* icon256.png */; };
+		FBE861DB2B43A6F80053AD2F /* icon256.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861C92B43A6F80053AD2F /* icon256.png */; };
+		FBE861DC2B43A6F80053AD2F /* toolbar-icon32.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861CA2B43A6F80053AD2F /* toolbar-icon32.png */; };
+		FBE861DD2B43A6F80053AD2F /* toolbar-icon32.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861CA2B43A6F80053AD2F /* toolbar-icon32.png */; };
+		FBE861DE2B43A6F80053AD2F /* icon48.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861CB2B43A6F80053AD2F /* icon48.png */; };
+		FBE861DF2B43A6F80053AD2F /* icon48.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861CB2B43A6F80053AD2F /* icon48.png */; };
+		FBE861E02B43A6F80053AD2F /* toolbar-icon16.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861CC2B43A6F80053AD2F /* toolbar-icon16.png */; };
+		FBE861E12B43A6F80053AD2F /* toolbar-icon16.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861CC2B43A6F80053AD2F /* toolbar-icon16.png */; };
+		FBE861E22B43A6F80053AD2F /* toolbar-icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861CD2B43A6F80053AD2F /* toolbar-icon72.png */; };
+		FBE861E32B43A6F80053AD2F /* toolbar-icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861CD2B43A6F80053AD2F /* toolbar-icon72.png */; };
+		FBE861E52B43A7610053AD2F /* options-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861E42B43A7610053AD2F /* options-icon.png */; };
+		FBE861E62B43A7610053AD2F /* options-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861E42B43A7610053AD2F /* options-icon.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FBE860972B42F1E40053AD2F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FBE8605B2B42F1E30053AD2F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FBE860942B42F1E40053AD2F;
+			remoteInfo = "Control Panel for YouTube Extension (iOS)";
+		};
+		FBE860A12B42F1E40053AD2F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FBE8605B2B42F1E30053AD2F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FBE8609E2B42F1E40053AD2F;
+			remoteInfo = "Control Panel for YouTube Extension (macOS)";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FBE860C92B42F1E40053AD2F /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				FBE860962B42F1E40053AD2F /* Control Panel for YouTube Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBE860D02B42F1E40053AD2F /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				FBE860A02B42F1E40053AD2F /* Control Panel for YouTube Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		FBE860622B42F1E30053AD2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = ../Base.lproj/Main.html; sourceTree = "<group>"; };
+		FBE860632B42F1E30053AD2F /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		FBE860642B42F1E30053AD2F /* Style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = Style.css; sourceTree = "<group>"; };
+		FBE860652B42F1E30053AD2F /* Script.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Script.js; sourceTree = "<group>"; };
+		FBE860662B42F1E30053AD2F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FBE860672B42F1E40053AD2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FBE860692B42F1E40053AD2F /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		FBE8606D2B42F1E40053AD2F /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = manifest.json; sourceTree = "<group>"; };
+		FBE860772B42F1E40053AD2F /* Control Panel for YouTube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Control Panel for YouTube.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FBE8607A2B42F1E40053AD2F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FBE8607C2B42F1E40053AD2F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		FBE8607F2B42F1E40053AD2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FBE860822B42F1E40053AD2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FBE860842B42F1E40053AD2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FBE860892B42F1E40053AD2F /* Control Panel for YouTube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Control Panel for YouTube.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FBE8608B2B42F1E40053AD2F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FBE8608E2B42F1E40053AD2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FBE860902B42F1E40053AD2F /* Control Panel for YouTube.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Control Panel for YouTube.entitlements"; sourceTree = "<group>"; };
+		FBE860952B42F1E40053AD2F /* Control Panel for YouTube Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Control Panel for YouTube Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FBE8609A2B42F1E40053AD2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FBE8609F2B42F1E40053AD2F /* Control Panel for YouTube Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Control Panel for YouTube Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FBE860A42B42F1E40053AD2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FBE860A52B42F1E40053AD2F /* Control Panel for YouTube.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Control Panel for YouTube.entitlements"; sourceTree = "<group>"; };
+		FBE860D42B438ACE0053AD2F /* content.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = content.js; path = ../../../content.js; sourceTree = "<group>"; };
+		FBE860D52B438ACE0053AD2F /* browser_action.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = browser_action.html; path = ../../../browser_action.html; sourceTree = "<group>"; };
+		FBE860D62B438ACE0053AD2F /* options.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = options.html; path = ../../../options.html; sourceTree = "<group>"; };
+		FBE860D72B438ACE0053AD2F /* options.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = options.js; path = ../../../options.js; sourceTree = "<group>"; };
+		FBE860D82B438ACE0053AD2F /* options.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = options.css; path = ../../../options.css; sourceTree = "<group>"; };
+		FBE861042B438C950053AD2F /* _locales */ = {isa = PBXFileReference; lastKnownFileType = folder; name = _locales; path = ../../../_locales; sourceTree = "<group>"; };
+		FBE861072B439AF10053AD2F /* Ad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ad.png; sourceTree = "<group>"; };
+		FBE861C32B43A6F80053AD2F /* toolbar-icon48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-icon48.png"; path = "../../../icons/toolbar-icon48.png"; sourceTree = "<group>"; };
+		FBE861C42B43A6F80053AD2F /* icon512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon512.png; path = ../../../icons/icon512.png; sourceTree = "<group>"; };
+		FBE861C52B43A6F80053AD2F /* toolbar-icon19.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-icon19.png"; path = "../../../icons/toolbar-icon19.png"; sourceTree = "<group>"; };
+		FBE861C62B43A6F80053AD2F /* toolbar-icon38.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-icon38.png"; path = "../../../icons/toolbar-icon38.png"; sourceTree = "<group>"; };
+		FBE861C72B43A6F80053AD2F /* icon128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon128.png; path = ../../../icons/icon128.png; sourceTree = "<group>"; };
+		FBE861C82B43A6F80053AD2F /* icon96.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon96.png; path = ../../../icons/icon96.png; sourceTree = "<group>"; };
+		FBE861C92B43A6F80053AD2F /* icon256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon256.png; path = ../../../icons/icon256.png; sourceTree = "<group>"; };
+		FBE861CA2B43A6F80053AD2F /* toolbar-icon32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-icon32.png"; path = "../../../icons/toolbar-icon32.png"; sourceTree = "<group>"; };
+		FBE861CB2B43A6F80053AD2F /* icon48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon48.png; path = ../../../icons/icon48.png; sourceTree = "<group>"; };
+		FBE861CC2B43A6F80053AD2F /* toolbar-icon16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-icon16.png"; path = "../../../icons/toolbar-icon16.png"; sourceTree = "<group>"; };
+		FBE861CD2B43A6F80053AD2F /* toolbar-icon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-icon72.png"; path = "../../../icons/toolbar-icon72.png"; sourceTree = "<group>"; };
+		FBE861E42B43A7610053AD2F /* options-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "options-icon.png"; path = "../../../options-icon.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FBE860742B42F1E40053AD2F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBE860862B42F1E40053AD2F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBE860922B42F1E40053AD2F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBE8609C2B42F1E40053AD2F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FBE8605A2B42F1E30053AD2F = {
+			isa = PBXGroup;
+			children = (
+				FBE8605F2B42F1E30053AD2F /* Shared (App) */,
+				FBE860682B42F1E40053AD2F /* Shared (Extension) */,
+				FBE860792B42F1E40053AD2F /* iOS (App) */,
+				FBE8608A2B42F1E40053AD2F /* macOS (App) */,
+				FBE860992B42F1E40053AD2F /* iOS (Extension) */,
+				FBE860A32B42F1E40053AD2F /* macOS (Extension) */,
+				FBE860782B42F1E40053AD2F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FBE8605F2B42F1E30053AD2F /* Shared (App) */ = {
+			isa = PBXGroup;
+			children = (
+				FBE860662B42F1E30053AD2F /* ViewController.swift */,
+				FBE860672B42F1E40053AD2F /* Assets.xcassets */,
+				FBE860602B42F1E30053AD2F /* Resources */,
+			);
+			path = "Shared (App)";
+			sourceTree = "<group>";
+		};
+		FBE860602B42F1E30053AD2F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FBE861072B439AF10053AD2F /* Ad.png */,
+				FBE860612B42F1E30053AD2F /* Main.html */,
+				FBE860632B42F1E30053AD2F /* Icon.png */,
+				FBE860642B42F1E30053AD2F /* Style.css */,
+				FBE860652B42F1E30053AD2F /* Script.js */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		FBE860682B42F1E40053AD2F /* Shared (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				FBE860692B42F1E40053AD2F /* SafariWebExtensionHandler.swift */,
+				FBE8606A2B42F1E40053AD2F /* Resources */,
+			);
+			path = "Shared (Extension)";
+			sourceTree = "<group>";
+		};
+		FBE8606A2B42F1E40053AD2F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FBE861E42B43A7610053AD2F /* options-icon.png */,
+				FBE861CB2B43A6F80053AD2F /* icon48.png */,
+				FBE861C82B43A6F80053AD2F /* icon96.png */,
+				FBE861C72B43A6F80053AD2F /* icon128.png */,
+				FBE861C92B43A6F80053AD2F /* icon256.png */,
+				FBE861C42B43A6F80053AD2F /* icon512.png */,
+				FBE861CC2B43A6F80053AD2F /* toolbar-icon16.png */,
+				FBE861C52B43A6F80053AD2F /* toolbar-icon19.png */,
+				FBE861CA2B43A6F80053AD2F /* toolbar-icon32.png */,
+				FBE861C62B43A6F80053AD2F /* toolbar-icon38.png */,
+				FBE861C32B43A6F80053AD2F /* toolbar-icon48.png */,
+				FBE861CD2B43A6F80053AD2F /* toolbar-icon72.png */,
+				FBE861042B438C950053AD2F /* _locales */,
+				FBE860D52B438ACE0053AD2F /* browser_action.html */,
+				FBE860D42B438ACE0053AD2F /* content.js */,
+				FBE8606D2B42F1E40053AD2F /* manifest.json */,
+				FBE860D82B438ACE0053AD2F /* options.css */,
+				FBE860D62B438ACE0053AD2F /* options.html */,
+				FBE860D72B438ACE0053AD2F /* options.js */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		FBE860782B42F1E40053AD2F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FBE860772B42F1E40053AD2F /* Control Panel for YouTube.app */,
+				FBE860892B42F1E40053AD2F /* Control Panel for YouTube.app */,
+				FBE860952B42F1E40053AD2F /* Control Panel for YouTube Extension.appex */,
+				FBE8609F2B42F1E40053AD2F /* Control Panel for YouTube Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FBE860792B42F1E40053AD2F /* iOS (App) */ = {
+			isa = PBXGroup;
+			children = (
+				FBE8607A2B42F1E40053AD2F /* AppDelegate.swift */,
+				FBE8607C2B42F1E40053AD2F /* SceneDelegate.swift */,
+				FBE8607E2B42F1E40053AD2F /* LaunchScreen.storyboard */,
+				FBE860812B42F1E40053AD2F /* Main.storyboard */,
+				FBE860842B42F1E40053AD2F /* Info.plist */,
+			);
+			path = "iOS (App)";
+			sourceTree = "<group>";
+		};
+		FBE8608A2B42F1E40053AD2F /* macOS (App) */ = {
+			isa = PBXGroup;
+			children = (
+				FBE8608B2B42F1E40053AD2F /* AppDelegate.swift */,
+				FBE8608D2B42F1E40053AD2F /* Main.storyboard */,
+				FBE860902B42F1E40053AD2F /* Control Panel for YouTube.entitlements */,
+			);
+			path = "macOS (App)";
+			sourceTree = "<group>";
+		};
+		FBE860992B42F1E40053AD2F /* iOS (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				FBE8609A2B42F1E40053AD2F /* Info.plist */,
+			);
+			path = "iOS (Extension)";
+			sourceTree = "<group>";
+		};
+		FBE860A32B42F1E40053AD2F /* macOS (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				FBE860A42B42F1E40053AD2F /* Info.plist */,
+				FBE860A52B42F1E40053AD2F /* Control Panel for YouTube.entitlements */,
+			);
+			path = "macOS (Extension)";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FBE860762B42F1E40053AD2F /* Control Panel for YouTube (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FBE860CA2B42F1E40053AD2F /* Build configuration list for PBXNativeTarget "Control Panel for YouTube (iOS)" */;
+			buildPhases = (
+				FBE860732B42F1E40053AD2F /* Sources */,
+				FBE860742B42F1E40053AD2F /* Frameworks */,
+				FBE860752B42F1E40053AD2F /* Resources */,
+				FBE860C92B42F1E40053AD2F /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FBE860982B42F1E40053AD2F /* PBXTargetDependency */,
+			);
+			name = "Control Panel for YouTube (iOS)";
+			productName = "Control Panel for YouTube (iOS)";
+			productReference = FBE860772B42F1E40053AD2F /* Control Panel for YouTube.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FBE860882B42F1E40053AD2F /* Control Panel for YouTube (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FBE860D12B42F1E40053AD2F /* Build configuration list for PBXNativeTarget "Control Panel for YouTube (macOS)" */;
+			buildPhases = (
+				FBE860852B42F1E40053AD2F /* Sources */,
+				FBE860862B42F1E40053AD2F /* Frameworks */,
+				FBE860872B42F1E40053AD2F /* Resources */,
+				FBE860D02B42F1E40053AD2F /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FBE860A22B42F1E40053AD2F /* PBXTargetDependency */,
+			);
+			name = "Control Panel for YouTube (macOS)";
+			productName = "Control Panel for YouTube (macOS)";
+			productReference = FBE860892B42F1E40053AD2F /* Control Panel for YouTube.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FBE860942B42F1E40053AD2F /* Control Panel for YouTube Extension (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FBE860C62B42F1E40053AD2F /* Build configuration list for PBXNativeTarget "Control Panel for YouTube Extension (iOS)" */;
+			buildPhases = (
+				FBE860912B42F1E40053AD2F /* Sources */,
+				FBE860922B42F1E40053AD2F /* Frameworks */,
+				FBE860932B42F1E40053AD2F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Control Panel for YouTube Extension (iOS)";
+			productName = "Control Panel for YouTube Extension (iOS)";
+			productReference = FBE860952B42F1E40053AD2F /* Control Panel for YouTube Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		FBE8609E2B42F1E40053AD2F /* Control Panel for YouTube Extension (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FBE860CD2B42F1E40053AD2F /* Build configuration list for PBXNativeTarget "Control Panel for YouTube Extension (macOS)" */;
+			buildPhases = (
+				FBE8609B2B42F1E40053AD2F /* Sources */,
+				FBE8609C2B42F1E40053AD2F /* Frameworks */,
+				FBE8609D2B42F1E40053AD2F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Control Panel for YouTube Extension (macOS)";
+			productName = "Control Panel for YouTube Extension (macOS)";
+			productReference = FBE8609F2B42F1E40053AD2F /* Control Panel for YouTube Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FBE8605B2B42F1E30053AD2F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1510;
+				LastUpgradeCheck = 1510;
+				TargetAttributes = {
+					FBE860762B42F1E40053AD2F = {
+						CreatedOnToolsVersion = 15.1;
+					};
+					FBE860882B42F1E40053AD2F = {
+						CreatedOnToolsVersion = 15.1;
+					};
+					FBE860942B42F1E40053AD2F = {
+						CreatedOnToolsVersion = 15.1;
+					};
+					FBE8609E2B42F1E40053AD2F = {
+						CreatedOnToolsVersion = 15.1;
+					};
+				};
+			};
+			buildConfigurationList = FBE8605E2B42F1E30053AD2F /* Build configuration list for PBXProject "Control Panel for YouTube" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FBE8605A2B42F1E30053AD2F;
+			productRefGroup = FBE860782B42F1E40053AD2F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FBE860762B42F1E40053AD2F /* Control Panel for YouTube (iOS) */,
+				FBE860882B42F1E40053AD2F /* Control Panel for YouTube (macOS) */,
+				FBE860942B42F1E40053AD2F /* Control Panel for YouTube Extension (iOS) */,
+				FBE8609E2B42F1E40053AD2F /* Control Panel for YouTube Extension (macOS) */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FBE860752B42F1E40053AD2F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBE860A82B42F1E40053AD2F /* Icon.png in Resources */,
+				FBE860802B42F1E40053AD2F /* LaunchScreen.storyboard in Resources */,
+				FBE860A62B42F1E40053AD2F /* Main.html in Resources */,
+				FBE860AC2B42F1E40053AD2F /* Script.js in Resources */,
+				FBE860B02B42F1E40053AD2F /* Assets.xcassets in Resources */,
+				FBE860832B42F1E40053AD2F /* Main.storyboard in Resources */,
+				FBE8610B2B439B0E0053AD2F /* Ad.png in Resources */,
+				FBE860AA2B42F1E40053AD2F /* Style.css in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBE860872B42F1E40053AD2F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBE860A92B42F1E40053AD2F /* Icon.png in Resources */,
+				FBE860AB2B42F1E40053AD2F /* Style.css in Resources */,
+				FBE8608F2B42F1E40053AD2F /* Main.storyboard in Resources */,
+				FBE860AD2B42F1E40053AD2F /* Script.js in Resources */,
+				FBE8610A2B439B0D0053AD2F /* Ad.png in Resources */,
+				FBE860B12B42F1E40053AD2F /* Assets.xcassets in Resources */,
+				FBE860A72B42F1E40053AD2F /* Main.html in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBE860932B42F1E40053AD2F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBE861052B438C950053AD2F /* _locales in Resources */,
+				FBE860D92B438ACE0053AD2F /* content.js in Resources */,
+				FBE861DE2B43A6F80053AD2F /* icon48.png in Resources */,
+				FBE861D62B43A6F80053AD2F /* icon128.png in Resources */,
+				FBE861E52B43A7610053AD2F /* options-icon.png in Resources */,
+				FBE861D22B43A6F80053AD2F /* toolbar-icon19.png in Resources */,
+				FBE861CE2B43A6F80053AD2F /* toolbar-icon48.png in Resources */,
+				FBE860B82B42F1E40053AD2F /* manifest.json in Resources */,
+				FBE861E22B43A6F80053AD2F /* toolbar-icon72.png in Resources */,
+				FBE860E12B438ACE0053AD2F /* options.css in Resources */,
+				FBE861D02B43A6F80053AD2F /* icon512.png in Resources */,
+				FBE861DA2B43A6F80053AD2F /* icon256.png in Resources */,
+				FBE861E02B43A6F80053AD2F /* toolbar-icon16.png in Resources */,
+				FBE861D82B43A6F80053AD2F /* icon96.png in Resources */,
+				FBE861D42B43A6F80053AD2F /* toolbar-icon38.png in Resources */,
+				FBE860DB2B438ACE0053AD2F /* browser_action.html in Resources */,
+				FBE861DC2B43A6F80053AD2F /* toolbar-icon32.png in Resources */,
+				FBE860DD2B438ACE0053AD2F /* options.html in Resources */,
+				FBE860DF2B438ACE0053AD2F /* options.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBE8609D2B42F1E40053AD2F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBE861062B438C950053AD2F /* _locales in Resources */,
+				FBE860DA2B438ACE0053AD2F /* content.js in Resources */,
+				FBE861DF2B43A6F80053AD2F /* icon48.png in Resources */,
+				FBE861D72B43A6F80053AD2F /* icon128.png in Resources */,
+				FBE861E62B43A7610053AD2F /* options-icon.png in Resources */,
+				FBE861D32B43A6F80053AD2F /* toolbar-icon19.png in Resources */,
+				FBE861CF2B43A6F80053AD2F /* toolbar-icon48.png in Resources */,
+				FBE860B92B42F1E40053AD2F /* manifest.json in Resources */,
+				FBE861E32B43A6F80053AD2F /* toolbar-icon72.png in Resources */,
+				FBE860E22B438ACE0053AD2F /* options.css in Resources */,
+				FBE861D12B43A6F80053AD2F /* icon512.png in Resources */,
+				FBE861DB2B43A6F80053AD2F /* icon256.png in Resources */,
+				FBE861E12B43A6F80053AD2F /* toolbar-icon16.png in Resources */,
+				FBE861D92B43A6F80053AD2F /* icon96.png in Resources */,
+				FBE861D52B43A6F80053AD2F /* toolbar-icon38.png in Resources */,
+				FBE860DC2B438ACE0053AD2F /* browser_action.html in Resources */,
+				FBE861DD2B43A6F80053AD2F /* toolbar-icon32.png in Resources */,
+				FBE860DE2B438ACE0053AD2F /* options.html in Resources */,
+				FBE860E02B438ACE0053AD2F /* options.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FBE860732B42F1E40053AD2F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBE860AE2B42F1E40053AD2F /* ViewController.swift in Sources */,
+				FBE8607B2B42F1E40053AD2F /* AppDelegate.swift in Sources */,
+				FBE8607D2B42F1E40053AD2F /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBE860852B42F1E40053AD2F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBE860AF2B42F1E40053AD2F /* ViewController.swift in Sources */,
+				FBE8608C2B42F1E40053AD2F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBE860912B42F1E40053AD2F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBE860B22B42F1E40053AD2F /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBE8609B2B42F1E40053AD2F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBE860B32B42F1E40053AD2F /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FBE860982B42F1E40053AD2F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FBE860942B42F1E40053AD2F /* Control Panel for YouTube Extension (iOS) */;
+			targetProxy = FBE860972B42F1E40053AD2F /* PBXContainerItemProxy */;
+		};
+		FBE860A22B42F1E40053AD2F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FBE8609E2B42F1E40053AD2F /* Control Panel for YouTube Extension (macOS) */;
+			targetProxy = FBE860A12B42F1E40053AD2F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FBE860612B42F1E30053AD2F /* Main.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FBE860622B42F1E30053AD2F /* Base */,
+			);
+			name = Main.html;
+			sourceTree = "<group>";
+		};
+		FBE8607E2B42F1E40053AD2F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FBE8607F2B42F1E40053AD2F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		FBE860812B42F1E40053AD2F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FBE860822B42F1E40053AD2F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		FBE8608D2B42F1E40053AD2F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FBE8608E2B42F1E40053AD2F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FBE860C42B42F1E40053AD2F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		FBE860C52B42F1E40053AD2F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		FBE860C72B42F1E40053AD2F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2RDKJDLNY8;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube.Extension";
+				PRODUCT_NAME = "Control Panel for YouTube Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FBE860C82B42F1E40053AD2F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2RDKJDLNY8;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube.Extension";
+				PRODUCT_NAME = "Control Panel for YouTube Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FBE860CB2B42F1E40053AD2F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2RDKJDLNY8;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube";
+				PRODUCT_NAME = "Control Panel for YouTube";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FBE860CC2B42F1E40053AD2F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2RDKJDLNY8;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube";
+				PRODUCT_NAME = "Control Panel for YouTube";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FBE860CE2B42F1E40053AD2F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "macOS (Extension)/Control Panel for YouTube.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2RDKJDLNY8;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube.Extension";
+				PRODUCT_NAME = "Control Panel for YouTube Extension";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		FBE860CF2B42F1E40053AD2F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "macOS (Extension)/Control Panel for YouTube.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2RDKJDLNY8;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube.Extension";
+				PRODUCT_NAME = "Control Panel for YouTube Extension";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		FBE860D22B42F1E40053AD2F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "macOS (App)/Control Panel for YouTube.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2RDKJDLNY8;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube";
+				PRODUCT_NAME = "Control Panel for YouTube";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		FBE860D32B42F1E40053AD2F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "macOS (App)/Control Panel for YouTube.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2RDKJDLNY8;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube";
+				PRODUCT_NAME = "Control Panel for YouTube";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FBE8605E2B42F1E30053AD2F /* Build configuration list for PBXProject "Control Panel for YouTube" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FBE860C42B42F1E40053AD2F /* Debug */,
+				FBE860C52B42F1E40053AD2F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FBE860C62B42F1E40053AD2F /* Build configuration list for PBXNativeTarget "Control Panel for YouTube Extension (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FBE860C72B42F1E40053AD2F /* Debug */,
+				FBE860C82B42F1E40053AD2F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FBE860CA2B42F1E40053AD2F /* Build configuration list for PBXNativeTarget "Control Panel for YouTube (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FBE860CB2B42F1E40053AD2F /* Debug */,
+				FBE860CC2B42F1E40053AD2F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FBE860CD2B42F1E40053AD2F /* Build configuration list for PBXNativeTarget "Control Panel for YouTube Extension (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FBE860CE2B42F1E40053AD2F /* Debug */,
+				FBE860CF2B42F1E40053AD2F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FBE860D12B42F1E40053AD2F /* Build configuration list for PBXNativeTarget "Control Panel for YouTube (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FBE860D22B42F1E40053AD2F /* Debug */,
+				FBE860D32B42F1E40053AD2F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FBE8605B2B42F1E30053AD2F /* Project object */;
+}

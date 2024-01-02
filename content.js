@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        Control Panel for YouTube
-// @description Hide unwanted content on YouTube
+// @description Gives you more control over YouTube by adding missing options and UI improvements
 // @namespace   https://github.com/insin/control-panel-for-youtube/
 // @match       https://www.youtube.com/*
 // @match       https://m.youtube.com/*
