@@ -3,6 +3,7 @@ document.title = chrome.i18n.getMessage('extensionName')
 for (let translationId of [
   'disableAutoplay',
   'enabled',
+  'hideChat',
   'hideComments',
   'hideEndCards',
   'hideEndVideos',
@@ -40,7 +41,6 @@ let defaultConfig = {
   version: /(Android|iP(ad|hone))/.test(navigator.userAgent) ? 'mobile' : 'desktop',
   disableAutoplay: true,
   enabled: true,
-  hideChat: false,
   hideComments: false,
   hideLive: false,
   hideMixes: false,
@@ -51,6 +51,7 @@ let defaultConfig = {
   hideUpcoming: false,
   redirectShorts: true,
   // Desktop only
+  hideChat: false,
   hideEndCards: false,
   hideEndVideos: false,
   tidyGuideSidebar: false,

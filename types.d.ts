@@ -2,7 +2,6 @@ export type Config = {
   version: Version
   enabled: boolean
   disableAutoplay: boolean
-  hideChat: boolean
   hideComments: boolean
   hideLive: boolean
   hideMixes: boolean
@@ -13,6 +12,7 @@ export type Config = {
   hideUpcoming: boolean
   redirectShorts: boolean
   // Desktop only
+  hideChat: boolean
   hideEndCards: boolean
   hideEndVideos: boolean
   tidyGuideSidebar: boolean

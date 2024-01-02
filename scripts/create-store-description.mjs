@@ -23,6 +23,7 @@ ${messages.videoLists}:
 • ${messages.hideSponsored}
 • ${messages.hideLive}
 • ${messages.hideStreamed}
+• ${messages.hideMixes}
 • ${messages.hideUpcoming}
 
 ${messages.videoPages}:
@@ -32,13 +33,14 @@ ${messages.videoPages}:
 • ${messages.hideEndCards} 🖥️
 • ${messages.hideEndVideos} 🖥️
 • ${messages.hideComments}
-• ${messages.hideChat}
+• ${messages.hideChat} 🖥️
 • ${messages.redirectShorts}
 
 ${messages.uiTweaks}:
 
 • ${messages.hideExploreButton} 📱
 • ${messages.hideOpenApp} 📱
+• ${messages.tidyGuideSidebar} 🖥️
 `.trim()
 
 if (process.argv[3] == 'html') {

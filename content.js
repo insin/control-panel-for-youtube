@@ -31,7 +31,6 @@ let config = {
   version,
   disableAutoplay: true,
   enabled: true,
-  hideChat: false,
   hideComments: false,
   hideLive: false,
   hideMixes: false,
@@ -42,6 +41,7 @@ let config = {
   hideUpcoming: false,
   redirectShorts: true,
   // Desktop only
+  hideChat: false,
   hideEndCards: false,
   hideEndVideos: false,
   tidyGuideSidebar: false,
@@ -331,7 +331,12 @@ const configureCss = (() => {
         )
       }
       if (mobile) {
-        hideCssSelectors.push('ytm-video-with-context-renderer:has(span.yt-core-attributed-string[aria-label*="views Streamed"])')
+        hideCssSelectors.push(
+          // Grid item
+          'ytm-rich-item-renderer:has(.yt-core-attributed-string[aria-label*="views Streamed"])',
+          // Search result
+          'lazy-list > ytm-video-with-context-renderer:has(.yt-core-attributed-string[aria-label*="views Streamed"])',
+        )
       }
     }
 
