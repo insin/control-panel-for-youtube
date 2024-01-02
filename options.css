@@ -77,6 +77,18 @@ section.group > section > p {
   font-size: 12px;
 }
 
+.icon {
+  height: 1.25em;
+}
+
+body.disabled .icon {
+  filter: grayscale(100%);
+}
+
+body.disabled form > section ~ section {
+  visibility: hidden;
+}
+
 /* Firefox overrides */
 @-moz-document url-prefix() {
   /* https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Browser_styles#manifest_v3_migration */

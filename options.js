@@ -33,17 +33,7 @@ if (navigator.userAgent.includes('Safari/') && !/Chrom(e|ium)\//.test(navigator.
   $body.classList.toggle('edge', navigator.userAgent.includes('Edg/'))
 }
 
-function setFormValue(prop, value) {
-  if (!$form.elements.hasOwnProperty(prop)) return
-
-  let $el = /** @type {HTMLInputElement} */ ($form.elements[prop])
-  if ($el.type == 'checkbox') {
-    $el.checked = value
-  } else {
-    $el.value = value
-  }
-}
-
+//#region Default config
 /** @type {import("./types").Config} */
 let defaultConfig = {
   // Default based on platform until the content script runs
@@ -68,15 +58,63 @@ let defaultConfig = {
   hideExploreButton: true,
   hideOpenApp: true,
 }
+//#endregion
 
 /** @type {import("./types").Config} */
 let optionsConfig
 
-function updateDisplay() {
-  $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
-  $body.classList.toggle('desktop', optionsConfig.version == 'desktop')
+/**
+ * @param {Event} e
+ */
+function onFormChanged(e) {
+  let $el = /** @type {HTMLInputElement} */ (e.target)
+  let prop = $el.name
+  let value = $el.type == 'checkbox' ? $el.checked : $el.value
+  optionsConfig[prop] = value
+  storeConfigChanges({[prop]: value})
+  updateDisplay()
 }
 
+/**
+ * @param {{[key: string]: chrome.storage.StorageChange}} changes
+ */
+function onStorageChanged(changes) {
+  for (let prop in changes) {
+    optionsConfig[prop] = changes[prop].newValue
+    setFormValue(prop, changes[prop].newValue)
+  }
+  updateDisplay()
+}
+
+function setFormValue(prop, value) {
+  if (!$form.elements.hasOwnProperty(prop)) return
+
+  let $el = /** @type {HTMLInputElement} */ ($form.elements[prop])
+  if ($el.type == 'checkbox') {
+    $el.checked = value
+  } else {
+    $el.value = value
+  }
+}
+
+/**
+ * Store config changes without triggering this page's own listener.
+ * @param {Partial<import("./types").Config>} changes
+ */
+function storeConfigChanges(changes) {
+  chrome.storage.local.onChanged.removeListener(onStorageChanged)
+  chrome.storage.local.set(changes, () => {
+    chrome.storage.local.onChanged.addListener(onStorageChanged)
+  })
+}
+
+function updateDisplay() {
+  $body.classList.toggle('desktop', optionsConfig.version == 'desktop')
+  $body.classList.toggle('disabled', !optionsConfig.enabled)
+  $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
+}
+
+//#region Main
 function main() {
   chrome.storage.local.get((storedConfig) => {
     optionsConfig = {...defaultConfig, ...storedConfig}
@@ -87,24 +125,10 @@ function main() {
 
     updateDisplay()
 
-    $form.addEventListener('change', (e) => {
-      let $el = /** @type {HTMLInputElement} */ (e.target)
-      let prop = $el.name
-      let value = $el.type == 'checkbox' ? $el.checked : $el.value
-      chrome.storage.local.set({[prop]: value})
-    })
-
-    chrome.storage.onChanged.addListener((changes) => {
-      for (let prop in changes) {
-        optionsConfig[prop] = changes[prop].newValue
-        if (prop == 'version') {
-          updateDisplay()
-        } else {
-          setFormValue(prop, changes[prop].newValue)
-        }
-      }
-    })
+    $form.addEventListener('change', onFormChanged)
+    chrome.storage.local.onChanged.addListener(onStorageChanged)
   })
 }
 
 main()
+//#endregion
