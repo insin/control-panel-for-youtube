@@ -5,6 +5,7 @@ export type Config = {
   hideChat: boolean
   hideComments: boolean
   hideLive: boolean
+  hideMixes: boolean
   hideRelated: boolean
   hideShorts: boolean
   hideSponsored: boolean

@@ -34,6 +34,7 @@ let config = {
   hideChat: false,
   hideComments: false,
   hideLive: false,
+  hideMixes: false,
   hideRelated: false,
   hideShorts: true,
   hideSponsored: true,
@@ -221,6 +222,25 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push('ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])')
+      }
+    }
+
+    if (config.hideMixes) {
+      if (desktop) {
+        hideCssSelectors.push(
+          // Chip in Home
+          'yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="Mixes"])',
+          // Grid item
+          'ytd-rich-item-renderer:has(a#thumbnail[href$="start_radio=1"])',
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(
+          // Chip in Home
+          'ytm-chip-cloud-chip-renderer:has(> .chip-container[aria-label="Mixes"])',
+          // Video
+          'ytm-rich-item-renderer:has(> ytm-radio-renderer)'
+        )
       }
     }
 

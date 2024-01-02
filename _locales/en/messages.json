@@ -30,6 +30,9 @@
   "hideLive": {
     "message": "Hide Live videos"
   },
+  "hideMixes": {
+    "message": "Hide Mixes"
+  },
   "hideOpenApp": {
     "message": "Hide Open App links"
   },
