@@ -18,6 +18,11 @@ body.iOS.browserAction {
   min-width: 0;
 }
 
+body.mobile .desktop,
+body.desktop .mobile {
+  display: none;
+}
+
 body:not(.iOS.safari) .toggle {
   display: none;
 }

@@ -1,4 +1,5 @@
 .DS_Store
+TODO.md
 browser_action.html
 node_modules/
 scripts/translations.json

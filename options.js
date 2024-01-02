@@ -6,15 +6,18 @@ for (let translationId of [
   'hideComments',
   'hideEndCards',
   'hideEndVideos',
+  'hideExploreButton',
   'hideLive',
+  'hideOpenApp',
   'hideRelated',
   'hideShorts',
   'hideSponsored',
   'hideStreamed',
   'hideUpcoming',
   'redirectShorts',
-  'videoListings',
-  'videoPage',
+  'uiTweaks',
+  'videoLists',
+  'videoPages',
 ]) {
   document.getElementById(translationId).textContent = chrome.i18n.getMessage(translationId)
 }
@@ -41,12 +44,12 @@ function setFormValue(prop, value) {
 
 /** @type {import("./types").Config} */
 let defaultConfig = {
+  // Default based on platform until the content script runs
+  version: /(Android|iP(ad|hone))/.test(navigator.userAgent) ? 'mobile' : 'desktop',
   disableAutoplay: true,
   enabled: true,
   hideChat: false,
   hideComments: false,
-  hideEndCards: false,
-  hideEndVideos: false,
   hideLive: false,
   hideRelated: false,
   hideShorts: true,
@@ -54,29 +57,50 @@ let defaultConfig = {
   hideStreamed: false,
   hideUpcoming: false,
   redirectShorts: true,
+  // Desktop only
+  hideEndCards: false,
+  hideEndVideos: false,
+  // Mobile only
+  hideExploreButton: true,
+  hideOpenApp: true,
 }
 
 /** @type {import("./types").Config} */
 let optionsConfig
 
-chrome.storage.local.get((storedConfig) => {
-  optionsConfig = {...defaultConfig, ...storedConfig}
+function updateDisplay() {
+  $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
+  $body.classList.toggle('desktop', optionsConfig.version == 'desktop')
+}
 
-  for (let [prop, value] of Object.entries(optionsConfig)) {
-    setFormValue(prop, value)
-  }
+function main() {
+  chrome.storage.local.get((storedConfig) => {
+    optionsConfig = {...defaultConfig, ...storedConfig}
 
-  $form.addEventListener('change', (e) => {
-    let $el = /** @type {HTMLInputElement} */ (e.target)
-    let prop = $el.name
-    let value = $el.type == 'checkbox' ? $el.checked : $el.value
-    chrome.storage.local.set({[prop]: value})
-  })
-
-  chrome.storage.onChanged.addListener((changes) => {
-    for (let prop in changes) {
-      optionsConfig[prop] = changes[prop].newValue
-      setFormValue(prop, changes[prop].newValue)
+    for (let [prop, value] of Object.entries(optionsConfig)) {
+      setFormValue(prop, value)
     }
+
+    updateDisplay()
+
+    $form.addEventListener('change', (e) => {
+      let $el = /** @type {HTMLInputElement} */ (e.target)
+      let prop = $el.name
+      let value = $el.type == 'checkbox' ? $el.checked : $el.value
+      chrome.storage.local.set({[prop]: value})
+    })
+
+    chrome.storage.onChanged.addListener((changes) => {
+      for (let prop in changes) {
+        optionsConfig[prop] = changes[prop].newValue
+        if (prop == 'version') {
+          updateDisplay()
+        } else {
+          setFormValue(prop, changes[prop].newValue)
+        }
+      }
+    })
   })
-})
+}
+
+main()

@@ -10,7 +10,7 @@
   <form>
     <section class="group">
       <label class="checkbox">
-        <span style="display: flex; align-items: center; gap: 1em;">
+        <span style="display: flex; align-items: center; gap: .5em;">
           <img src="options-icon.png" style="height: 1.5em;">
           <span id="enabled">Enabled</span>
         </span>
@@ -19,8 +19,8 @@
       </label>
     </section>
     <section class="group labelled">
-      <label id="videoListings">
-        Video listings
+      <label id="videoLists">
+        Video lists
       </label>
       <section class="checkbox">
         <label>
@@ -59,8 +59,8 @@
       </section>
     </section>
     <section class="group labelled">
-      <label id="videoPage">
-        Video page
+      <label id="videoPages">
+        Video pages
       </label>
       <section class="checkbox">
         <label>
@@ -76,16 +76,16 @@
           <span class="toggle"></span>
         </label>
       </section>
-      <section class="checkbox">
+      <section class="checkbox desktop">
         <label>
-          <span id="hideEndCards">Hide end screen cards</span>
+          <span id="hideEndCards">Hide video end cards</span>
           <input type="checkbox" name="hideEndCards">
           <span class="toggle"></span>
         </label>
       </section>
-      <section class="checkbox">
+      <section class="checkbox desktop">
         <label>
-          <span id="hideEndVideos">Hide end screen videos</span>
+          <span id="hideEndVideos">Hide video endscreen content</span>
           <input type="checkbox" name="hideEndVideos">
           <span class="toggle"></span>
         </label>
@@ -108,6 +108,25 @@
         <label>
           <span id="redirectShorts">Redirect Shorts to the normal player</span>
           <input type="checkbox" name="redirectShorts">
+          <span class="toggle"></span>
+        </label>
+      </section>
+    </section>
+    <section class="group labelled">
+      <label id="uiTweaks">
+        UI tweaks
+      </label>
+      <section class="checkbox mobile">
+        <label>
+          <span id="hideExploreButton">Hide Explore button</span>
+          <input type="checkbox" name="hideExploreButton">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox mobile">
+        <label>
+          <span id="hideOpenApp">Hide Open App links</span>
+          <input type="checkbox" name="hideOpenApp">
           <span class="toggle"></span>
         </label>
       </section>

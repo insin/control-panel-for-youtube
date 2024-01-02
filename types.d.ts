@@ -1,10 +1,9 @@
 export type Config = {
-  disableAutoplay: boolean
+  version: Version
   enabled: boolean
+  disableAutoplay: boolean
   hideChat: boolean
   hideComments: boolean
-  hideEndCards: boolean
-  hideEndVideos: boolean
   hideLive: boolean
   hideRelated: boolean
   hideShorts: boolean
@@ -12,4 +11,12 @@ export type Config = {
   hideStreamed: boolean
   hideUpcoming: boolean
   redirectShorts: boolean
+  // Desktop only
+  hideEndCards: boolean
+  hideEndVideos: boolean
+  // Mobile only
+  hideExploreButton: boolean
+  hideOpenApp: boolean
 }
+
+export type Version = 'mobile' | 'desktop'

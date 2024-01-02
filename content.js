@@ -10,6 +10,7 @@ let debug = true
 
 let mobile = location.hostname == 'm.youtube.com'
 let desktop = !mobile
+/** @type {import("./types").Version} */
 let version = mobile ? 'mobile' : 'desktop'
 
 function log(...args) {
@@ -27,12 +28,11 @@ function warn(...args) {
 //#region Config
 /** @type {import("./types").Config} */
 let config = {
+  version,
   disableAutoplay: true,
   enabled: true,
   hideChat: false,
   hideComments: false,
-  hideEndCards: false,
-  hideEndVideos: false,
   hideLive: false,
   hideRelated: false,
   hideShorts: true,
@@ -40,7 +40,18 @@ let config = {
   hideStreamed: false,
   hideUpcoming: false,
   redirectShorts: true,
+  // Desktop only
+  hideEndCards: false,
+  hideEndVideos: false,
+  // Mobile only
+  hideExploreButton: true,
+  hideOpenApp: true,
 }
+//#endregion
+
+//#region State
+/** @type {MutationObserver[]} */
+let pageObservers = []
 //#endregion
 
 //#region Utility functions
@@ -60,6 +71,10 @@ function dedent(str) {
   let indent = /^[ \t]+/m.exec(str)
   if (indent) str = str.replace(new RegExp('^' + indent[0], 'gm'), '')
   return str.replace(/(\r?\n)[ \t]+$/, '$1')
+}
+
+function getCurrentUrl() {
+  return location.origin + location.pathname + location.search
 }
 
 /**
@@ -133,18 +148,25 @@ function getElement(selector, {
  * @return {MutationObserver}
  */
 function observeElement($element, callback, name, options = {childList: true}) {
-  if (name) {
-    if (options.childList && callback.length > 0) {
-      log(`observing ${name}`, $element)
-    } else {
-      log (`observing ${name}`)
-    }
+  if (options.childList && callback.length > 0) {
+    log(`observing ${name}`, $element)
+  } else {
+    log (`observing ${name}`)
   }
 
   let observer = new MutationObserver(callback)
   callback([], observer)
   observer.observe($element, options)
+  observer['name'] = name
   return observer
+}
+
+/**
+ * @param {number} n
+ * @returns {string}
+ */
+function s(n) {
+  return n == 1 ? '' : 's'
 }
 //#endregion
 
@@ -187,18 +209,6 @@ const configureCss = (() => {
       }
     }
 
-    if (config.hideEndCards) {
-      if (desktop) {
-        hideCssSelectors.push('#movie_player .ytp-ce-element')
-      }
-    }
-
-    if (config.hideEndVideos) {
-      if (desktop) {
-        hideCssSelectors.push('#movie_player .ytp-endscreen-content')
-      }
-    }
-
     if (config.hideLive) {
       if (desktop) {
         hideCssSelectors.push(
@@ -212,14 +222,6 @@ const configureCss = (() => {
         hideCssSelectors.push('ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])')
       }
     }
-
-    // if (config.hideOpenApp) {
-      if (mobile) {
-        // Mobile replaces the sign-in link with an "Open app" button when
-        // watching a video while logged-out.
-        hideCssSelectors.push('html.watch-scroll .mobile-topbar-header-sign-in-button')
-      }
-    // }
 
     if (config.hideRelated) {
       if (desktop) {
@@ -268,8 +270,9 @@ const configureCss = (() => {
     if (config.hideSponsored) {
       if (desktop) {
         hideCssSelectors.push(
-          // Big promo on the Home screen
+          // Big promos on Home screen
           '#masthead-ad',
+          'ytd-rich-section-renderer:has(> #content > ytd-statement-banner-renderer)',
           // Video listings
           'ytd-rich-item-renderer:has(> .ytd-rich-item-renderer > ytd-ad-slot-renderer)',
           // Search results
@@ -312,6 +315,30 @@ const configureCss = (() => {
       }
     }
 
+    if (desktop) {
+      if (config.hideEndCards) {
+        hideCssSelectors.push('#movie_player .ytp-ce-element')
+      }
+      if (config.hideEndVideos) {
+        hideCssSelectors.push('#movie_player .ytp-endscreen-content')
+      }
+    }
+
+    if (mobile) {
+      if (config.hideExploreButton) {
+        // Explore button on Home screen
+        hideCssSelectors.push('ytm-chip-cloud-chip-renderer[chip-style="STYLE_EXPLORE_LAUNCHER_CHIP"]')
+      }
+      if (config.hideOpenApp) {
+        hideCssSelectors.push(
+          // The user menu is replaced with "Open App" on videos when logged out
+          'html.watch-scroll .mobile-topbar-header-sign-in-button',
+          // The overflow menu has an Open App menu item we'll add this class to
+          'ytm-menu-item.open-app-menu-item',
+        )
+      }
+    }
+
     if (hideCssSelectors.length > 0) {
       cssRules.push(`
         ${hideCssSelectors.join(',\n')} {
@@ -327,9 +354,9 @@ const configureCss = (() => {
 
 //#region Tweak functions
 async function disableAutoplay() {
-  let currentUrl = location.href
+  let currentUrl = getCurrentUrl()
   /** @type {GetElementOptions} */
-  let config = {name: 'Autoplay button', stopIf: () => currentUrl != location.href}
+  let config = {name: 'Autoplay button', stopIf: () => currentUrl != getCurrentUrl()}
   if (desktop) {
     let $autoplayButton = await getElement('button[data-tooltip-target-id="ytp-autonav-toggle-button"]', config)
     // On desktop, initial Autoplay button HTML has style="display: none" and is
@@ -357,26 +384,63 @@ async function disableAutoplay() {
   }
 }
 
+/**
+ * @param {(el: HTMLElement) => void} callback
+ */
+async function observeBottomSheet(callback) {
+  let $bottomSheet = await getElement('bottom-sheet-container', {name: 'bottom sheet'})
+  pageObservers.push(
+    observeElement($bottomSheet, () => {
+      callback($bottomSheet)
+    }, 'bottom sheet')
+  )
+}
+
+/**
+ * Detect navigation between pages for features which apply to specific pages.
+ */
 async function observeTitle() {
   let $title = await getElement('title', {name: '<title>'})
-  let currentUrl
+  let seenUrl
   observeElement($title, () => {
-    if (currentUrl != null && currentUrl == location.href) {
+    let currentUrl = getCurrentUrl()
+    if (seenUrl != null && seenUrl == currentUrl) {
       return
     }
-    currentUrl = location.href
+    seenUrl = currentUrl
     handleCurrentUrl()
   }, '<title>')
 }
 
 function handleCurrentUrl() {
+  if (pageObservers.length > 0) {
+    log(
+      `disconnecting ${pageObservers.length} page observer${s(pageObservers.length)}`,
+      pageObservers.map(observer => observer['name'])
+    )
+    for (let observer of pageObservers) observer.disconnect()
+    pageObservers = []
+  }
+
   if (location.pathname.startsWith('/shorts/')) {
     if (config.redirectShorts) {
       redirectShort()
     }
-  } else if (location.pathname == '/watch') {
+  }
+  else if (location.pathname == '/watch') {
     if (config.disableAutoplay) {
       disableAutoplay()
+    }
+    if (mobile && config.hideOpenApp) {
+      observeBottomSheet(($bottomSheet) => {
+        let menuItems = $bottomSheet.querySelectorAll('ytm-menu-item')
+        for (let $menuItem of menuItems) {
+          if ($menuItem.textContent == 'Open App') {
+            $menuItem.classList.add('open-app-menu-item')
+            break
+          }
+        }
+      })
     }
   }
 }
@@ -409,14 +473,24 @@ if (
 ) {
   chrome.storage.local.get((storedConfig) => {
     Object.assign(config, storedConfig)
-    log('initial config', {config, version})
+    log('initial config', {config})
+
+    // Let the options page know the last version used
+    chrome.storage.local.set({version})
+
     chrome.storage.onChanged.addListener((changes) => {
       let configChanges = Object.fromEntries(
-        Object.entries(changes).map(([key, {newValue}]) => [key, newValue])
+        Object.entries(changes)
+          // Don't change the version based on other pages
+          .filter(([key]) => key != 'version')
+          .map(([key, {newValue}]) => [key, newValue])
       )
-      Object.assign(config, configChanges)
-      configChanged(configChanges)
+      if (Object.keys(configChanges).length > 0) {
+        Object.assign(config, configChanges)
+        configChanged(configChanges)
+      }
     })
+
     main()
   })
 }

@@ -19,13 +19,19 @@
     "message": "Hide Comments"
   },
   "hideEndCards": {
-    "message": "Hide end screen cards"
+    "message": "Hide video end cards"
   },
   "hideEndVideos": {
-    "message": "Hide end screen videos"
+    "message": "Hide video endscreen content"
+  },
+  "hideExploreButton": {
+    "message": "Hide Explore button"
   },
   "hideLive": {
     "message": "Hide Live videos"
+  },
+  "hideOpenApp": {
+    "message": "Hide Open App links"
   },
   "hideRelated": {
     "message": "Hide Related videos"
@@ -48,10 +54,13 @@
   "shorts": {
     "message": "Shorts"
   },
-  "videoListings": {
-    "message": "Video listings"
+  "uiTweaks": {
+    "message": "UI tweaks"
   },
-  "videoPage": {
-    "message": "Video page"
+  "videoLists": {
+    "message": "Video lists"
+  },
+  "videoPages": {
+    "message": "Video pages"
   }
 }
