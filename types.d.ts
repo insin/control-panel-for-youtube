@@ -14,6 +14,7 @@ export type Config = {
   // Desktop only
   hideEndCards: boolean
   hideEndVideos: boolean
+  tidyGuideSidebar: boolean
   // Mobile only
   hideExploreButton: boolean
   hideOpenApp: boolean

@@ -15,6 +15,7 @@ for (let translationId of [
   'hideStreamed',
   'hideUpcoming',
   'redirectShorts',
+  'tidyGuideSidebar',
   'uiTweaks',
   'videoLists',
   'videoPages',
@@ -60,6 +61,7 @@ let defaultConfig = {
   // Desktop only
   hideEndCards: false,
   hideEndVideos: false,
+  tidyGuideSidebar: false,
   // Mobile only
   hideExploreButton: true,
   hideOpenApp: true,

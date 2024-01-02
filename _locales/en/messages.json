@@ -54,6 +54,9 @@
   "shorts": {
     "message": "Shorts"
   },
+  "tidyGuideSidebar": {
+    "message": "Tidy Guide sidebar"
+  },
   "uiTweaks": {
     "message": "UI tweaks"
   },

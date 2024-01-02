@@ -43,6 +43,7 @@ let config = {
   // Desktop only
   hideEndCards: false,
   hideEndVideos: false,
+  tidyGuideSidebar: false,
   // Mobile only
   hideExploreButton: true,
   hideOpenApp: true,
@@ -321,6 +322,34 @@ const configureCss = (() => {
       }
       if (config.hideEndVideos) {
         hideCssSelectors.push('#movie_player .ytp-endscreen-content')
+      }
+      if (config.tidyGuideSidebar) {
+        hideCssSelectors.push(
+          // Logged in
+          // Subscriptions (2nd of 5)
+          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(4)',
+          // Explore (3rd of 5)
+          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(3):nth-last-child(3)',
+          // More from YouTube (4th of 5)
+          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(4):nth-last-child(2)',
+          // Logged out
+          /*
+          // Subscriptions - prompts you to log in
+          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(1):nth-last-child(7) > #items > ytd-guide-entry-renderer:has(> a[href="/feed/subscriptions"])',
+          // You (2nd of 7) - prompts you to log in
+          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(6)',
+          // Sign in prompt - already have one in the top corner
+          '#sections.ytd-guide-renderer > ytd-guide-signin-promo-renderer',
+          */
+          // Explore (4th of 7)
+          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(4):nth-last-child(4)',
+          // Browse Channels (5th of 7)
+          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(5):nth-last-child(3)',
+          // More from YouTube (6th of 7)
+          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(6):nth-last-child(2)',
+          // Footer
+          '#footer.ytd-guide-renderer',
+        )
       }
     }
 
