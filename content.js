@@ -218,6 +218,8 @@ const configureCss = (() => {
           'ytd-rich-item-renderer:has(ytd-thumbnail[is-live-video])',
           // List item (Search)
           'ytd-video-renderer:has(ytd-thumbnail[is-live-video])',
+          // Related video
+          'ytd-compact-video-renderer:has(> .ytd-compact-video-renderer > ytd-thumbnail[is-live-video])',
         )
       }
       if (mobile) {
@@ -321,9 +323,11 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // Grid item (Home, Subscriptions)
-          'ytd-rich-item-renderer:has(a#video-title-link[aria-label*="views Streamed"])',
+          'ytd-rich-item-renderer:has(#video-title-link[aria-label*="views Streamed"])',
           // List item (Search)
-          'ytd-video-renderer:has(a#video-title[aria-label*="views Streamed"])'
+          'ytd-video-renderer:has(#video-title[aria-label*="views Streamed"])',
+          // Related video
+          'ytd-compact-video-renderer:has(#video-title[aria-label*="views Streamed"])',
         )
       }
       if (mobile) {
