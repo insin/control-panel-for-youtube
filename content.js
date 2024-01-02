@@ -262,13 +262,13 @@ const configureCss = (() => {
           'ytd-mini-guide-entry-renderer[aria-label="Shorts"]',
           // Shelf in Home and Subscriptions
           'ytd-rich-shelf-renderer[is-shorts]',
-          // Shorts chip in Search
+          // Chip in Search
           'yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="Shorts"])',
           // Shelf in Search
           'ytd-reel-shelf-renderer',
-          // Shorts in search results
+          // Video in search results
           'ytd-video-renderer:has(a[href^="/shorts"])',
-          // Shorts tab in channel profiles
+          // Tab in channel profiles
           'ytd-browse yt-tab-shape[tab-title="Shorts"]',
         )
       }
@@ -280,9 +280,9 @@ const configureCss = (() => {
           'ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
           // Shelf in Search
           'ytm-reel-shelf-renderer',
-          // Shorts in search results
+          // Video in search results
           'ytm-video-with-context-renderer:has(a[href^="/shorts"])',
-          // Shorts tab in channel profiles
+          // Tab in channel profiles
           'ytm-browse yt-tab-shape[tab-title="Shorts"]',
         )
       }
@@ -405,9 +405,9 @@ const configureCss = (() => {
 async function disableAutoplay() {
   let currentUrl = getCurrentUrl()
   /** @type {GetElementOptions} */
-  let config = {name: 'Autoplay button', stopIf: () => currentUrl != getCurrentUrl()}
+  let options = {name: 'Autoplay button', stopIf: () => currentUrl != getCurrentUrl()}
   if (desktop) {
-    let $autoplayButton = await getElement('button[data-tooltip-target-id="ytp-autonav-toggle-button"]', config)
+    let $autoplayButton = await getElement('button[data-tooltip-target-id="ytp-autonav-toggle-button"]', options)
     // On desktop, initial Autoplay button HTML has style="display: none" and is
     // always checked on. Once it's displayed, we can determine its real state
     // and take action if needed.
@@ -423,7 +423,7 @@ async function disableAutoplay() {
     }, 'autoplay button style', {attributes: true, attributeFilter: ['style']})
   }
   if (mobile) {
-    let $autoplayButton = await getElement('button.ytm-autonav-toggle-button-container', config)
+    let $autoplayButton = await getElement('button.ytm-autonav-toggle-button-container', options)
     // The Autoplay button always seems to load async on mobile, so we can check
     // it once available.
     if ($autoplayButton?.getAttribute('aria-pressed') == 'true') {
