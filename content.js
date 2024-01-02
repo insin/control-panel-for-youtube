@@ -322,6 +322,16 @@ const configureCss = (() => {
       if (config.hideEndVideos) {
         hideCssSelectors.push('#movie_player .ytp-endscreen-content')
       }
+      if (config.unstickHeader) {
+        cssRules.push(`
+          #masthead-container.ytd-app {
+            position: static !important;
+          }
+          #page-manager.ytd-app {
+            margin-top: 0 !important;
+          }
+        `)
+      }
     }
 
     if (mobile) {

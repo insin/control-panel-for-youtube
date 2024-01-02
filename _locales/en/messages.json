@@ -57,6 +57,9 @@
   "uiTweaks": {
     "message": "UI tweaks"
   },
+  "unstickHeader": {
+    "message": "Unstick header"
+  },
   "videoLists": {
     "message": "Video lists"
   },
