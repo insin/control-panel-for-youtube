@@ -13,7 +13,7 @@ body {
 }
 
 body.browserAction {
-  min-width: 400px;
+  min-width: 360px;
 }
 body.iOS.browserAction {
   min-width: 0;
@@ -111,7 +111,7 @@ body.disabled form > section {
   }
   body.browserAction {
     min-width: auto;
-    max-width: 400px;
+    max-width: 360px;
   }
   section {
     --border-color: #d7d7db;
