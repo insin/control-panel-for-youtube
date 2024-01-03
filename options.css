@@ -98,26 +98,29 @@ body.disabled:not(.safari) form > section {
   border-bottom: 1px solid var(--border-color);
 }
 
+.firefox-sizer {
+  display: none;
+}
+
 /* Firefox overrides */
 @-moz-document url-prefix() {
+  body.browserAction .firefox-sizer {
+    display: block;
+    line-height: 0;
+    visibility: hidden;
+  }
   /* https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Browser_styles#manifest_v3_migration */
   html, body {
     box-sizing: border-box;
-    cursor: default;
     display: flex;
     flex-direction: column;
-    margin: 0;
-    padding: 0;
-    user-select: none;
   }
   body {
     font-size: 15px;
   }
-  html:has(> body.browserAction) {
-    min-width: 400px;
-  }
   body.browserAction {
-    min-width: auto;
+    min-width: 0;
+    max-width: 400px;
   }
   section {
     --border-color: #d7d7db;
