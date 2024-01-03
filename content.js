@@ -60,7 +60,7 @@ let pageObservers = []
 function addStyle() {
   let $style = document.createElement('style')
   $style.dataset.insertedBy = 'control-panel-for-youtube'
-  document.querySelector('head').appendChild($style)
+  document.head.appendChild($style)
   return $style
 }
 

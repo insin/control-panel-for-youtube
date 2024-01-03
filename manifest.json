@@ -21,8 +21,7 @@
       ],
       "js": [
         "content.js"
-      ],
-      "run_at": "document_start"
+      ]
     }
   ],
   "options_ui": {
