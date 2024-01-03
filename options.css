@@ -31,7 +31,7 @@ body:not(.iOS.safari) .toggle {
 label {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   padding: 4px 12px;
   margin: 8px 0;
   cursor: pointer;
@@ -63,6 +63,10 @@ section.group > label {
   margin-bottom: 12px;
 }
 
+form > section.group:first-of-type > label {
+  margin-bottom: 8px;
+}
+
 section.group > section > * {
   color: rgb(95, 99, 104);
   padding-left: 0;
@@ -90,7 +94,7 @@ body.disabled form > section ~ section {
   visibility: hidden;
 }
 
-body.disabled form > section {
+body.disabled:not(.safari) form > section {
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -109,9 +113,11 @@ body.disabled form > section {
   body {
     font-size: 15px;
   }
+  html:has(> body.browserAction) {
+    min-width: 400px;
+  }
   body.browserAction {
     min-width: auto;
-    max-width: 360px;
   }
   section {
     --border-color: #d7d7db;
@@ -129,6 +135,9 @@ body.disabled form > section {
 /* Edge overrides */
 body.edge {
   font-size: 14px;
+}
+body.edge.browserAction {
+  min-width: 400px;
 }
 body.edge section {
   --border-color: #B6B6B6;

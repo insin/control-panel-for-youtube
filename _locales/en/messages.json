@@ -1,4 +1,7 @@
 {
+  "browsePages": {
+    "message": "Browse pages"
+  },
   "disableAutoplay": {
     "message": "Disable Autoplay"
   },
@@ -62,9 +65,6 @@
   },
   "uiTweaks": {
     "message": "UI tweaks"
-  },
-  "videoLists": {
-    "message": "Video lists"
   },
   "videoPages": {
     "message": "Video pages"

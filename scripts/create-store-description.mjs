@@ -17,7 +17,7 @@ let locale = JSON.parse(fs.readFileSync(`./_locales/${localeCode}/messages.json`
 let messages = Object.fromEntries(Object.entries(locale).map(([prop, value]) => ([prop, value.message])))
 
 let storeDescription = `
-${messages.videoLists}:
+${messages.browsePages}:
 
 • ${messages.hideShorts}
 • ${messages.hideSponsored}

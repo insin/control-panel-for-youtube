@@ -35,11 +35,11 @@ let config = {
   hideLive: false,
   hideMixes: false,
   hideRelated: false,
-  hideShorts: true,
+  hideShorts: false,
   hideSponsored: true,
   hideStreamed: false,
   hideUpcoming: false,
-  redirectShorts: true,
+  redirectShorts: false,
   // Desktop only
   hideChat: false,
   hideEndCards: false,

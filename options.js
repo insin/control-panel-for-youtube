@@ -1,6 +1,7 @@
 document.title = chrome.i18n.getMessage('extensionName')
 
 for (let translationId of [
+  'browsePages',
   'disableAutoplay',
   'enabled',
   'hideChat',
@@ -19,7 +20,6 @@ for (let translationId of [
   'redirectShorts',
   'tidyGuideSidebar',
   'uiTweaks',
-  'videoLists',
   'videoPages',
 ]) {
   document.getElementById(translationId).textContent = chrome.i18n.getMessage(translationId)
