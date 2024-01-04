@@ -1,7 +1,4 @@
 {
-  "browsePages": {
-    "message": "Browse pages"
-  },
   "disableAutoplay": {
     "message": "Disable Autoplay"
   },
@@ -33,6 +30,9 @@
   "hideLive": {
     "message": "Hide Live videos"
   },
+  "hideMerchEtc": {
+    "message": "Hide Merch, Offers etc."
+  },
   "hideMixes": {
     "message": "Hide Mixes"
   },
@@ -46,7 +46,7 @@
     "message": "Hide Shorts"
   },
   "hideSponsored": {
-    "message": "Hide Sponsored videos, promos, merch etc."
+    "message": "Hide Sponsored videos & Promos"
   },
   "hideStreamed": {
     "message": "Hide Streamed videos"
@@ -65,6 +65,9 @@
   },
   "uiTweaks": {
     "message": "UI tweaks"
+  },
+  "videoLists": {
+    "message": "Video lists"
   },
   "videoPages": {
     "message": "Video pages"

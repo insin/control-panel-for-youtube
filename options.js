@@ -1,7 +1,6 @@
 document.title = chrome.i18n.getMessage('extensionName')
 
 for (let translationId of [
-  'browsePages',
   'disableAutoplay',
   'enabled',
   'hideChat',
@@ -10,6 +9,7 @@ for (let translationId of [
   'hideEndVideos',
   'hideExploreButton',
   'hideLive',
+  'hideMerchEtc',
   'hideMixes',
   'hideOpenApp',
   'hideRelated',
@@ -20,6 +20,7 @@ for (let translationId of [
   'redirectShorts',
   'tidyGuideSidebar',
   'uiTweaks',
+  'videoLists',
   'videoPages',
 ]) {
   document.getElementById(translationId).textContent = chrome.i18n.getMessage(translationId)
@@ -43,6 +44,7 @@ let defaultConfig = {
   enabled: true,
   hideComments: false,
   hideLive: false,
+  hideMerchEtc: true,
   hideMixes: false,
   hideRelated: false,
   hideShorts: true,

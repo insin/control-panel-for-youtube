@@ -33,6 +33,7 @@ let config = {
   enabled: true,
   hideComments: false,
   hideLive: false,
+  hideMerchEtc: true,
   hideMixes: false,
   hideRelated: false,
   hideShorts: false,
@@ -317,12 +318,6 @@ const configureCss = (() => {
           '#player-ads',
           // In Related videos
           '#items > ytd-ad-slot-renderer',
-          // Tickets
-          '#ticket-shelf',
-          // Merch
-          'ytd-merch-shelf-renderer',
-          // Offers
-          '#offer-module',
         )
       }
       if (mobile) {
@@ -371,6 +366,16 @@ const configureCss = (() => {
       }
       if (config.hideEndVideos) {
         hideCssSelectors.push('#movie_player .ytp-endscreen-content')
+      }
+      if (config.hideMerchEtc) {
+        hideCssSelectors.push(
+          // Tickets
+          '#ticket-shelf',
+          // Merch
+          'ytd-merch-shelf-renderer',
+          // Offers
+          '#offer-module',
+        )
       }
       if (config.tidyGuideSidebar) {
         hideCssSelectors.push(

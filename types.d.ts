@@ -4,6 +4,7 @@ export type Config = {
   disableAutoplay: boolean
   hideComments: boolean
   hideLive: boolean
+  hideMerchEtc: boolean
   hideMixes: boolean
   hideRelated: boolean
   hideShorts: boolean

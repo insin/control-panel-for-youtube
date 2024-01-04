@@ -120,7 +120,7 @@ body.disabled:not(.safari) form > section {
   }
   body.browserAction {
     min-width: 0;
-    max-width: 400px;
+    max-width: 360px;
   }
   section {
     --border-color: #d7d7db;
@@ -138,9 +138,6 @@ body.disabled:not(.safari) form > section {
 /* Edge overrides */
 body.edge {
   font-size: 14px;
-}
-body.edge.browserAction {
-  min-width: 400px;
 }
 body.edge section {
   --border-color: #B6B6B6;
