@@ -244,6 +244,8 @@ const configureCss = (() => {
           'yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="Mixes"])',
           // Grid item
           'ytd-rich-item-renderer:has(a#thumbnail[href$="start_radio=1"])',
+          // Related video
+          'ytd-compact-radio-renderer',
         )
       }
       if (mobile) {
@@ -319,6 +321,8 @@ const configureCss = (() => {
           '#ticket-shelf',
           // Merch
           'ytd-merch-shelf-renderer',
+          // Offers
+          '#offer-module',
         )
       }
       if (mobile) {
