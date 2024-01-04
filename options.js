@@ -17,6 +17,8 @@ for (let translationId of [
   'hideSponsored',
   'hideStreamed',
   'hideUpcoming',
+  'hideWatched',
+  'hideWatchedThreshold',
   'redirectShorts',
   'tidyGuideSidebar',
   'uiTweaks',
@@ -51,6 +53,8 @@ let defaultConfig = {
   hideSponsored: true,
   hideStreamed: false,
   hideUpcoming: false,
+  hideWatched: false,
+  hideWatchedThreshold: '100',
   redirectShorts: true,
   // Desktop only
   hideChat: false,
@@ -114,6 +118,7 @@ function storeConfigChanges(changes) {
 function updateDisplay() {
   $body.classList.toggle('desktop', optionsConfig.version == 'desktop')
   $body.classList.toggle('disabled', !optionsConfig.enabled)
+  $body.classList.toggle('hidingWatched', optionsConfig.hideWatched)
   $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
 }
 

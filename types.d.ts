@@ -11,6 +11,8 @@ export type Config = {
   hideSponsored: boolean
   hideStreamed: boolean
   hideUpcoming: boolean
+  hideWatched: boolean
+  hideWatchedThreshold: string
   redirectShorts: boolean
   // Desktop only
   hideChat: boolean

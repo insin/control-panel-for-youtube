@@ -54,6 +54,12 @@
   "hideUpcoming": {
     "message": "Hide Upcoming videos"
   },
+  "hideWatched": {
+    "message": "Hide watched videos"
+  },
+  "hideWatchedThreshold": {
+    "message": "Watched %"
+  },
   "redirectShorts": {
     "message": "Redirect Shorts to the normal player"
   },

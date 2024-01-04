@@ -40,6 +40,8 @@ let config = {
   hideSponsored: true,
   hideStreamed: false,
   hideUpcoming: false,
+  hideWatched: false,
+  hideWatchedThreshold: '100',
   redirectShorts: false,
   // Desktop only
   hideChat: false,
@@ -322,6 +324,8 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push(
+          // Bottom of screen promo
+          '.mealbar-promo-renderer',
           // Search results
           'ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
           // Directly under video
@@ -357,6 +361,26 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push('ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="UPCOMING"])')
+      }
+    }
+
+    if (config.hideWatched) {
+      let thresholds = []
+      for (let percent = Number(config.hideWatchedThreshold); percent <= 100; percent++) {
+        thresholds.push(`[style*="${percent}%"]`)
+      }
+      if (desktop) {
+        hideCssSelectors.push(
+          // Grid item
+          `ytd-rich-item-renderer:has(#progress:is(${thresholds.join(', ')}))`,
+          // List item
+          `ytd-video-renderer:has(#progress:is(${thresholds.join(', ')}))`,
+          // Related video
+          `ytd-compact-video-renderer:has(#progress:is(${thresholds.join(', ')}))`,
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(`ytm-video-with-context-renderer:has(.thumbnail-overlay-resume-playback-progress:is(${thresholds.join(', ')}))`)
       }
     }
 

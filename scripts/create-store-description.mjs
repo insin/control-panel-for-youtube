@@ -25,6 +25,7 @@ ${messages.videoLists}:
 • ${messages.hideStreamed}
 • ${messages.hideMixes}
 • ${messages.hideUpcoming}
+• ${messages.hideWatched}
 
 ${messages.videoPages}:
 

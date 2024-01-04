@@ -19,8 +19,9 @@ body.iOS.browserAction {
   min-width: 0;
 }
 
-body.mobile .desktop,
-body.desktop .mobile {
+body.desktop .mobile,
+body:not(.hidingWatched) .hidingWatched,
+body.mobile .desktop {
   display: none;
 }
 
