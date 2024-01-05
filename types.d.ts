@@ -7,6 +7,7 @@ export type Config = {
   hideMerchEtc: boolean
   hideMixes: boolean
   hideRelated: boolean
+  hideSearchSuggestions: boolean
   hideShorts: boolean
   hideSponsored: boolean
   hideStreamed: boolean

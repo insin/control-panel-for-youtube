@@ -36,6 +36,7 @@ let config = {
   hideMerchEtc: true,
   hideMixes: false,
   hideRelated: false,
+  hideSearchSuggestions: true,
   hideShorts: false,
   hideSponsored: true,
   hideStreamed: false,
@@ -256,7 +257,9 @@ const configureCss = (() => {
           // Chip in Home
           'ytm-chip-cloud-chip-renderer:has(> .chip-container[aria-label="Mixes"])',
           // Video
-          'ytm-rich-item-renderer:has(> ytm-radio-renderer)'
+          'ytm-rich-item-renderer:has(> ytm-radio-renderer)',
+          // Search result
+          'ytm-compact-radio-renderer',
         )
       }
     }
@@ -267,6 +270,25 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push('ytm-item-section-renderer[section-identifier="related-items"]')
+      }
+    }
+
+    if (config.hideSearchSuggestions) {
+      let shelfTitles = [
+        'Channels new to you',
+        'For you',
+        'From related searches',
+        'People also watched',
+        'Popular today',
+        'Previously watched',
+      ].map(title => `[data-title="${title}"]`).join(', ')
+      if (desktop) {
+        hideCssSelectors.push(
+          // Shelf with specific title
+          `ytd-shelf-renderer:is(${shelfTitles})`,
+          // People also search for
+          '#contents.ytd-item-section-renderer > ytd-horizontal-card-list-renderer',
+        )
       }
     }
 
@@ -357,7 +379,12 @@ const configureCss = (() => {
 
     if (config.hideUpcoming) {
       if (desktop) {
-        hideCssSelectors.push('ytd-rich-item-renderer:has(ytd-thumbnail-overlay-time-status-renderer[overlay-style="UPCOMING"])')
+        hideCssSelectors.push(
+          // Grid item
+          'ytd-rich-item-renderer:has(ytd-thumbnail-overlay-time-status-renderer[overlay-style="UPCOMING"])',
+          // List item
+          'ytd-video-renderer:has(ytd-thumbnail-overlay-time-status-renderer[overlay-style="UPCOMING"])',
+        )
       }
       if (mobile) {
         hideCssSelectors.push('ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="UPCOMING"])')
@@ -610,9 +637,7 @@ function handleCurrentUrl() {
     }
   }
   else if (location.pathname == '/results') {
-    if (mobile && config.hideOpenApp) {
-      observeOpenAppMenuItem()
-    }
+    tweakSearchPage()
   }
 }
 
@@ -621,6 +646,86 @@ function redirectShort() {
   let videoId = location.pathname.split('/').at(-1)
   let search = location.search ? location.search.replace('?', '&') : ''
   location.replace(`/watch?v=${videoId}${search}`)
+}
+
+async function tweakSearchPage() {
+  if (desktop && config.hideSearchSuggestions) {
+    /**
+     * Add a data-title attribute to a shelf so we can hide it by title
+     * @param {HTMLElement} $shelf
+     */
+    function addTitleToShelf($shelf) {
+      let title = $shelf.querySelector('#title').textContent
+      $shelf.dataset.title = title
+      log('added', title, 'shelf title')
+    }
+
+    /** @param {HTMLElement} $section */
+    function processSection($section) {
+      for (let $shelf of $section.querySelectorAll('ytd-shelf-renderer')) {
+        addTitleToShelf(/** @type {HTMLElement} */ ($shelf))
+      }
+    }
+
+    let $sections = await getElement('ytd-search ytd-section-list-renderer #contents', {
+      name: 'search result sections container',
+      stopIf: () => !location.pathname.startsWith('/results'),
+    })
+    if (!$sections) return
+
+    let $firstSection = /** @type {HTMLElement} */ ($sections.querySelector('ytd-item-section-renderer #contents'))
+    if (!$firstSection) {
+      warn('first search result section not found')
+      return
+    }
+
+    // The first section has some initial content
+    processSection($firstSection)
+    // More content is added to the first section during initial load and when
+    // the search is changed.
+    pageObservers.push(
+      observeElement($firstSection, (mutations) => {
+        for (let mutation of mutations) {
+          for (let $addedNode of mutation.addedNodes) {
+            if ($addedNode.nodeName == 'YTD-SHELF-RENDERER') {
+              log('new shelf added to first section')
+              addTitleToShelf(/** @type {HTMLElement} */ ($addedNode))
+            }
+          }
+        }
+      }, 'first search result section contents')
+    )
+    // New sections are added when more results are loaded
+    pageObservers.push(
+      observeElement($sections, (mutations) => {
+        for (let mutation of mutations) {
+          for (let $addedNode of mutation.addedNodes) {
+            if ($addedNode.nodeName == 'YTD-ITEM-SECTION-RENDERER') {
+              log('new search result section added')
+              processSection(/** @type {HTMLElement} */ ($addedNode))
+            }
+          }
+        }
+      }, 'search result sections container')
+    )
+  }
+
+  if (mobile) {
+    if (config.hideOpenApp) {
+      observeOpenAppMenuItem()
+    }
+    /*
+    WIP for anything which needs to observe mobile search results
+    if (config.hideSearchSuggestions) {
+      // When the search is changed all the section list renderer's contents are replaced
+      let $sections = await getElement('ytm-search ytm-section-list-renderer', {
+        name: 'search result sections container',
+        stopIf: () => !location.pathname.startsWith('/results'),
+      })
+      if (!$sections) return
+    }
+    */
+  }
 }
 //#endregion
 

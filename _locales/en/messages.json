@@ -42,6 +42,9 @@
   "hideRelated": {
     "message": "Hide Related videos"
   },
+  "hideSearchSuggestions": {
+    "message": "Hide Search suggestions"
+  },
   "hideShorts": {
     "message": "Hide Shorts"
   },
