@@ -394,22 +394,25 @@ const configureCss = (() => {
     }
 
     if (config.hideWatched) {
-      let thresholds = []
-      for (let percent = Number(config.hideWatchedThreshold); percent <= 100; percent++) {
-        thresholds.push(`[style*="${percent}%"]`)
+      let percentSelector = ''
+      if (config.hideWatchedThreshold != 'any') {
+        let start = Number(config.hideWatchedThreshold)
+        percentSelector = `:is(${Array.from({length: 100 - start + 1}, (_, i) => `[style*="${i + start}%"]`).join(', ')})`
       }
       if (desktop) {
         hideCssSelectors.push(
           // Grid item
-          `ytd-rich-item-renderer:has(#progress:is(${thresholds.join(', ')}))`,
+          `ytd-rich-item-renderer:has(#progress${percentSelector})`,
           // List item
-          `ytd-video-renderer:has(#progress:is(${thresholds.join(', ')}))`,
+          `ytd-video-renderer:has(#progress${percentSelector})`,
           // Related video
-          `ytd-compact-video-renderer:has(#progress:is(${thresholds.join(', ')}))`,
+          `ytd-compact-video-renderer:has(#progress${percentSelector})`,
         )
       }
       if (mobile) {
-        hideCssSelectors.push(`ytm-video-with-context-renderer:has(.thumbnail-overlay-resume-playback-progress:is(${thresholds.join(', ')}))`)
+        hideCssSelectors.push(
+          `ytm-video-with-context-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`
+        )
       }
     }
 
