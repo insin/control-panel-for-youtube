@@ -286,7 +286,7 @@ const configureCss = (() => {
       ].map(title => `[data-title="${title}"]`).join(', ')
       if (desktop) {
         hideCssSelectors.push(
-          // Shelf with specific title
+          // List shelf with specific title
           `ytd-shelf-renderer:is(${shelfTitles})`,
           // People also search for
           '#contents.ytd-item-section-renderer > ytd-horizontal-card-list-renderer',
@@ -301,29 +301,31 @@ const configureCss = (() => {
           'ytd-guide-entry-renderer:has(> a[title="Shorts"])',
           // Mini side nav item
           'ytd-mini-guide-entry-renderer[aria-label="Shorts"]',
-          // Shelf in Home and Subscriptions
+          // Grid shelf
           'ytd-rich-shelf-renderer[is-shorts]',
-          // Chip in Search
+          // Chips
           'yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="Shorts"])',
-          // Shelf in Search
-          'ytd-reel-shelf-renderer',
-          // Video in search results
-          'ytd-video-renderer:has(a[href^="/shorts"])',
-          // Tab in channel profiles
-          'ytd-browse yt-tab-shape[tab-title="Shorts"]',
+          // List shelf (except History, so watched Shorts can be removed)
+          'ytd-browse:not([page-subtype="history"]) ytd-reel-shelf-renderer',
+          'ytd-search ytd-reel-shelf-renderer',
+          // List item (except History, so watched Shorts can be removed)
+          'ytd-browse:not([page-subtype="history"]) ytd-video-renderer:has(a[href^="/shorts"])',
+          'ytd-search ytd-video-renderer:has(a[href^="/shorts"])',
+          // Tab in channel profile
+          'ytd-browse[page-subtype="channels"] yt-tab-shape[tab-title="Shorts"]',
         )
       }
       if (mobile) {
         hideCssSelectors.push(
           // Bottom nav item
           'ytm-pivot-bar-item-renderer:has(> div.pivot-shorts)',
-          // Shelf in Home
+          // Grid shelf
           'ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
-          // Shelf in Search
+          // List shelf
           'ytm-reel-shelf-renderer',
-          // Video in search results
+          // List item
           'ytm-video-with-context-renderer:has(a[href^="/shorts"])',
-          // Tab in channel profiles
+          // Tab in channel profile
           'ytm-browse yt-tab-shape[tab-title="Shorts"]',
         )
       }
@@ -401,10 +403,10 @@ const configureCss = (() => {
       }
       if (desktop) {
         hideCssSelectors.push(
-          // Grid item
-          `ytd-rich-item-renderer:has(#progress${percentSelector})`,
-          // List item
-          `ytd-video-renderer:has(#progress${percentSelector})`,
+          // Grid item (except channel profile)
+          `ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(#progress${percentSelector})`,
+          // List item (except History, so watched videos can be removed)
+          `ytd-browse:not([page-subtype="history"]) ytd-video-renderer:has(#progress${percentSelector})`,
           // Related video
           `ytd-compact-video-renderer:has(#progress${percentSelector})`,
         )
@@ -747,6 +749,19 @@ function configChanged(changes) {
   handleCurrentUrl()
 }
 
+function onConfigChange(changes) {
+  let configChanges = Object.fromEntries(
+    Object.entries(changes)
+      // Don't change the version based on other pages
+      .filter(([key]) => key != 'version')
+      .map(([key, {newValue}]) => [key, newValue])
+  )
+  if (Object.keys(configChanges).length > 0) {
+    Object.assign(config, configChanges)
+    configChanged(configChanges)
+  }
+}
+
 if (
   typeof GM == 'undefined' &&
   typeof chrome != 'undefined' &&
@@ -759,18 +774,11 @@ if (
     // Let the options page know the last version used
     chrome.storage.local.set({version})
 
-    chrome.storage.onChanged.addListener((changes) => {
-      let configChanges = Object.fromEntries(
-        Object.entries(changes)
-          // Don't change the version based on other pages
-          .filter(([key]) => key != 'version')
-          .map(([key, {newValue}]) => [key, newValue])
-      )
-      if (Object.keys(configChanges).length > 0) {
-        Object.assign(config, configChanges)
-        configChanged(configChanges)
-      }
-    })
+    chrome.storage.local.onChanged.addListener(onConfigChange)
+
+    window.addEventListener('unload', () => {
+      chrome.storage.local.onChanged.removeListener(onConfigChange)
+    }, {once: true})
 
     main()
   })
