@@ -3,6 +3,9 @@ document.title = chrome.i18n.getMessage('extensionName')
 for (let translationId of [
   'disableAutoplay',
   'enabled',
+  'experimentalFeatures',
+  'fillGaps',
+  'fillGapsNote',
   'hideChat',
   'hideComments',
   'hideEndCards',
@@ -61,6 +64,7 @@ let defaultConfig = {
   hideWatchedThreshold: '100',
   redirectShorts: true,
   // Desktop only
+  fillGaps: false,
   hideChat: false,
   hideEndCards: false,
   hideEndVideos: false,

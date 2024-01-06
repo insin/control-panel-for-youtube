@@ -46,6 +46,7 @@ let config = {
   hideWatchedThreshold: '100',
   redirectShorts: false,
   // Desktop only
+  fillGaps: false,
   hideChat: false,
   hideEndCards: false,
   hideEndVideos: false,
@@ -312,7 +313,7 @@ const configureCss = (() => {
           // Mini side nav item
           'ytd-mini-guide-entry-renderer[aria-label="Shorts"]',
           // Grid shelf
-          'ytd-rich-shelf-renderer[is-shorts]',
+          'ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer[is-shorts])',
           // Chips
           'yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="Shorts"])',
           // List shelf (except History, so watched Shorts can be removed)
@@ -347,6 +348,7 @@ const configureCss = (() => {
           // Big promos on Home screen
           '#masthead-ad',
           'ytd-rich-section-renderer:has(> #content > ytd-statement-banner-renderer)',
+          'ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer[has-paygated-featured-badge])',
           // Video listings
           'ytd-rich-item-renderer:has(> .ytd-rich-item-renderer > ytd-ad-slot-renderer)',
           // Search results
@@ -428,7 +430,25 @@ const configureCss = (() => {
       }
     }
 
+    //#region Desktop-only CSS
     if (desktop) {
+      if (config.fillGaps) {
+        cssRules.push(`
+ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-row,
+ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-row > #contents {
+  display: contents !important;
+}
+ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-renderer > #contents {
+  width: auto !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child > #content {
+  margin-left: 8px !important;
+  margin-right: 8px !important;
+}
+        `)
+      }
       if (config.hideEndCards) {
         hideCssSelectors.push('#movie_player .ytp-ce-element')
       }
@@ -474,7 +494,9 @@ const configureCss = (() => {
         )
       }
     }
+    //#endregion
 
+    //#region Mobile-only CSS
     if (mobile) {
       if (config.hideExploreButton) {
         // Explore button on Home screen
@@ -491,6 +513,7 @@ const configureCss = (() => {
         )
       }
     }
+    //#endregion
 
     if (hideCssSelectors.length > 0) {
       cssRules.push(`

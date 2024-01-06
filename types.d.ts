@@ -17,6 +17,7 @@ export type Config = {
   hideWatchedThreshold: string
   redirectShorts: boolean
   // Desktop only
+  fillGaps: boolean
   hideChat: boolean
   hideEndCards: boolean
   hideEndVideos: boolean

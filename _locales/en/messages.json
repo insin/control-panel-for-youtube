@@ -5,12 +5,21 @@
   "enabled": {
     "message": "Enabled"
   },
+  "experimentalFeatures": {
+    "message": "Exerimental features"
+  },
   "extensionDescription": {
     "message": "Gives you more control over YouTube by adding missing options and UI improvements",
     "description": "<= 112 characters"
   },
   "extensionName": {
     "message": "Control Panel for YouTube"
+  },
+  "fillGaps": {
+    "message": "Fill gaps created by hidden videos"
+  },
+  "fillGapsNote": {
+    "message": "May cause visual layout issues"
   },
   "hideChat": {
     "message": "Hide Chat"
