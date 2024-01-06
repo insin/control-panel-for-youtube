@@ -34,6 +34,7 @@ let config = {
   hideComments: false,
   hideLive: false,
   hideMerchEtc: true,
+  hideMetadata: false,
   hideMixes: false,
   hideRelated: false,
   hideSearchSuggestions: true,
@@ -238,6 +239,15 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push('ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])')
+      }
+    }
+
+    if (config.hideMetadata) {
+      if (desktop) {
+        hideCssSelectors.push('#above-the-fold + ytd-metadata-row-container-renderer')
+      }
+      if (mobile) {
+        hideCssSelectors.push('yt-video-attributes-section-view-model')
       }
     }
 

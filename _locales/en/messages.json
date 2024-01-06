@@ -33,6 +33,9 @@
   "hideMerchEtc": {
     "message": "Hide Merch, Offers etc."
   },
+  "hideMetadata": {
+    "message": "Hide video metadata"
+  },
   "hideMixes": {
     "message": "Hide Mixes"
   },

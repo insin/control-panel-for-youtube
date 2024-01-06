@@ -34,6 +34,7 @@ ${messages.videoPages}:
 • ${messages.hideEndCards} 🖥️
 • ${messages.hideEndVideos} 🖥️
 • ${messages.hideMerchEtc} 🖥️
+• ${messages.hideMetadata}
 • ${messages.hideComments}
 • ${messages.hideChat} 🖥️
 • ${messages.redirectShorts}
