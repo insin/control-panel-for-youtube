@@ -59,13 +59,28 @@ let config = {
 
 //#region State
 /** @type {MutationObserver[]} */
+let globalObservers = []
+/** @type {HTMLElement} */
+let lastClickedElement
+/** @type {MutationObserver[]} */
 let pageObservers = []
 //#endregion
 
+function isSearchPage() {
+  return location.pathname == '/results'
+}
+
+function isVideoPage() {
+  return location.pathname == '/watch'
+}
+
 //#region Utility functions
-function addStyle() {
+function addStyle(css = '') {
   let $style = document.createElement('style')
   $style.dataset.insertedBy = 'control-panel-for-youtube'
+  if (css) {
+    $style.textContent = css
+  }
   document.head.appendChild($style)
   return $style
 }
@@ -85,6 +100,17 @@ function dedent(str) {
   return str.replace(/(\r?\n)[ \t]+$/, '$1')
 }
 
+function disconnectGlobalObserver(name) {
+  for (let i = globalObservers.length -1; i >= 0; i--) {
+    let observer = globalObservers[i]
+    if ('name' in observer && observer.name == name) {
+      observer.disconnect()
+      globalObservers.splice(i, 1)
+      log(`disconnected ${name} observer`)
+    }
+  }
+}
+
 function disconnectPageObserver(name) {
   for (let i = pageObservers.length -1; i >= 0; i--) {
     let observer = pageObservers[i]
@@ -93,6 +119,17 @@ function disconnectPageObserver(name) {
       pageObservers.splice(i, 1)
       log(`disconnected ${name} observer`)
     }
+  }
+}
+
+function disconnectPageObservers() {
+  if (pageObservers.length > 0) {
+    log(
+      `disconnecting ${pageObservers.length} page observer${s(pageObservers.length)}`,
+      pageObservers.map(observer => observer['name'])
+    )
+    for (let observer of pageObservers) observer.disconnect()
+    pageObservers = []
   }
 }
 
@@ -190,16 +227,17 @@ function s(n) {
 
 //#region CSS
 const configureCss = (() => {
+  /** @type {HTMLStyleElement} */
   let $style
 
   return function configureCss() {
-    if ($style == null) {
-      $style = addStyle()
-    }
     if (!config.enabled) {
-      $style.textContent = ''
+      log('removing stylesheet')
+      $style?.remove()
+      $style = null
       return
     }
+
     let cssRules = []
     let hideCssSelectors = []
 
@@ -355,6 +393,8 @@ const configureCss = (() => {
           'ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer[has-paygated-featured-badge])',
           'ytd-rich-section-renderer:has(> #content > ytd-brand-video-shelf-renderer)',
           'ytd-rich-section-renderer:has(> #content > ytd-brand-video-singleton-renderer)',
+          // Bottom of screen promo
+          'tp-yt-paper-dialog:has(> #mealbar-promo-renderer)',
           // Video listings
           'ytd-rich-item-renderer:has(> .ytd-rich-item-renderer > ytd-ad-slot-renderer)',
           // Search results
@@ -436,23 +476,23 @@ const configureCss = (() => {
       }
     }
 
-    //#region Desktop-only CSS
+    //#region Desktop-only
     if (desktop) {
       if (config.fillGaps) {
         cssRules.push(`
-ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-row,
-ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-row > #contents {
-  display: contents !important;
-}
-ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-renderer > #contents {
-  width: auto !important;
-  padding-left: 16px !important;
-  padding-right: 16px !important;
-}
-ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child > #content {
-  margin-left: 8px !important;
-  margin-right: 8px !important;
-}
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-row,
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-row > #contents {
+            display: contents !important;
+          }
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-renderer > #contents {
+            width: auto !important;
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+          }
+          ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child > #content {
+            margin-left: 8px !important;
+            margin-right: 8px !important;
+          }
         `)
       }
       if (config.hideEndCards) {
@@ -502,7 +542,7 @@ ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > yt
     }
     //#endregion
 
-    //#region Mobile-only CSS
+    //#region Mobile-only
     if (mobile) {
       if (config.hideExploreButton) {
         // Explore button on Home screen
@@ -529,7 +569,12 @@ ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > yt
       `)
     }
 
-    $style.textContent = cssRules.map(dedent).join('\n')
+    let css = cssRules.map(dedent).join('\n')
+    if ($style == null) {
+      $style = addStyle(css)
+    } else {
+      $style.textContent = css
+    }
   }
 })()
 //#endregion
@@ -590,58 +635,67 @@ async function disableAutoplay() {
   }
 }
 
-const observeOpenAppMenuItem = (() => {
-  /** @param {Element} $el */
-  function tagOpenAppMenuItem($el) {
-    let menuItems = $el.querySelectorAll('ytm-menu-item')
-    for (let $menuItem of menuItems) {
-      if ($menuItem.textContent == 'Open App') {
-        log('tagging Open App item')
-        $menuItem.classList.add('open-app-menu-item')
-        break
-      }
-    }
-  }
+async function observeDesktopMenus() {
+  // TODO
+}
 
-  /**
-   * Depending on resolution, mobile menus appear in <bottom-sheet-container>
-   * (lower res) or as a child of <body> (higher res).
-   */
-  return async function observeOpenAppMenuItem() {
-    let $body = await getElement('body', {
-      name: '<body>',
-      stopIf: currentUrlIsNot(getCurrentUrl()),
-    })
-    if (!$body) return
+/**
+ * Depending on resolution, mobile menus appear in <bottom-sheet-container>
+ * (lower res) or as a #menu child of <body> (higher res).
+ */
+async function observeMobileMenus() {
+  let $body = await getElement('body', {name: '<body>'})
+  if (!$body) return
 
-    pageObservers.push(
-      observeElement($body, (mutations) => {
-        for (let mutation of mutations) {
-          for (let $el of mutation.addedNodes) {
-            if ($el instanceof Element && $el.id == 'menu') {
-              tagOpenAppMenuItem($el)
-              return
-            }
+  globalObservers.push(
+    observeElement($body, (mutations) => {
+      for (let mutation of mutations) {
+        for (let $el of mutation.addedNodes) {
+          if ($el instanceof Element && $el?.id == 'menu') {
+            onMobileMenuAppeared(/** @type {HTMLElement} */ ($el))
+            return
           }
         }
-      }, '<body> for Open App menu item')
-    )
+      }
+    }, '<body> (for menus appearing)')
+  )
 
-    let $bottomSheet = await getElement('bottom-sheet-container', {
-      name: 'bottom sheet',
-      stopIf: currentUrlIsNot(getCurrentUrl()),
-    })
+  // When switching between screens, <bottom-sheet-container> is replaced
+  let $app = await getElement('ytm-app', {name: '<ytm-app>'})
+  if (!$app) return
+
+  let $bottomSheet = /** @type {HTMLElement} */ ($app.querySelector('bottom-sheet-container'))
+
+  function observeBottomSheet() {
     if (!$bottomSheet) return
 
-    pageObservers.push(
+    disconnectGlobalObserver('bottom sheet (menus)')
+    globalObservers.push(
       observeElement($bottomSheet, () => {
         if ($bottomSheet.childElementCount > 0) {
-          tagOpenAppMenuItem($bottomSheet)
+          onMobileMenuAppeared($bottomSheet)
         }
-      }, 'bottom sheet for Open App menu item')
+      }, 'bottom sheet (for menus appearing)')
     )
   }
-})()
+
+  observeBottomSheet()
+
+  globalObservers.push(
+    observeElement($app, (mutations) => {
+      for (let mutation of mutations) {
+        for (let $el of mutation.addedNodes) {
+          if ($el.nodeName == 'BOTTOM-SHEET-CONTAINER') {
+            log('new bottom sheet appeared')
+            $bottomSheet = /** @type {HTMLElement} */ ($el)
+            observeBottomSheet()
+            return
+          }
+        }
+      }
+    }, '<ytm-app> (for bottom sheet replacement)')
+  )
+}
 
 /**
  * Detect navigation between pages for features which apply to specific pages.
@@ -649,41 +703,51 @@ const observeOpenAppMenuItem = (() => {
 async function observeTitle() {
   let $title = await getElement('title', {name: '<title>'})
   let seenUrl
-  observeElement($title, () => {
-    let currentUrl = getCurrentUrl()
-    if (seenUrl != null && seenUrl == currentUrl) {
-      return
-    }
-    seenUrl = currentUrl
-    handleCurrentUrl()
-  }, '<title>')
+  globalObservers.push(
+    observeElement($title, () => {
+      let currentUrl = getCurrentUrl()
+      if (seenUrl != null && seenUrl == currentUrl) {
+        return
+      }
+      seenUrl = currentUrl
+      handleCurrentUrl()
+    }, '<title> (for title changes)')
+  )
 }
 
 function handleCurrentUrl() {
-  if (pageObservers.length > 0) {
-    log(
-      `disconnecting ${pageObservers.length} page observer${s(pageObservers.length)}`,
-      pageObservers.map(observer => observer['name'])
-    )
-    for (let observer of pageObservers) observer.disconnect()
-    pageObservers = []
-  }
+  disconnectPageObservers()
 
   if (location.pathname.startsWith('/shorts/')) {
     if (config.redirectShorts) {
       redirectShort()
     }
   }
-  else if (location.pathname == '/watch') {
-    if (config.disableAutoplay) {
-      disableAutoplay()
-    }
-    if (mobile && config.hideOpenApp) {
-      observeOpenAppMenuItem()
-    }
+  else if (isVideoPage()) {
+    tweakVideoPage()
   }
-  else if (location.pathname == '/results') {
+  else if (isSearchPage()) {
     tweakSearchPage()
+  }
+}
+
+/** @param {HTMLElement} $menu */
+function onDesktopMenuAppeared($menu) {
+  log('menu appeared', {lastClickedElement})
+}
+
+/** @param {HTMLElement} $menu */
+function onMobileMenuAppeared($menu) {
+  log('menu appeared', {lastClickedElement})
+  if (config.hideOpenApp && (isSearchPage() || isVideoPage())) {
+    let menuItems = $menu.querySelectorAll('ytm-menu-item')
+    for (let $menuItem of menuItems) {
+      if ($menuItem.textContent == 'Open App') {
+        log('tagging Open App menu item')
+        $menuItem.classList.add('open-app-menu-item')
+        break
+      }
+    }
   }
 }
 
@@ -739,7 +803,7 @@ async function tweakSearchPage() {
             }
           }
         }
-      }, 'first search result section contents')
+      }, 'first search result section contents (for search changes)')
     )
     // New sections are added when more results are loaded
     pageObservers.push(
@@ -752,40 +816,74 @@ async function tweakSearchPage() {
             }
           }
         }
-      }, 'search result sections container')
+      }, 'search result sections container (for additional results)')
     )
   }
 
-  if (mobile) {
-    if (config.hideOpenApp) {
-      observeOpenAppMenuItem()
-    }
-    /*
-    WIP for anything which needs to observe mobile search results
-    if (config.hideSearchSuggestions) {
-      // When the search is changed all the section list renderer's contents are replaced
-      let $sections = await getElement('ytm-search ytm-section-list-renderer', {
-        name: 'search result sections container',
-        stopIf: () => !location.pathname.startsWith('/results'),
-      })
-      if (!$sections) return
-    }
-    */
+  /*
+  WIP for anything which needs to observe mobile search results
+  // When the search is changed all the section list renderer's contents are replaced
+  let $sections = await getElement('ytm-search ytm-section-list-renderer', {
+    name: 'search result sections container',
+    stopIf: () => !location.pathname.startsWith('/results'),
+  })
+  if (!$sections) return
+  */
+}
+
+function tweakVideoPage() {
+  if (config.disableAutoplay) {
+    disableAutoplay()
   }
 }
 //#endregion
 
 //#region Main
-function main() {
-  configureCss()
-  observeTitle()
+/** @param {MouseEvent} e */
+function onDocumentClick(e) {
+  lastClickedElement = /** @type {HTMLElement} */ (e.target)
 }
 
-function configChanged(changes) {
-  log('config changed', changes)
+function main() {
+  if (config.enabled) {
+    configureCss()
+    observeTitle()
+    if (mobile) {
+      observeMobileMenus()
+    } else {
+      observeDesktopMenus()
+    }
+    document.addEventListener('click', onDocumentClick, true)
+  }
+}
 
-  configureCss()
-  handleCurrentUrl()
+/** @param {Partial<import("./types").Config>} changes */
+function configChanged(changes) {
+  if (!changes.hasOwnProperty('enabled')) {
+    log('config changed', changes)
+    // Update styles
+    configureCss()
+    // Re-run any functionality for the current URL
+    handleCurrentUrl()
+    return
+  }
+
+  log(`${changes.enabled ? 'en' : 'dis'}abling extension functionality`)
+  if (changes.enabled) {
+    main()
+  } else {
+    configureCss()
+    disconnectPageObservers()
+    if (globalObservers.length > 0) {
+      log(
+        `disconnecting ${globalObservers.length} global observer${s(globalObservers.length)}`,
+        globalObservers.map(observer => observer['name'])
+      )
+      for (let observer of globalObservers) observer.disconnect()
+      globalObservers = []
+    }
+    document.removeEventListener('click', onDocumentClick, true)
+  }
 }
 
 function onConfigChange(changes) {
