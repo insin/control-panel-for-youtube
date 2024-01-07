@@ -8,10 +8,10 @@ export type Config = {
   hideMetadata: boolean
   hideMixes: boolean
   hideRelated: boolean
-  hideSearchSuggestions: boolean
   hideShorts: boolean
   hideSponsored: boolean
   hideStreamed: boolean
+  hideSuggestedSections: boolean
   hideUpcoming: boolean
   hideWatched: boolean
   hideWatchedThreshold: string

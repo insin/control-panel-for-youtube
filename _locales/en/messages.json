@@ -6,7 +6,7 @@
     "message": "Enabled"
   },
   "experimentalFeatures": {
-    "message": "Exerimental features"
+    "message": "Experimental features"
   },
   "extensionDescription": {
     "message": "Gives you more control over YouTube by adding missing options and UI improvements",
@@ -54,17 +54,17 @@
   "hideRelated": {
     "message": "Hide Related videos"
   },
-  "hideSearchSuggestions": {
-    "message": "Hide Search suggestions"
-  },
   "hideShorts": {
     "message": "Hide Shorts"
   },
   "hideSponsored": {
-    "message": "Hide Sponsored videos & Promos"
+    "message": "Hide Sponsored videos & promos"
   },
   "hideStreamed": {
     "message": "Hide Streamed videos"
+  },
+  "hideSuggestedSections": {
+    "message": "Hide suggested sections"
   },
   "hideUpcoming": {
     "message": "Hide Upcoming videos"

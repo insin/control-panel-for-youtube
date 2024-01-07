@@ -37,7 +37,7 @@ let config = {
   hideMetadata: false,
   hideMixes: false,
   hideRelated: false,
-  hideSearchSuggestions: true,
+  hideSuggestedSections: true,
   hideShorts: false,
   hideSponsored: true,
   hideStreamed: false,
@@ -236,6 +236,8 @@ const configureCss = (() => {
           'ytd-video-renderer:has(ytd-thumbnail[is-live-video])',
           // Related video
           'ytd-compact-video-renderer:has(> .ytd-compact-video-renderer > ytd-thumbnail[is-live-video])',
+          // Tab in channel profile
+          'ytd-browse[page-subtype="channels"] yt-tab-shape[tab-title="Live"]',
         )
       }
       if (mobile) {
@@ -286,7 +288,7 @@ const configureCss = (() => {
       }
     }
 
-    if (config.hideSearchSuggestions) {
+    if (config.hideSuggestedSections) {
       let shelfTitles = [
         'Channels new to you',
         'For you',
@@ -297,9 +299,11 @@ const configureCss = (() => {
       ].map(title => `[data-title="${title}"]`).join(', ')
       if (desktop) {
         hideCssSelectors.push(
-          // List shelf with specific title
+          // Trending on Home
+          'ytd-rich-section-renderer:has(a[href="/feed/trending"])',
+          // List shelf with specific title in Search
           `ytd-shelf-renderer:is(${shelfTitles})`,
-          // People also search for
+          // People also search for in Search
           '#contents.ytd-item-section-renderer > ytd-horizontal-card-list-renderer',
         )
       }
@@ -349,6 +353,8 @@ const configureCss = (() => {
           '#masthead-ad',
           'ytd-rich-section-renderer:has(> #content > ytd-statement-banner-renderer)',
           'ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer[has-paygated-featured-badge])',
+          'ytd-rich-section-renderer:has(> #content > ytd-brand-video-shelf-renderer)',
+          'ytd-rich-section-renderer:has(> #content > ytd-brand-video-singleton-renderer)',
           // Video listings
           'ytd-rich-item-renderer:has(> .ytd-rich-item-renderer > ytd-ad-slot-renderer)',
           // Search results
@@ -689,7 +695,7 @@ function redirectShort() {
 }
 
 async function tweakSearchPage() {
-  if (desktop && config.hideSearchSuggestions) {
+  if (desktop && config.hideSuggestedSections) {
     /**
      * Add a data-title attribute to a shelf so we can hide it by title
      * @param {HTMLElement} $shelf
@@ -802,11 +808,10 @@ if (
 ) {
   chrome.storage.local.get((storedConfig) => {
     Object.assign(config, storedConfig)
-    log('initial config', {config})
+    log('initial config', {...config, version})
 
     // Let the options page know the last version used
     chrome.storage.local.set({version})
-
     chrome.storage.local.onChanged.addListener(onConfigChange)
 
     window.addEventListener('unload', () => {
