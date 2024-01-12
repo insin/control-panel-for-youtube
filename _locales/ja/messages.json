@@ -29,9 +29,6 @@
   "fillGaps": {
     "message": "非表示になっているビデオによって作成されたギャップを埋める"
   },
-  "fillGapsNote": {
-    "message": "視覚的なレイアウトの問題を引き起こす可能性があります"
-  },
   "hideChannels": {
     "message": "チャンネルを非表示"
   },

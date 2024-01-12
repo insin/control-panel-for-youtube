@@ -50,7 +50,7 @@ let config = {
   redirectShorts: false,
   // Desktop only
   downloadTranscript: true,
-  fillGaps: false,
+  fillGaps: true,
   hideChat: false,
   hideEndCards: false,
   hideEndVideos: false,

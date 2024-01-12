@@ -33,9 +33,6 @@
   "fillGaps": {
     "message": "Fill gaps created by hidden videos"
   },
-  "fillGapsNote": {
-    "message": "May cause visual layout issues"
-  },
   "hideChannels": {
     "message": "Hide channels"
   },

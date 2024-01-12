@@ -6,9 +6,7 @@ for (let translationId of [
   'downloadTranscript',
   'embeddedVideos',
   'enabled',
-  'experimentalFeatures',
   'fillGaps',
-  'fillGapsNote',
   'hideChannels',
   'hideChannelsNote',
   'hideChat',
@@ -75,7 +73,7 @@ let defaultConfig = {
   redirectShorts: true,
   // Desktop only
   downloadTranscript: true,
-  fillGaps: false,
+  fillGaps: true,
   hideChat: false,
   hideEndCards: false,
   hideEndVideos: false,
