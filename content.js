@@ -614,6 +614,7 @@ const configureCss = (() => {
           'ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer[has-paygated-featured-badge])',
           'ytd-rich-section-renderer:has(> #content > ytd-brand-video-shelf-renderer)',
           'ytd-rich-section-renderer:has(> #content > ytd-brand-video-singleton-renderer)',
+          'ytd-rich-section-renderer:has(> #content > ytd-inline-survey-renderer)',
           // Bottom of screen promo
           'tp-yt-paper-dialog:has(> #mealbar-promo-renderer)',
           // Video listings
