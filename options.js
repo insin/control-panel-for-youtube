@@ -1,11 +1,15 @@
 document.title = chrome.i18n.getMessage('extensionName')
 
 for (let translationId of [
+  'anyPercent',
   'disableAutoplay',
+  'downloadTranscript',
   'enabled',
   'experimentalFeatures',
   'fillGaps',
   'fillGapsNote',
+  'hideChannels',
+  'hideChannelsNote',
   'hideChat',
   'hideComments',
   'hideEndCards',
@@ -45,10 +49,12 @@ if (navigator.userAgent.includes('Safari/') && !/Chrom(e|ium)\//.test(navigator.
 //#region Default config
 /** @type {import("./types").Config} */
 let defaultConfig = {
+  enabled: true,
   // Default based on platform until the content script runs
   version: /(Android|iP(ad|hone))/.test(navigator.userAgent) ? 'mobile' : 'desktop',
   disableAutoplay: true,
-  enabled: true,
+  hiddenChannels: [],
+  hideChannels: true,
   hideComments: false,
   hideLive: false,
   hideMerchEtc: true,
@@ -64,6 +70,7 @@ let defaultConfig = {
   hideWatchedThreshold: '100',
   redirectShorts: true,
   // Desktop only
+  downloadTranscript: true,
   fillGaps: false,
   hideChat: false,
   hideEndCards: false,
@@ -77,6 +84,39 @@ let defaultConfig = {
 
 /** @type {import("./types").Config} */
 let optionsConfig
+
+let $hiddenChannels = document.querySelector('#hiddenChannels')
+
+/**
+ * @param {keyof HTMLElementTagNameMap} tagName
+ * @param {({[key: string]: any} | null)?} attributes
+ * @param {...any} children
+ * @returns {HTMLElement}
+ */
+function h(tagName, attributes, ...children) {
+  let $el = document.createElement(tagName)
+
+  if (attributes) {
+    for (let [prop, value] of Object.entries(attributes)) {
+      if (prop.startsWith('on') && typeof value == 'function') {
+        $el.addEventListener(prop.slice(2).toLowerCase(), value)
+      } else {
+        $el[prop] = value
+      }
+    }
+  }
+
+  for (let child of children) {
+    if (child == null || child === false) continue
+    if (child instanceof Node) {
+      $el.appendChild(child)
+    } else {
+      $el.insertAdjacentText('beforeend', String(child))
+    }
+  }
+
+  return $el
+}
 
 /**
  * @param {Event} e
@@ -126,8 +166,28 @@ function storeConfigChanges(changes) {
 function updateDisplay() {
   $body.classList.toggle('desktop', optionsConfig.version == 'desktop')
   $body.classList.toggle('disabled', !optionsConfig.enabled)
+  $body.classList.toggle('hidingChannels', optionsConfig.hideChannels)
   $body.classList.toggle('hidingWatched', optionsConfig.hideWatched)
   $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
+
+  while ($hiddenChannels.hasChildNodes()) $hiddenChannels.firstChild.remove()
+  for (let channel of optionsConfig.hiddenChannels) {
+    $hiddenChannels.appendChild(
+      h('section', null,
+        h('label', {className: 'button'},
+          h('span', null, channel.name),
+          h('button', {
+            type: 'button',
+            onclick(e) {
+              optionsConfig.hiddenChannels.splice(optionsConfig.hiddenChannels.indexOf(channel), 1)
+              storeConfigChanges({hiddenChannels: optionsConfig.hiddenChannels})
+              e.target.closest('section').remove()
+            }
+          }, '×')
+        )
+      )
+    )
+  }
 }
 
 //#region Main

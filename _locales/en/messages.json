@@ -1,6 +1,15 @@
 {
+  "anyPercent": {
+    "message": "any %"
+  },
+  "desktopOnly": {
+    "message": "Desktop only"
+  },
   "disableAutoplay": {
     "message": "Disable Autoplay"
+  },
+  "downloadTranscript": {
+    "message": "Make Transcript downloadable"
   },
   "enabled": {
     "message": "Enabled"
@@ -15,11 +24,20 @@
   "extensionName": {
     "message": "Control Panel for YouTube"
   },
+  "features": {
+    "message": "Features"
+  },
   "fillGaps": {
     "message": "Fill gaps created by hidden videos"
   },
   "fillGapsNote": {
     "message": "May cause visual layout issues"
+  },
+  "hideChannels": {
+    "message": "Hide channels"
+  },
+  "hideChannelsNote": {
+    "message": "Adds \"Hide channel\" to video menus"
   },
   "hideChat": {
     "message": "Hide Chat"
@@ -74,6 +92,9 @@
   },
   "hideWatchedThreshold": {
     "message": "Watched %"
+  },
+  "mobileOnly": {
+    "message": "Mobile only"
   },
   "redirectShorts": {
     "message": "Redirect Shorts to the normal player"

@@ -81,7 +81,7 @@
           <label>
             <span id="hideWatchedThreshold">Watched %</span>
             <select name="hideWatchedThreshold">
-              <option value="any">any%</option>
+              <option value="any" id="anyPercent">any %</option>
               <option value="90">90</option>
               <option value="91">91</option>
               <option value="92">92</option>
@@ -96,6 +96,15 @@
             </select>
           </label>
         </section>
+      </section>
+      <section class="checkbox">
+        <label>
+          <span id="hideChannels">Hide channels</span>
+          <input type="checkbox" name="hideChannels">
+          <span class="toggle"></span>
+        </label>
+        <p id="hideChannelsNote">Adds "Hide channel" to video menus</p>
+        <div id="hiddenChannels"></div>
       </section>
     </section>
     <section class="group labelled">
@@ -155,6 +164,13 @@
         <label>
           <span id="hideChat">Hide Chat</span>
           <input type="checkbox" name="hideChat">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox desktop">
+        <label>
+          <span id="downloadTranscript">Make Transcript downloadable</span>
+          <input type="checkbox" name="downloadTranscript">
           <span class="toggle"></span>
         </label>
       </section>

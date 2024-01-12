@@ -1,7 +1,14 @@
+export type Channel = {
+  name: string
+  url?: string
+}
+
 export type Config = {
-  version: Version
   enabled: boolean
+  version: Version
   disableAutoplay: boolean
+  hiddenChannels: Channel[]
+  hideChannels: boolean
   hideComments: boolean
   hideLive: boolean
   hideMerchEtc: boolean
@@ -17,6 +24,7 @@ export type Config = {
   hideWatchedThreshold: string
   redirectShorts: boolean
   // Desktop only
+  downloadTranscript: boolean
   fillGaps: boolean
   hideChat: boolean
   hideEndCards: boolean
@@ -26,5 +34,22 @@ export type Config = {
   hideExploreButton: boolean
   hideOpenApp: boolean
 }
+
+export type Locale = {
+  [key in LocaleKey]?: string
+}
+
+export type LocaleKey =
+  | 'CHANNELS_NEW_TO_YOU'
+  | 'DOWNLOAD'
+  | 'FOR_YOU'
+  | 'FROM_RELATED_SEARCHES'
+  | 'HIDE_CHANNEL'
+  | 'MIXES'
+  | 'PEOPLE_ALSO_WATCHED'
+  | 'POPULAR_TODAY'
+  | 'PREVIOUSLY_WATCHED'
+  | 'SHORTS'
+  | 'STREAMED_TITLE'
 
 export type Version = 'mobile' | 'desktop'

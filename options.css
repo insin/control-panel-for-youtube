@@ -13,13 +13,17 @@ body {
 }
 
 body.browserAction {
-  min-width: 360px;
+  min-width: 400px;
 }
 body.iOS.browserAction {
   min-width: 0;
 }
+body.macOS.browserAction {
+  min-width: 340px;
+}
 
 body.desktop .mobile,
+body:not(.hidingChannels) #hiddenChannels,
 body:not(.hidingWatched) .hidingWatched,
 body.mobile .desktop {
   display: none;
@@ -79,7 +83,7 @@ section.group > p {
 }
 
 section.group > section > p {
-  margin: 0 60px 12px 0;
+  margin: 0 40px 12px 0;
   font-size: 12px;
 }
 
@@ -121,7 +125,7 @@ body.disabled:not(.safari) form > section {
   }
   body.browserAction {
     min-width: 0;
-    max-width: 360px;
+    max-width: 400px;
   }
   section {
     --border-color: #d7d7db;

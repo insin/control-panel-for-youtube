@@ -1,0 +1,113 @@
+{
+  "anyPercent": {
+    "message": "どれでも ％"
+  },
+  "desktopOnly": {
+    "message": "デスクトップのみ"
+  },
+  "disableAutoplay": {
+    "message": "オートプレイを無効にする"
+  },
+  "downloadTranscript": {
+    "message": "トランスクリプトをダウンロード可能にする"
+  },
+  "enabled": {
+    "message": "有効"
+  },
+  "experimentalFeatures": {
+    "message": "実験的な機能"
+  },
+  "extensionDescription": {
+    "message": "不足しているオプションとUIの改善を追加して、YouTubeをより制御できるようにします"
+  },
+  "features": {
+    "message": "特徴"
+  },
+  "fillGaps": {
+    "message": "非表示になっているビデオによって作成されたギャップを埋める"
+  },
+  "fillGapsNote": {
+    "message": "視覚的なレイアウトの問題を引き起こす可能性があります"
+  },
+  "hideChannels": {
+    "message": "チャンネルを非表示"
+  },
+  "hideChannelsNote": {
+    "message": "ビデオメニューに「チャンネルを隠す」を追加します"
+  },
+  "hideChat": {
+    "message": "チャットを非表示"
+  },
+  "hideComments": {
+    "message": "コメントを非表示"
+  },
+  "hideEndCards": {
+    "message": "ビデオのエンドカードを非表示"
+  },
+  "hideEndVideos": {
+    "message": "ビデオのエンドスクリーンのコンテンツを非表示"
+  },
+  "hideExploreButton": {
+    "message": "探索ボタンを非表示"
+  },
+  "hideLive": {
+    "message": "ライブ動画を非表示"
+  },
+  "hideMerchEtc": {
+    "message": "商品、オファーなどを非表示"
+  },
+  "hideMetadata": {
+    "message": "ビデオのメタデータを非表示"
+  },
+  "hideMixes": {
+    "message": "ミックスを非表示"
+  },
+  "hideOpenApp": {
+    "message": "アプリを開くリンクを非表示"
+  },
+  "hideRelated": {
+    "message": "関連する動画を非表示"
+  },
+  "hideShorts": {
+    "message": "ショート動画を非表示"
+  },
+  "hideSponsored": {
+    "message": "スポンサード動画とプロモーションを非表示"
+  },
+  "hideStreamed": {
+    "message": "ストリームされた動画を非表示"
+  },
+  "hideSuggestedSections": {
+    "message": "提案されたセクションを非表示"
+  },
+  "hideUpcoming": {
+    "message": "予定されている動画を非表示"
+  },
+  "hideWatched": {
+    "message": "視聴済みの動画を非表示"
+  },
+  "hideWatchedThreshold": {
+    "message": "視聴済みの割合"
+  },
+  "mobileOnly": {
+    "message": "モバイルのみ"
+  },
+  "redirectShorts": {
+    "message": "ショート動画を通常のプレイヤーにリダイレクト"
+  },
+  "shorts": {
+    "message": "ショート動画"
+  },
+  "tidyGuideSidebar": {
+    "message": "整頓されたガイドサイドバー"
+  },
+  "uiTweaks": {
+    "message": "UIの微調整"
+  },
+  "videoLists": {
+    "message": "ビデオリスト"
+  },
+  "videoPages": {
+    "message": "ビデオページ"
+  }
+}

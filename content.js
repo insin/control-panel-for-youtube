@@ -12,6 +12,7 @@ let mobile = location.hostname == 'm.youtube.com'
 let desktop = !mobile
 /** @type {import("./types").Version} */
 let version = mobile ? 'mobile' : 'desktop'
+let lang = document.documentElement.lang
 
 function log(...args) {
   if (debug) {
@@ -25,12 +26,14 @@ function warn(...args) {
   }
 }
 
-//#region Config
+//#region Default config
 /** @type {import("./types").Config} */
 let config = {
+  enabled: true,
   version,
   disableAutoplay: true,
-  enabled: true,
+  hiddenChannels: [],
+  hideChannels: true,
   hideComments: false,
   hideLive: false,
   hideMerchEtc: true,
@@ -46,6 +49,7 @@ let config = {
   hideWatchedThreshold: '100',
   redirectShorts: false,
   // Desktop only
+  downloadTranscript: true,
   fillGaps: false,
   hideChat: false,
   hideEndCards: false,
@@ -57,22 +61,62 @@ let config = {
 }
 //#endregion
 
+//#region Locales
+/**
+ * @type {Record<string, import("./types").Locale>}
+ */
+const locales = {
+  'en': {
+    CHANNELS_NEW_TO_YOU: 'Channels new to you',
+    DOWNLOAD: 'Download',
+    FOR_YOU: 'For you',
+    FROM_RELATED_SEARCHES: 'From related searches',
+    HIDE_CHANNEL: 'Hide channel',
+    MIXES: 'Mixes',
+    PEOPLE_ALSO_WATCHED: 'People also watched',
+    POPULAR_TODAY: 'Popular today',
+    PREVIOUSLY_WATCHED: 'Previously watched',
+    SHORTS: 'Shorts',
+    STREAMED_TITLE: 'views Streamed',
+  },
+  'ja-JP': {
+    CHANNELS_NEW_TO_YOU: '未視聴のチャンネル',
+    DOWNLOAD: 'オフライン',
+    FOR_YOU: 'あなたへのおすすめ',
+    FROM_RELATED_SEARCHES: '関連する検索から',
+    HIDE_CHANNEL: 'チャンネルを隠す',
+    MIXES: 'ミックス',
+    PEOPLE_ALSO_WATCHED: '他の人はこちらも視聴しています',
+    POPULAR_TODAY: '今日の人気動画',
+    PREVIOUSLY_WATCHED: '前に再生した動画',
+    SHORTS: 'ショート',
+    STREAMED_TITLE: '前 に配信済み'
+  }
+}
+
+/**
+ * @param {import("./types").LocaleKey} code
+ * @returns {string}
+ */
+function getString(code) {
+  return (locales[lang] || locales['en'])[code] || locales['en'][code];
+}
+//#endregion
+
+const Svgs = {
+  DELETE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M11 17H9V8h2v9zm4-9h-2v9h2V8zm4-4v1h-1v16H6V5H5V4h4V3h6v1h4zm-2 1H7v15h10V5z"></path></svg>',
+}
+
 //#region State
 /** @type {MutationObserver[]} */
 let globalObservers = []
+/** @type {import("./types").Channel} */
+let lastClickedChannel
 /** @type {HTMLElement} */
-let lastClickedElement
+let $lastClickedElement
 /** @type {MutationObserver[]} */
 let pageObservers = []
 //#endregion
-
-function isSearchPage() {
-  return location.pathname == '/results'
-}
-
-function isVideoPage() {
-  return location.pathname == '/watch'
-}
 
 //#region Utility functions
 function addStyle(css = '') {
@@ -197,6 +241,18 @@ function getElement(selector, {
  })
 }
 
+function isHomePage() {
+  return location.pathname == '/'
+}
+
+function isSearchPage() {
+  return location.pathname == '/results'
+}
+
+function isVideoPage() {
+  return location.pathname == '/watch'
+}
+
 /**
  * Convenience wrapper for the MutationObserver API - the callback is called
  * immediately to support using an observer and its options as a trigger for any
@@ -250,6 +306,117 @@ const configureCss = (() => {
       }
     }
 
+    // We only hide channels in Home, Search and Related videos
+    if (config.hideChannels) {
+      let names = []
+      let onlyNames = []
+      let urls = []
+      for (let channel of config.hiddenChannels) {
+        names.push(channel.name)
+        if (channel.url) {
+          urls.push(channel.url)
+        } else {
+          onlyNames.push(channel.name)
+        }
+      }
+
+      if (desktop) {
+        if (urls.length > 0) {
+          let hrefs = urls.map(url => `[href="${url}"]`).join(', ')
+          hideCssSelectors.push(
+            // Home
+            `ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(#avatar-link:is(${hrefs}))`,
+            // Search
+            `ytd-search ytd-video-renderer:has(#channel-thumbnail:is(${hrefs}))`,
+            `ytd-search ytd-channel-renderer:has(#main-link:is(${hrefs}))`,
+          )
+        }
+        if (names.length > 0) {
+          let titles = names.map(url => `[title="${url}"]`).join(', ')
+          hideCssSelectors.push(
+            // Related videos only have channel names
+            `ytd-compact-video-renderer:has(#text.ytd-channel-name:is(${titles}))`,
+          )
+        }
+        // Channels hidden from a Related video will only have the channel name
+        if (onlyNames.length > 0) {
+          let titles = onlyNames.map(url => `[title="${url}"]`).join(', ')
+          hideCssSelectors.push(
+            // Home
+            `ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(#text.ytd-channel-name:is(${titles}))`,
+            // Search
+            `ytd-search ytd-video-renderer:has(#text.ytd-channel-name:is(${titles}))`,
+            `ytd-search ytd-channel-renderer:has(#text.ytd-channel-name:is(${titles}))`,
+          )
+        }
+
+        // Custom elements can't be cloned so we need to style our own menu items
+        cssRules.push(`
+          .cpfyt-menu-item {
+            align-items: center;
+            cursor: pointer;
+            display: flex;
+            min-height: 36px;
+            padding: 0 12px 0 16px;
+          }
+          .cpfyt-menu-item:focus {
+            position: relative;
+            background-color: var(--paper-item-focused-background-color);
+            outline: 0;
+          }
+          .cpfyt-menu-item:focus::before {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            pointer-events: none;
+            background: var(--paper-item-focused-before-background, currentColor);
+            border-radius: var(--paper-item-focused-before-border-radius, 0);
+            content: var(--paper-item-focused-before-content, "");
+            opacity: var(--paper-item-focused-before-opacity, var(--dark-divider-opacity, 0.12));
+          }
+          .cpfyt-menu-item:hover {
+            background-color: var(--yt-spec-10-percent-layer);
+          }
+          .cpfyt-menu-icon {
+            color: var(--yt-spec-text-primary);
+            fill: currentColor;
+            height: 24px;
+            margin-right: 16px;
+            width: 24px;
+          }
+          .cpfyt-menu-text {
+            color: var(--yt-spec-text-primary);
+            flex-basis: 0.000000001px;
+            flex: 1;
+            font-family: "Roboto","Arial",sans-serif;
+            font-size: 1.4rem;
+            font-weight: 400;
+            line-height: 2rem;
+            margin-right: 24px;
+            white-space: nowrap;
+          }
+        `)
+      }
+      if (mobile) {
+        if (urls.length > 0) {
+          let hrefs = urls.map(url => `[href="${url}"]`).join(', ')
+          hideCssSelectors.push(
+            // Home
+            `.tab-content[tab-identifier="FEwhat_to_watch"] ytm-video-with-context-renderer:has(a:is(${hrefs}))`,
+            // Search
+            `ytm-search ytm-video-with-context-renderer:has(a:is(${hrefs}))`,
+            // Related videos
+            `ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(a:is(${hrefs}))`,
+          )
+        }
+      }
+    } else {
+      // Hide menu item if config is changed after it's added
+      hideCssSelectors.push('#cpfyt-hide-channel')
+    }
+
     if (config.hideChat) {
       if (desktop) {
         hideCssSelectors.push('#chat-container')
@@ -274,8 +441,6 @@ const configureCss = (() => {
           'ytd-video-renderer:has(ytd-thumbnail[is-live-video])',
           // Related video
           'ytd-compact-video-renderer:has(> .ytd-compact-video-renderer > ytd-thumbnail[is-live-video])',
-          // Tab in channel profile
-          'ytd-browse[page-subtype="channels"] yt-tab-shape[tab-title="Live"]',
         )
       }
       if (mobile) {
@@ -296,7 +461,7 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // Chip in Home
-          'yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="Mixes"])',
+          `yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="${getString('MIXES')}"])`,
           // Grid item
           'ytd-rich-item-renderer:has(a#thumbnail[href$="start_radio=1"])',
           // List item
@@ -308,7 +473,7 @@ const configureCss = (() => {
       if (mobile) {
         hideCssSelectors.push(
           // Chip in Home
-          'ytm-chip-cloud-chip-renderer:has(> .chip-container[aria-label="Mixes"])',
+          `ytm-chip-cloud-chip-renderer:has(> .chip-container[aria-label="${getString('MIXES')}"])`,
           // Video
           'ytm-rich-item-renderer:has(> ytm-radio-renderer)',
           // Search result
@@ -328,12 +493,12 @@ const configureCss = (() => {
 
     if (config.hideSuggestedSections) {
       let shelfTitles = [
-        'Channels new to you',
-        'For you',
-        'From related searches',
-        'People also watched',
-        'Popular today',
-        'Previously watched',
+        getString('CHANNELS_NEW_TO_YOU'),
+        getString('FOR_YOU'),
+        getString('FROM_RELATED_SEARCHES'),
+        getString('PEOPLE_ALSO_WATCHED'),
+        getString('POPULAR_TODAY'),
+        getString('PREVIOUSLY_WATCHED'),
       ].map(title => `[data-title="${title}"]`).join(', ')
       if (desktop) {
         hideCssSelectors.push(
@@ -351,21 +516,19 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // Side nav item
-          'ytd-guide-entry-renderer:has(> a[title="Shorts"])',
+          `ytd-guide-entry-renderer:has(> a[title="${getString('SHORTS')}"])`,
           // Mini side nav item
-          'ytd-mini-guide-entry-renderer[aria-label="Shorts"]',
+          `ytd-mini-guide-entry-renderer[aria-label="${getString('SHORTS')}"]`,
           // Grid shelf
           'ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer[is-shorts])',
           // Chips
-          'yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="Shorts"])',
+          `yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="${getString('SHORTS')}"])`,
           // List shelf (except History, so watched Shorts can be removed)
           'ytd-browse:not([page-subtype="history"]) ytd-reel-shelf-renderer',
           'ytd-search ytd-reel-shelf-renderer',
           // List item (except History, so watched Shorts can be removed)
           'ytd-browse:not([page-subtype="history"]) ytd-video-renderer:has(a[href^="/shorts"])',
           'ytd-search ytd-video-renderer:has(a[href^="/shorts"])',
-          // Tab in channel profile
-          'ytd-browse[page-subtype="channels"] yt-tab-shape[tab-title="Shorts"]',
         )
       }
       if (mobile) {
@@ -378,8 +541,6 @@ const configureCss = (() => {
           'ytm-reel-shelf-renderer',
           // List item
           'ytm-video-with-context-renderer:has(a[href^="/shorts"])',
-          // Tab in channel profile
-          'ytm-browse yt-tab-shape[tab-title="Shorts"]',
         )
       }
     }
@@ -400,6 +561,10 @@ const configureCss = (() => {
           // Search results
           '#contents.style-scope.ytd-search-pyv-renderer',
           'ytd-ad-slot-renderer.style-scope.ytd-item-section-renderer',
+          // When an ad is playing
+          '.ytp-ad-player-overlay-flyout-cta',
+          '.ytp-ad-visit-advertiser-button',
+          'ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"]',
           // Above Related videos
           '#player-ads',
           // In Related videos
@@ -422,19 +587,19 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // Grid item (Home, Subscriptions)
-          'ytd-rich-item-renderer:has(#video-title-link[aria-label*="views Streamed"])',
+          `ytd-rich-item-renderer:has(#video-title-link[aria-label*="${getString('STREAMED_TITLE')}"])`,
           // List item (Search)
-          'ytd-video-renderer:has(#video-title[aria-label*="views Streamed"])',
+          `ytd-video-renderer:has(#video-title[aria-label*="${getString('STREAMED_TITLE')}"])`,
           // Related video
-          'ytd-compact-video-renderer:has(#video-title[aria-label*="views Streamed"])',
+          `ytd-compact-video-renderer:has(#video-title[aria-label*="${getString('STREAMED_TITLE')}"])`,
         )
       }
       if (mobile) {
         hideCssSelectors.push(
           // Grid item
-          'ytm-rich-item-renderer:has(.yt-core-attributed-string[aria-label*="views Streamed"])',
+          `ytm-rich-item-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
           // Search result
-          'lazy-list > ytm-video-with-context-renderer:has(.yt-core-attributed-string[aria-label*="views Streamed"])',
+          `lazy-list > ytm-video-with-context-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
         )
       }
     }
@@ -635,8 +800,75 @@ async function disableAutoplay() {
   }
 }
 
+function downloadTranscript() {
+  // TODO Check if the transcript is still loading
+  let $segments = document.querySelector('.ytd-transcript-search-panel-renderer #segments-container')
+  let sections = []
+  let parts = []
+
+  for (let $el of $segments.children) {
+    if ($el.tagName == 'YTD-TRANSCRIPT-SECTION-HEADER-RENDERER') {
+      if (parts.length > 0) {
+        sections.push(parts.join(' '))
+        parts = []
+      }
+      sections.push(/** @type {HTMLElement} */ ($el.querySelector('#title')).innerText.trim())
+    } else {
+      parts.push(/** @type {HTMLElement} */ ($el.querySelector('.segment-text')).innerText.trim())
+    }
+  }
+  if (parts.length > 0) {
+    sections.push(parts.join(' '))
+  }
+
+  let $link = document.createElement('a')
+  log('transcript', sections.join('\n\n'))
+  let url = URL.createObjectURL(new Blob([sections.join('\n\n')], {type: "text/plain"}))
+  let title = /** @type {HTMLElement} */ (document.querySelector('#above-the-fold #title'))?.innerText ?? 'transcript'
+  $link.setAttribute('href', url)
+  $link.setAttribute('download', `${title}.txt`)
+  $link.click()
+  URL.revokeObjectURL(url)
+}
+
+/**
+ * Desktop menus appear in <ytd-popup-container>. Once created, the same element
+ * is reused for subsequent menus.
+ */
 async function observeDesktopMenus() {
-  // TODO
+  let $popupContainer = await getElement('ytd-popup-container', {name: 'popup container'})
+  let $dropdown = /** @type {HTMLElement} */ ($popupContainer.querySelector('tp-yt-iron-dropdown'))
+
+  function observeDropdown() {
+    if (!$dropdown) return
+
+    globalObservers.push(
+      observeElement($dropdown, () => {
+        if ($dropdown.getAttribute('aria-hidden') != 'true') {
+          onDesktopMenuAppeared($dropdown)
+        }
+      }, 'dropdown', {attributes: true, attributeFilter: ['aria-hidden']})
+    )
+  }
+
+  observeDropdown()
+
+  if (!$dropdown) {
+    globalObservers.push(
+      observeElement($popupContainer, (mutations) => {
+        for (let mutation of mutations) {
+          for (let $el of mutation.addedNodes) {
+            if ($el.nodeName == 'TP-YT-IRON-DROPDOWN') {
+              $dropdown = /** @type {HTMLElement} */ ($el)
+              observeDropdown()
+              disconnectGlobalObserver('popup container')
+              return
+            }
+          }
+        }
+      }, 'popup container')
+    )
+  }
 }
 
 /**
@@ -731,14 +963,198 @@ function handleCurrentUrl() {
   }
 }
 
+function addDownloadTranscriptToDesktopMenu($menu) {
+  if (!isVideoPage()) return
+
+  let $transcript = $lastClickedElement.closest('[target-id="engagement-panel-searchable-transcript"]')
+  if (!$transcript) return
+
+  if ($menu.querySelector('.cpfyt-menu-item')) return
+
+  let $menuItems = $menu.querySelector('#items')
+  $menuItems.insertAdjacentHTML('beforeend', `
+    <div class="cpfyt-menu-item" tabindex="0">
+      <div class="cpfyt-menu-text">
+        ${getString('DOWNLOAD')}
+      </div>
+    </div>
+  `.trim())
+  let $item = $menuItems.lastElementChild
+  function download() {
+    downloadTranscript()
+    // Dismiss the menu
+    // @ts-ignore
+    document.querySelector('#content')?.click()
+  }
+  $item.addEventListener('click', download)
+  $item.addEventListener('keydown', (e) => {
+    if (e.key == ' ' || e.key == 'Enter') {
+      e.preventDefault()
+      download()
+    }
+  })
+}
+
+function addHideChannelToDesktopMenu($menu) {
+  /** @type {import("./types").Channel} */
+  let channel
+  if (isSearchPage()) {
+    // List item
+    // #channel-thumbnail [href]
+    // #text.ytd-channel-name [title]
+    //   a [href]
+    let $video = $lastClickedElement.closest('ytd-video-renderer')
+    if ($video) {
+      let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('#text.ytd-channel-name a'))
+      if ($link) {
+        channel = {
+          name: $link.textContent,
+          url: $link.pathname,
+        }
+      } else {
+        warn('unable to find channel name link in <ytd-video-renderer>')
+      }
+    }
+  }
+  else if (isVideoPage()) {
+    // Related video
+    // #text.ytd-channel-name [title] (name only - no channel link anywhere)
+    let $video= $lastClickedElement.closest('ytd-compact-video-renderer')
+    if ($video) {
+      let $link = /** @type {HTMLElement} */ ($video.querySelector('#text.ytd-channel-name'))
+      if ($link) {
+        channel = {
+          name: $link.getAttribute('title')
+        }
+      } else {
+        warn('unable to find channel name link in <ytd-compact-video-renderer>')
+      }
+    }
+  }
+  else if (isHomePage()) {
+    // Grid item
+    // #avatar-link [href]
+    // #text.ytd-channel-name [title]
+    //   a [href]
+    let $video = $lastClickedElement.closest('ytd-rich-item-renderer')
+    let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('#text.ytd-channel-name a'))
+    if ($link) {
+      channel = {
+        name: $link.textContent,
+        url: $link.pathname,
+      }
+    } else {
+      warn('unable to find channel name link in <ytd-rich-item-renderer>')
+    }
+  }
+
+  if (!channel) return
+  lastClickedChannel = channel
+
+  if ($menu.querySelector('.cpfyt-menu-item')) return
+
+  let $menuItems = $menu.querySelector('#items')
+  $menuItems.insertAdjacentHTML('beforeend', `
+    <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel">
+      <div class="cpfyt-menu-icon">
+        ${Svgs.DELETE}
+      </div>
+      <div class="cpfyt-menu-text">
+        ${getString('HIDE_CHANNEL')}
+      </div>
+    </div>
+  `.trim())
+  let $item = $menuItems.lastElementChild
+  function hideChannel() {
+    config.hiddenChannels.unshift(lastClickedChannel)
+    storeConfigChanges({hiddenChannels: config.hiddenChannels})
+    configureCss()
+    // Dismiss the menu
+    // @ts-ignore
+    document.querySelector('#content')?.click()
+  }
+  $item.addEventListener('click', hideChannel)
+  $item.addEventListener('keydown', (e) => {
+    if (e.key == ' ' || e.key == 'Enter') {
+      e.preventDefault()
+      hideChannel()
+    }
+  })
+  // $menuItems.lastElementChild.setAttribute('has-separator', '')
+  // $menu.querySelector('ytd-menu-popup-renderer').style.maxHeight = 'auto'
+}
+
+/**
+ * @param {HTMLElement} $menu
+ */
+async function addHideChannelToMobileMenu($menu) {
+  /** @type {import("./types").Channel} */
+  let channel
+  if (isHomePage() || isSearchPage() || isVideoPage()) {
+    let $video = $lastClickedElement.closest('ytm-video-with-context-renderer')
+    if ($video) {
+      let $thumbnailLink =/** @type {HTMLAnchorElement} */ ($video.querySelector('ytm-channel-thumbnail-with-link-renderer > a'))
+      let $name = /** @type {HTMLElement} */ ($video.querySelector('ytm-badge-and-byline-renderer .yt-core-attributed-string'))
+      if ($name) {
+        channel = {
+          name: $name.textContent,
+          url: $thumbnailLink?.pathname,
+        }
+      } else {
+        warn('unable to find channel name in <ytm-video-with-context-renderer>')
+      }
+    }
+  }
+
+  if (!channel) return
+  lastClickedChannel = channel
+
+  let $menuItems = $menu.querySelector($menu.id == 'menu' ? '.menu-content' : '.bottom-sheet-media-menu-item')
+  // XXX Figure out what we have to wait for to add menu items ASAP without them getting removed
+  await new Promise((resolve) => setTimeout(resolve, 50))
+  let hasIcon = Boolean($menuItems.querySelector('c3-icon'))
+  $menuItems.insertAdjacentHTML('beforeend', `
+    <ytm-menu-item id="cpfyt-hide-channel">
+      <button class="menu-item-button">
+        ${hasIcon ? `<c3-icon>
+          <div style="width: 100%; height: 100%; fill: currentcolor;">
+            ${Svgs.DELETE}
+          </div>
+        </c3-icon>` : ''}
+        <span class="yt-core-attributed-string" role="text">
+          ${getString('HIDE_CHANNEL')}
+        </span>
+      </button>
+    </ytm-menu-item>
+  `.trim())
+  let $button = $menuItems.lastElementChild.querySelector('button')
+  $button.addEventListener('click', () => {
+    config.hiddenChannels.unshift(lastClickedChannel)
+    storeConfigChanges({hiddenChannels: config.hiddenChannels})
+    configureCss()
+    // Dismiss the menu
+    let $overlay = $menu.id == 'menu' ? $menu.querySelector('c3-overlay') : document.querySelector('.bottom-sheet-overlay')
+    // @ts-ignore
+    $overlay?.click()
+  })
+}
+
 /** @param {HTMLElement} $menu */
 function onDesktopMenuAppeared($menu) {
-  log('menu appeared', {lastClickedElement})
+  log('menu appeared', {$lastClickedElement})
+
+  if (config.downloadTranscript) {
+    addDownloadTranscriptToDesktopMenu($menu)
+  }
+  if (config.hideChannels) {
+    addHideChannelToDesktopMenu($menu)
+  }
 }
 
 /** @param {HTMLElement} $menu */
 function onMobileMenuAppeared($menu) {
-  log('menu appeared', {lastClickedElement})
+  log('menu appeared', {$lastClickedElement})
+
   if (config.hideOpenApp && (isSearchPage() || isVideoPage())) {
     let menuItems = $menu.querySelectorAll('ytm-menu-item')
     for (let $menuItem of menuItems) {
@@ -748,6 +1164,10 @@ function onMobileMenuAppeared($menu) {
         break
       }
     }
+  }
+
+  if (config.hideChannels) {
+    addHideChannelToMobileMenu($menu)
   }
 }
 
@@ -839,9 +1259,15 @@ function tweakVideoPage() {
 //#endregion
 
 //#region Main
+let isUserscript =  !(
+  typeof GM == 'undefined' &&
+  typeof chrome != 'undefined' &&
+  typeof chrome.storage != 'undefined'
+)
+
 /** @param {MouseEvent} e */
 function onDocumentClick(e) {
-  lastClickedElement = /** @type {HTMLElement} */ (e.target)
+  $lastClickedElement = /** @type {HTMLElement} */ (e.target)
 }
 
 function main() {
@@ -899,11 +1325,16 @@ function onConfigChange(changes) {
   }
 }
 
-if (
-  typeof GM == 'undefined' &&
-  typeof chrome != 'undefined' &&
-  typeof chrome.storage != 'undefined'
-) {
+/** @param {Partial<import("./types").Config} configChanges */
+function storeConfigChanges(configChanges) {
+  if (isUserscript) return
+  chrome.storage.local.onChanged.removeListener(onConfigChange)
+  chrome.storage.local.set(configChanges, () => {
+    chrome.storage.local.onChanged.addListener(onConfigChange)
+  })
+}
+
+if (!isUserscript) {
   chrome.storage.local.get((storedConfig) => {
     Object.assign(config, storedConfig)
     log('initial config', {...config, version})
