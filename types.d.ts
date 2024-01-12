@@ -10,6 +10,7 @@ export type Config = {
   hiddenChannels: Channel[]
   hideChannels: boolean
   hideComments: boolean
+  hideHiddenVideos: boolean
   hideLive: boolean
   hideMerchEtc: boolean
   hideMetadata: boolean

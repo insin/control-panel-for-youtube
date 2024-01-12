@@ -35,6 +35,7 @@ let config = {
   hiddenChannels: [],
   hideChannels: true,
   hideComments: false,
+  hideHiddenVideos: false,
   hideLive: false,
   hideMerchEtc: true,
   hideMetadata: false,
@@ -103,6 +104,8 @@ function getString(code) {
 }
 //#endregion
 
+const undoHideDelaySeconds = 5
+
 const Svgs = {
   DELETE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M11 17H9V8h2v9zm4-9h-2v9h2V8zm4-4v1h-1v16H6V5H5V4h4V3h6v1h4zm-2 1H7v15h10V5z"></path></svg>',
 }
@@ -129,7 +132,8 @@ function addStyle(css = '') {
   return $style
 }
 
-function currentUrlIsNot(currentUrl) {
+function currentUrlChanges() {
+  let currentUrl = getCurrentUrl()
   return () => currentUrl != getCurrentUrl()
 }
 
@@ -247,6 +251,10 @@ function isHomePage() {
 
 function isSearchPage() {
   return location.pathname == '/results'
+}
+
+function isSubscriptionsPage() {
+  return location.pathname == '/feed/subscriptions'
 }
 
 function isVideoPage() {
@@ -430,6 +438,58 @@ const configureCss = (() => {
       if (mobile) {
         hideCssSelectors.push('ytm-item-section-renderer[section-identifier="comments-entry-point"]')
       }
+    }
+
+    if (config.hideHiddenVideos) {
+      // From https://kittygiraudel.com/2021/04/11/css-pie-timer-revisited/
+      // The mobile version doesn't have any HTML hooks for appearance mode, so
+      // we'll just use the current backgroundColor.
+      let bgColor = getComputedStyle(document.documentElement).backgroundColor
+      cssRules.push(`
+        .cpfyt-pie {
+          --cpfyt-pie-background-color: ${bgColor};
+          --cpfyt-pie-color: ${bgColor == 'rgb(255, 255, 255)' ? '#065fd4' : '#3ea6ff'};
+          width: 1em;
+          height: 1em;
+          font-size: 200%;
+          position: relative;
+          border-radius: 50%;
+          margin: 0.5em;
+          display: inline-block;
+        }
+        .cpfyt-pie::before,
+        .cpfyt-pie::after {
+          content: "";
+          width: 50%;
+          height: 100%;
+          position: absolute;
+          left: 0;
+          border-radius: 0.5em 0 0 0.5em;
+          transform-origin: center right;
+          animation-duration: ${undoHideDelaySeconds}s;
+        }
+        .cpfyt-pie::before {
+          z-index: 1;
+          background-color: var(--cpfyt-pie-background-color);
+          animation-name: cpfyt-mask;
+          animation-timing-function: steps(1);
+        }
+        .cpfyt-pie::after {
+          background-color: var(--cpfyt-pie-color);
+          animation-name: cpfyt-rotate;
+          animation-timing-function: linear;
+        }
+        @keyframes cpfyt-rotate {
+          to { transform: rotate(1turn); }
+        }
+        @keyframes cpfyt-mask {
+          50%, 100% {
+            background-color: var(--cpfyt-pie-color);
+            transform: rotate(0.5turn);
+          }
+        }
+      `)
+      hideCssSelectors.push('.cpfyt-hidden-video')
     }
 
     if (config.hideLive) {
@@ -749,7 +809,7 @@ async function disableAutoplay() {
   if (desktop) {
     let $autoplayButton = await getElement('button[data-tooltip-target-id="ytp-autonav-toggle-button"]', {
       name: 'Autoplay button',
-      stopIf: currentUrlIsNot(getCurrentUrl()),
+      stopIf: currentUrlChanges(),
     })
     if (!$autoplayButton) return
 
@@ -776,7 +836,7 @@ async function disableAutoplay() {
     // Appearance of the Autoplay button may be delayed until interaction
     let $customControl = await getElement('#player-control-container > ytm-custom-control', {
       name: 'Autoplay control container',
-      stopIf: currentUrlIsNot(getCurrentUrl()),
+      stopIf: currentUrlChanges(),
     })
     if (!$customControl) return
 
@@ -954,6 +1014,9 @@ function handleCurrentUrl() {
     if (config.redirectShorts) {
       redirectShort()
     }
+  }
+  else if (isSubscriptionsPage()) {
+    tweakSubscriptionsPage()
   }
   else if (isVideoPage()) {
     tweakVideoPage()
@@ -1249,6 +1312,88 @@ async function tweakSearchPage() {
   })
   if (!$sections) return
   */
+}
+
+async function tweakSubscriptionsPage() {
+  // TODO Observe individual video elements when the menu is opened instead
+  if (config.hideHiddenVideos) {
+    if (desktop) {
+      let $contents = await getElement('ytd-rich-grid-renderer > #contents', {
+        name: 'subscriptions content',
+        stopIf: currentUrlChanges(),
+      })
+      if (!$contents) return
+
+      pageObservers.push(
+        observeElement($contents, (mutations) => {
+          for (let mutation of mutations) {
+            let $video =/** @type {HTMLElement} */ (mutation.target)
+            if ($video.hasAttribute('is-dismissed')) {
+              log('video hidden, showing countdown timer')
+              let $actions = $video.querySelector('ytd-notification-multi-action-renderer')
+              let $undoButton = $actions.querySelector('button')
+              function cleanup() {
+                $undoButton.removeEventListener('click', undoClicked)
+                $video.querySelector('.cpfyt-pie')?.remove()
+              }
+              let hideHiddenVideoTimeout = setTimeout(() => {
+                $video.closest('ytd-rich-item-renderer')?.classList.add('cpfyt-hidden-video')
+                cleanup()
+              }, undoHideDelaySeconds * 1000)
+              function undoClicked() {
+                clearTimeout(hideHiddenVideoTimeout)
+                cleanup()
+              }
+              $undoButton.addEventListener('click', undoClicked)
+              $actions.insertAdjacentHTML('beforeend', '<div class="cpfyt-pie"></div>')
+            }
+          }
+        }, 'subscriptions contents (for videos being hidden)', {
+          attributes: true,
+          attributeFilter: ['is-dismissed'],
+          subtree: true,
+        })
+      )
+    }
+    if (mobile) {
+      let $contents = await getElement('ytm-section-list-renderer lazy-list', {
+        name: 'subscriptions contents',
+        stopIf: currentUrlChanges(),
+      })
+      if (!$contents) return
+
+      pageObservers.push(
+        observeElement($contents, (mutations) => {
+          for (let mutation of mutations) {
+            for (let $el of mutation.addedNodes) {
+              if ($el.nodeName == 'YTM-NOTIFICATION-MULTI-ACTION-RENDERER') {
+                log('video hidden, showing countdown timer')
+                let $actions = /** @type {HTMLElement} */ ($el).firstElementChild
+                let $undoButton = /** @type {HTMLElement} */ ($el).querySelector('button')
+                function cleanup() {
+                  $undoButton.removeEventListener('click', undoClicked)
+                  $actions.querySelector('.cpfyt-pie')?.remove()
+                }
+                let hideHiddenVideoTimeout = setTimeout(() => {
+                  $actions.closest('ytm-item-section-renderer')?.classList.add('cpfyt-hidden-video')
+                  cleanup()
+                }, undoHideDelaySeconds * 1000)
+                function undoClicked() {
+                  clearTimeout(hideHiddenVideoTimeout)
+                  cleanup()
+                }
+                $undoButton.addEventListener('click', undoClicked)
+                $actions.insertAdjacentHTML('beforeend', '<div class="cpfyt-pie"></div>')
+              }
+            }
+          }
+        }, 'subscriptions contents (for videos being hidden)', {
+          childList: true,
+          subtree: true,
+        })
+      )
+    }
+  }
 }
 
 function tweakVideoPage() {

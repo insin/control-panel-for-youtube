@@ -59,6 +59,12 @@
   "hideExploreButton": {
     "message": "探索ボタンを非表示"
   },
+  "hideHiddenVideos": {
+    "message": "非表示にされた動画を非表示"
+  },
+  "hideHiddenVideosNote": {
+    "message": "5秒後に「元に戻す」ボタンを非表示にします"
+  },
   "hideLive": {
     "message": "ライブ動画を非表示"
   },

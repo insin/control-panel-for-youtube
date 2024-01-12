@@ -63,6 +63,12 @@
   "hideExploreButton": {
     "message": "Hide Explore button"
   },
+  "hideHiddenVideos": {
+    "message": "Hide hidden videos"
+  },
+  "hideHiddenVideosNote": {
+    "message": "Hides the \"Undo\" button after 5 seconds"
+  },
   "hideLive": {
     "message": "Hide Live videos"
   },
