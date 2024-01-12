@@ -46,6 +46,7 @@ let config = {
   hideSponsored: true,
   hideStreamed: false,
   hideUpcoming: false,
+  hideVoiceSearch: false,
   hideWatched: false,
   hideWatchedThreshold: '100',
   redirectShorts: false,
@@ -676,6 +677,15 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push('ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="UPCOMING"])')
+      }
+    }
+
+    if (config.hideVoiceSearch) {
+      if (desktop) {
+        hideCssSelectors.push('#voice-search-button')
+      }
+      if (mobile) {
+        hideCssSelectors.push('.searchbox-voice-search-wrapper')
       }
     }
 

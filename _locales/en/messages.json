@@ -111,6 +111,9 @@
   "hideUpcoming": {
     "message": "Hide Upcoming videos"
   },
+  "hideVoiceSearch": {
+    "message": "Hide Search with your voice"
+  },
   "hideWatched": {
     "message": "Hide watched videos"
   },

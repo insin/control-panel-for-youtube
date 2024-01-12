@@ -52,6 +52,7 @@ ${messages.uiTweaks}:
 • ${messages.hideExploreButton} 📱
 • ${messages.hideOpenApp} 📱
 • ${messages.tidyGuideSidebar} 🖥️
+• ${messages.hideVoiceSearch}
 
 ${messages.embeddedVideos}:
 

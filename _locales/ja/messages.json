@@ -107,6 +107,9 @@
   "hideUpcoming": {
     "message": "予定されている動画を非表示"
   },
+  "hideVoiceSearch": {
+    "message": "非表示 音声検索"
+  },
   "hideWatched": {
     "message": "視聴済みの動画を非表示"
   },

@@ -21,6 +21,7 @@ export type Config = {
   hideStreamed: boolean
   hideSuggestedSections: boolean
   hideUpcoming: boolean
+  hideVoiceSearch: boolean
   hideWatched: boolean
   hideWatchedThreshold: string
   redirectShorts: boolean

@@ -41,6 +41,7 @@ For installations links and FAQs visit the [Control Panel for YouTube website](h
 - Hide Explore button 📱
 - Hide Open App links 📱
 - Tidy Guide sidebar 🖥️
+- Hide Search with your voice
 
 ### Embedded videos
 
