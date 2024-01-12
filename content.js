@@ -701,6 +701,7 @@ const configureCss = (() => {
           `ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(#progress${percentSelector})`,
           // List item (except History, so watched videos can be removed)
           `ytd-browse:not([page-subtype="history"]) ytd-video-renderer:has(#progress${percentSelector})`,
+          `ytd-search ytd-video-renderer:has(#progress${percentSelector})`,
           // Related video
           `ytd-compact-video-renderer:has(#progress${percentSelector})`,
         )
