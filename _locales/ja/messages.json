@@ -29,6 +29,15 @@
   "fillGaps": {
     "message": "非表示になっているビデオによって作成されたギャップを埋める"
   },
+  "hiddenChannelsSummary": {
+    "message": "隠しチャンネル ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
+  },
   "hideChannels": {
     "message": "チャンネルを非表示"
   },

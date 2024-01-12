@@ -94,7 +94,9 @@ let defaultConfig = {
 /** @type {import("./types").Config} */
 let optionsConfig
 
-let $hiddenChannels = document.querySelector('#hiddenChannels')
+let $hiddenChannels = /** @type {HTMLElement} */ (document.querySelector('#hiddenChannels'))
+let $hiddenChannelsDetails = /** @type {HTMLDetailsElement} */ (document.querySelector('#hiddenChannelsDetails'))
+let $hiddenChannelsSummary = /** @type {HTMLElement} */ (document.querySelector('#hiddenChannelsSummary'))
 
 /**
  * @param {keyof HTMLElementTagNameMap} tagName
@@ -172,12 +174,25 @@ function storeConfigChanges(changes) {
   })
 }
 
+function shouldDisplayHiddenChannels() {
+  return optionsConfig.hideChannels && optionsConfig.hiddenChannels.length > 0
+}
+
 function updateDisplay() {
   $body.classList.toggle('desktop', optionsConfig.version == 'desktop')
   $body.classList.toggle('disabled', !optionsConfig.enabled)
-  $body.classList.toggle('hidingChannels', optionsConfig.hideChannels)
+  $body.classList.toggle('hiddenChannels', shouldDisplayHiddenChannels())
   $body.classList.toggle('hidingWatched', optionsConfig.hideWatched)
   $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
+  updateHiddenChannelsDisplay()
+}
+
+function updateHiddenChannelsDisplay() {
+  if (!shouldDisplayHiddenChannels()) return
+
+  $hiddenChannelsSummary.textContent = chrome.i18n.getMessage('hiddenChannelsSummary', String(optionsConfig.hiddenChannels.length))
+
+  if ($hiddenChannelsDetails.open) return
 
   while ($hiddenChannels.hasChildNodes()) $hiddenChannels.firstChild.remove()
   for (let channel of optionsConfig.hiddenChannels) {
@@ -211,6 +226,7 @@ function main() {
     updateDisplay()
 
     $form.addEventListener('change', onFormChanged)
+    $hiddenChannelsDetails.addEventListener('toggle', updateHiddenChannelsDisplay)
     chrome.storage.local.onChanged.addListener(onStorageChanged)
   })
 }

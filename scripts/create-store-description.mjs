@@ -28,8 +28,11 @@ ${messages.videoLists}:
 • ${messages.hideMixes}
 • ${messages.hideUpcoming}
 • ${messages.hideWatched}
+• ${messages.hideHiddenVideos}
+  • ${messages.hideHiddenVideosNote}
 • ${messages.hideChannels}
   • ${messages.hideChannelsNote}
+• ${messages.fillGaps}
 
 ${messages.videoPages}:
 

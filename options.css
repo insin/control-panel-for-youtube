@@ -23,7 +23,7 @@ body.macOS.browserAction {
 }
 
 body.desktop .mobile,
-body:not(.hidingChannels) #hiddenChannels,
+body:not(.hiddenChannels) #hiddenChannelsDetails,
 body:not(.hidingWatched) .hidingWatched,
 body.mobile .desktop {
   display: none;
@@ -85,6 +85,18 @@ section.group > p {
 section.group > section > p {
   margin: 0 40px 12px 0;
   font-size: 12px;
+}
+
+details {
+  margin-left: 12px;
+}
+
+summary {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
 }
 
 .icon {

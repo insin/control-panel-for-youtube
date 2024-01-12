@@ -17,8 +17,11 @@ For installations links and FAQs visit the [Control Panel for YouTube website](h
 - Hide Mixes
 - Hide Upcoming videos
 - Hide watched videos
+- Hide hidden videos
+  - Hides the "Undo" button after 5 seconds
 - Hide channels
   - Adds "Hide channel" to video menus
+- Fill gaps created by hidden videos
 
 ### Video pages
 

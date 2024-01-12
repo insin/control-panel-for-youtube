@@ -33,6 +33,15 @@
   "fillGaps": {
     "message": "Fill gaps created by hidden videos"
   },
+  "hiddenChannelsSummary": {
+    "message": "Hidden channels ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
+  },
   "hideChannels": {
     "message": "Hide channels"
   },
