@@ -11,6 +11,9 @@
   "downloadTranscript": {
     "message": "Make Transcript downloadable"
   },
+  "embeddedVideos": {
+    "message": "Embedded videos"
+  },
   "enabled": {
     "message": "Enabled"
   },
@@ -44,6 +47,15 @@
   },
   "hideComments": {
     "message": "Hide Comments"
+  },
+  "hideEmbedEndVideos": {
+    "message": "Hide video endscreen content"
+  },
+  "hideEmbedPauseOverlay": {
+    "message": "Hide pause overlay"
+  },
+  "hideEmbedShareButton": {
+    "message": "Hide Share button"
   },
   "hideEndCards": {
     "message": "Hide video end cards"

@@ -11,6 +11,9 @@
   "downloadTranscript": {
     "message": "トランスクリプトをダウンロード可能にする"
   },
+  "embeddedVideos": {
+    "message": "埋め込まれた動画"
+  },
   "enabled": {
     "message": "有効"
   },
@@ -40,6 +43,15 @@
   },
   "hideComments": {
     "message": "コメントを非表示"
+  },
+  "hideEmbedEndVideos": {
+    "message": "ビデオのエンドスクリーンのコンテンツを非表示"
+  },
+  "hideEmbedPauseOverlay": {
+    "message": "一時停止オーバーレイを非表示"
+  },
+  "hideEmbedShareButton": {
+    "message": "共有ボタンを非表示"
   },
   "hideEndCards": {
     "message": "ビデオのエンドカードを非表示"

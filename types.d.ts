@@ -33,6 +33,10 @@ export type Config = {
   // Mobile only
   hideExploreButton: boolean
   hideOpenApp: boolean
+  // Embedded videos
+  hideEmbedEndVideos: boolean
+  hideEmbedPauseOverlay: boolean
+  hideEmbedShareButton: boolean
 }
 
 export type Locale = {

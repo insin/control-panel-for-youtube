@@ -4,6 +4,7 @@ for (let translationId of [
   'anyPercent',
   'disableAutoplay',
   'downloadTranscript',
+  'embeddedVideos',
   'enabled',
   'experimentalFeatures',
   'fillGaps',
@@ -12,6 +13,9 @@ for (let translationId of [
   'hideChannelsNote',
   'hideChat',
   'hideComments',
+  'hideEmbedEndVideos',
+  'hideEmbedPauseOverlay',
+  'hideEmbedShareButton',
   'hideEndCards',
   'hideEndVideos',
   'hideExploreButton',
@@ -79,6 +83,10 @@ let defaultConfig = {
   // Mobile only
   hideExploreButton: true,
   hideOpenApp: true,
+  // Embedded videos
+  hideEmbedEndVideos: false,
+  hideEmbedPauseOverlay: false,
+  hideEmbedShareButton: false,
 }
 //#endregion
 

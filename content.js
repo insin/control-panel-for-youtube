@@ -1312,11 +1312,12 @@ function configChanged(changes) {
   }
 }
 
-function onConfigChange(changes) {
+/** @param {{[key: string]: chrome.storage.StorageChange}} storageChanges */
+function onConfigChange(storageChanges) {
   let configChanges = Object.fromEntries(
-    Object.entries(changes)
+    Object.entries(storageChanges)
       // Don't change the version based on other pages
-      .filter(([key]) => key != 'version')
+      .filter(([key]) => config.hasOwnProperty(key) && key != 'version')
       .map(([key, {newValue}]) => [key, newValue])
   )
   if (Object.keys(configChanges).length > 0) {
