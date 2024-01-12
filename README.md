@@ -6,25 +6,44 @@
 
 For installations links and FAQs visit the [Control Panel for YouTube website](https://jbscript.dev/control-panel-for-youtube)
 
-## Features
+## Features (🖥️: Desktop only, 📱: Mobile only)
 
-### Video listings
+### Video lists
 
 - Hide Shorts
-- Hide Sponsored videos & Promos
+- Hide Sponsored videos & promos
 - Hide Live videos
 - Hide Streamed videos
+- Hide Mixes
 - Hide Upcoming videos
+- Hide watched videos
+- Hide channels
+  - Adds "Hide channel" to video menus
 
-### Video page
+### Video pages
 
 - Disable Autoplay
 - Hide Related videos
-- Hide end screen cards
-- Hide end screen videos
+- Hide video end cards 🖥️
+- Hide video endscreen content 🖥️
+- Hide Merch, Offers etc. 🖥️
+- Hide video metadata
 - Hide Comments
-- Hide Chat
+- Hide Chat 🖥️
+- Make Transcript downloadable 🖥️
 - Redirect Shorts to the normal player
+
+### UI tweaks
+
+- Hide Explore button 📱
+- Hide Open App links 📱
+- Tidy Guide sidebar 🖥️
+
+### Embedded videos
+
+- Hide Share button
+- Hide pause overlay
+- Hide video endscreen content
 
 ## Attribution
 
