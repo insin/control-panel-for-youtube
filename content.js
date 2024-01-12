@@ -12,7 +12,7 @@ let mobile = location.hostname == 'm.youtube.com'
 let desktop = !mobile
 /** @type {import("./types").Version} */
 let version = mobile ? 'mobile' : 'desktop'
-let lang = document.documentElement.lang
+let lang = mobile ? document.body.lang : document.documentElement.lang
 
 function log(...args) {
   if (debug) {
