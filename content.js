@@ -414,7 +414,7 @@ const configureCss = (() => {
           let hrefs = urls.map(url => `[href="${url}"]`).join(', ')
           hideCssSelectors.push(
             // Home
-            `.tab-content[tab-identifier="FEwhat_to_watch"] ytm-video-with-context-renderer:has(a:is(${hrefs}))`,
+            `ytm-rich-item-renderer:has(a:is(${hrefs}))`,
             // Search
             `ytm-search ytm-video-with-context-renderer:has(a:is(${hrefs}))`,
             // Related videos
@@ -506,7 +506,16 @@ const configureCss = (() => {
         )
       }
       if (mobile) {
-        hideCssSelectors.push('ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])')
+        hideCssSelectors.push(
+          // Home
+          'ytm-rich-item-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
+          // Subscriptions
+          '.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
+          // Search
+          'ytm-search ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
+          // Related videos
+          'ytm-item-section-renderer[section-identifier="related-items"]:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
+        )
       }
     }
 
@@ -539,7 +548,7 @@ const configureCss = (() => {
         hideCssSelectors.push(
           // Chip in Home
           `ytm-chip-cloud-chip-renderer:has(> .chip-container[aria-label="${getString('MIXES')}"])`,
-          // Video
+          // Home
           'ytm-rich-item-renderer:has(> ytm-radio-renderer)',
           // Search result
           'ytm-compact-radio-renderer',
@@ -579,12 +588,14 @@ const configureCss = (() => {
         hideCssSelectors.push(
           // Bottom nav item
           'ytm-pivot-bar-item-renderer:has(> div.pivot-shorts)',
-          // Grid shelf
+          // Home shelf
           'ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
-          // List shelf
-          'ytm-reel-shelf-renderer',
-          // List item
-          'ytm-video-with-context-renderer:has(a[href^="/shorts"])',
+          // Subscriptions shelf
+          '.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(ytm-reel-shelf-renderer)',
+          // Search shelf
+          'ytd-search lazy-list > ytm-reel-shelf-renderer',
+          // Search
+          'ytm-search ytm-video-with-context-renderer:has(a[href^="/shorts"])',
         )
       }
     }
@@ -644,10 +655,14 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push(
-          // Grid item
+          // Home
           `ytm-rich-item-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
+          // Subscriptions
+          `.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
           // Search result
-          `lazy-list > ytm-video-with-context-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
+          `ytm-search ytm-video-with-context-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
+          // Related videos
+          `ytm-item-section-renderer[section-identifier="related-items"]:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
         )
       }
     }
@@ -662,7 +677,10 @@ const configureCss = (() => {
         )
       }
       if (mobile) {
-        hideCssSelectors.push('ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="UPCOMING"])')
+        hideCssSelectors.push(
+          // Subscriptions
+          '.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="UPCOMING"])'
+        )
       }
     }
 
@@ -694,7 +712,14 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push(
-          `ytm-video-with-context-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`
+          // Home
+          `ytm-rich-item-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
+          // Subscriptions
+          `.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
+          // Search
+          `ytm-search ytm-video-with-context-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
+          // Related videos
+          `ytm-item-section-renderer[section-identifier="related-items"]:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
         )
       }
     }
