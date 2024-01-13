@@ -50,6 +50,7 @@ ${messages.videoPages}:
 ${messages.uiTweaks}:
 
 • ${messages.hideExploreButton} 📱
+• ${messages.hideSubscriptionsChannelList} 📱
 • ${messages.hideOpenApp} 📱
 • ${messages.tidyGuideSidebar} 🖥️
 • ${messages.hideVoiceSearch}
