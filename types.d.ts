@@ -3,7 +3,33 @@ export type Channel = {
   url?: string
 }
 
-export type Config = {
+export type EmbedConfig = {
+  enabled: boolean
+  hideEmbedEndVideos: boolean
+  hideEmbedPauseOverlay: boolean
+  hideEmbedShareButton: boolean
+}
+
+export type Locale = {
+  [key in LocaleKey]?: string
+}
+
+export type LocaleKey =
+  | 'CHANNELS_NEW_TO_YOU'
+  | 'DOWNLOAD'
+  | 'FOR_YOU'
+  | 'FROM_RELATED_SEARCHES'
+  | 'HIDE_CHANNEL'
+  | 'MIXES'
+  | 'PEOPLE_ALSO_WATCHED'
+  | 'POPULAR_TODAY'
+  | 'PREVIOUSLY_WATCHED'
+  | 'SHORTS'
+  | 'STREAMED_TITLE'
+
+export type OptionsConfig = EmbedConfig & SiteConfig
+
+export type SiteConfig = {
   enabled: boolean
   version: Version
   disableAutoplay: boolean
@@ -35,27 +61,6 @@ export type Config = {
   // Mobile only
   hideExploreButton: boolean
   hideOpenApp: boolean
-  // Embedded videos
-  hideEmbedEndVideos: boolean
-  hideEmbedPauseOverlay: boolean
-  hideEmbedShareButton: boolean
 }
-
-export type Locale = {
-  [key in LocaleKey]?: string
-}
-
-export type LocaleKey =
-  | 'CHANNELS_NEW_TO_YOU'
-  | 'DOWNLOAD'
-  | 'FOR_YOU'
-  | 'FROM_RELATED_SEARCHES'
-  | 'HIDE_CHANNEL'
-  | 'MIXES'
-  | 'PEOPLE_ALSO_WATCHED'
-  | 'POPULAR_TODAY'
-  | 'PREVIOUSLY_WATCHED'
-  | 'SHORTS'
-  | 'STREAMED_TITLE'
 
 export type Version = 'mobile' | 'desktop'

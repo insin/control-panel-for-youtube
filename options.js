@@ -52,7 +52,7 @@ if (navigator.userAgent.includes('Safari/') && !/Chrom(e|ium)\//.test(navigator.
 }
 
 //#region Default config
-/** @type {import("./types").Config} */
+/** @type {import("./types").OptionsConfig} */
 let defaultConfig = {
   enabled: true,
   // Default based on platform until the content script runs
@@ -93,7 +93,7 @@ let defaultConfig = {
 }
 //#endregion
 
-/** @type {import("./types").Config} */
+/** @type {import("./types").OptionsConfig} */
 let optionsConfig
 
 let $hiddenChannels = /** @type {HTMLElement} */ (document.querySelector('#hiddenChannels'))
@@ -167,7 +167,7 @@ function setFormValue(prop, value) {
 
 /**
  * Store config changes without triggering this page's own listener.
- * @param {Partial<import("./types").Config>} changes
+ * @param {Partial<import("./types").OptionsConfig>} changes
  */
 function storeConfigChanges(changes) {
   chrome.storage.local.onChanged.removeListener(onStorageChanged)

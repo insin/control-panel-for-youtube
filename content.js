@@ -27,7 +27,7 @@ function warn(...args) {
 }
 
 //#region Default config
-/** @type {import("./types").Config} */
+/** @type {import("./types").SiteConfig} */
 let config = {
   enabled: true,
   version,
@@ -1440,7 +1440,7 @@ function main() {
   }
 }
 
-/** @param {Partial<import("./types").Config>} changes */
+/** @param {Partial<import("./types").SiteConfig>} changes */
 function configChanged(changes) {
   if (!changes.hasOwnProperty('enabled')) {
     log('config changed', changes)
@@ -1483,7 +1483,7 @@ function onConfigChange(storageChanges) {
   }
 }
 
-/** @param {Partial<import("./types").Config} configChanges */
+/** @param {Partial<import("./types").SiteConfig>} configChanges */
 function storeConfigChanges(configChanges) {
   if (isUserscript) return
   chrome.storage.local.onChanged.removeListener(onConfigChange)

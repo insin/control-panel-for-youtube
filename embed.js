@@ -7,7 +7,7 @@ function log(...args) {
 }
 
 //#region Default config
-/** @type {Partial<import("./types").Config>} */
+/** @type {Partial<import("./types").EmbedConfig>} */
 let config = {
   enabled: true,
   hideEmbedEndVideos: false,
@@ -92,7 +92,7 @@ function main() {
   }
 }
 
-/** @param {Partial<import("./types").Config>} changes */
+/** @param {Partial<import("./types").EmbedConfig>} changes */
 function configChanged(changes) {
   if (!changes.hasOwnProperty('enabled')) {
     log('config changed', changes)
