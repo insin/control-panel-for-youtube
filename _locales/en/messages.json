@@ -70,7 +70,7 @@
     "message": "Hide video endscreen content"
   },
   "hideExploreButton": {
-    "message": "Hide Explore button"
+    "message": "Hide Explore button in Home"
   },
   "hideHiddenVideos": {
     "message": "Hide hidden videos"
@@ -134,6 +134,9 @@
   },
   "shorts": {
     "message": "Shorts"
+  },
+  "subscriptionsGridView": {
+    "message": "Use grid view for Subscriptions (portrait only)"
   },
   "tidyGuideSidebar": {
     "message": "Tidy Guide sidebar"

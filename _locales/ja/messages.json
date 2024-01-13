@@ -66,7 +66,7 @@
     "message": "ビデオのエンドスクリーンのコンテンツを非表示"
   },
   "hideExploreButton": {
-    "message": "探索ボタンを非表示"
+    "message": "ホームで探索ボタンを非表示"
   },
   "hideHiddenVideos": {
     "message": "非表示にされた動画を非表示"
@@ -130,6 +130,9 @@
   },
   "shorts": {
     "message": "ショート動画"
+  },
+  "subscriptionsGridView": {
+    "message": "サブスクリプションのグリッドビューを使用する（縦画面のみ）"
   },
   "tidyGuideSidebar": {
     "message": "整頓されたガイドサイドバー"

@@ -35,7 +35,7 @@ let config = {
   hiddenChannels: [],
   hideChannels: true,
   hideComments: false,
-  hideHiddenVideos: false,
+  hideHiddenVideos: true,
   hideHomeCategories: false,
   hideLive: false,
   hideMetadata: false,
@@ -62,6 +62,7 @@ let config = {
   hideExploreButton: true,
   hideOpenApp: true,
   hideSubscriptionsChannelList: false,
+  subscriptionsGridView: true,
 }
 //#endregion
 
@@ -837,6 +838,57 @@ const configureCss = (() => {
       if (config.hideSubscriptionsChannelList) {
         // Channel list at top of Subscriptions
         hideCssSelectors.push('.tab-content[tab-identifier="FEsubscriptions"] ytm-channel-list-sub-menu-renderer')
+      }
+      if (config.subscriptionsGridView) {
+        // Based on the Home grid layout
+        cssRules.push(`
+          @media (min-width: 550px) and (orientation: portrait) {
+            ytm-section-list-renderer {
+              margin: 0 16px;
+            }
+            ytm-section-list-renderer > lazy-list {
+              margin: 16px -8px 0 -8px;
+            }
+            ytm-item-section-renderer {
+              width: calc(50% - 16px);
+              display: inline-block !important;
+              vertical-align: top;
+              border-bottom: none !important;
+              margin-bottom: 16px;
+              margin-left: 8px;
+              margin-right: 8px;
+            }
+            lazy-list ytm-media-item {
+              margin-top: 0 !important;
+              padding: 0 !important;
+            }
+            /* Fix shorts if they're not being hidden */
+            ytm-item-section-renderer:has(ytm-reel-shelf-renderer) {
+              width: calc(100% - 16px);
+              display: block;
+            }
+            ytm-item-section-renderer:has(ytm-reel-shelf-renderer) > lazy-list {
+              margin-left: -16px;
+              margin-right: -16px;
+            }
+            /* Fix the channel list bar if it's not being hidden */
+            ytm-channel-list-sub-menu-renderer {
+              margin-left: -16px;
+              margin-right: -16px;
+            }
+          }
+          @media (min-width: 874px) and (orientation: portrait) {
+            ytm-item-section-renderer {
+              width: calc(33.3% - 16px);
+            }
+          }
+          /* The page will probably switch to the list view before it ever hits this */
+          @media (min-width: 1160px) and (orientation: portrait) {
+            ytm-item-section-renderer {
+              width: calc(25% - 16px);
+            }
+          }
+        `)
       }
     }
     //#endregion

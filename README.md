@@ -39,8 +39,9 @@ For installations links and FAQs visit the [Control Panel for YouTube website](h
 ### UI tweaks
 
 - Tidy Guide sidebar 🖥️
-- Hide Explore button 📱
+- Hide Explore button in Home 📱
 - Hide categories in Home
+- Use grid view for Subscriptions (portrait only) 📱
 - Hide channel list in Subscriptions 📱
 - Hide Open App links 📱
 - Hide Search with your voice
