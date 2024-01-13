@@ -196,20 +196,20 @@ function updateHiddenChannelsDisplay() {
 
   $hiddenChannelsSummary.textContent = chrome.i18n.getMessage('hiddenChannelsSummary', String(optionsConfig.hiddenChannels.length))
 
-  if ($hiddenChannelsDetails.open) return
+  if (!$hiddenChannelsDetails.open) return
 
   while ($hiddenChannels.hasChildNodes()) $hiddenChannels.firstChild.remove()
-  for (let channel of optionsConfig.hiddenChannels) {
+  for (let [index, {name}] of optionsConfig.hiddenChannels.entries()) {
     $hiddenChannels.appendChild(
       h('section', null,
         h('label', {className: 'button'},
-          h('span', null, channel.name),
+          h('span', null, name),
           h('button', {
             type: 'button',
-            onclick(e) {
-              optionsConfig.hiddenChannels.splice(optionsConfig.hiddenChannels.indexOf(channel), 1)
+            onclick() {
+              optionsConfig.hiddenChannels = optionsConfig.hiddenChannels.filter((_, i) => i != index)
               storeConfigChanges({hiddenChannels: optionsConfig.hiddenChannels})
-              e.target.closest('section').remove()
+              updateDisplay()
             }
           }, '×')
         )
