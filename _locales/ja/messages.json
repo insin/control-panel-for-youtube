@@ -74,6 +74,9 @@
   "hideHiddenVideosNote": {
     "message": "5秒後に「元に戻す」ボタンを非表示にします"
   },
+  "hideHomeCategories": {
+    "message": "ホームのカテゴリを非表示"
+  },
   "hideLive": {
     "message": "ライブ動画を非表示"
   },

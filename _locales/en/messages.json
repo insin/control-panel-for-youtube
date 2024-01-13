@@ -78,6 +78,9 @@
   "hideHiddenVideosNote": {
     "message": "Hides the \"Undo\" button after 5 seconds"
   },
+  "hideHomeCategories": {
+    "message": "Hide categories in Home"
+  },
   "hideLive": {
     "message": "Hide Live videos"
   },

@@ -38,10 +38,11 @@ For installations links and FAQs visit the [Control Panel for YouTube website](h
 
 ### UI tweaks
 
+- Tidy Guide sidebar 🖥️
 - Hide Explore button 📱
+- Hide categories in Home
 - Hide channel list in Subscriptions 📱
 - Hide Open App links 📱
-- Tidy Guide sidebar 🖥️
 - Hide Search with your voice
 
 ### Embedded videos

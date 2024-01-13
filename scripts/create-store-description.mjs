@@ -49,10 +49,11 @@ ${messages.videoPages}:
 
 ${messages.uiTweaks}:
 
+• ${messages.tidyGuideSidebar} 🖥️
 • ${messages.hideExploreButton} 📱
+• ${messages.hideHomeCategories}
 • ${messages.hideSubscriptionsChannelList} 📱
 • ${messages.hideOpenApp} 📱
-• ${messages.tidyGuideSidebar} 🖥️
 • ${messages.hideVoiceSearch}
 
 ${messages.embeddedVideos}:

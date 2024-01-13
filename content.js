@@ -36,6 +36,7 @@ let config = {
   hideChannels: true,
   hideComments: false,
   hideHiddenVideos: false,
+  hideHomeCategories: false,
   hideLive: false,
   hideMetadata: false,
   hideMixes: false,
@@ -313,6 +314,15 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push('button.ytm-autonav-toggle-button-container')
+      }
+    }
+
+    if (config.hideHomeCategories) {
+      if (desktop) {
+        hideCssSelectors.push('ytd-browse[page-subtype="home"] #header')
+      }
+      if (mobile) {
+        hideCssSelectors.push('.tab-content[tab-identifier="FEwhat_to_watch"] .rich-grid-sticky-header')
       }
     }
 
