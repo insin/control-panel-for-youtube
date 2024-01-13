@@ -515,7 +515,10 @@ const configureCss = (() => {
         hideCssSelectors.push('#above-the-fold + ytd-metadata-row-container-renderer')
       }
       if (mobile) {
-        hideCssSelectors.push('yt-video-attributes-section-view-model')
+        hideCssSelectors.push(
+          // e.g. Game name and Gaming link
+          'yt-video-attributes-section-view-model',
+        )
       }
     }
 
@@ -640,6 +643,9 @@ const configureCss = (() => {
           '.mealbar-promo-renderer',
           // Search results
           'ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
+          // When an ad is playing
+          '.ytp-ad-player-overlay-flyout-cta',
+          '.ytp-ad-visit-advertiser-button',
           // Directly under video
           'ytm-companion-slot:has(> ytm-companion-ad-renderer)',
         )
