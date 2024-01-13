@@ -38,14 +38,12 @@ export type SiteConfig = {
   hideComments: boolean
   hideHiddenVideos: boolean
   hideLive: boolean
-  hideMerchEtc: boolean
   hideMetadata: boolean
   hideMixes: boolean
   hideRelated: boolean
   hideShorts: boolean
   hideSponsored: boolean
   hideStreamed: boolean
-  hideSuggestedSections: boolean
   hideUpcoming: boolean
   hideVoiceSearch: boolean
   hideWatched: boolean
@@ -57,6 +55,8 @@ export type SiteConfig = {
   hideChat: boolean
   hideEndCards: boolean
   hideEndVideos: boolean
+  hideMerchEtc: boolean
+  hideSuggestedSections: boolean
   tidyGuideSidebar: boolean
   // Mobile only
   hideExploreButton: boolean

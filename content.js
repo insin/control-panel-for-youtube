@@ -37,11 +37,9 @@ let config = {
   hideComments: false,
   hideHiddenVideos: false,
   hideLive: false,
-  hideMerchEtc: true,
   hideMetadata: false,
   hideMixes: false,
   hideRelated: false,
-  hideSuggestedSections: true,
   hideShorts: false,
   hideSponsored: true,
   hideStreamed: false,
@@ -56,6 +54,8 @@ let config = {
   hideChat: false,
   hideEndCards: false,
   hideEndVideos: false,
+  hideMerchEtc: true,
+  hideSuggestedSections: true,
   tidyGuideSidebar: false,
   // Mobile only
   hideExploreButton: true,
@@ -556,27 +556,6 @@ const configureCss = (() => {
       }
     }
 
-    if (config.hideSuggestedSections) {
-      let shelfTitles = [
-        getString('CHANNELS_NEW_TO_YOU'),
-        getString('FOR_YOU'),
-        getString('FROM_RELATED_SEARCHES'),
-        getString('PEOPLE_ALSO_WATCHED'),
-        getString('POPULAR_TODAY'),
-        getString('PREVIOUSLY_WATCHED'),
-      ].map(title => `[data-title="${title}"]`).join(', ')
-      if (desktop) {
-        hideCssSelectors.push(
-          // Trending on Home
-          'ytd-rich-section-renderer:has(a[href="/feed/trending"])',
-          // List shelf with specific title in Search
-          `ytd-shelf-renderer:is(${shelfTitles})`,
-          // People also search for in Search
-          '#contents.ytd-item-section-renderer > ytd-horizontal-card-list-renderer',
-        )
-      }
-    }
-
     if (config.hideShorts) {
       if (desktop) {
         hideCssSelectors.push(
@@ -753,6 +732,24 @@ const configureCss = (() => {
           'ytd-merch-shelf-renderer',
           // Offers
           '#offer-module',
+        )
+      }
+      if (config.hideSuggestedSections) {
+        let shelfTitles = [
+          getString('CHANNELS_NEW_TO_YOU'),
+          getString('FOR_YOU'),
+          getString('FROM_RELATED_SEARCHES'),
+          getString('PEOPLE_ALSO_WATCHED'),
+          getString('POPULAR_TODAY'),
+          getString('PREVIOUSLY_WATCHED'),
+        ].map(title => `[data-title="${title}"]`).join(', ')
+        hideCssSelectors.push(
+          // Trending on Home
+          'ytd-rich-section-renderer:has(a[href="/feed/trending"])',
+          // List shelf with specific title in Search
+          `ytd-shelf-renderer:is(${shelfTitles})`,
+          // People also search for in Search
+          '#contents.ytd-item-section-renderer > ytd-horizontal-card-list-renderer',
         )
       }
       if (config.tidyGuideSidebar) {
@@ -1076,6 +1073,7 @@ function addDownloadTranscriptToDesktopMenu($menu) {
   })
 }
 
+/** @param {HTMLElement} $menu */
 function addHideChannelToDesktopMenu($menu) {
   /** @type {import("./types").Channel} */
   let channel
@@ -1142,18 +1140,21 @@ function addHideChannelToDesktopMenu($menu) {
     storeConfigChanges({hiddenChannels: config.hiddenChannels})
     configureCss()
     // Dismiss the menu
-    // @ts-ignore
-    document.querySelector('#content')?.click()
+    let $popupContainer = /** @type {HTMLElement} */ ($menu.closest('ytd-popup-container'))
+    $popupContainer.click()
+    // XXX Menu isn't dismissing on iPad Safari
+    if ($menu.style.display != 'none') {
+      $menu.style.display = 'none'
+      $menu.setAttribute('aria-hidden', 'true')
+    }
   }
   $item.addEventListener('click', hideChannel)
-  $item.addEventListener('keydown', (e) => {
+  $item.addEventListener('keydown', /** @param {KeyboardEvent} e */ (e) => {
     if (e.key == ' ' || e.key == 'Enter') {
       e.preventDefault()
       hideChannel()
     }
   })
-  // $menuItems.lastElementChild.setAttribute('has-separator', '')
-  // $menu.querySelector('ytd-menu-popup-renderer').style.maxHeight = 'auto'
 }
 
 /**
