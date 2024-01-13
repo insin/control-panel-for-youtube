@@ -101,6 +101,9 @@
   "hideStreamed": {
     "message": "ストリームされた動画を非表示"
   },
+  "hideSubscriptionsChannelList": {
+    "message": "登録チャンネルのチャンネルリストを非表示にする"
+  },
   "hideSuggestedSections": {
     "message": "提案されたセクションを非表示"
   },

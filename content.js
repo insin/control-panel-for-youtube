@@ -60,6 +60,7 @@ let config = {
   // Mobile only
   hideExploreButton: true,
   hideOpenApp: true,
+  hideSubscriptionsChannelList: false,
 }
 //#endregion
 
@@ -795,6 +796,10 @@ const configureCss = (() => {
           '#menu .multi-page-menu-system-link-list:has(+ ytm-privacy-tos-footer-renderer)',
         )
       }
+      if (config.hideSubscriptionsChannelList) {
+        // Channel list at top of Subscriptions
+        hideCssSelectors.push('.tab-content[tab-identifier="FEsubscriptions"] ytm-channel-list-sub-menu-renderer')
+      }
     }
     //#endregion
 
@@ -903,102 +908,100 @@ function downloadTranscript() {
   URL.revokeObjectURL(url)
 }
 
-/**
- * Desktop menus appear in <ytd-popup-container>. Once created, the same element
- * is reused for subsequent menus.
- */
-async function observeDesktopMenus() {
-  let $popupContainer = await getElement('ytd-popup-container', {name: 'popup container'})
-  let $dropdown = /** @type {HTMLElement} */ ($popupContainer.querySelector('tp-yt-iron-dropdown'))
+async function observeMenus() {
+  if (desktop) {
+    // Desktop menus appear in <ytd-popup-container>. Once created, the same
+    // element is reused for subsequent menus.
+    let $popupContainer = await getElement('ytd-popup-container', {name: 'popup container'})
+    let $dropdown = /** @type {HTMLElement} */ ($popupContainer.querySelector('tp-yt-iron-dropdown'))
 
-  function observeDropdown() {
-    if (!$dropdown) return
+    function observeDropdown() {
+      if (!$dropdown) return
 
-    globalObservers.push(
-      observeElement($dropdown, () => {
-        if ($dropdown.getAttribute('aria-hidden') != 'true') {
-          onDesktopMenuAppeared($dropdown)
-        }
-      }, 'dropdown', {attributes: true, attributeFilter: ['aria-hidden']})
-    )
+      globalObservers.push(
+        observeElement($dropdown, () => {
+          if ($dropdown.getAttribute('aria-hidden') != 'true') {
+            onDesktopMenuAppeared($dropdown)
+          }
+        }, 'dropdown', {attributes: true, attributeFilter: ['aria-hidden']})
+      )
+    }
+
+    observeDropdown()
+
+    if (!$dropdown) {
+      globalObservers.push(
+        observeElement($popupContainer, (mutations) => {
+          for (let mutation of mutations) {
+            for (let $el of mutation.addedNodes) {
+              if ($el.nodeName == 'TP-YT-IRON-DROPDOWN') {
+                $dropdown = /** @type {HTMLElement} */ ($el)
+                observeDropdown()
+                disconnectGlobalObserver('popup container')
+                return
+              }
+            }
+          }
+        }, 'popup container')
+      )
+    }
   }
 
-  observeDropdown()
+  if (mobile) {
+    // Depending on resolution, mobile menus appear in <bottom-sheet-container>
+    // (lower res) or as a #menu child of <body> (higher res).
+    let $body = await getElement('body', {name: '<body>'})
+    if (!$body) return
 
-  if (!$dropdown) {
     globalObservers.push(
-      observeElement($popupContainer, (mutations) => {
+      observeElement($body, (mutations) => {
         for (let mutation of mutations) {
           for (let $el of mutation.addedNodes) {
-            if ($el.nodeName == 'TP-YT-IRON-DROPDOWN') {
-              $dropdown = /** @type {HTMLElement} */ ($el)
-              observeDropdown()
-              disconnectGlobalObserver('popup container')
+            if ($el instanceof Element && $el?.id == 'menu') {
+              onMobileMenuAppeared(/** @type {HTMLElement} */ ($el))
               return
             }
           }
         }
-      }, 'popup container')
+      }, '<body> (for menus appearing)')
     )
-  }
-}
 
-/**
- * Depending on resolution, mobile menus appear in <bottom-sheet-container>
- * (lower res) or as a #menu child of <body> (higher res).
- */
-async function observeMobileMenus() {
-  let $body = await getElement('body', {name: '<body>'})
-  if (!$body) return
+    // When switching between screens, <bottom-sheet-container> is replaced
+    let $app = await getElement('ytm-app', {name: '<ytm-app>'})
+    if (!$app) return
 
-  globalObservers.push(
-    observeElement($body, (mutations) => {
-      for (let mutation of mutations) {
-        for (let $el of mutation.addedNodes) {
-          if ($el instanceof Element && $el?.id == 'menu') {
-            onMobileMenuAppeared(/** @type {HTMLElement} */ ($el))
-            return
+    let $bottomSheet = /** @type {HTMLElement} */ ($app.querySelector('bottom-sheet-container'))
+
+    function observeBottomSheet() {
+      if (!$bottomSheet) return
+
+      disconnectGlobalObserver('bottom sheet (menus)')
+      globalObservers.push(
+        observeElement($bottomSheet, () => {
+          if ($bottomSheet.childElementCount > 0) {
+            onMobileMenuAppeared($bottomSheet)
           }
-        }
-      }
-    }, '<body> (for menus appearing)')
-  )
+        }, 'bottom sheet (for menus appearing)')
+      )
+    }
 
-  // When switching between screens, <bottom-sheet-container> is replaced
-  let $app = await getElement('ytm-app', {name: '<ytm-app>'})
-  if (!$app) return
+    observeBottomSheet()
 
-  let $bottomSheet = /** @type {HTMLElement} */ ($app.querySelector('bottom-sheet-container'))
-
-  function observeBottomSheet() {
-    if (!$bottomSheet) return
-
-    disconnectGlobalObserver('bottom sheet (menus)')
     globalObservers.push(
-      observeElement($bottomSheet, () => {
-        if ($bottomSheet.childElementCount > 0) {
-          onMobileMenuAppeared($bottomSheet)
-        }
-      }, 'bottom sheet (for menus appearing)')
-    )
-  }
-
-  observeBottomSheet()
-
-  globalObservers.push(
-    observeElement($app, (mutations) => {
-      for (let mutation of mutations) {
-        for (let $el of mutation.addedNodes) {
-          if ($el.nodeName == 'BOTTOM-SHEET-CONTAINER') {
-            log('new bottom sheet appeared')
-            $bottomSheet = /** @type {HTMLElement} */ ($el)
-            observeBottomSheet()
-            return
+      observeElement($app, (mutations) => {
+        for (let mutation of mutations) {
+          for (let $el of mutation.addedNodes) {
+            if ($el.nodeName == 'BOTTOM-SHEET-CONTAINER') {
+              log('new bottom sheet appeared')
+              $bottomSheet = /** @type {HTMLElement} */ ($el)
+              observeBottomSheet()
+              return
+            }
           }
         }
-      }
-    }, '<ytm-app> (for bottom sheet replacement)')
-  )
+      }, '<ytm-app> (for bottom sheet replacement)')
+    )
+  }
 }
 
 /**
@@ -1027,10 +1030,7 @@ function handleCurrentUrl() {
       redirectShort()
     }
   }
-  else if (isSubscriptionsPage()) {
-    tweakSubscriptionsPage()
-  }
-  else if (isVideoPage()) {
+  if (isVideoPage()) {
     tweakVideoPage()
   }
   else if (isSearchPage()) {
@@ -1074,10 +1074,6 @@ function addHideChannelToDesktopMenu($menu) {
   /** @type {import("./types").Channel} */
   let channel
   if (isSearchPage()) {
-    // List item
-    // #channel-thumbnail [href]
-    // #text.ytd-channel-name [title]
-    //   a [href]
     let $video = $lastClickedElement.closest('ytd-video-renderer')
     if ($video) {
       let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('#text.ytd-channel-name a'))
@@ -1092,10 +1088,9 @@ function addHideChannelToDesktopMenu($menu) {
     }
   }
   else if (isVideoPage()) {
-    // Related video
-    // #text.ytd-channel-name [title] (name only - no channel link anywhere)
     let $video= $lastClickedElement.closest('ytd-compact-video-renderer')
     if ($video) {
+      // Only the channel name is available in a relate video on desktop
       let $link = /** @type {HTMLElement} */ ($video.querySelector('#text.ytd-channel-name'))
       if ($link) {
         channel = {
@@ -1107,10 +1102,6 @@ function addHideChannelToDesktopMenu($menu) {
     }
   }
   else if (isHomePage()) {
-    // Grid item
-    // #avatar-link [href]
-    // #text.ytd-channel-name [title]
-    //   a [href]
     let $video = $lastClickedElement.closest('ytd-rich-item-renderer')
     let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('#text.ytd-channel-name a'))
     if ($link) {
@@ -1185,7 +1176,7 @@ async function addHideChannelToMobileMenu($menu) {
   lastClickedChannel = channel
 
   let $menuItems = $menu.querySelector($menu.id == 'menu' ? '.menu-content' : '.bottom-sheet-media-menu-item')
-  // XXX Figure out what we have to wait for to add menu items ASAP without them getting removed
+  // TOOO Figure out what we have to wait for to add menu items ASAP without them getting removed
   await new Promise((resolve) => setTimeout(resolve, 50))
   let hasIcon = Boolean($menuItems.querySelector('c3-icon'))
   $menuItems.insertAdjacentHTML('beforeend', `
@@ -1214,6 +1205,80 @@ async function addHideChannelToMobileMenu($menu) {
   })
 }
 
+function observeVideoHiddenState() {
+  if (!isSubscriptionsPage()) return
+
+  let observerName = 'video (for Hide being used in action menu)'
+
+  if (desktop) {
+    let $video = $lastClickedElement?.closest('ytd-rich-grid-media')
+    if (!$video) return
+
+    disconnectPageObserver(observerName)
+    pageObservers.push(
+      observeElement($video, () => {
+        if (!$video.hasAttribute('is-dismissed')) return
+
+        log('video hidden, showing countdown timer')
+        let $actions = $video.querySelector('ytd-notification-multi-action-renderer')
+        let $undoButton = $actions.querySelector('button')
+        function cleanup() {
+          $undoButton.removeEventListener('click', undoClicked)
+          $video.querySelector('.cpfyt-pie')?.remove()
+          disconnectPageObserver(observerName)
+        }
+        let hideHiddenVideoTimeout = setTimeout(() => {
+          $video.closest('ytd-rich-item-renderer')?.classList.add('cpfyt-hidden-video')
+          cleanup()
+        }, undoHideDelaySeconds * 1000)
+        function undoClicked() {
+          clearTimeout(hideHiddenVideoTimeout)
+          cleanup()
+        }
+        $undoButton.addEventListener('click', undoClicked)
+        $actions.insertAdjacentHTML('beforeend', '<div class="cpfyt-pie"></div>')
+      }, observerName, {
+        attributes: true,
+        attributeFilter: ['is-dismissed'],
+      })
+    )
+  }
+  if (mobile) {
+    let $container = $lastClickedElement?.closest('lazy-list')
+    if (!$container) return
+
+    disconnectPageObserver(observerName)
+    pageObservers.push(
+      observeElement($container, (mutations) => {
+        for (let mutation of mutations) {
+          for (let $el of mutation.addedNodes) {
+            if ($el.nodeName != 'YTM-NOTIFICATION-MULTI-ACTION-RENDERER') continue
+
+            log('video hidden, showing countdown timer')
+            let $actions = /** @type {HTMLElement} */ ($el).firstElementChild
+            let $undoButton = /** @type {HTMLElement} */ ($el).querySelector('button')
+            function cleanup() {
+              $undoButton.removeEventListener('click', undoClicked)
+              $actions.querySelector('.cpfyt-pie')?.remove()
+              disconnectPageObserver(observerName)
+            }
+            let hideHiddenVideoTimeout = setTimeout(() => {
+              $actions.closest('ytm-item-section-renderer')?.classList.add('cpfyt-hidden-video')
+              cleanup()
+            }, undoHideDelaySeconds * 1000)
+            function undoClicked() {
+              clearTimeout(hideHiddenVideoTimeout)
+              cleanup()
+            }
+            $undoButton.addEventListener('click', undoClicked)
+            $actions.insertAdjacentHTML('beforeend', '<div class="cpfyt-pie"></div>')
+          }
+        }
+      }, observerName)
+    )
+  }
+}
+
 /** @param {HTMLElement} $menu */
 function onDesktopMenuAppeared($menu) {
   log('menu appeared', {$lastClickedElement})
@@ -1223,6 +1288,9 @@ function onDesktopMenuAppeared($menu) {
   }
   if (config.hideChannels) {
     addHideChannelToDesktopMenu($menu)
+  }
+  if (config.hideHiddenVideos) {
+    observeVideoHiddenState()
   }
 }
 
@@ -1243,6 +1311,9 @@ function onMobileMenuAppeared($menu) {
 
   if (config.hideChannels) {
     addHideChannelToMobileMenu($menu)
+  }
+  if (config.hideHiddenVideos) {
+    observeVideoHiddenState()
   }
 }
 
@@ -1326,88 +1397,6 @@ async function tweakSearchPage() {
   */
 }
 
-async function tweakSubscriptionsPage() {
-  // TODO Observe individual video elements when the menu is opened instead
-  if (config.hideHiddenVideos) {
-    if (desktop) {
-      let $contents = await getElement('ytd-rich-grid-renderer > #contents', {
-        name: 'subscriptions content',
-        stopIf: currentUrlChanges(),
-      })
-      if (!$contents) return
-
-      pageObservers.push(
-        observeElement($contents, (mutations) => {
-          for (let mutation of mutations) {
-            let $video =/** @type {HTMLElement} */ (mutation.target)
-            if ($video.hasAttribute('is-dismissed')) {
-              log('video hidden, showing countdown timer')
-              let $actions = $video.querySelector('ytd-notification-multi-action-renderer')
-              let $undoButton = $actions.querySelector('button')
-              function cleanup() {
-                $undoButton.removeEventListener('click', undoClicked)
-                $video.querySelector('.cpfyt-pie')?.remove()
-              }
-              let hideHiddenVideoTimeout = setTimeout(() => {
-                $video.closest('ytd-rich-item-renderer')?.classList.add('cpfyt-hidden-video')
-                cleanup()
-              }, undoHideDelaySeconds * 1000)
-              function undoClicked() {
-                clearTimeout(hideHiddenVideoTimeout)
-                cleanup()
-              }
-              $undoButton.addEventListener('click', undoClicked)
-              $actions.insertAdjacentHTML('beforeend', '<div class="cpfyt-pie"></div>')
-            }
-          }
-        }, 'subscriptions contents (for videos being hidden)', {
-          attributes: true,
-          attributeFilter: ['is-dismissed'],
-          subtree: true,
-        })
-      )
-    }
-    if (mobile) {
-      let $contents = await getElement('ytm-section-list-renderer lazy-list', {
-        name: 'subscriptions contents',
-        stopIf: currentUrlChanges(),
-      })
-      if (!$contents) return
-
-      pageObservers.push(
-        observeElement($contents, (mutations) => {
-          for (let mutation of mutations) {
-            for (let $el of mutation.addedNodes) {
-              if ($el.nodeName == 'YTM-NOTIFICATION-MULTI-ACTION-RENDERER') {
-                log('video hidden, showing countdown timer')
-                let $actions = /** @type {HTMLElement} */ ($el).firstElementChild
-                let $undoButton = /** @type {HTMLElement} */ ($el).querySelector('button')
-                function cleanup() {
-                  $undoButton.removeEventListener('click', undoClicked)
-                  $actions.querySelector('.cpfyt-pie')?.remove()
-                }
-                let hideHiddenVideoTimeout = setTimeout(() => {
-                  $actions.closest('ytm-item-section-renderer')?.classList.add('cpfyt-hidden-video')
-                  cleanup()
-                }, undoHideDelaySeconds * 1000)
-                function undoClicked() {
-                  clearTimeout(hideHiddenVideoTimeout)
-                  cleanup()
-                }
-                $undoButton.addEventListener('click', undoClicked)
-                $actions.insertAdjacentHTML('beforeend', '<div class="cpfyt-pie"></div>')
-              }
-            }
-          }
-        }, 'subscriptions contents (for videos being hidden)', {
-          childList: true,
-          subtree: true,
-        })
-      )
-    }
-  }
-}
-
 function tweakVideoPage() {
   if (config.disableAutoplay) {
     disableAutoplay()
@@ -1431,11 +1420,7 @@ function main() {
   if (config.enabled) {
     configureCss()
     observeTitle()
-    if (mobile) {
-      observeMobileMenus()
-    } else {
-      observeDesktopMenus()
-    }
+    observeMenus()
     document.addEventListener('click', onDocumentClick, true)
   }
 }

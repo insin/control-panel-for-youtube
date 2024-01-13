@@ -61,6 +61,7 @@ export type SiteConfig = {
   // Mobile only
   hideExploreButton: boolean
   hideOpenApp: boolean
+  hideSubscriptionsChannelList: boolean
 }
 
 export type Version = 'mobile' | 'desktop'

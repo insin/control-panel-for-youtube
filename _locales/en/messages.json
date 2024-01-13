@@ -105,6 +105,9 @@
   "hideStreamed": {
     "message": "Hide Streamed videos"
   },
+  "hideSubscriptionsChannelList": {
+    "message": "Hide channel list in Subscriptions"
+  },
   "hideSuggestedSections": {
     "message": "Hide suggested sections"
   },

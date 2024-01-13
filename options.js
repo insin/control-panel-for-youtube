@@ -28,6 +28,7 @@ for (let translationId of [
   'hideShorts',
   'hideSponsored',
   'hideStreamed',
+  'hideSubscriptionsChannelList',
   'hideSuggestedSections',
   'hideUpcoming',
   'hideVoiceSearch',
@@ -86,6 +87,7 @@ let defaultConfig = {
   // Mobile only
   hideExploreButton: true,
   hideOpenApp: true,
+  hideSubscriptionsChannelList: false,
   // Embedded videos
   hideEmbedEndVideos: false,
   hideEmbedPauseOverlay: false,
