@@ -24,6 +24,7 @@ export type LocaleKey =
   | 'PEOPLE_ALSO_WATCHED'
   | 'POPULAR_TODAY'
   | 'PREVIOUSLY_WATCHED'
+  | 'RECOMMENDED'
   | 'SHORTS'
   | 'STREAMED_TITLE'
 

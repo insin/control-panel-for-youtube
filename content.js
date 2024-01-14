@@ -82,6 +82,7 @@ const locales = {
     PEOPLE_ALSO_WATCHED: 'People also watched',
     POPULAR_TODAY: 'Popular today',
     PREVIOUSLY_WATCHED: 'Previously watched',
+    RECOMMENDED: 'Recommended',
     SHORTS: 'Shorts',
     STREAMED_TITLE: 'views Streamed',
   },
@@ -95,6 +96,7 @@ const locales = {
     PEOPLE_ALSO_WATCHED: '他の人はこちらも視聴しています',
     POPULAR_TODAY: '今日の人気動画',
     PREVIOUSLY_WATCHED: '前に再生した動画',
+    RECOMMENDED: 'あなたへのおすすめ',
     SHORTS: 'ショート',
     STREAMED_TITLE: '前 に配信済み'
   }
@@ -775,7 +777,10 @@ const configureCss = (() => {
         hideCssSelectors.push('ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child')
       }
       if (config.hideSuggestedSections) {
-        let shelfTitles = [
+        let homeShelfTitles = [
+          getString('RECOMMENDED')
+        ].map(title => `[data-title="${title}"]`).join(', ')
+        let searchShelfTitles = [
           getString('CHANNELS_NEW_TO_YOU'),
           getString('FOR_YOU'),
           getString('FROM_RELATED_SEARCHES'),
@@ -784,10 +789,12 @@ const configureCss = (() => {
           getString('PREVIOUSLY_WATCHED'),
         ].map(title => `[data-title="${title}"]`).join(', ')
         hideCssSelectors.push(
-          // Trending on Home
+          // Trending shelf in Home
           'ytd-rich-section-renderer:has(a[href="/feed/trending"])',
-          // List shelf with specific title in Search
-          `ytd-shelf-renderer:is(${shelfTitles})`,
+          // Shelves with specific titles in Home
+          `ytd-rich-section-renderer:is(${homeShelfTitles})`,
+          // List shelves with specific titles in Search
+          `ytd-shelf-renderer:is(${searchShelfTitles})`,
           // People also search for in Search
           '#contents.ytd-item-section-renderer > ytd-horizontal-card-list-renderer',
         )
@@ -1119,16 +1126,19 @@ async function observeTitle() {
 function handleCurrentUrl() {
   disconnectPageObservers()
 
-  if (location.pathname.startsWith('/shorts/')) {
-    if (config.redirectShorts) {
-      redirectShort()
-    }
+  if (isHomePage()) {
+    tweakHomePage()
   }
-  if (isVideoPage()) {
+  else if (isVideoPage()) {
     tweakVideoPage()
   }
   else if (isSearchPage()) {
     tweakSearchPage()
+  }
+  else if (location.pathname.startsWith('/shorts/')) {
+    if (config.redirectShorts) {
+      redirectShort()
+    }
   }
 }
 
@@ -1422,8 +1432,59 @@ function redirectShort() {
   location.replace(`/watch?v=${videoId}${search}`)
 }
 
+async function tweakHomePage() {
+  if (desktop && config.hideSuggestedSections) {
+    let $rows = await getElement('ytd-browse[page-subtype="home"] ytd-rich-grid-renderer > #contents', {
+      name: 'Home rows container',
+      stopIf: currentUrlChanges(),
+    })
+    if (!$rows) return
+
+    /**
+     * Add a data-title attribute to a shelf so we can hide it by title
+     * @param {HTMLElement} $shelf
+     */
+    function addTitleToShelf($shelf) {
+      let title = $shelf.querySelector('ytd-rich-shelf-renderer #title')?.textContent
+      if (title) {
+        $shelf.dataset.title = title
+        log('added', title, 'shelf title')
+      }
+    }
+
+    // Initial contents
+    for (let $shelf of $rows.querySelectorAll('ytd-rich-section-renderer')) {
+      addTitleToShelf(/** @type {HTMLElement} */ ($shelf))
+    }
+
+    pageObservers.push(
+      observeElement($rows, (mutations) => {
+        for (let mutation of mutations) {
+          for (let $addedNode of mutation.addedNodes) {
+            if ($addedNode.nodeName == 'YTD-RICH-SECTION-RENDERER') {
+              addTitleToShelf(/** @type {HTMLElement} */ ($addedNode))
+            }
+          }
+        }
+      }, 'Home rows container (for additional rows being added)')
+    )
+  }
+}
+
 async function tweakSearchPage() {
   if (desktop && config.hideSuggestedSections) {
+    let $sections = await getElement('ytd-search ytd-section-list-renderer #contents', {
+      name: 'search result sections container',
+      stopIf: () => !location.pathname.startsWith('/results'),
+    })
+    if (!$sections) return
+
+    let $firstSection = /** @type {HTMLElement} */ ($sections.querySelector('ytd-item-section-renderer #contents'))
+    if (!$firstSection) {
+      warn('first search result section not found')
+      return
+    }
+
     /**
      * Add a data-title attribute to a shelf so we can hide it by title
      * @param {HTMLElement} $shelf
@@ -1439,18 +1500,6 @@ async function tweakSearchPage() {
       for (let $shelf of $section.querySelectorAll('ytd-shelf-renderer')) {
         addTitleToShelf(/** @type {HTMLElement} */ ($shelf))
       }
-    }
-
-    let $sections = await getElement('ytd-search ytd-section-list-renderer #contents', {
-      name: 'search result sections container',
-      stopIf: () => !location.pathname.startsWith('/results'),
-    })
-    if (!$sections) return
-
-    let $firstSection = /** @type {HTMLElement} */ ($sections.querySelector('ytd-item-section-renderer #contents'))
-    if (!$firstSection) {
-      warn('first search result section not found')
-      return
     }
 
     // The first section has some initial content
