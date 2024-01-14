@@ -3,6 +3,8 @@ document.title = chrome.i18n.getMessage('extensionName')
 for (let translationId of [
   'anyPercent',
   'disableAutoplay',
+  'disableHomeFeed',
+  'disableHomeFeedNote',
   'downloadTranscript',
   'embeddedVideos',
   'enabled',
@@ -62,6 +64,7 @@ let defaultConfig = {
   // Default based on platform until the content script runs
   version: /(Android|iP(ad|hone))/.test(navigator.userAgent) ? 'mobile' : 'desktop',
   disableAutoplay: true,
+  disableHomeFeed: false,
   hiddenChannels: [],
   hideChannels: true,
   hideComments: false,

@@ -32,6 +32,7 @@ ${messages.videoLists}:
   • ${messages.hideHiddenVideosNote}
 • ${messages.hideChannels}
   • ${messages.hideChannelsNote}
+• ${messages.disableHomeFeed}
 • ${messages.fillGaps} 🖥️
 • ${messages.hideSuggestedSections} 🖥️
 

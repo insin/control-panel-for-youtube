@@ -32,8 +32,9 @@ export type OptionsConfig = EmbedConfig & SiteConfig
 
 export type SiteConfig = {
   enabled: boolean
-  version: Version
+  version?: Version
   disableAutoplay: boolean
+  disableHomeFeed: boolean
   hiddenChannels: Channel[]
   hideChannels: boolean
   hideComments: boolean

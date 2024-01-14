@@ -8,6 +8,12 @@
   "disableAutoplay": {
     "message": "Disable Autoplay"
   },
+  "disableHomeFeed": {
+    "message": "Disable Home feed"
+  },
+  "disableHomeFeedNote": {
+    "message": "Only when logged in - redirects to Subscriptions"
+  },
   "downloadTranscript": {
     "message": "Make Transcript downloadable"
   },

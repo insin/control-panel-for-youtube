@@ -13,6 +13,7 @@ let desktop = !mobile
 /** @type {import("./types").Version} */
 let version = mobile ? 'mobile' : 'desktop'
 let lang = mobile ? document.body.lang : document.documentElement.lang
+let loggedIn = /(^|; )SID=/.test(document.cookie)
 
 function log(...args) {
   if (debug) {
@@ -32,6 +33,7 @@ let config = {
   enabled: true,
   version,
   disableAutoplay: true,
+  disableHomeFeed: false,
   hiddenChannels: [],
   hideChannels: true,
   hideComments: false,
@@ -318,6 +320,26 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push('button.ytm-autonav-toggle-button-container')
+      }
+    }
+
+    if (config.disableHomeFeed && loggedIn) {
+      if (desktop) {
+        hideCssSelectors.push(
+          // Prevent flash of content while redirecting
+          'ytd-browse[page-subtype="home"]',
+          // Hide Home links
+          'ytd-guide-entry-renderer:has(> a[href="/"])',
+          'ytd-mini-guide-entry-renderer:has(> a[href="/"])',
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(
+          // Prevent flash of content while redirecting
+          '.tab-content[tab-identifier="FEwhat_to_watch"]',
+          // Bottom nav item
+          'ytm-pivot-bar-item-renderer:has(> div.pivot-w2w)',
+        )
       }
     }
 
@@ -1402,6 +1424,11 @@ function onDesktopMenuAppeared($menu) {
   }
 }
 
+/** @param {MouseEvent} e */
+function onDocumentClick(e) {
+  $lastClickedElement = /** @type {HTMLElement} */ (e.target)
+}
+
 /** @param {HTMLElement} $menu */
 function onMobileMenuAppeared($menu) {
   log('menu appeared', {$lastClickedElement})
@@ -1425,14 +1452,30 @@ function onMobileMenuAppeared($menu) {
   }
 }
 
+async function redirectFromHome() {
+  let selector = desktop ? 'a[href="/feed/subscriptions"]' : 'ytm-pivot-bar-item-renderer div.pivot-subs'
+  let $subscriptionsLink = await getElement(selector, {
+    name: 'Subscriptions link',
+    stopIf: currentUrlChanges(),
+  })
+  if (!$subscriptionsLink) return
+  log('redirecting from Home to Subscriptions')
+  $subscriptionsLink.click()
+}
+
 function redirectShort() {
-  log('redirecting Short to normal player')
   let videoId = location.pathname.split('/').at(-1)
   let search = location.search ? location.search.replace('?', '&') : ''
+  log('redirecting Short to normal player')
   location.replace(`/watch?v=${videoId}${search}`)
 }
 
 async function tweakHomePage() {
+  if (config.disableHomeFeed && loggedIn) {
+    redirectFromHome()
+    return
+  }
+
   if (desktop && config.hideSuggestedSections) {
     let $rows = await getElement('ytd-browse[page-subtype="home"] ytd-rich-grid-renderer > #contents', {
       name: 'Home rows container',
@@ -1532,16 +1575,6 @@ async function tweakSearchPage() {
       }, 'search result sections container (for additional results)')
     )
   }
-
-  /*
-  WIP for anything which needs to observe mobile search results
-  // When the search is changed all the section list renderer's contents are replaced
-  let $sections = await getElement('ytm-search ytm-section-list-renderer', {
-    name: 'search result sections container',
-    stopIf: () => !location.pathname.startsWith('/results'),
-  })
-  if (!$sections) return
-  */
 }
 
 function tweakVideoPage() {
@@ -1557,11 +1590,6 @@ let isUserscript =  !(
   typeof chrome != 'undefined' &&
   typeof chrome.storage != 'undefined'
 )
-
-/** @param {MouseEvent} e */
-function onDocumentClick(e) {
-  $lastClickedElement = /** @type {HTMLElement} */ (e.target)
-}
 
 function main() {
   if (config.enabled) {
@@ -1627,9 +1655,9 @@ function storeConfigChanges(configChanges) {
 if (!isUserscript) {
   chrome.storage.local.get((storedConfig) => {
     Object.assign(config, storedConfig)
-    log('initial config', {...config, version})
+    log('initial config', {...config, version}, {lang, loggedIn})
 
-    // Let the options page know the last version used
+    // Let the options page know which version is being used
     chrome.storage.local.set({version})
     chrome.storage.local.onChanged.addListener(onConfigChange)
 

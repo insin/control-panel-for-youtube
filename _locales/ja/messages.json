@@ -8,6 +8,12 @@
   "disableAutoplay": {
     "message": "オートプレイを無効にする"
   },
+  "disableHomeFeed": {
+    "message": "ホームフィードを無効にする"
+  },
+  "disableHomeFeedNote": {
+    "message": "ログインしている場合のみ - サブスクリプションにリダイレクト"
+  },
   "downloadTranscript": {
     "message": "トランスクリプトをダウンロード可能にする"
   },

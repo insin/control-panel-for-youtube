@@ -21,6 +21,7 @@ For installations links and FAQs visit the [Control Panel for YouTube website](h
   - Hides the "Undo" button after 5 seconds
 - Hide channels
   - Adds "Hide channel" to video menus
+- Disable Home feed
 - Fill gaps created by hidden videos 🖥️
 - Hide suggested sections 🖥️
 
