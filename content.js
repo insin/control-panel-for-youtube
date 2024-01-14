@@ -657,6 +657,8 @@ const configureCss = (() => {
           '.ytp-ad-player-overlay-flyout-cta',
           '.ytp-ad-visit-advertiser-button',
           'ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"]',
+          // After an ad
+          '.ytp-ad-action-interstitial',
           // Above Related videos
           '#player-ads',
           // In Related videos
