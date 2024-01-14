@@ -605,7 +605,7 @@ const configureCss = (() => {
           // Subscriptions shelf
           '.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(ytm-reel-shelf-renderer)',
           // Search shelf
-          'ytd-search lazy-list > ytm-reel-shelf-renderer',
+          'ytm-search lazy-list > ytm-reel-shelf-renderer',
           // Search
           'ytm-search ytm-video-with-context-renderer:has(a[href^="/shorts"])',
         )
