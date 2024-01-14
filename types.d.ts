@@ -57,6 +57,7 @@ export type SiteConfig = {
   hideEndCards: boolean
   hideEndVideos: boolean
   hideMerchEtc: boolean
+  hideSubscriptionsLatestBar: boolean
   hideSuggestedSections: boolean
   tidyGuideSidebar: boolean
   // Mobile only

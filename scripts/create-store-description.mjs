@@ -32,30 +32,32 @@ ${messages.videoLists}:
   • ${messages.hideHiddenVideosNote}
 • ${messages.hideChannels}
   • ${messages.hideChannelsNote}
-• ${messages.fillGaps}
+• ${messages.fillGaps} 🖥️
+• ${messages.hideSuggestedSections} 🖥️
 
 ${messages.videoPages}:
 
 • ${messages.disableAutoplay}
 • ${messages.hideRelated}
+• ${messages.hideMetadata}
+• ${messages.hideComments}
+• ${messages.redirectShorts}
 • ${messages.hideEndCards} 🖥️
 • ${messages.hideEndVideos} 🖥️
 • ${messages.hideMerchEtc} 🖥️
-• ${messages.hideMetadata}
-• ${messages.hideComments}
 • ${messages.hideChat} 🖥️
 • ${messages.downloadTranscript} 🖥️
-• ${messages.redirectShorts}
 
 ${messages.uiTweaks}:
 
-• ${messages.tidyGuideSidebar} 🖥️
-• ${messages.hideExploreButton} 📱
 • ${messages.hideHomeCategories}
+• ${messages.hideVoiceSearch}
+• ${messages.tidyGuideSidebar} 🖥️
+• ${messages.hideSubscriptionsLatestBar} 🖥️
 • ${messages.subscriptionsGridView} 📱
+• ${messages.hideExploreButton} 📱
 • ${messages.hideSubscriptionsChannelList} 📱
 • ${messages.hideOpenApp} 📱
-• ${messages.hideVoiceSearch}
 
 ${messages.embeddedVideos}:
 

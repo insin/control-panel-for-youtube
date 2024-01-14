@@ -30,6 +30,7 @@ for (let translationId of [
   'hideSponsored',
   'hideStreamed',
   'hideSubscriptionsChannelList',
+  'hideSubscriptionsLatestBar',
   'hideSuggestedSections',
   'hideUpcoming',
   'hideVoiceSearch',
@@ -85,6 +86,7 @@ let defaultConfig = {
   hideEndCards: false,
   hideEndVideos: false,
   hideMerchEtc: true,
+  hideSubscriptionsLatestBar: false,
   hideSuggestedSections: true,
   tidyGuideSidebar: false,
   // Mobile only

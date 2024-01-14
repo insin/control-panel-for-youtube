@@ -107,6 +107,9 @@
   "hideSubscriptionsChannelList": {
     "message": "登録チャンネルのチャンネルリストを非表示にする"
   },
+  "hideSubscriptionsLatestBar": {
+    "message": "サブスクリプション内の「新しい順」バーを非表示"
+  },
   "hideSuggestedSections": {
     "message": "提案されたセクションを非表示"
   },

@@ -21,30 +21,32 @@ For installations links and FAQs visit the [Control Panel for YouTube website](h
   - Hides the "Undo" button after 5 seconds
 - Hide channels
   - Adds "Hide channel" to video menus
-- Fill gaps created by hidden videos
+- Fill gaps created by hidden videos 🖥️
+- Hide suggested sections 🖥️
 
 ### Video pages
 
 - Disable Autoplay
 - Hide Related videos
+- Hide video metadata
+- Hide Comments
+- Redirect Shorts to the normal player
 - Hide video end cards 🖥️
 - Hide video endscreen content 🖥️
 - Hide Merch, Offers etc. 🖥️
-- Hide video metadata
-- Hide Comments
 - Hide Chat 🖥️
 - Make Transcript downloadable 🖥️
-- Redirect Shorts to the normal player
 
 ### UI tweaks
 
-- Tidy Guide sidebar 🖥️
-- Hide Explore button in Home 📱
 - Hide categories in Home
+- Hide Search with your voice
+- Tidy Guide sidebar 🖥️
+- Hide "Latest" bar in Subscriptions 🖥️
 - Use grid view for Subscriptions (portrait only) 📱
+- Hide Explore button in Home 📱
 - Hide channel list in Subscriptions 📱
 - Hide Open App links 📱
-- Hide Search with your voice
 
 ### Embedded videos
 

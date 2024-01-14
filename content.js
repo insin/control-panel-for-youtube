@@ -56,6 +56,7 @@ let config = {
   hideEndCards: false,
   hideEndVideos: false,
   hideMerchEtc: true,
+  hideSubscriptionsLatestBar: false,
   hideSuggestedSections: true,
   tidyGuideSidebar: false,
   // Mobile only
@@ -769,6 +770,9 @@ const configureCss = (() => {
           // Offers
           '#offer-module',
         )
+      }
+      if (config.hideSubscriptionsLatestBar) {
+        hideCssSelectors.push('ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child')
       }
       if (config.hideSuggestedSections) {
         let shelfTitles = [

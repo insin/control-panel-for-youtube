@@ -111,6 +111,9 @@
   "hideSubscriptionsChannelList": {
     "message": "Hide channel list in Subscriptions"
   },
+  "hideSubscriptionsLatestBar": {
+    "message": "Hide \"Latest\" bar in Subscriptions"
+  },
   "hideSuggestedSections": {
     "message": "Hide suggested sections"
   },
