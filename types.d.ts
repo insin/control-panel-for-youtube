@@ -27,6 +27,7 @@ export type LocaleKey =
   | 'RECOMMENDED'
   | 'SHORTS'
   | 'STREAMED_TITLE'
+  | 'TELL_US_WHY'
 
 export type OptionsConfig = EmbedConfig & SiteConfig
 

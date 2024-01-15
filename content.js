@@ -87,6 +87,7 @@ const locales = {
     RECOMMENDED: 'Recommended',
     SHORTS: 'Shorts',
     STREAMED_TITLE: 'views Streamed',
+    TELL_US_WHY: 'Tell us why',
   },
   'ja-JP': {
     CHANNELS_NEW_TO_YOU: '未視聴のチャンネル',
@@ -100,7 +101,8 @@ const locales = {
     PREVIOUSLY_WATCHED: '前に再生した動画',
     RECOMMENDED: 'あなたへのおすすめ',
     SHORTS: 'ショート',
-    STREAMED_TITLE: '前 に配信済み'
+    STREAMED_TITLE: '前 に配信済み',
+    TELL_US_WHY: '理由を教えてください',
   }
 }
 
@@ -113,7 +115,7 @@ function getString(code) {
 }
 //#endregion
 
-const undoHideDelaySeconds = 5
+const undoHideDelayMs = 5000
 
 const Svgs = {
   DELETE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M11 17H9V8h2v9zm4-9h-2v9h2V8zm4-4v1h-1v16H6V5H5V4h4V3h6v1h4zm-2 1H7v15h10V5z"></path></svg>',
@@ -126,6 +128,8 @@ let globalObservers = []
 let lastClickedChannel
 /** @type {HTMLElement} */
 let $lastClickedElement
+/** @type {() => void} */
+let onDialogClose
 /** @type {MutationObserver[]} */
 let pageObservers = []
 //#endregion
@@ -487,6 +491,9 @@ const configureCss = (() => {
         .cpfyt-pie {
           --cpfyt-pie-background-color: ${bgColor};
           --cpfyt-pie-color: ${bgColor == 'rgb(255, 255, 255)' ? '#065fd4' : '#3ea6ff'};
+          --cpfyt-pie-delay: 0ms;
+          --cpfyt-pie-direction: normal;
+          --cpfyt-pie-duration: ${undoHideDelayMs}ms;
           width: 1em;
           height: 1em;
           font-size: 200%;
@@ -504,7 +511,9 @@ const configureCss = (() => {
           left: 0;
           border-radius: 0.5em 0 0 0.5em;
           transform-origin: center right;
-          animation-duration: ${undoHideDelaySeconds}s;
+          animation-delay: var(--cpfyt-pie-delay);
+          animation-direction: var(--cpfyt-pie-direction);
+          animation-duration: var(--cpfyt-pie-duration);
         }
         .cpfyt-pie::before {
           z-index: 1;
@@ -1033,16 +1042,30 @@ function downloadTranscript() {
   URL.revokeObjectURL(url)
 }
 
-async function observeMenus() {
+async function observePopups() {
   if (desktop) {
-    // Desktop menus appear in <ytd-popup-container>. Once created, the same
-    // element is reused for subsequent menus.
+    // Desktop dialogs and menus appear in <ytd-popup-container>. Once created,
+    // the same elements are reused.
     let $popupContainer = await getElement('ytd-popup-container', {name: 'popup container'})
     let $dropdown = /** @type {HTMLElement} */ ($popupContainer.querySelector('tp-yt-iron-dropdown'))
+    let $dialog = /** @type {HTMLElement} */ ($popupContainer.querySelector('tp-yt-paper-dialog'))
+
+    function observeDialog() {
+      globalObservers.push(
+        observeElement($dialog, (mutations) => {
+          if (mutations.length == 0) return
+          if ($dialog.getAttribute('aria-hidden') == 'true') {
+            log('dialog closed')
+            if (onDialogClose) {
+              onDialogClose()
+              onDialogClose = null
+            }
+          }
+        }, 'dialog', {attributes: true, attributeFilter: ['aria-hidden']})
+      )
+    }
 
     function observeDropdown() {
-      if (!$dropdown) return
-
       globalObservers.push(
         observeElement($dropdown, () => {
           if ($dropdown.getAttribute('aria-hidden') != 'true') {
@@ -1052,18 +1075,26 @@ async function observeMenus() {
       )
     }
 
-    observeDropdown()
+    if ($dialog) observeDialog()
+    if ($dropdown) observeDropdown()
 
     if (!$dropdown) {
       globalObservers.push(
         observeElement($popupContainer, (mutations) => {
           for (let mutation of mutations) {
             for (let $el of mutation.addedNodes) {
-              if ($el.nodeName == 'TP-YT-IRON-DROPDOWN') {
-                $dropdown = /** @type {HTMLElement} */ ($el)
-                observeDropdown()
+              switch($el.nodeName) {
+                case 'TP-YT-IRON-DROPDOWN':
+                  $dropdown = /** @type {HTMLElement} */ ($el)
+                  observeDropdown()
+                  break
+                case 'TP-YT-PAPER-DIALOG':
+                  $dialog = /** @type {HTMLElement} */ ($el)
+                  observeDialog()
+                  break
+              }
+              if ($dropdown && $dialog) {
                 disconnectGlobalObserver('popup container')
-                return
               }
             }
           }
@@ -1338,9 +1369,9 @@ async function addHideChannelToMobileMenu($menu) {
 }
 
 function observeVideoHiddenState() {
-  if (!isSubscriptionsPage()) return
+  if (!isHomePage() && !isSubscriptionsPage()) return
 
-  let observerName = 'video (for Hide being used in action menu)'
+  let observerName = 'video (for being dismissed via action menu)'
 
   if (desktop) {
     let $video = $lastClickedElement?.closest('ytd-rich-grid-media')
@@ -1351,32 +1382,90 @@ function observeVideoHiddenState() {
       observeElement($video, () => {
         if (!$video.hasAttribute('is-dismissed')) return
 
-        log('video hidden, showing countdown timer')
+        disconnectPageObserver(observerName)
+
+        log('video hidden, showing timer')
         let $actions = $video.querySelector('ytd-notification-multi-action-renderer')
         let $undoButton = $actions.querySelector('button')
+        let $tellUsWhyButton = $actions.querySelector(`button[aria-label="${getString('TELL_US_WHY')}"]`)
+        let $pie
+        let timeout
+        let startTime
+
+        function displayPie(options = {}) {
+          let {delay, direction, duration} = options
+          $pie?.remove()
+          $pie = document.createElement('div')
+          $pie.classList.add('cpfyt-pie')
+          if (delay) $pie.style.setProperty('--cpfyt-pie-delay', `${delay}ms`)
+          if (direction) $pie.style.setProperty('--cpfyt-pie-direction', direction)
+          if (duration) $pie.style.setProperty('--cpfyt-pie-duration', `${duration}ms`)
+          $actions.appendChild($pie)
+        }
+
+        function startTimer() {
+          startTime = Date.now()
+          timeout = setTimeout(() => {
+            let $hideElement = $video.closest('ytd-rich-item-renderer')
+            $hideElement?.classList.add('cpfyt-hidden-video')
+            cleanup()
+            // Remove the class if the Undo button is clicked later, e.g. if
+            // this feature is disabled after hiding a video.
+            $undoButton.addEventListener('click', () => {
+              $hideElement?.classList.remove('cpfyt-hidden-video')
+            })
+          }, undoHideDelayMs)
+        }
+
         function cleanup() {
-          $undoButton.removeEventListener('click', undoClicked)
-          $video.querySelector('.cpfyt-pie')?.remove()
-          disconnectPageObserver(observerName)
+          $undoButton.removeEventListener('click', onUndoClick)
+          if ($tellUsWhyButton) {
+            $tellUsWhyButton.removeEventListener('click', onTellUsWhyClick)
+          }
+          $pie.remove()
         }
-        let hideHiddenVideoTimeout = setTimeout(() => {
-          $video.closest('ytd-rich-item-renderer')?.classList.add('cpfyt-hidden-video')
-          cleanup()
-        }, undoHideDelaySeconds * 1000)
-        function undoClicked() {
-          clearTimeout(hideHiddenVideoTimeout)
+
+        function onUndoClick() {
+          clearTimeout(timeout)
           cleanup()
         }
-        $undoButton.addEventListener('click', undoClicked)
-        $actions.insertAdjacentHTML('beforeend', '<div class="cpfyt-pie"></div>')
+
+        function onTellUsWhyClick() {
+          let elapsedTime = Date.now() - startTime
+          clearTimeout(timeout)
+          displayPie({
+            direction: 'reverse',
+            delay: Math.round((elapsedTime - undoHideDelayMs) / 4),
+            duration: undoHideDelayMs / 4,
+          })
+          onDialogClose = () => {
+            startTimer()
+            displayPie()
+          }
+        }
+
+        $undoButton.addEventListener('click', onUndoClick)
+        if ($tellUsWhyButton) {
+          $tellUsWhyButton.addEventListener('click', onTellUsWhyClick)
+        }
+        startTimer()
+        displayPie()
       }, observerName, {
         attributes: true,
         attributeFilter: ['is-dismissed'],
       })
     )
   }
+
   if (mobile) {
-    let $container = $lastClickedElement?.closest('lazy-list')
+    /** @type {HTMLElement} */
+    let $container
+    if (isHomePage()) {
+      $container = $lastClickedElement?.closest('ytm-rich-item-renderer')
+    }
+    else if (isSubscriptionsPage()) {
+      $container = $lastClickedElement?.closest('lazy-list')
+    }
     if (!$container) return
 
     disconnectPageObserver(observerName)
@@ -1386,18 +1475,28 @@ function observeVideoHiddenState() {
           for (let $el of mutation.addedNodes) {
             if ($el.nodeName != 'YTM-NOTIFICATION-MULTI-ACTION-RENDERER') continue
 
-            log('video hidden, showing countdown timer')
+            disconnectPageObserver(observerName)
+
+            log('video hidden, showing timer')
             let $actions = /** @type {HTMLElement} */ ($el).firstElementChild
             let $undoButton = /** @type {HTMLElement} */ ($el).querySelector('button')
             function cleanup() {
               $undoButton.removeEventListener('click', undoClicked)
               $actions.querySelector('.cpfyt-pie')?.remove()
-              disconnectPageObserver(observerName)
             }
             let hideHiddenVideoTimeout = setTimeout(() => {
-              $actions.closest('ytm-item-section-renderer')?.classList.add('cpfyt-hidden-video')
+              let $hideElement = $container
+              if (isSubscriptionsPage()) {
+                $hideElement = $container.closest('ytm-item-section-renderer')
+              }
+              $hideElement?.classList.add('cpfyt-hidden-video')
               cleanup()
-            }, undoHideDelaySeconds * 1000)
+              // Remove the class if the Undo button is clicked later, e.g. if
+              // this feature is disabled after hiding a video.
+              $undoButton.addEventListener('click', () => {
+                $hideElement?.classList.remove('cpfyt-hidden-video')
+              })
+            }, undoHideDelayMs)
             function undoClicked() {
               clearTimeout(hideHiddenVideoTimeout)
               cleanup()
@@ -1597,7 +1696,7 @@ function main() {
   if (config.enabled) {
     configureCss()
     observeTitle()
-    observeMenus()
+    observePopups()
     document.addEventListener('click', onDocumentClick, true)
   }
 }
