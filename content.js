@@ -543,7 +543,7 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // Grid item (Home, Subscriptions)
-          'ytd-rich-item-renderer:has(ytd-thumbnail[is-live-video])',
+          'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(ytd-thumbnail[is-live-video])',
           // List item (Search)
           'ytd-video-renderer:has(ytd-thumbnail[is-live-video])',
           // Related video
