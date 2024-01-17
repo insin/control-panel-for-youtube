@@ -1179,6 +1179,7 @@ async function observeTitle() {
 }
 
 function handleCurrentUrl() {
+  log('handling', getCurrentUrl())
   disconnectPageObservers()
 
   if (isHomePage()) {
@@ -1623,12 +1624,6 @@ async function tweakSearchPage() {
     })
     if (!$sections) return
 
-    let $firstSection = /** @type {HTMLElement} */ ($sections.querySelector('ytd-item-section-renderer #contents'))
-    if (!$firstSection) {
-      warn('first search result section not found')
-      return
-    }
-
     /**
      * Add a data-title attribute to a shelf so we can hide it by title
      * @param {HTMLElement} $shelf
@@ -1639,29 +1634,30 @@ async function tweakSearchPage() {
       log('added', title, 'shelf title')
     }
 
-    /** @param {HTMLElement} $section */
+    let sectionCount = 0
+    /**
+     * Tag any shelves in a section and watch for new content being added.
+     * @param {HTMLElement} $section
+     */
     function processSection($section) {
+      let sectionId = ++sectionCount
+      pageObservers.push(
+        observeElement($section.querySelector('#contents'), (mutations) => {
+          for (let mutation of mutations) {
+            for (let $addedNode of mutation.addedNodes) {
+              if ($addedNode.nodeName == 'YTD-SHELF-RENDERER') {
+                log(`new shelf added to section ${sectionId}`)
+                addTitleToShelf(/** @type {HTMLElement} */ ($addedNode))
+              }
+            }
+          }
+        }, `search result section ${sectionId} contents (for additional shelves being added)`)
+      )
       for (let $shelf of $section.querySelectorAll('ytd-shelf-renderer')) {
         addTitleToShelf(/** @type {HTMLElement} */ ($shelf))
       }
     }
 
-    // The first section has some initial content
-    processSection($firstSection)
-    // More content is added to the first section during initial load and when
-    // the search is changed.
-    pageObservers.push(
-      observeElement($firstSection, (mutations) => {
-        for (let mutation of mutations) {
-          for (let $addedNode of mutation.addedNodes) {
-            if ($addedNode.nodeName == 'YTD-SHELF-RENDERER') {
-              log('new shelf added to first section')
-              addTitleToShelf(/** @type {HTMLElement} */ ($addedNode))
-            }
-          }
-        }
-      }, 'first search result section contents (for search changes)')
-    )
     // New sections are added when more results are loaded
     pageObservers.push(
       observeElement($sections, (mutations) => {
@@ -1675,6 +1671,12 @@ async function tweakSearchPage() {
         }
       }, 'search result sections container (for additional results)')
     )
+
+    let $initialSections = $sections.querySelectorAll('ytd-item-section-renderer')
+    log($initialSections.length, `initial search result section${s($initialSections.length)}`)
+    for (let $initialSection of $initialSections) {
+      processSection(/** @type {HTMLElement} */ ($initialSection))
+    }
   }
 }
 
