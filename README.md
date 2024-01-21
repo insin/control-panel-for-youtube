@@ -27,6 +27,7 @@ For installations links and FAQs visit the [Control Panel for YouTube website](h
 
 ### Video pages
 
+- Skip ads
 - Disable Autoplay
 - Hide Related videos
 - Hide video metadata

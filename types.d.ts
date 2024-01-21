@@ -3,6 +3,8 @@ export type Channel = {
   url?: string
 }
 
+export type CustomMutationObserver = MutationObserver & {name: string, onDisconnect?: () => void}
+
 export type EmbedConfig = {
   enabled: boolean
   hideEmbedEndVideos: boolean
@@ -21,6 +23,7 @@ export type LocaleKey =
   | 'FROM_RELATED_SEARCHES'
   | 'HIDE_CHANNEL'
   | 'MIXES'
+  | 'MUTE'
   | 'PEOPLE_ALSO_WATCHED'
   | 'POPULAR_TODAY'
   | 'PREVIOUSLY_WATCHED'
@@ -53,6 +56,7 @@ export type SiteConfig = {
   hideWatched: boolean
   hideWatchedThreshold: string
   redirectShorts: boolean
+  skipAds: boolean
   // Desktop only
   downloadTranscript: boolean
   fillGaps: boolean

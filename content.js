@@ -51,6 +51,7 @@ let config = {
   hideWatched: false,
   hideWatchedThreshold: '100',
   redirectShorts: false,
+  skipAds: true,
   // Desktop only
   downloadTranscript: true,
   fillGaps: true,
@@ -81,6 +82,7 @@ const locales = {
     FROM_RELATED_SEARCHES: 'From related searches',
     HIDE_CHANNEL: 'Hide channel',
     MIXES: 'Mixes',
+    MUTE: 'Mute',
     PEOPLE_ALSO_WATCHED: 'People also watched',
     POPULAR_TODAY: 'Popular today',
     PREVIOUSLY_WATCHED: 'Previously watched',
@@ -96,6 +98,7 @@ const locales = {
     FROM_RELATED_SEARCHES: '関連する検索から',
     HIDE_CHANNEL: 'チャンネルを隠す',
     MIXES: 'ミックス',
+    MUTE: 'ミュート（消音）',
     PEOPLE_ALSO_WATCHED: '他の人はこちらも視聴しています',
     POPULAR_TODAY: '今日の人気動画',
     PREVIOUSLY_WATCHED: '前に再生した動画',
@@ -122,16 +125,16 @@ const Svgs = {
 }
 
 //#region State
-/** @type {MutationObserver[]} */
-let globalObservers = []
+/** @type {Map<string, import("./types").CustomMutationObserver>} */
+let globalObservers = new Map()
 /** @type {import("./types").Channel} */
 let lastClickedChannel
 /** @type {HTMLElement} */
 let $lastClickedElement
 /** @type {() => void} */
 let onDialogClose
-/** @type {MutationObserver[]} */
-let pageObservers = []
+/** @type {Map<string, import("./types").CustomMutationObserver>} */
+let pageObservers = new Map()
 //#endregion
 
 //#region Utility functions
@@ -161,37 +164,16 @@ function dedent(str) {
   return str.replace(/(\r?\n)[ \t]+$/, '$1')
 }
 
-function disconnectGlobalObserver(name) {
-  for (let i = globalObservers.length -1; i >= 0; i--) {
-    let observer = globalObservers[i]
-    if ('name' in observer && observer.name == name) {
-      observer.disconnect()
-      globalObservers.splice(i, 1)
-      log(`disconnected ${name} observer`)
-    }
-  }
-}
-
-function disconnectPageObserver(name) {
-  for (let i = pageObservers.length -1; i >= 0; i--) {
-    let observer = pageObservers[i]
-    if ('name' in observer && observer.name == name) {
-      observer.disconnect()
-      pageObservers.splice(i, 1)
-      log(`disconnected ${name} observer`)
-    }
-  }
-}
-
-function disconnectPageObservers() {
-  if (pageObservers.length > 0) {
-    log(
-      `disconnecting ${pageObservers.length} page observer${s(pageObservers.length)}`,
-      pageObservers.map(observer => observer['name'])
-    )
-    for (let observer of pageObservers) observer.disconnect()
-    pageObservers = []
-  }
+/** @param {Map<string, import("./types").CustomMutationObserver>} observers */
+function disconnectObservers(observers, scope) {
+  if (observers.size == 0) return
+  log(
+    `disconnecting ${observers.size} ${scope} observer${s(pageObservers.size)}`,
+    Array.from(observers.values(), observer => observer.name)
+  )
+  logObserverDisconnects = false
+  for (let observer of pageObservers.values()) observer.disconnect()
+  logObserverDisconnects = true
 }
 
 function getCurrentUrl() {
@@ -258,39 +240,87 @@ function getElement(selector, {
  })
 }
 
-function isHomePage() {
-  return location.pathname == '/'
-}
+let logObserverDisconnects = true
 
-function isSearchPage() {
-  return location.pathname == '/results'
-}
+/**
+ * Convenience wrapper for the MutationObserver API:
+ *
+ * - Defaults to {childList: true}
+ * - Observers have associated names
+ * - Leading call for callback
+ * - Observers are stored in a scope object
+ * - Observers already in the given scope will be disconnected
+ * - onDisconnect hook for post-disconnect logic
+ *
+ * @param {Node} $target
+ * @param {MutationCallback} callback
+ * @param {{
+ *   leading?: boolean
+ *   name: string
+ *   observers: Map<string, import("./types").CustomMutationObserver>
+ *   onDisconnect?: () => void
+ * }} options
+ * @param {MutationObserverInit} mutationObserverOptions
+ * @return {import("./types").CustomMutationObserver}
+ */
+function observeElement($target, callback, options, mutationObserverOptions = {childList: true}) {
+  let {leading, name, observers, onDisconnect} = options
 
-function isSubscriptionsPage() {
-  return location.pathname == '/feed/subscriptions'
-}
+  /** @type {import("./types").CustomMutationObserver} */
+  let observer = Object.assign(new MutationObserver(callback), {name})
+  let disconnect = observer.disconnect.bind(observer)
+  observer.disconnect = () => {
+    disconnect()
+    observers.delete(name)
+    onDisconnect?.()
+    if (logObserverDisconnects) {
+      log(`disconnected ${name} observer`)
+    }
+  }
 
-function isVideoPage() {
-  return location.pathname == '/watch'
+  if (observers.has(name)) {
+    log(`disconnecting existing ${name} observer`)
+    logObserverDisconnects = false
+    observers.get(name).disconnect()
+    logObserverDisconnects = true
+  }
+  observers.set(name, observer)
+  log (`observing ${name}`)
+  observer.observe($target, mutationObserverOptions)
+  if (leading) {
+    callback([], observer)
+  }
+  return observer
 }
 
 /**
- * Convenience wrapper for the MutationObserver API - the callback is called
- * immediately to support using an observer and its options as a trigger for any
- * change, without looking at MutationRecords.
- * @param {Node} $element
- * @param {MutationCallback} callback
- * @param {string} name
- * @param {MutationObserverInit} options
- * @return {MutationObserver}
+ * Uses a MutationObserver to wait for a specific element. If found, the
+ * observer will be disconnected. If the observer is disconnected first, the
+ * resolved value will be null.
+ *
+ * @param {Node} $target
+ * @param {(mutations: MutationRecord[]) => HTMLElement} getter
+ * @param {{name: string, observers: Map<string, import("./types").CustomMutationObserver>}} options
+ * @param {MutationObserverInit} [mutationObserverOptions]
+ * @return {Promise<HTMLElement>}
  */
-function observeElement($element, callback, name, options = {childList: true}) {
-  log (`observing ${name}`)
-  let observer = new MutationObserver(callback)
-  callback([], observer)
-  observer.observe($element, options)
-  observer['name'] = name
-  return observer
+function observeForElement($target, getter, options, mutationObserverOptions) {
+  return new Promise((resolve) => {
+    let found = false
+    observeElement($target, (mutations, observer) => {
+      let $result = getter(mutations)
+      if ($result) {
+        found = true
+        observer.disconnect()
+        resolve($result)
+      }
+    }, {
+      ...options,
+      onDisconnect() {
+        if (!found) resolve(null)
+      },
+    }, mutationObserverOptions)
+  })
 }
 
 /**
@@ -317,6 +347,16 @@ const configureCss = (() => {
 
     let cssRules = []
     let hideCssSelectors = []
+
+    if (config.skipAds) {
+      // Display a black overlay while ads are playing
+      cssRules.push(`
+        .ytp-ad-player-overlay {
+          background: black;
+          z-index: 10;
+        }
+      `)
+    }
 
     if (config.disableAutoplay) {
       if (desktop) {
@@ -559,7 +599,7 @@ const configureCss = (() => {
           // Search
           'ytm-search ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
           // Related videos
-          'ytm-item-section-renderer[section-identifier="related-items"]:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
+          'ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
         )
       }
     }
@@ -627,6 +667,10 @@ const configureCss = (() => {
           // List item (except History, so watched Shorts can be removed)
           'ytd-browse:not([page-subtype="history"]) ytd-video-renderer:has(a[href^="/shorts"])',
           'ytd-search ytd-video-renderer:has(a[href^="/shorts"])',
+          // Under video
+          '#structured-description ytd-reel-shelf-renderer',
+          // In related
+          '#related ytd-reel-shelf-renderer',
         )
       }
       if (mobile) {
@@ -648,8 +692,9 @@ const configureCss = (() => {
     if (config.hideSponsored) {
       if (desktop) {
         hideCssSelectors.push(
-          // Big promos on Home screen
+          // Big ads and promos on Home screen
           '#masthead-ad',
+          '#big-yoodle ytd-statement-banner-renderer',
           'ytd-rich-section-renderer:has(> #content > ytd-statement-banner-renderer)',
           'ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer[has-paygated-featured-badge])',
           'ytd-rich-section-renderer:has(> #content > ytd-brand-video-shelf-renderer)',
@@ -666,6 +711,10 @@ const configureCss = (() => {
           '.ytp-ad-player-overlay-flyout-cta',
           '.ytp-ad-visit-advertiser-button',
           'ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"]',
+          // Suggestd action buttons in player overlay
+          '#movie_player .ytp-suggested-action',
+          // Panels linked to those buttons
+          '#below #panels',
           // After an ad
           '.ytp-ad-action-interstitial',
           // Above Related videos
@@ -676,11 +725,14 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push(
+          // Big promo on Home screen
+          'ytm-statement-banner-renderer',
           // Bottom of screen promo
           '.mealbar-promo-renderer',
           // Search results
           'ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
           // When an ad is playing
+          '.video-ads .ytp-video-ad-top-bar-title',
           '.ytp-ad-player-overlay-flyout-cta',
           '.ytp-ad-visit-advertiser-button',
           // Directly under video
@@ -693,7 +745,7 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // Grid item (Home, Subscriptions)
-          `ytd-rich-item-renderer:has(#video-title-link[aria-label*="${getString('STREAMED_TITLE')}"])`,
+          `ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(#video-title-link[aria-label*="${getString('STREAMED_TITLE')}"])`,
           // List item (Search)
           `ytd-video-renderer:has(#video-title[aria-label*="${getString('STREAMED_TITLE')}"])`,
           // Related video
@@ -709,7 +761,7 @@ const configureCss = (() => {
           // Search result
           `ytm-search ytm-video-with-context-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
           // Related videos
-          `ytm-item-section-renderer[section-identifier="related-items"]:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
+          `ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
         )
       }
     }
@@ -718,7 +770,7 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // Grid item
-          'ytd-rich-item-renderer:has(ytd-thumbnail-overlay-time-status-renderer[overlay-style="UPCOMING"])',
+          'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(ytd-thumbnail-overlay-time-status-renderer[overlay-style="UPCOMING"])',
           // List item
           'ytd-video-renderer:has(ytd-thumbnail-overlay-time-status-renderer[overlay-style="UPCOMING"])',
         )
@@ -766,7 +818,7 @@ const configureCss = (() => {
           // Search
           `ytm-search ytm-video-with-context-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
           // Related videos
-          `ytm-item-section-renderer[section-identifier="related-items"]:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
+          `ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
         )
       }
     }
@@ -812,7 +864,7 @@ const configureCss = (() => {
       if (config.hideSuggestedSections) {
         let homeShelfTitles = [
           getString('RECOMMENDED')
-        ].map(title => `[data-title="${title}"]`).join(', ')
+        ].map(title => `[data-cpfyt-title="${title}"]`).join(', ')
         let searchShelfTitles = [
           getString('CHANNELS_NEW_TO_YOU'),
           getString('FOR_YOU'),
@@ -820,12 +872,14 @@ const configureCss = (() => {
           getString('PEOPLE_ALSO_WATCHED'),
           getString('POPULAR_TODAY'),
           getString('PREVIOUSLY_WATCHED'),
-        ].map(title => `[data-title="${title}"]`).join(', ')
+        ].map(title => `[data-cpfyt-title="${title}"]`).join(', ')
         hideCssSelectors.push(
           // Trending shelf in Home
           'ytd-rich-section-renderer:has(a[href="/feed/trending"])',
           // Shelves with specific titles in Home
           `ytd-rich-section-renderer:is(${homeShelfTitles})`,
+          // Looking for something different? tile in Home
+          'ytd-rich-item-renderer:has(> #content > ytd-feed-nudge-renderer)',
           // List shelves with specific titles in Search
           `ytd-shelf-renderer:is(${searchShelfTitles})`,
           // People also search for in Search
@@ -955,6 +1009,22 @@ const configureCss = (() => {
 })()
 //#endregion
 
+function isHomePage() {
+  return location.pathname == '/'
+}
+
+function isSearchPage() {
+  return location.pathname == '/results'
+}
+
+function isSubscriptionsPage() {
+  return location.pathname == '/feed/subscriptions'
+}
+
+function isVideoPage() {
+  return location.pathname == '/watch'
+}
+
 //#region Tweak functions
 async function disableAutoplay() {
   if (desktop) {
@@ -967,47 +1037,51 @@ async function disableAutoplay() {
     // On desktop, initial Autoplay button HTML has style="display: none" and is
     // always checked on. Once it's displayed, we can determine its real state
     // and take action if needed.
-    pageObservers.push(
-      observeElement($autoplayButton, () => {
-        if ($autoplayButton.style.display == 'none') return
-
-        if ($autoplayButton.querySelector('.ytp-autonav-toggle-button[aria-checked="true"]')) {
-          log('turning Autoplay off')
-          $autoplayButton.click()
-        } else {
-          log('Autoplay is already off')
-        }
-
-        disconnectPageObserver('Autoplay button style')
-      }, 'Autoplay button style', {attributes: true, attributeFilter: ['style']})
-    )
+    observeElement($autoplayButton, (_, observer) => {
+      if ($autoplayButton.style.display == 'none') return
+      if ($autoplayButton.querySelector('.ytp-autonav-toggle-button[aria-checked="true"]')) {
+        log('turning Autoplay off')
+        $autoplayButton.click()
+      } else {
+        log('Autoplay is already off')
+      }
+      observer.disconnect()
+    }, {
+      leading: true,
+      name: 'Autoplay button style (for button being displayed)',
+      observers: pageObservers,
+    }, {
+      attributes: true,
+      attributeFilter: ['style'],
+    })
   }
 
   if (mobile) {
     // Appearance of the Autoplay button may be delayed until interaction
     let $customControl = await getElement('#player-control-container > ytm-custom-control', {
-      name: 'Autoplay control container',
+      name: 'Autoplay <ytm-custom-control>',
       stopIf: currentUrlChanges(),
     })
     if (!$customControl) return
 
-    pageObservers.push(
-      observeElement($customControl, () => {
-        if ($customControl.childElementCount == 0) return
+    observeElement($customControl, (_, observer) => {
+      if ($customControl.childElementCount == 0) return
 
-        let $autoplayButton = /** @type {HTMLElement} */ ($customControl.querySelector('button.ytm-autonav-toggle-button-container'))
-        if (!$autoplayButton) return
+      let $autoplayButton = /** @type {HTMLElement} */ ($customControl.querySelector('button.ytm-autonav-toggle-button-container'))
+      if (!$autoplayButton) return
 
-        if ($autoplayButton.getAttribute('aria-pressed') == 'true') {
-          log('turning Autoplay off')
-          $autoplayButton.click()
-        } else {
-          log('Autoplay is already off')
-        }
-
-        disconnectPageObserver('Autoplay control container')
-      }, 'Autoplay control container')
-    )
+      if ($autoplayButton.getAttribute('aria-pressed') == 'true') {
+        log('turning Autoplay off')
+        $autoplayButton.click()
+      } else {
+        log('Autoplay is already off')
+      }
+      observer.disconnect()
+    }, {
+      leading: true,
+      name: 'Autoplay <ytm-custom-control> (for Autoplay button being added)',
+      observers: pageObservers,
+    })
   }
 }
 
@@ -1051,55 +1125,64 @@ async function observePopups() {
     let $dialog = /** @type {HTMLElement} */ ($popupContainer.querySelector('tp-yt-paper-dialog'))
 
     function observeDialog() {
-      globalObservers.push(
-        observeElement($dialog, (mutations) => {
-          if (mutations.length == 0) return
-          if ($dialog.getAttribute('aria-hidden') == 'true') {
-            log('dialog closed')
-            if (onDialogClose) {
-              onDialogClose()
-              onDialogClose = null
-            }
+      observeElement($dialog, () => {
+        if ($dialog.getAttribute('aria-hidden') == 'true') {
+          log('dialog closed')
+          if (onDialogClose) {
+            onDialogClose()
+            onDialogClose = null
           }
-        }, 'dialog', {attributes: true, attributeFilter: ['aria-hidden']})
-      )
+        }
+      }, {
+        name: '<tp-yt-paper-dialog> (for [aria-hidden] being added)',
+        observers: globalObservers,
+      }, {
+        attributes: true,
+        attributeFilter: ['aria-hidden'],
+      })
     }
 
     function observeDropdown() {
-      globalObservers.push(
-        observeElement($dropdown, () => {
-          if ($dropdown.getAttribute('aria-hidden') != 'true') {
-            onDesktopMenuAppeared($dropdown)
-          }
-        }, 'dropdown', {attributes: true, attributeFilter: ['aria-hidden']})
-      )
+      observeElement($dropdown, () => {
+        if ($dropdown.getAttribute('aria-hidden') != 'true') {
+          onDesktopMenuAppeared($dropdown)
+        }
+      }, {
+        leading: true,
+        name: '<tp-yt-iron-dropdown> (for [aria-hidden] being removed)',
+        observers: globalObservers,
+      }, {
+        attributes: true,
+        attributeFilter: ['aria-hidden'],
+      })
     }
 
     if ($dialog) observeDialog()
     if ($dropdown) observeDropdown()
 
-    if (!$dropdown) {
-      globalObservers.push(
-        observeElement($popupContainer, (mutations) => {
-          for (let mutation of mutations) {
-            for (let $el of mutation.addedNodes) {
-              switch($el.nodeName) {
-                case 'TP-YT-IRON-DROPDOWN':
-                  $dropdown = /** @type {HTMLElement} */ ($el)
-                  observeDropdown()
-                  break
-                case 'TP-YT-PAPER-DIALOG':
-                  $dialog = /** @type {HTMLElement} */ ($el)
-                  observeDialog()
-                  break
-              }
-              if ($dropdown && $dialog) {
-                disconnectGlobalObserver('popup container')
-              }
+    if (!$dropdown || !$dialog) {
+      observeElement($popupContainer, (mutations, observer) => {
+        for (let mutation of mutations) {
+          for (let $el of mutation.addedNodes) {
+            switch($el.nodeName) {
+              case 'TP-YT-IRON-DROPDOWN':
+                $dropdown = /** @type {HTMLElement} */ ($el)
+                observeDropdown()
+                break
+              case 'TP-YT-PAPER-DIALOG':
+                $dialog = /** @type {HTMLElement} */ ($el)
+                observeDialog()
+                break
+            }
+            if ($dropdown && $dialog) {
+              observer.disconnect()
             }
           }
-        }, 'popup container')
-      )
+        }
+      }, {
+        name: '<ytd-popup-container> (for initial <tp-yt-iron-dropdown> and <tp-yt-paper-dialog> being added)',
+        observers: globalObservers,
+      })
     }
   }
 
@@ -1109,18 +1192,24 @@ async function observePopups() {
     let $body = await getElement('body', {name: '<body>'})
     if (!$body) return
 
-    globalObservers.push(
-      observeElement($body, (mutations) => {
-        for (let mutation of mutations) {
-          for (let $el of mutation.addedNodes) {
-            if ($el instanceof Element && $el?.id == 'menu') {
-              onMobileMenuAppeared(/** @type {HTMLElement} */ ($el))
-              return
-            }
+    let $menu = /** @type {HTMLElement} */ (document.querySelector('body > #menu'))
+    if ($menu) {
+      onMobileMenuAppeared($menu)
+    }
+
+    observeElement($body, (mutations) => {
+      for (let mutation of mutations) {
+        for (let $el of mutation.addedNodes) {
+          if ($el instanceof HTMLElement && $el.id == 'menu') {
+            onMobileMenuAppeared($el)
+            return
           }
         }
-      }, '<body> (for menus appearing)')
-    )
+      }
+    }, {
+      name: '<body> (for #menu being added)',
+      observers: globalObservers,
+    })
 
     // When switching between screens, <bottom-sheet-container> is replaced
     let $app = await getElement('ytm-app', {name: '<ytm-app>'})
@@ -1129,34 +1218,34 @@ async function observePopups() {
     let $bottomSheet = /** @type {HTMLElement} */ ($app.querySelector('bottom-sheet-container'))
 
     function observeBottomSheet() {
-      if (!$bottomSheet) return
-
-      disconnectGlobalObserver('bottom sheet (menus)')
-      globalObservers.push(
-        observeElement($bottomSheet, () => {
-          if ($bottomSheet.childElementCount > 0) {
-            onMobileMenuAppeared($bottomSheet)
-          }
-        }, 'bottom sheet (for menus appearing)')
-      )
+      observeElement($bottomSheet, () => {
+        if ($bottomSheet.childElementCount > 0) {
+          onMobileMenuAppeared($bottomSheet)
+        }
+      }, {
+        leading: true,
+        name: '<bottom-sheet-container> (for content being added)',
+        observers: globalObservers,
+      })
     }
 
-    observeBottomSheet()
+    if ($bottomSheet) observeBottomSheet()
 
-    globalObservers.push(
-      observeElement($app, (mutations) => {
-        for (let mutation of mutations) {
-          for (let $el of mutation.addedNodes) {
-            if ($el.nodeName == 'BOTTOM-SHEET-CONTAINER') {
-              log('new bottom sheet appeared')
-              $bottomSheet = /** @type {HTMLElement} */ ($el)
-              observeBottomSheet()
-              return
-            }
+    observeElement($app, (mutations) => {
+      for (let mutation of mutations) {
+        for (let $el of mutation.addedNodes) {
+          if ($el.nodeName == 'BOTTOM-SHEET-CONTAINER') {
+            log('new bottom sheet appeared')
+            $bottomSheet = /** @type {HTMLElement} */ ($el)
+            observeBottomSheet()
+            return
           }
         }
-      }, '<ytm-app> (for bottom sheet replacement)')
-    )
+      }
+    }, {
+      name: '<ytm-app> (for <bottom-sheet-container> being replaced)',
+      observers: globalObservers,
+    })
   }
 }
 
@@ -1166,21 +1255,23 @@ async function observePopups() {
 async function observeTitle() {
   let $title = await getElement('title', {name: '<title>'})
   let seenUrl
-  globalObservers.push(
-    observeElement($title, () => {
-      let currentUrl = getCurrentUrl()
-      if (seenUrl != null && seenUrl == currentUrl) {
-        return
-      }
-      seenUrl = currentUrl
-      handleCurrentUrl()
-    }, '<title> (for title changes)')
-  )
+  observeElement($title, () => {
+    let currentUrl = getCurrentUrl()
+    if (seenUrl != null && seenUrl == currentUrl) {
+      return
+    }
+    seenUrl = currentUrl
+    handleCurrentUrl()
+  }, {
+    leading: true,
+    name: '<title> (for title changes)',
+    observers: globalObservers,
+  })
 }
 
 function handleCurrentUrl() {
   log('handling', getCurrentUrl())
-  disconnectPageObservers()
+  disconnectObservers(pageObservers, 'page')
 
   if (isHomePage()) {
     tweakHomePage()
@@ -1372,90 +1463,88 @@ async function addHideChannelToMobileMenu($menu) {
 function observeVideoHiddenState() {
   if (!isHomePage() && !isSubscriptionsPage()) return
 
-  let observerName = 'video (for being dismissed via action menu)'
-
   if (desktop) {
     let $video = $lastClickedElement?.closest('ytd-rich-grid-media')
     if (!$video) return
 
-    disconnectPageObserver(observerName)
-    pageObservers.push(
-      observeElement($video, () => {
-        if (!$video.hasAttribute('is-dismissed')) return
+    observeElement($video, (_, observer) => {
+      if (!$video.hasAttribute('is-dismissed')) return
 
-        disconnectPageObserver(observerName)
+      observer.disconnect()
 
-        log('video hidden, showing timer')
-        let $actions = $video.querySelector('ytd-notification-multi-action-renderer')
-        let $undoButton = $actions.querySelector('button')
-        let $tellUsWhyButton = $actions.querySelector(`button[aria-label="${getString('TELL_US_WHY')}"]`)
-        let $pie
-        let timeout
-        let startTime
+      log('video hidden, showing timer')
+      let $actions = $video.querySelector('ytd-notification-multi-action-renderer')
+      let $undoButton = $actions.querySelector('button')
+      let $tellUsWhyButton = $actions.querySelector(`button[aria-label="${getString('TELL_US_WHY')}"]`)
+      let $pie
+      let timeout
+      let startTime
 
-        function displayPie(options = {}) {
-          let {delay, direction, duration} = options
-          $pie?.remove()
-          $pie = document.createElement('div')
-          $pie.classList.add('cpfyt-pie')
-          if (delay) $pie.style.setProperty('--cpfyt-pie-delay', `${delay}ms`)
-          if (direction) $pie.style.setProperty('--cpfyt-pie-direction', direction)
-          if (duration) $pie.style.setProperty('--cpfyt-pie-duration', `${duration}ms`)
-          $actions.appendChild($pie)
-        }
+      function displayPie(options = {}) {
+        let {delay, direction, duration} = options
+        $pie?.remove()
+        $pie = document.createElement('div')
+        $pie.classList.add('cpfyt-pie')
+        if (delay) $pie.style.setProperty('--cpfyt-pie-delay', `${delay}ms`)
+        if (direction) $pie.style.setProperty('--cpfyt-pie-direction', direction)
+        if (duration) $pie.style.setProperty('--cpfyt-pie-duration', `${duration}ms`)
+        $actions.appendChild($pie)
+      }
 
-        function startTimer() {
-          startTime = Date.now()
-          timeout = setTimeout(() => {
-            let $hideElement = $video.closest('ytd-rich-item-renderer')
-            $hideElement?.classList.add('cpfyt-hidden-video')
-            cleanup()
-            // Remove the class if the Undo button is clicked later, e.g. if
-            // this feature is disabled after hiding a video.
-            $undoButton.addEventListener('click', () => {
-              $hideElement?.classList.remove('cpfyt-hidden-video')
-            })
-          }, undoHideDelayMs)
-        }
-
-        function cleanup() {
-          $undoButton.removeEventListener('click', onUndoClick)
-          if ($tellUsWhyButton) {
-            $tellUsWhyButton.removeEventListener('click', onTellUsWhyClick)
-          }
-          $pie.remove()
-        }
-
-        function onUndoClick() {
-          clearTimeout(timeout)
+      function startTimer() {
+        startTime = Date.now()
+        timeout = setTimeout(() => {
+          let $elementToHide = $video.closest('ytd-rich-item-renderer')
+          $elementToHide?.classList.add('cpfyt-hidden-video')
           cleanup()
-        }
-
-        function onTellUsWhyClick() {
-          let elapsedTime = Date.now() - startTime
-          clearTimeout(timeout)
-          displayPie({
-            direction: 'reverse',
-            delay: Math.round((elapsedTime - undoHideDelayMs) / 4),
-            duration: undoHideDelayMs / 4,
+          // Remove the class if the Undo button is clicked later, e.g. if
+          // this feature is disabled after hiding a video.
+          $undoButton.addEventListener('click', () => {
+            $elementToHide?.classList.remove('cpfyt-hidden-video')
           })
-          onDialogClose = () => {
-            startTimer()
-            displayPie()
-          }
-        }
+        }, undoHideDelayMs)
+      }
 
-        $undoButton.addEventListener('click', onUndoClick)
+      function cleanup() {
+        $undoButton.removeEventListener('click', onUndoClick)
         if ($tellUsWhyButton) {
-          $tellUsWhyButton.addEventListener('click', onTellUsWhyClick)
+          $tellUsWhyButton.removeEventListener('click', onTellUsWhyClick)
         }
-        startTimer()
-        displayPie()
-      }, observerName, {
-        attributes: true,
-        attributeFilter: ['is-dismissed'],
-      })
-    )
+        $pie.remove()
+      }
+
+      function onUndoClick() {
+        clearTimeout(timeout)
+        cleanup()
+      }
+
+      function onTellUsWhyClick() {
+        let elapsedTime = Date.now() - startTime
+        clearTimeout(timeout)
+        displayPie({
+          direction: 'reverse',
+          delay: Math.round((elapsedTime - undoHideDelayMs) / 4),
+          duration: undoHideDelayMs / 4,
+        })
+        onDialogClose = () => {
+          startTimer()
+          displayPie()
+        }
+      }
+
+      $undoButton.addEventListener('click', onUndoClick)
+      if ($tellUsWhyButton) {
+        $tellUsWhyButton.addEventListener('click', onTellUsWhyClick)
+      }
+      startTimer()
+      displayPie()
+    }, {
+      name: '<ytd-rich-grid-media> (for [is-dismissed] being added)',
+      observers: pageObservers,
+    }, {
+      attributes: true,
+      attributeFilter: ['is-dismissed'],
+    })
   }
 
   if (mobile) {
@@ -1469,45 +1558,45 @@ function observeVideoHiddenState() {
     }
     if (!$container) return
 
-    disconnectPageObserver(observerName)
-    pageObservers.push(
-      observeElement($container, (mutations) => {
-        for (let mutation of mutations) {
-          for (let $el of mutation.addedNodes) {
-            if ($el.nodeName != 'YTM-NOTIFICATION-MULTI-ACTION-RENDERER') continue
+    observeElement($container, (mutations, observer) => {
+      for (let mutation of mutations) {
+        for (let $el of mutation.addedNodes) {
+          if ($el.nodeName != 'YTM-NOTIFICATION-MULTI-ACTION-RENDERER') continue
 
-            disconnectPageObserver(observerName)
+          observer.disconnect()
 
-            log('video hidden, showing timer')
-            let $actions = /** @type {HTMLElement} */ ($el).firstElementChild
-            let $undoButton = /** @type {HTMLElement} */ ($el).querySelector('button')
-            function cleanup() {
-              $undoButton.removeEventListener('click', undoClicked)
-              $actions.querySelector('.cpfyt-pie')?.remove()
-            }
-            let hideHiddenVideoTimeout = setTimeout(() => {
-              let $hideElement = $container
-              if (isSubscriptionsPage()) {
-                $hideElement = $container.closest('ytm-item-section-renderer')
-              }
-              $hideElement?.classList.add('cpfyt-hidden-video')
-              cleanup()
-              // Remove the class if the Undo button is clicked later, e.g. if
-              // this feature is disabled after hiding a video.
-              $undoButton.addEventListener('click', () => {
-                $hideElement?.classList.remove('cpfyt-hidden-video')
-              })
-            }, undoHideDelayMs)
-            function undoClicked() {
-              clearTimeout(hideHiddenVideoTimeout)
-              cleanup()
-            }
-            $undoButton.addEventListener('click', undoClicked)
-            $actions.insertAdjacentHTML('beforeend', '<div class="cpfyt-pie"></div>')
+          log('video hidden, showing timer')
+          let $actions = /** @type {HTMLElement} */ ($el).firstElementChild
+          let $undoButton = /** @type {HTMLElement} */ ($el).querySelector('button')
+          function cleanup() {
+            $undoButton.removeEventListener('click', undoClicked)
+            $actions.querySelector('.cpfyt-pie')?.remove()
           }
+          let hideHiddenVideoTimeout = setTimeout(() => {
+            let $elementToHide = $container
+            if (isSubscriptionsPage()) {
+              $elementToHide = $container.closest('ytm-item-section-renderer')
+            }
+            $elementToHide?.classList.add('cpfyt-hidden-video')
+            cleanup()
+            // Remove the class if the Undo button is clicked later, e.g. if
+            // this feature is disabled after hiding a video.
+            $undoButton.addEventListener('click', () => {
+              $elementToHide?.classList.remove('cpfyt-hidden-video')
+            })
+          }, undoHideDelayMs)
+          function undoClicked() {
+            clearTimeout(hideHiddenVideoTimeout)
+            cleanup()
+          }
+          $undoButton.addEventListener('click', undoClicked)
+          $actions.insertAdjacentHTML('beforeend', '<div class="cpfyt-pie"></div>')
         }
-      }, observerName)
-    )
+      }
+    }, {
+      name: `<${$container.tagName.toLowerCase()}> (for <ytm-notification-multi-action-renderer> being added)`,
+      observers: pageObservers,
+    })
   }
 }
 
@@ -1578,6 +1667,7 @@ async function tweakHomePage() {
     return
   }
 
+  // Add data-cpfyt-title attribute to titled shelves so they can be hidden by title
   if (desktop && config.hideSuggestedSections) {
     let $rows = await getElement('ytd-browse[page-subtype="home"] ytd-rich-grid-renderer > #contents', {
       name: 'Home rows container',
@@ -1585,14 +1675,11 @@ async function tweakHomePage() {
     })
     if (!$rows) return
 
-    /**
-     * Add a data-title attribute to a shelf so we can hide it by title
-     * @param {HTMLElement} $shelf
-     */
+    /** @param {HTMLElement} $shelf  */
     function addTitleToShelf($shelf) {
       let title = $shelf.querySelector('ytd-rich-shelf-renderer #title')?.textContent
       if (title) {
-        $shelf.dataset.title = title
+        $shelf.dataset.cpfytTitle = title
         log('added', title, 'shelf title')
       }
     }
@@ -1602,21 +1689,23 @@ async function tweakHomePage() {
       addTitleToShelf(/** @type {HTMLElement} */ ($shelf))
     }
 
-    pageObservers.push(
-      observeElement($rows, (mutations) => {
-        for (let mutation of mutations) {
-          for (let $addedNode of mutation.addedNodes) {
-            if ($addedNode.nodeName == 'YTD-RICH-SECTION-RENDERER') {
-              addTitleToShelf(/** @type {HTMLElement} */ ($addedNode))
-            }
+    observeElement($rows, (mutations) => {
+      for (let mutation of mutations) {
+        for (let $addedNode of mutation.addedNodes) {
+          if ($addedNode.nodeName == 'YTD-RICH-SECTION-RENDERER') {
+            addTitleToShelf(/** @type {HTMLElement} */ ($addedNode))
           }
         }
-      }, 'Home rows container (for additional rows being added)')
-    )
+      }
+    }, {
+      name: '<ytd-rich-grid-renderer> > #contents (for <ytd-rich-section-renderer>s being added)',
+      observers: pageObservers,
+    })
   }
 }
 
 async function tweakSearchPage() {
+  // Add data-title attribute to titled shelves so they can be hidden by title
   if (desktop && config.hideSuggestedSections) {
     let $sections = await getElement('ytd-search ytd-section-list-renderer #contents', {
       name: 'search result sections container',
@@ -1624,13 +1713,10 @@ async function tweakSearchPage() {
     })
     if (!$sections) return
 
-    /**
-     * Add a data-title attribute to a shelf so we can hide it by title
-     * @param {HTMLElement} $shelf
-     */
+    /**  @param {HTMLElement} $shelf */
     function addTitleToShelf($shelf) {
       let title = $shelf.querySelector('#title').textContent
-      $shelf.dataset.title = title
+      $shelf.dataset.cpfytTitle = title
       log('added', title, 'shelf title')
     }
 
@@ -1641,36 +1727,38 @@ async function tweakSearchPage() {
      */
     function processSection($section) {
       let sectionId = ++sectionCount
-      pageObservers.push(
-        observeElement($section.querySelector('#contents'), (mutations) => {
-          for (let mutation of mutations) {
-            for (let $addedNode of mutation.addedNodes) {
-              if ($addedNode.nodeName == 'YTD-SHELF-RENDERER') {
-                log(`new shelf added to section ${sectionId}`)
-                addTitleToShelf(/** @type {HTMLElement} */ ($addedNode))
-              }
+      observeElement($section.querySelector('#contents'), (mutations) => {
+        for (let mutation of mutations) {
+          for (let $addedNode of mutation.addedNodes) {
+            if ($addedNode.nodeName == 'YTD-SHELF-RENDERER') {
+              log(`new shelf added to section ${sectionId}`)
+              addTitleToShelf(/** @type {HTMLElement} */ ($addedNode))
             }
           }
-        }, `search result section ${sectionId} contents (for additional shelves being added)`)
-      )
+        }
+      }, {
+        name: `<ytd-item-section-renderer> ${sectionId} #contents (for <ytd-shelf-renderer>s being added)`,
+        observers: pageObservers,
+      })
       for (let $shelf of $section.querySelectorAll('ytd-shelf-renderer')) {
         addTitleToShelf(/** @type {HTMLElement} */ ($shelf))
       }
     }
 
     // New sections are added when more results are loaded
-    pageObservers.push(
-      observeElement($sections, (mutations) => {
-        for (let mutation of mutations) {
-          for (let $addedNode of mutation.addedNodes) {
-            if ($addedNode.nodeName == 'YTD-ITEM-SECTION-RENDERER') {
-              log('new search result section added')
-              processSection(/** @type {HTMLElement} */ ($addedNode))
-            }
+    observeElement($sections, (mutations) => {
+      for (let mutation of mutations) {
+        for (let $addedNode of mutation.addedNodes) {
+          if ($addedNode.nodeName == 'YTD-ITEM-SECTION-RENDERER') {
+            log('new search result section added')
+            processSection(/** @type {HTMLElement} */ ($addedNode))
           }
         }
-      }, 'search result sections container (for additional results)')
-    )
+      }
+    }, {
+      name: '<ytd-section-list-renderer> #contents (for <ytd-item-section-renderer>s being added)',
+      observers: pageObservers,
+    })
 
     let $initialSections = $sections.querySelectorAll('ytd-item-section-renderer')
     log($initialSections.length, `initial search result section${s($initialSections.length)}`)
@@ -1680,7 +1768,171 @@ async function tweakSearchPage() {
   }
 }
 
-function tweakVideoPage() {
+async function observeVideoAds() {
+  let $player = await getElement('#movie_player', {
+    name: 'player',
+    stopIf: currentUrlChanges(),
+  })
+  if (!$player) return
+
+  let $videoAds = $player.querySelector('.video-ads')
+  if (!$videoAds) {
+    $videoAds = await observeForElement($player, (mutations) => {
+      for (let mutation of mutations) {
+        for (let $addedNode of mutation.addedNodes) {
+          if ($addedNode instanceof HTMLElement && $addedNode.classList.contains('video-ads')) {
+            return $addedNode
+          }
+        }
+      }
+    }, {
+      name: '#movie_player (for .video-ads being added)',
+      observers: pageObservers,
+    })
+    if (!$videoAds) return
+  }
+
+  // When there are multiple ads, content is removed and re-added
+  let unmuteTimeout
+
+  function processAdContent() {
+    if (unmuteTimeout) {
+      clearTimeout(unmuteTimeout)
+      unmuteTimeout = null
+    }
+
+    // Mute ad audio
+    if (desktop) {
+      let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
+      if ($muteButton) {
+        if ($muteButton.dataset.titleNoTooltip == getString('MUTE')) {
+          log('muting ad audio')
+          $muteButton.click()
+          $muteButton.dataset.cpfytWasMuted = 'false'
+        }
+        else if ($muteButton.dataset.cpfytWasMuted == null) {
+          $muteButton.dataset.cpfytWasMuted = 'true'
+        }
+      } else {
+        warn('mute button not found')
+      }
+    }
+    if (mobile) {
+      // Mobile doesn't have a mute button, so we mute the video itself
+      let $video = /** @type {HTMLVideoElement} */ ($player.querySelector('video'))
+      if ($video) {
+        if (!$video.muted) {
+          $video.muted = true
+          $video.dataset.cpfytWasMuted = 'false'
+        }
+        else if ($video.dataset.cpfytWasMuted == null) {
+          $video.dataset.cpfytWasMuted = 'true'
+        }
+      } else {
+        warn('<video> not found')
+      }
+    }
+
+    // Try to skip to the end of the ad
+    let $video = /** @type {HTMLVideoElement} */ ($player.querySelector('video'))
+    if (Number.isFinite($video.duration)) {
+      log(`skipping to end of ad (using video duration)`)
+      $video.currentTime = $video.duration
+    } else {
+      log(`skipping to end of ad (duration was ${$video.duration})`)
+      $video.currentTime = 1_000_000
+    }
+
+    let $skipOrPreview = $videoAds.querySelector('.ytp-ad-player-overlay-skip-or-preview')
+    if (!$skipOrPreview) {
+      log('ad skip or preview container not found')
+      return
+    }
+
+    if ($skipOrPreview.firstElementChild.classList.contains('ytp-ad-preview-slot')) {
+      log('ad only has a preview button')
+      return
+    }
+
+    let $skipButtonSlot = /** @type {HTMLElement} */ ($skipOrPreview.querySelector('.ytp-ad-skip-button-slot'))
+    if (!$skipButtonSlot) {
+      log('skip button slot not found')
+      return
+    }
+
+    observeElement($skipButtonSlot, (_, observer) => {
+      if ($skipButtonSlot.style.display != 'none') {
+        let $button = $skipButtonSlot.querySelector('button')
+        if ($button) {
+          log('clicking skip button')
+          // XXX Not working on mobile
+          $button.click()
+        } else {
+          warn('skip button not found')
+        }
+        observer.disconnect()
+      }
+    }, {
+      leading: true,
+      name: 'skip button slot',
+      observers: pageObservers,
+    }, {attributes: true})
+  }
+
+  if ($videoAds.childElementCount > 0) {
+    log('video ad content present')
+    processAdContent()
+  }
+
+  observeElement($videoAds, (mutations) => {
+    // Nothing added
+    if (!mutations.some(mutation => mutation.addedNodes.length > 0)) {
+      // Something removed
+      if (mutations.some(mutation => mutation.removedNodes.length > 0)) {
+        log('video ad content removed')
+        // Only unmute if we know the volume wasn't initially muted
+        if (desktop) {
+          let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
+          if ($muteButton &&
+              $muteButton.dataset.titleNoTooltip != getString('MUTE') &&
+              $muteButton.dataset.cpfytWasMuted == 'false') {
+            unmuteTimeout = setTimeout(() => {
+              log('unmuting audio after ads')
+              $muteButton.click()
+              unmuteTimeout = null
+              delete $muteButton.dataset.cpfytWasMuted
+            }, 500)
+          }
+        }
+        if (mobile) {
+          let $video = $player.querySelector('video')
+          if ($video &&
+              $video.muted &&
+              $video.dataset.cpfytWasMuted == 'false') {
+            unmuteTimeout = setTimeout(() => {
+              log('unmuting audio after ads')
+              $video.muted = false
+              unmuteTimeout = null
+              delete $video.dataset.cpfytWasMuted
+            }, 500)
+          }
+        }
+      }
+      return
+    }
+
+    log('video ad content appeared')
+    processAdContent()
+  }, {
+    name: '#movie_player > .video-ads (for content being added)',
+    observers: pageObservers,
+  })
+}
+
+async function tweakVideoPage() {
+  if (config.skipAds) {
+    observeVideoAds()
+  }
   if (config.disableAutoplay) {
     disableAutoplay()
   }
@@ -1719,15 +1971,8 @@ function configChanged(changes) {
     main()
   } else {
     configureCss()
-    disconnectPageObservers()
-    if (globalObservers.length > 0) {
-      log(
-        `disconnecting ${globalObservers.length} global observer${s(globalObservers.length)}`,
-        globalObservers.map(observer => observer['name'])
-      )
-      for (let observer of globalObservers) observer.disconnect()
-      globalObservers = []
-    }
+    disconnectObservers(pageObservers, 'page')
+    disconnectObservers(globalObservers,' global')
     document.removeEventListener('click', onDocumentClick, true)
   }
 }

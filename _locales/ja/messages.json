@@ -140,6 +140,9 @@
   "shorts": {
     "message": "ショート動画"
   },
+  "skipAds": {
+    "message": "広告をスキップ"
+  },
   "subscriptionsGridView": {
     "message": "サブスクリプションのグリッドビューを使用する（縦画面のみ）"
   },

@@ -144,6 +144,9 @@
   "shorts": {
     "message": "Shorts"
   },
+  "skipAds": {
+    "message": "Skip ads"
+  },
   "subscriptionsGridView": {
     "message": "Use grid view for Subscriptions (portrait only)"
   },

@@ -39,6 +39,7 @@ for (let translationId of [
   'hideWatched',
   'hideWatchedThreshold',
   'redirectShorts',
+  'skipAds',
   'subscriptionsGridView',
   'tidyGuideSidebar',
   'uiTweaks',
@@ -82,6 +83,7 @@ let defaultConfig = {
   hideWatched: false,
   hideWatchedThreshold: '100',
   redirectShorts: true,
+  skipAds: true,
   // Desktop only
   downloadTranscript: true,
   fillGaps: true,

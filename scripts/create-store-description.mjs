@@ -38,6 +38,7 @@ ${messages.videoLists}:
 
 ${messages.videoPages}:
 
+• ${messages.skipAds}
 • ${messages.disableAutoplay}
 • ${messages.hideRelated}
 • ${messages.hideMetadata}
