@@ -125,6 +125,8 @@ const Svgs = {
 }
 
 //#region State
+/** @type {() => void} */
+let onAdRemoved
 /** @type {Map<string, import("./types").CustomMutationObserver>} */
 let globalObservers = new Map()
 /** @type {import("./types").Channel} */
@@ -132,7 +134,7 @@ let lastClickedChannel
 /** @type {HTMLElement} */
 let $lastClickedElement
 /** @type {() => void} */
-let onDialogClose
+let onDialogClosed
 /** @type {Map<string, import("./types").CustomMutationObserver>} */
 let pageObservers = new Map()
 //#endregion
@@ -256,6 +258,7 @@ let logObserverDisconnects = true
  * @param {MutationCallback} callback
  * @param {{
  *   leading?: boolean
+ *   logElement?: boolean
  *   name: string
  *   observers: Map<string, import("./types").CustomMutationObserver>
  *   onDisconnect?: () => void
@@ -264,7 +267,7 @@ let logObserverDisconnects = true
  * @return {import("./types").CustomMutationObserver}
  */
 function observeElement($target, callback, options, mutationObserverOptions = {childList: true}) {
-  let {leading, name, observers, onDisconnect} = options
+  let {leading, logElement, name, observers, onDisconnect} = options
 
   /** @type {import("./types").CustomMutationObserver} */
   let observer = Object.assign(new MutationObserver(callback), {name})
@@ -285,7 +288,11 @@ function observeElement($target, callback, options, mutationObserverOptions = {c
     logObserverDisconnects = true
   }
   observers.set(name, observer)
-  log (`observing ${name}`)
+  if (logElement) {
+    log(`observing ${name}`, $target)
+  } else {
+    log(`observing ${name}`)
+  }
   observer.observe($target, mutationObserverOptions)
   if (leading) {
     callback([], observer)
@@ -300,7 +307,11 @@ function observeElement($target, callback, options, mutationObserverOptions = {c
  *
  * @param {Node} $target
  * @param {(mutations: MutationRecord[]) => HTMLElement} getter
- * @param {{name: string, observers: Map<string, import("./types").CustomMutationObserver>}} options
+ * @param {{
+ *   logElement?: boolean
+ *   name: string
+ *   observers: Map<string, import("./types").CustomMutationObserver>
+ * }} options
  * @param {MutationObserverInit} [mutationObserverOptions]
  * @return {Promise<HTMLElement>}
  */
@@ -356,6 +367,19 @@ const configureCss = (() => {
           z-index: 10;
         }
       `)
+      // Hide elements while an ad is showing
+      hideCssSelectors.push(
+        // Thumbnail for cued ad when autoplay is disabled
+        '#movie_player.ad-showing .ytp-cued-thumbnail-overlay-image',
+        // Ad title
+        '#movie_player.ad-showing .ytp-chrome-top',
+        // Ad overlay content
+        '#movie_player.ad-showing .ytp-ad-player-overlay > div',
+        // Yellow ad progress bar
+        '#movie_player.ad-showing .ytp-play-progress',
+        // Ad time display
+        '#movie_player.ad-showing .ytp-time-display',
+      )
     }
 
     if (config.disableAutoplay) {
@@ -718,8 +742,6 @@ const configureCss = (() => {
           '#contents.style-scope.ytd-search-pyv-renderer',
           'ytd-ad-slot-renderer.style-scope.ytd-item-section-renderer',
           // When an ad is playing
-          '.ytp-ad-player-overlay-flyout-cta',
-          '.ytp-ad-visit-advertiser-button',
           'ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"]',
           // Suggestd action buttons in player overlay
           '#movie_player .ytp-suggested-action',
@@ -1138,9 +1160,9 @@ async function observePopups() {
       observeElement($dialog, () => {
         if ($dialog.getAttribute('aria-hidden') == 'true') {
           log('dialog closed')
-          if (onDialogClose) {
-            onDialogClose()
-            onDialogClose = null
+          if (onDialogClosed) {
+            onDialogClosed()
+            onDialogClosed = null
           }
         }
       }, {
@@ -1536,7 +1558,7 @@ function observeVideoHiddenState() {
           delay: Math.round((elapsedTime - undoHideDelayMs) / 4),
           duration: undoHideDelayMs / 4,
         })
-        onDialogClose = () => {
+        onDialogClosed = () => {
           startTimer()
           displayPie()
         }
@@ -1796,6 +1818,7 @@ async function observeVideoAds() {
         }
       }
     }, {
+      logElement: true,
       name: '#movie_player (for .video-ads being added)',
       observers: pageObservers,
     })
@@ -1805,7 +1828,8 @@ async function observeVideoAds() {
   // When there are multiple ads, content is removed and re-added
   let unmuteTimeout
 
-  function processAdContent() {
+  async function processAdContent() {
+    //#region Mute ads
     if (unmuteTimeout) {
       clearTimeout(unmuteTimeout)
       unmuteTimeout = null
@@ -1842,51 +1866,75 @@ async function observeVideoAds() {
         warn('<video> not found')
       }
     }
+    //#endregion
 
-    // Try to skip to the end of the ad
+    //#region Skip ads
+    // Try to skip to the end of the ad video
     let $video = /** @type {HTMLVideoElement} */ ($player.querySelector('video'))
+    if (!$video) {
+      warn('<video> not found')
+      return
+    }
+
     if (Number.isFinite($video.duration)) {
-      log(`skipping to end of ad (using video duration)`)
+      log(`skipping to end of ad (using initial video duration)`)
       $video.currentTime = $video.duration
-    } else {
-      log(`skipping to end of ad (duration was ${$video.duration})`)
-      $video.currentTime = 1_000_000
     }
-
-    let $skipOrPreview = $videoAds.querySelector('.ytp-ad-player-overlay-skip-or-preview')
-    if (!$skipOrPreview) {
-      log('ad skip or preview container not found')
-      return
-    }
-
-    if ($skipOrPreview.firstElementChild.classList.contains('ytp-ad-preview-slot')) {
-      log('ad only has a preview button')
-      return
-    }
-
-    let $skipButtonSlot = /** @type {HTMLElement} */ ($skipOrPreview.querySelector('.ytp-ad-skip-button-slot'))
-    if (!$skipButtonSlot) {
-      log('skip button slot not found')
-      return
-    }
-
-    observeElement($skipButtonSlot, (_, observer) => {
-      if ($skipButtonSlot.style.display != 'none') {
-        let $button = $skipButtonSlot.querySelector('button')
-        if ($button) {
-          log('clicking skip button')
-          // XXX Not working on mobile
-          $button.click()
+    else if ($video.readyState == null || $video.readyState < 1) {
+      function onLoadedMetadata() {
+        if (Number.isFinite($video.duration)) {
+          log(`skipping to end of ad (using video duration after loadedmetadata)`)
+          $video.currentTime = $video.duration
         } else {
-          warn('skip button not found')
+          log(`skipping to end of ad (duration still not available after loadedmetadata)`)
+          $video.currentTime = 10_000
         }
-        observer.disconnect()
       }
-    }, {
-      leading: true,
-      name: 'skip button slot',
-      observers: pageObservers,
-    }, {attributes: true})
+      $video.addEventListener('loadedmetadata', onLoadedMetadata, {once: true})
+      onAdRemoved = () => {
+        $video.removeEventListener('loadedmetadata', onLoadedMetadata)
+      }
+    }
+    else {
+      log(`skipping to end of ad (metadata should be available but isn't)`)
+      $video.currentTime = 10_000
+    }
+    //#endregion
+
+    // let $skipOrPreview = $videoAds.querySelector('.ytp-ad-player-overlay-skip-or-preview')
+    // if (!$skipOrPreview) {
+    //   log('ad skip or preview container not found')
+    //   return
+    // }
+
+    // if ($skipOrPreview.firstElementChild.classList.contains('ytp-ad-preview-slot')) {
+    //   log('ad only has a preview button')
+    //   return
+    // }
+
+    // let $skipButtonSlot = /** @type {HTMLElement} */ ($skipOrPreview.querySelector('.ytp-ad-skip-button-slot'))
+    // if (!$skipButtonSlot) {
+    //   log('skip button slot not found')
+    //   return
+    // }
+
+    // observeElement($skipButtonSlot, (_, observer) => {
+    //   if ($skipButtonSlot.style.display != 'none') {
+    //     let $button = $skipButtonSlot.querySelector('button')
+    //     if ($button) {
+    //       log('clicking skip button')
+    //       // XXX Not working on mobile
+    //       $button.click()
+    //     } else {
+    //       warn('skip button not found')
+    //     }
+    //     observer.disconnect()
+    //   }
+    // }, {
+    //   leading: true,
+    //   name: 'skip button slot',
+    //   observers: pageObservers,
+    // }, {attributes: true})
   }
 
   if ($videoAds.childElementCount > 0) {
@@ -1900,6 +1948,10 @@ async function observeVideoAds() {
       // Something removed
       if (mutations.some(mutation => mutation.removedNodes.length > 0)) {
         log('video ad content removed')
+        if (onAdRemoved) {
+          onAdRemoved()
+          onAdRemoved = null
+        }
         // Only unmute if we know the volume wasn't initially muted
         if (desktop) {
           let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
@@ -1934,7 +1986,8 @@ async function observeVideoAds() {
     log('video ad content appeared')
     processAdContent()
   }, {
-    name: '#movie_player > .video-ads (for content being added)',
+    logElement: true,
+    name: '#movie_player > .video-ads (for content being added or removed)',
     observers: pageObservers,
   })
 }
