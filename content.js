@@ -606,12 +606,20 @@ const configureCss = (() => {
 
     if (config.hideMetadata) {
       if (desktop) {
-        hideCssSelectors.push('#above-the-fold + ytd-metadata-row-container-renderer')
+        hideCssSelectors.push(
+          // Channel name / Videos / About
+          '#structured-description .ytd-structured-description-content-renderer',
+          // Game name and Gaming link
+          '#above-the-fold + ytd-metadata-row-container-renderer',
+        )
       }
       if (mobile) {
         hideCssSelectors.push(
-          // e.g. Game name and Gaming link
-          'yt-video-attributes-section-view-model',
+          // Game name and Gaming link
+          'ytm-structured-description-content-renderer yt-video-attributes-section-view-model',
+          'ytm-video-description-gaming-section-renderer',
+          // Channel name / Videos / About
+          'ytm-structured-description-content-renderer ytm-video-description-infocards-section-renderer',
         )
       }
     }
@@ -685,6 +693,8 @@ const configureCss = (() => {
           'ytm-search lazy-list > ytm-reel-shelf-renderer',
           // Search
           'ytm-search ytm-video-with-context-renderer:has(a[href^="/shorts"])',
+          // Under video
+          'ytm-structured-description-content-renderer ytm-reel-shelf-renderer',
         )
       }
     }
