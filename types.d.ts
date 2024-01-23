@@ -24,9 +24,11 @@ export type LocaleKey =
   | 'HIDE_CHANNEL'
   | 'MIXES'
   | 'MUTE'
+  | 'NEXT_VIDEO'
   | 'PEOPLE_ALSO_WATCHED'
   | 'POPULAR_TODAY'
   | 'PREVIOUSLY_WATCHED'
+  | 'PREVIOUS_VIDEO'
   | 'RECOMMENDED'
   | 'SHORTS'
   | 'STREAMED_TITLE'
@@ -47,6 +49,7 @@ export type SiteConfig = {
   hideLive: boolean
   hideMetadata: boolean
   hideMixes: boolean
+  hideNextButton: boolean
   hideRelated: boolean
   hideShorts: boolean
   hideSponsored: boolean

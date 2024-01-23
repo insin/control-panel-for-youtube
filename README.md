@@ -30,6 +30,7 @@ For installations links and FAQs visit the [Control Panel for YouTube website](h
 - Skip ads
 - Disable Autoplay
 - Hide Related videos
+- Hide the Next button
 - Hide video metadata
 - Hide Comments
 - Redirect Shorts to the normal player

@@ -42,6 +42,7 @@ let config = {
   hideLive: false,
   hideMetadata: false,
   hideMixes: false,
+  hideNextButton: true,
   hideRelated: false,
   hideShorts: false,
   hideSponsored: true,
@@ -83,9 +84,11 @@ const locales = {
     HIDE_CHANNEL: 'Hide channel',
     MIXES: 'Mixes',
     MUTE: 'Mute',
+    NEXT_VIDEO: 'Next video',
     PEOPLE_ALSO_WATCHED: 'People also watched',
     POPULAR_TODAY: 'Popular today',
     PREVIOUSLY_WATCHED: 'Previously watched',
+    PREVIOUS_VIDEO: 'Previous video',
     RECOMMENDED: 'Recommended',
     SHORTS: 'Shorts',
     STREAMED_TITLE: 'views Streamed',
@@ -99,9 +102,11 @@ const locales = {
     HIDE_CHANNEL: 'チャンネルを隠す',
     MIXES: 'ミックス',
     MUTE: 'ミュート（消音）',
+    NEXT_VIDEO: '次の動画',
     PEOPLE_ALSO_WATCHED: '他の人はこちらも視聴しています',
     POPULAR_TODAY: '今日の人気動画',
     PREVIOUSLY_WATCHED: '前に再生した動画',
+    PREVIOUS_VIDEO: '前の動画',
     RECOMMENDED: 'あなたへのおすすめ',
     SHORTS: 'ショート',
     STREAMED_TITLE: '前 に配信済み',
@@ -670,6 +675,34 @@ const configureCss = (() => {
           // Search result
           'ytm-compact-radio-renderer',
         )
+      }
+    }
+
+    if (config.hideNextButton) {
+      if (desktop) {
+        // Hide the Next by default so it doesn't flash in and out of visibility
+        // Show Next is Previous is enabled (e.g. when viewing a playlist video)
+        cssRules.push(`
+          .ytp-chrome-controls .ytp-next-button {
+            display: none !important;
+          }
+          .ytp-chrome-controls .ytp-prev-button[aria-disabled="false"] ~ .ytp-next-button {
+            display: revert !important;
+          }
+        `)
+      }
+      if (mobile) {
+        // Hide Previous and Next buttons when the Previous button isn't enabled
+        cssRules.push(`
+          .player-controls-middle-core-buttons > button[aria-label="${getString('PREVIOUS_VIDEO')}"],
+          .player-controls-middle-core-buttons > button[aria-label="${getString('NEXT_VIDEO')}"] {
+            display: none;
+          }
+          .player-controls-middle-core-buttons > button[aria-label="${getString('PREVIOUS_VIDEO')}"][aria-disabled="false"],
+          .player-controls-middle-core-buttons > button[aria-label="${getString('PREVIOUS_VIDEO')}"][aria-disabled="false"] ~ button[aria-label="${getString('NEXT_VIDEO')}"] {
+            display: revert;
+          }
+        `)
       }
     }
 

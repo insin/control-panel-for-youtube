@@ -99,6 +99,12 @@
   "hideMixes": {
     "message": "Hide Mixes"
   },
+  "hideNextButton": {
+    "message": "Hide the Next button"
+  },
+  "hideNextButtonNote": {
+    "message": "When not watching a video in a playlist"
+  },
   "hideOpenApp": {
     "message": "Hide Open App links"
   },

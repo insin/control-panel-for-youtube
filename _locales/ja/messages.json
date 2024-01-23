@@ -95,6 +95,12 @@
   "hideMixes": {
     "message": "ミックスを非表示"
   },
+  "hideNextButton": {
+    "message": "次へボタンを非表示"
+  },
+  "hideNextButtonNote": {
+    "message": "プレイリスト内の動画を視聴していない場合"
+  },
   "hideOpenApp": {
     "message": "アプリを開くリンクを非表示"
   },
