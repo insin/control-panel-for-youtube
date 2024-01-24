@@ -17,6 +17,7 @@ export type Locale = {
 }
 
 export type LocaleKey =
+  | 'BREAKING_NEWS'
   | 'CHANNELS_NEW_TO_YOU'
   | 'DOWNLOAD'
   | 'FOR_YOU'

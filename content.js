@@ -77,6 +77,7 @@ let config = {
  */
 const locales = {
   'en': {
+    BREAKING_NEWS: 'Breaking news',
     CHANNELS_NEW_TO_YOU: 'Channels new to you',
     DOWNLOAD: 'Download',
     FOR_YOU: 'For you',
@@ -95,6 +96,7 @@ const locales = {
     TELL_US_WHY: 'Tell us why',
   },
   'ja-JP': {
+    BREAKING_NEWS: 'ニュース速報',
     CHANNELS_NEW_TO_YOU: '未視聴のチャンネル',
     DOWNLOAD: 'オフライン',
     FOR_YOU: 'あなたへのおすすめ',
@@ -928,7 +930,8 @@ const configureCss = (() => {
       }
       if (config.hideSuggestedSections) {
         let homeShelfTitles = [
-          getString('RECOMMENDED')
+          getString('BREAKING_NEWS'),
+          getString('RECOMMENDED'),
         ].map(title => `[data-cpfyt-title="${title}"]`).join(', ')
         let searchShelfTitles = [
           getString('CHANNELS_NEW_TO_YOU'),
