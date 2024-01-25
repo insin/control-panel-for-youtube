@@ -833,6 +833,41 @@ const configureCss = (() => {
       }
     }
 
+    if (config.hideSuggestedSections) {
+      let homeShelfTitles = [
+        getString('BREAKING_NEWS'),
+        getString('RECOMMENDED'),
+      ].map(title => `[data-cpfyt-title="${title}"]`).join(', ')
+      if (desktop) {
+        let searchShelfTitles = [
+          getString('CHANNELS_NEW_TO_YOU'),
+          getString('FOR_YOU'),
+          getString('FROM_RELATED_SEARCHES'),
+          getString('PEOPLE_ALSO_WATCHED'),
+          getString('POPULAR_TODAY'),
+          getString('PREVIOUSLY_WATCHED'),
+        ].map(title => `[data-cpfyt-title="${title}"]`).join(', ')
+        hideCssSelectors.push(
+          // Trending shelf in Home
+          'ytd-rich-section-renderer:has(a[href="/feed/trending"])',
+          // Shelves with specific titles in Home
+          `ytd-rich-section-renderer:is(${homeShelfTitles})`,
+          // Looking for something different? tile in Home
+          'ytd-rich-item-renderer:has(> #content > ytd-feed-nudge-renderer)',
+          // List shelves with specific titles in Search
+          `ytd-shelf-renderer:is(${searchShelfTitles})`,
+          // People also search for in Search
+          '#contents.ytd-item-section-renderer > ytd-horizontal-card-list-renderer',
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(
+          // Shelves with specific titles in Home
+          `ytm-rich-section-renderer:is(${homeShelfTitles})`,
+        )
+      }
+    }
+
     if (config.hideUpcoming) {
       if (desktop) {
         hideCssSelectors.push(
@@ -927,32 +962,6 @@ const configureCss = (() => {
       }
       if (config.hideSubscriptionsLatestBar) {
         hideCssSelectors.push('ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child')
-      }
-      if (config.hideSuggestedSections) {
-        let homeShelfTitles = [
-          getString('BREAKING_NEWS'),
-          getString('RECOMMENDED'),
-        ].map(title => `[data-cpfyt-title="${title}"]`).join(', ')
-        let searchShelfTitles = [
-          getString('CHANNELS_NEW_TO_YOU'),
-          getString('FOR_YOU'),
-          getString('FROM_RELATED_SEARCHES'),
-          getString('PEOPLE_ALSO_WATCHED'),
-          getString('POPULAR_TODAY'),
-          getString('PREVIOUSLY_WATCHED'),
-        ].map(title => `[data-cpfyt-title="${title}"]`).join(', ')
-        hideCssSelectors.push(
-          // Trending shelf in Home
-          'ytd-rich-section-renderer:has(a[href="/feed/trending"])',
-          // Shelves with specific titles in Home
-          `ytd-rich-section-renderer:is(${homeShelfTitles})`,
-          // Looking for something different? tile in Home
-          'ytd-rich-item-renderer:has(> #content > ytd-feed-nudge-renderer)',
-          // List shelves with specific titles in Search
-          `ytd-shelf-renderer:is(${searchShelfTitles})`,
-          // People also search for in Search
-          '#contents.ytd-item-section-renderer > ytd-horizontal-card-list-renderer',
-        )
       }
       if (config.tidyGuideSidebar) {
         hideCssSelectors.push(
@@ -1767,6 +1776,41 @@ async function tweakHomePage() {
       }
     }, {
       name: '<ytd-rich-grid-renderer> > #contents (for <ytd-rich-section-renderer>s being added)',
+      observers: pageObservers,
+    })
+  }
+
+  if (mobile && config.hideSuggestedSections) {
+    let $container = await getElement('.rich-grid-renderer-contents', {
+      name: 'Home items container',
+      stopIf: currentUrlChanges(),
+    })
+    if (!$container) return
+
+    /** @param {HTMLElement} $shelf  */
+    function addTitleToShelf($shelf) {
+      let title = $shelf.querySelector('.rich-shelf-title')?.textContent
+      if (title) {
+        $shelf.dataset.cpfytTitle = title
+        log('added', title, 'shelf title')
+      }
+    }
+
+    // Initial contents
+    for (let $shelf of $container.querySelectorAll('ytm-rich-section-renderer')) {
+      addTitleToShelf(/** @type {HTMLElement} */ ($shelf))
+    }
+
+    observeElement($container, (mutations) => {
+      for (let mutation of mutations) {
+        for (let $addedNode of mutation.addedNodes) {
+          if ($addedNode.nodeName == 'YTM-RICH-SECTION-RENDERER') {
+            addTitleToShelf(/** @type {HTMLElement} */ ($addedNode))
+          }
+        }
+      }
+    }, {
+      name: '.rich-grid-renderer-contents (for <ytm-rich-section-renderer>s being added)',
       observers: pageObservers,
     })
   }
