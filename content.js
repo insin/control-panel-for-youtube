@@ -134,7 +134,7 @@ const Svgs = {
 //#region State
 /** @type {() => void} */
 let onAdRemoved
-/** @type {Map<string, import("./types").CustomMutationObserver>} */
+/** @type {Map<string, import("./types").Disconnectable>} */
 let globalObservers = new Map()
 /** @type {import("./types").Channel} */
 let lastClickedChannel
@@ -142,7 +142,7 @@ let lastClickedChannel
 let $lastClickedElement
 /** @type {() => void} */
 let onDialogClosed
-/** @type {Map<string, import("./types").CustomMutationObserver>} */
+/** @type {Map<string, import("./types").Disconnectable>} */
 let pageObservers = new Map()
 //#endregion
 
@@ -173,7 +173,7 @@ function dedent(str) {
   return str.replace(/(\r?\n)[ \t]+$/, '$1')
 }
 
-/** @param {Map<string, import("./types").CustomMutationObserver>} observers */
+/** @param {Map<string, import("./types").Disconnectable>} observers */
 function disconnectObservers(observers, scope) {
   if (observers.size == 0) return
   log(
@@ -267,7 +267,7 @@ let logObserverDisconnects = true
  *   leading?: boolean
  *   logElement?: boolean
  *   name: string
- *   observers: Map<string, import("./types").CustomMutationObserver>
+ *   observers: Map<string, import("./types").Disconnectable>
  *   onDisconnect?: () => void
  * }} options
  * @param {MutationObserverInit} mutationObserverOptions
@@ -317,7 +317,7 @@ function observeElement($target, callback, options, mutationObserverOptions = {c
  * @param {{
  *   logElement?: boolean
  *   name: string
- *   observers: Map<string, import("./types").CustomMutationObserver>
+ *   observers: Map<string, import("./types").Disconnectable>
  * }} options
  * @param {MutationObserverInit} [mutationObserverOptions]
  * @return {Promise<HTMLElement>}
