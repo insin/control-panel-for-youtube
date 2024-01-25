@@ -28,7 +28,8 @@
     },
     {
       "matches": [
-        "https://www.youtube.com/embed/*"
+        "https://www.youtube.com/embed/*",
+        "https://www.youtube-nocookie.com/embed/*"
       ],
       "js": [
         "embed.js"
