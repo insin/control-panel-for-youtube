@@ -317,23 +317,29 @@ function observeElement($target, callback, options, mutationObserverOptions = {c
  * @param {{
  *   logElement?: boolean
  *   name: string
+ *   targetName: string
  *   observers: Map<string, import("./types").Disconnectable>
  * }} options
  * @param {MutationObserverInit} [mutationObserverOptions]
  * @return {Promise<HTMLElement>}
  */
 function observeForElement($target, getter, options, mutationObserverOptions) {
+  let {targetName, ...observeElementOptions} = options
   return new Promise((resolve) => {
     let found = false
+    let startTime = Date.now()
     observeElement($target, (mutations, observer) => {
       let $result = getter(mutations)
       if ($result) {
         found = true
+        if (Date.now() > startTime) {
+          log(`${targetName} appeared after ${Date.now() - startTime}ms`)
+        }
         observer.disconnect()
         resolve($result)
       }
     }, {
-      ...options,
+      ...observeElementOptions,
       onDisconnect() {
         if (!found) resolve(null)
       },
@@ -369,7 +375,7 @@ const configureCss = (() => {
     if (config.skipAds) {
       // Display a black overlay while ads are playing
       cssRules.push(`
-        .ytp-ad-player-overlay {
+        .ytp-ad-player-overlay, .ytp-ad-action-interstitial {
           background: black;
           z-index: 10;
         }
@@ -382,6 +388,7 @@ const configureCss = (() => {
         '#movie_player.ad-showing .ytp-chrome-top',
         // Ad overlay content
         '#movie_player.ad-showing .ytp-ad-player-overlay > div',
+        '#movie_player.ad-showing .ytp-ad-action-interstitial > div',
         // Yellow ad progress bar
         '#movie_player.ad-showing .ytp-play-progress',
         // Ad time display
@@ -1880,6 +1887,100 @@ async function tweakSearchPage() {
   }
 }
 
+function tweakAdInterstitial($adContent) {
+  log('ad interstitial showing')
+  let $skipButtonSlot = /** @type {HTMLElement} */ ($adContent.querySelector('.ytp-ad-skip-button-slot'))
+  if (!$skipButtonSlot) {
+    log('skip button slot not found')
+    return
+  }
+
+  observeElement($skipButtonSlot, (_, observer) => {
+    if ($skipButtonSlot.style.display != 'none') {
+      let $button = $skipButtonSlot.querySelector('button')
+      if ($button) {
+        log('clicking skip button')
+        // XXX Not working on mobile
+        $button.click()
+      } else {
+        warn('skip button not found')
+      }
+      observer.disconnect()
+    }
+  }, {
+    leading: true,
+    name: 'skip button slot (for skip button becoming visible)',
+    observers: pageObservers,
+  }, {attributes: true})
+}
+
+function tweakAdPlayerOverlay($player) {
+  log('ad overlay showing')
+
+  // Mute ad audio
+  if (desktop) {
+    let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
+    if ($muteButton) {
+      if ($muteButton.dataset.titleNoTooltip == getString('MUTE')) {
+        log('muting ad audio')
+        $muteButton.click()
+        $muteButton.dataset.cpfytWasMuted = 'false'
+      }
+      else if ($muteButton.dataset.cpfytWasMuted == null) {
+        $muteButton.dataset.cpfytWasMuted = 'true'
+      }
+    } else {
+      warn('mute button not found')
+    }
+  }
+  if (mobile) {
+    // Mobile doesn't have a mute button, so we mute the video itself
+    let $video = /** @type {HTMLVideoElement} */ ($player.querySelector('video'))
+    if ($video) {
+      if (!$video.muted) {
+        $video.muted = true
+        $video.dataset.cpfytWasMuted = 'false'
+      }
+      else if ($video.dataset.cpfytWasMuted == null) {
+        $video.dataset.cpfytWasMuted = 'true'
+      }
+    } else {
+      warn('<video> not found')
+    }
+  }
+
+  // Try to skip to the end of the ad video
+  let $video = /** @type {HTMLVideoElement} */ ($player.querySelector('video'))
+  if (!$video) {
+    warn('<video> not found')
+    return
+  }
+
+  if (Number.isFinite($video.duration)) {
+    log(`skipping to end of ad (using initial video duration)`)
+    $video.currentTime = $video.duration
+  }
+  else if ($video.readyState == null || $video.readyState < 1) {
+    function onLoadedMetadata() {
+      if (Number.isFinite($video.duration)) {
+        log(`skipping to end of ad (using video duration after loadedmetadata)`)
+        $video.currentTime = $video.duration
+      } else {
+        log(`skipping to end of ad (duration still not available after loadedmetadata)`)
+        $video.currentTime = 10_000
+      }
+    }
+    $video.addEventListener('loadedmetadata', onLoadedMetadata, {once: true})
+    onAdRemoved = () => {
+      $video.removeEventListener('loadedmetadata', onLoadedMetadata)
+    }
+  }
+  else {
+    log(`skipping to end of ad (metadata should be available but isn't)`)
+    $video.currentTime = 10_000
+  }
+}
+
 async function observeVideoAds() {
   let $player = await getElement('#movie_player', {
     name: 'player',
@@ -1900,121 +2001,23 @@ async function observeVideoAds() {
     }, {
       logElement: true,
       name: '#movie_player (for .video-ads being added)',
+      targetName: '.video-ads',
       observers: pageObservers,
     })
     if (!$videoAds) return
   }
 
-  // When there are multiple ads, content is removed and re-added
-  let unmuteTimeout
-
-  async function processAdContent() {
-    //#region Mute ads
-    if (unmuteTimeout) {
-      clearTimeout(unmuteTimeout)
-      unmuteTimeout = null
+  function processAdContent() {
+    let $adContent = $videoAds.firstElementChild
+    if ($adContent.classList.contains('ytp-ad-player-overlay')) {
+      tweakAdPlayerOverlay($player)
     }
-
-    // Mute ad audio
-    if (desktop) {
-      let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
-      if ($muteButton) {
-        if ($muteButton.dataset.titleNoTooltip == getString('MUTE')) {
-          log('muting ad audio')
-          $muteButton.click()
-          $muteButton.dataset.cpfytWasMuted = 'false'
-        }
-        else if ($muteButton.dataset.cpfytWasMuted == null) {
-          $muteButton.dataset.cpfytWasMuted = 'true'
-        }
-      } else {
-        warn('mute button not found')
-      }
-    }
-    if (mobile) {
-      // Mobile doesn't have a mute button, so we mute the video itself
-      let $video = /** @type {HTMLVideoElement} */ ($player.querySelector('video'))
-      if ($video) {
-        if (!$video.muted) {
-          $video.muted = true
-          $video.dataset.cpfytWasMuted = 'false'
-        }
-        else if ($video.dataset.cpfytWasMuted == null) {
-          $video.dataset.cpfytWasMuted = 'true'
-        }
-      } else {
-        warn('<video> not found')
-      }
-    }
-    //#endregion
-
-    //#region Skip ads
-    // Try to skip to the end of the ad video
-    let $video = /** @type {HTMLVideoElement} */ ($player.querySelector('video'))
-    if (!$video) {
-      warn('<video> not found')
-      return
-    }
-
-    if (Number.isFinite($video.duration)) {
-      log(`skipping to end of ad (using initial video duration)`)
-      $video.currentTime = $video.duration
-    }
-    else if ($video.readyState == null || $video.readyState < 1) {
-      function onLoadedMetadata() {
-        if (Number.isFinite($video.duration)) {
-          log(`skipping to end of ad (using video duration after loadedmetadata)`)
-          $video.currentTime = $video.duration
-        } else {
-          log(`skipping to end of ad (duration still not available after loadedmetadata)`)
-          $video.currentTime = 10_000
-        }
-      }
-      $video.addEventListener('loadedmetadata', onLoadedMetadata, {once: true})
-      onAdRemoved = () => {
-        $video.removeEventListener('loadedmetadata', onLoadedMetadata)
-      }
+    else if ($adContent.classList.contains('ytp-ad-action-interstitial')) {
+      tweakAdInterstitial($adContent)
     }
     else {
-      log(`skipping to end of ad (metadata should be available but isn't)`)
-      $video.currentTime = 10_000
+      warn('unknown ad content', $adContent.className, $adContent.outerHTML)
     }
-    //#endregion
-
-    // let $skipOrPreview = $videoAds.querySelector('.ytp-ad-player-overlay-skip-or-preview')
-    // if (!$skipOrPreview) {
-    //   log('ad skip or preview container not found')
-    //   return
-    // }
-
-    // if ($skipOrPreview.firstElementChild.classList.contains('ytp-ad-preview-slot')) {
-    //   log('ad only has a preview button')
-    //   return
-    // }
-
-    // let $skipButtonSlot = /** @type {HTMLElement} */ ($skipOrPreview.querySelector('.ytp-ad-skip-button-slot'))
-    // if (!$skipButtonSlot) {
-    //   log('skip button slot not found')
-    //   return
-    // }
-
-    // observeElement($skipButtonSlot, (_, observer) => {
-    //   if ($skipButtonSlot.style.display != 'none') {
-    //     let $button = $skipButtonSlot.querySelector('button')
-    //     if ($button) {
-    //       log('clicking skip button')
-    //       // XXX Not working on mobile
-    //       $button.click()
-    //     } else {
-    //       warn('skip button not found')
-    //     }
-    //     observer.disconnect()
-    //   }
-    // }, {
-    //   leading: true,
-    //   name: 'skip button slot',
-    //   observers: pageObservers,
-    // }, {attributes: true})
   }
 
   if ($videoAds.childElementCount > 0) {
@@ -2023,48 +2026,40 @@ async function observeVideoAds() {
   }
 
   observeElement($videoAds, (mutations) => {
-    // Nothing added
-    if (!mutations.some(mutation => mutation.addedNodes.length > 0)) {
-      // Something removed
-      if (mutations.some(mutation => mutation.removedNodes.length > 0)) {
-        log('video ad content removed')
-        if (onAdRemoved) {
-          onAdRemoved()
-          onAdRemoved = null
-        }
-        // Only unmute if we know the volume wasn't initially muted
-        if (desktop) {
-          let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
-          if ($muteButton &&
-              $muteButton.dataset.titleNoTooltip != getString('MUTE') &&
-              $muteButton.dataset.cpfytWasMuted == 'false') {
-            unmuteTimeout = setTimeout(() => {
-              log('unmuting audio after ads')
-              $muteButton.click()
-              unmuteTimeout = null
-              delete $muteButton.dataset.cpfytWasMuted
-            }, 500)
-          }
-        }
-        if (mobile) {
-          let $video = $player.querySelector('video')
-          if ($video &&
-              $video.muted &&
-              $video.dataset.cpfytWasMuted == 'false') {
-            unmuteTimeout = setTimeout(() => {
-              log('unmuting audio after ads')
-              $video.muted = false
-              unmuteTimeout = null
-              delete $video.dataset.cpfytWasMuted
-            }, 500)
-          }
+    // Something added
+    if (mutations.some(mutation => mutation.addedNodes.length > 0)) {
+      log('video ad content appeared')
+      processAdContent()
+    }
+    // Something removed
+    else if (mutations.some(mutation => mutation.removedNodes.length > 0)) {
+      log('video ad content removed')
+      if (onAdRemoved) {
+        onAdRemoved()
+        onAdRemoved = null
+      }
+      // Only unmute if we know the volume wasn't initially muted
+      if (desktop) {
+        let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
+        if ($muteButton &&
+            $muteButton.dataset.titleNoTooltip != getString('MUTE') &&
+            $muteButton.dataset.cpfytWasMuted == 'false') {
+          log('unmuting audio after ads')
+          delete $muteButton.dataset.cpfytWasMuted
+          $muteButton.click()
         }
       }
-      return
+      if (mobile) {
+        let $video = $player.querySelector('video')
+        if ($video &&
+            $video.muted &&
+            $video.dataset.cpfytWasMuted == 'false') {
+          log('unmuting audio after ads')
+          delete $video.dataset.cpfytWasMuted
+          $video.muted = false
+        }
+      }
     }
-
-    log('video ad content appeared')
-    processAdContent()
   }, {
     logElement: true,
     name: '#movie_player > .video-ads (for content being added or removed)',
