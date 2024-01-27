@@ -1,4 +1,4 @@
-let debug = true
+let debug = false
 
 function log(...args) {
   if (debug) {
@@ -10,8 +10,8 @@ function log(...args) {
 /** @type {Partial<import("./types").EmbedConfig>} */
 let config = {
   enabled: true,
-  hideEmbedEndVideos: false,
-  hideEmbedPauseOverlay: false,
+  hideEmbedEndVideos: true,
+  hideEmbedPauseOverlay: true,
   hideEmbedShareButton: false,
 }
 //#endregion
@@ -131,4 +131,9 @@ chrome.storage.local.get((storedConfig) => {
   }, {once: true})
   main()
 })
+
+// XXX chrome.storage.local.get() callback isn't getting called in Safari - run with default settings
+if (navigator.userAgent.includes('Safari/') && !/Chrom(e|ium)\//.test(navigator.userAgent)) {
+  main()
+}
 //#endregion

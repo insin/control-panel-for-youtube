@@ -83,7 +83,7 @@ let defaultConfig = {
   hideStreamed: false,
   hideVoiceSearch: false,
   hideUpcoming: false,
-  hideWatched: false,
+  hideWatched: true,
   hideWatchedThreshold: '100',
   redirectShorts: true,
   skipAds: true,
@@ -92,7 +92,7 @@ let defaultConfig = {
   fillGaps: true,
   hideChat: false,
   hideEndCards: false,
-  hideEndVideos: false,
+  hideEndVideos: true,
   hideMerchEtc: true,
   hideSubscriptionsLatestBar: false,
   hideSuggestedSections: true,
@@ -103,8 +103,8 @@ let defaultConfig = {
   hideSubscriptionsChannelList: false,
   subscriptionsGridView: true,
   // Embedded videos
-  hideEmbedEndVideos: false,
-  hideEmbedPauseOverlay: false,
+  hideEmbedEndVideos: true,
+  hideEmbedPauseOverlay: true,
   hideEmbedShareButton: false,
 }
 //#endregion

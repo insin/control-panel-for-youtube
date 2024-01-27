@@ -22,6 +22,7 @@
     "ignoreFiles": [
       "PRIVACY_POLICY.md",
       "README.md",
+      "TODO.md",
       "icons/chrome-web-store-icon.png",
       "icons/icon.svg",
       "icons/icon256.png",
@@ -29,9 +30,11 @@
       "icons/toolbar-*.png",
       "jsconfig.json",
       "package.json",
+      "promo/",
       "safari/",
       "screenshots/",
-      "scripts/"
+      "scripts/",
+      "types.d.ts"
     ]
   },
   "devDependencies": {

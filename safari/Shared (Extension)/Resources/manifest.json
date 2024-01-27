@@ -3,8 +3,8 @@
   "default_locale": "en",
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "homepage_url": "https://github.com/insin/control-panel-for-youtube/",
-  "version": "0.1.0",
+  "homepage_url": "https://jbscript.dev/control-panel-for-youtube",
+  "version": "1.0.0",
   "icons": {
     "48": "icon48.png",
     "96": "icon96.png",

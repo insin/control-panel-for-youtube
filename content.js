@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name        Control Panel for YouTube
 // @description Gives you more control over YouTube by adding missing options and UI improvements
-// @namespace   https://github.com/insin/control-panel-for-youtube/
+// @namespace   https://jbscript.dev/control-panel-for-youtube
 // @match       https://www.youtube.com/*
 // @match       https://m.youtube.com/*
+// @exclude     https://www.youtube.com/embed/*
 // @version     1
 // ==/UserScript==
-let debug = true
+let debug = false
 
 let mobile = location.hostname == 'm.youtube.com'
 let desktop = !mobile
@@ -44,21 +45,21 @@ let config = {
   hideMixes: false,
   hideNextButton: true,
   hideRelated: false,
-  hideShorts: false,
+  hideShorts: true,
   hideSponsored: true,
   hideStreamed: false,
   hideUpcoming: false,
   hideVoiceSearch: false,
-  hideWatched: false,
+  hideWatched: true,
   hideWatchedThreshold: '100',
-  redirectShorts: false,
+  redirectShorts: true,
   skipAds: true,
   // Desktop only
   downloadTranscript: true,
   fillGaps: true,
   hideChat: false,
   hideEndCards: false,
-  hideEndVideos: false,
+  hideEndVideos: true,
   hideMerchEtc: true,
   hideSubscriptionsLatestBar: false,
   hideSuggestedSections: true,
@@ -535,8 +536,10 @@ const configureCss = (() => {
             `ytm-rich-item-renderer:has(a:is(${hrefs}))`,
             // Search
             `ytm-search ytm-video-with-context-renderer:has(a:is(${hrefs}))`,
+            // Large item in Related videos
+            `ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-compact-autoplay-renderer:has(a:is(${hrefs}))`,
             // Related videos
-            `ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(a:is(${hrefs}))`,
+            `ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-video-with-context-renderer:has(a:is(${hrefs}))`,
           )
         }
       }
@@ -636,8 +639,10 @@ const configureCss = (() => {
           '.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
           // Search
           'ytm-search ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
+          // Large item in Related videos
+          'ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-compact-autoplay-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
           // Related videos
-          'ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
+          'ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
         )
       }
     }
@@ -804,13 +809,13 @@ const configureCss = (() => {
           // Bottom of screen promo
           '.mealbar-promo-renderer',
           // Search results
-          'ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
-          // When an ad is playing
-          '.video-ads .ytp-video-ad-top-bar-title',
-          '.ytp-ad-player-overlay-flyout-cta',
-          '.ytp-ad-visit-advertiser-button',
+          'ytm-search ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
           // Directly under video
           'ytm-companion-slot:has(> ytm-companion-ad-renderer)',
+          // Directly under comments entry point at narrow sizes
+          '.related-chips-slot-wrapper ytm-item-section-renderer[section-identifier="comments-entry-point"] + ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
+          // In Related videos
+          'ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ad-slot-renderer',
         )
       }
     }
@@ -834,8 +839,10 @@ const configureCss = (() => {
           `.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
           // Search result
           `ytm-search ytm-video-with-context-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
+          // Large item in Related videos
+          `ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-compact-autoplay-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
           // Related videos
-          `ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
+          `ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-video-with-context-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
         )
       }
     }
@@ -926,8 +933,10 @@ const configureCss = (() => {
           `.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
           // Search
           `ytm-search ytm-video-with-context-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
+          // Large item in Related videos
+          `ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-compact-autoplay-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
           // Related videos
-          `ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
+          `ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-video-with-context-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
         )
       }
     }
@@ -1025,13 +1034,13 @@ const configureCss = (() => {
         // Based on the Home grid layout
         cssRules.push(`
           @media (min-width: 550px) and (orientation: portrait) {
-            ytm-section-list-renderer {
+            .tab-content[tab-identifier="FEsubscriptions"] ytm-section-list-renderer {
               margin: 0 16px;
             }
-            ytm-section-list-renderer > lazy-list {
+            .tab-content[tab-identifier="FEsubscriptions"] ytm-section-list-renderer > lazy-list {
               margin: 16px -8px 0 -8px;
             }
-            ytm-item-section-renderer {
+            .tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer {
               width: calc(50% - 16px);
               display: inline-block !important;
               vertical-align: top;
@@ -1040,33 +1049,33 @@ const configureCss = (() => {
               margin-left: 8px;
               margin-right: 8px;
             }
-            lazy-list ytm-media-item {
+            .tab-content[tab-identifier="FEsubscriptions"] lazy-list ytm-media-item {
               margin-top: 0 !important;
               padding: 0 !important;
             }
             /* Fix shorts if they're not being hidden */
-            ytm-item-section-renderer:has(ytm-reel-shelf-renderer) {
+            .tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(ytm-reel-shelf-renderer) {
               width: calc(100% - 16px);
               display: block;
             }
-            ytm-item-section-renderer:has(ytm-reel-shelf-renderer) > lazy-list {
+            .tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(ytm-reel-shelf-renderer) > lazy-list {
               margin-left: -16px;
               margin-right: -16px;
             }
             /* Fix the channel list bar if it's not being hidden */
-            ytm-channel-list-sub-menu-renderer {
+            .tab-content[tab-identifier="FEsubscriptions"] ytm-channel-list-sub-menu-renderer {
               margin-left: -16px;
               margin-right: -16px;
             }
           }
           @media (min-width: 874px) and (orientation: portrait) {
-            ytm-item-section-renderer {
+            .tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer {
               width: calc(33.3% - 16px);
             }
           }
           /* The page will probably switch to the list view before it ever hits this */
           @media (min-width: 1160px) and (orientation: portrait) {
-            ytm-item-section-renderer {
+            .tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer {
               width: calc(25% - 16px);
             }
           }

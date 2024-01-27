@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FBE734F72B64C91D0084B277 /* embed.js in Resources */ = {isa = PBXBuildFile; fileRef = FBE734F62B64C91D0084B277 /* embed.js */; };
+		FBE734F82B64C91D0084B277 /* embed.js in Resources */ = {isa = PBXBuildFile; fileRef = FBE734F62B64C91D0084B277 /* embed.js */; };
 		FBE8607B2B42F1E40053AD2F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE8607A2B42F1E40053AD2F /* AppDelegate.swift */; };
 		FBE8607D2B42F1E40053AD2F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE8607C2B42F1E40053AD2F /* SceneDelegate.swift */; };
 		FBE860802B42F1E40053AD2F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FBE8607E2B42F1E40053AD2F /* LaunchScreen.storyboard */; };
@@ -114,6 +116,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FBE734F62B64C91D0084B277 /* embed.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = embed.js; path = ../../../embed.js; sourceTree = "<group>"; };
 		FBE860622B42F1E30053AD2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = ../Base.lproj/Main.html; sourceTree = "<group>"; };
 		FBE860632B42F1E30053AD2F /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		FBE860642B42F1E30053AD2F /* Style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = Style.css; sourceTree = "<group>"; };
@@ -237,25 +240,26 @@
 		FBE8606A2B42F1E40053AD2F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FBE861E42B43A7610053AD2F /* options-icon.png */,
+				FBE861042B438C950053AD2F /* _locales */,
+				FBE860D52B438ACE0053AD2F /* browser_action.html */,
+				FBE860D42B438ACE0053AD2F /* content.js */,
+				FBE734F62B64C91D0084B277 /* embed.js */,
 				FBE861CB2B43A6F80053AD2F /* icon48.png */,
 				FBE861C82B43A6F80053AD2F /* icon96.png */,
 				FBE861C72B43A6F80053AD2F /* icon128.png */,
 				FBE861C92B43A6F80053AD2F /* icon256.png */,
 				FBE861C42B43A6F80053AD2F /* icon512.png */,
+				FBE8606D2B42F1E40053AD2F /* manifest.json */,
+				FBE861E42B43A7610053AD2F /* options-icon.png */,
+				FBE860D82B438ACE0053AD2F /* options.css */,
+				FBE860D62B438ACE0053AD2F /* options.html */,
+				FBE860D72B438ACE0053AD2F /* options.js */,
 				FBE861CC2B43A6F80053AD2F /* toolbar-icon16.png */,
 				FBE861C52B43A6F80053AD2F /* toolbar-icon19.png */,
 				FBE861CA2B43A6F80053AD2F /* toolbar-icon32.png */,
 				FBE861C62B43A6F80053AD2F /* toolbar-icon38.png */,
 				FBE861C32B43A6F80053AD2F /* toolbar-icon48.png */,
 				FBE861CD2B43A6F80053AD2F /* toolbar-icon72.png */,
-				FBE861042B438C950053AD2F /* _locales */,
-				FBE860D52B438ACE0053AD2F /* browser_action.html */,
-				FBE860D42B438ACE0053AD2F /* content.js */,
-				FBE8606D2B42F1E40053AD2F /* manifest.json */,
-				FBE860D82B438ACE0053AD2F /* options.css */,
-				FBE860D62B438ACE0053AD2F /* options.html */,
-				FBE860D72B438ACE0053AD2F /* options.js */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -393,7 +397,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1510;
-				LastUpgradeCheck = 1510;
+				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					FBE860762B42F1E40053AD2F = {
 						CreatedOnToolsVersion = 15.1;
@@ -464,6 +468,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBE734F72B64C91D0084B277 /* embed.js in Resources */,
 				FBE861052B438C950053AD2F /* _locales in Resources */,
 				FBE860D92B438ACE0053AD2F /* content.js in Resources */,
 				FBE861DE2B43A6F80053AD2F /* icon48.png in Resources */,
@@ -490,6 +495,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBE734F82B64C91D0084B277 /* embed.js in Resources */,
 				FBE861062B438C950053AD2F /* _locales in Resources */,
 				FBE860DA2B438ACE0053AD2F /* content.js in Resources */,
 				FBE861DF2B43A6F80053AD2F /* icon48.png in Resources */,
@@ -636,6 +642,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -699,6 +706,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -862,6 +870,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "macOS (Extension)/Control Panel for YouTube.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 2RDKJDLNY8;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -892,6 +901,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "macOS (Extension)/Control Panel for YouTube.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 2RDKJDLNY8;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -925,6 +935,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "macOS (App)/Control Panel for YouTube.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 2RDKJDLNY8;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -959,6 +970,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "macOS (App)/Control Panel for YouTube.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 2RDKJDLNY8;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
