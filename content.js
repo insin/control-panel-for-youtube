@@ -78,39 +78,25 @@ let config = {
  */
 const locales = {
   'en': {
-    BREAKING_NEWS: 'Breaking news',
-    CHANNELS_NEW_TO_YOU: 'Channels new to you',
     DOWNLOAD: 'Download',
     FOR_YOU: 'For you',
-    FROM_RELATED_SEARCHES: 'From related searches',
     HIDE_CHANNEL: 'Hide channel',
     MIXES: 'Mixes',
     MUTE: 'Mute',
     NEXT_VIDEO: 'Next video',
-    PEOPLE_ALSO_WATCHED: 'People also watched',
-    POPULAR_TODAY: 'Popular today',
-    PREVIOUSLY_WATCHED: 'Previously watched',
     PREVIOUS_VIDEO: 'Previous video',
-    RECOMMENDED: 'Recommended',
     SHORTS: 'Shorts',
     STREAMED_TITLE: 'views Streamed',
     TELL_US_WHY: 'Tell us why',
   },
   'ja-JP': {
-    BREAKING_NEWS: 'ニュース速報',
-    CHANNELS_NEW_TO_YOU: '未視聴のチャンネル',
     DOWNLOAD: 'オフライン',
     FOR_YOU: 'あなたへのおすすめ',
-    FROM_RELATED_SEARCHES: '関連する検索から',
     HIDE_CHANNEL: 'チャンネルを隠す',
     MIXES: 'ミックス',
     MUTE: 'ミュート（消音）',
     NEXT_VIDEO: '次の動画',
-    PEOPLE_ALSO_WATCHED: '他の人はこちらも視聴しています',
-    POPULAR_TODAY: '今日の人気動画',
-    PREVIOUSLY_WATCHED: '前に再生した動画',
     PREVIOUS_VIDEO: '前の動画',
-    RECOMMENDED: 'あなたへのおすすめ',
     SHORTS: 'ショート',
     STREAMED_TITLE: '前 に配信済み',
     TELL_US_WHY: '理由を教えてください',
@@ -848,36 +834,22 @@ const configureCss = (() => {
     }
 
     if (config.hideSuggestedSections) {
-      let homeShelfTitles = [
-        getString('BREAKING_NEWS'),
-        getString('RECOMMENDED'),
-      ].map(title => `[data-cpfyt-title="${title}"]`).join(', ')
       if (desktop) {
-        let searchShelfTitles = [
-          getString('CHANNELS_NEW_TO_YOU'),
-          getString('FOR_YOU'),
-          getString('FROM_RELATED_SEARCHES'),
-          getString('PEOPLE_ALSO_WATCHED'),
-          getString('POPULAR_TODAY'),
-          getString('PREVIOUSLY_WATCHED'),
-        ].map(title => `[data-cpfyt-title="${title}"]`).join(', ')
         hideCssSelectors.push(
-          // Trending shelf in Home
-          'ytd-rich-section-renderer:has(a[href="/feed/trending"])',
-          // Shelves with specific titles in Home
-          `ytd-rich-section-renderer:is(${homeShelfTitles})`,
+          // Shelves in Home
+          'ytd-browse[page-subtype="home"] ytd-rich-section-renderer',
           // Looking for something different? tile in Home
-          'ytd-rich-item-renderer:has(> #content > ytd-feed-nudge-renderer)',
-          // List shelves with specific titles in Search
-          `ytd-shelf-renderer:is(${searchShelfTitles})`,
+          'ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(> #content > ytd-feed-nudge-renderer)',
+          // Suggested content shelves in Search
+          `ytd-search #contents.ytd-item-section-renderer > ytd-shelf-renderer`,
           // People also search for in Search
-          '#contents.ytd-item-section-renderer > ytd-horizontal-card-list-renderer',
+          'ytd-search #contents.ytd-item-section-renderer > ytd-horizontal-card-list-renderer',
         )
       }
       if (mobile) {
         hideCssSelectors.push(
-          // Shelves with specific titles in Home
-          `ytm-rich-section-renderer:is(${homeShelfTitles})`,
+          // Shelves in Home
+          `.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer`,
         )
       }
     }

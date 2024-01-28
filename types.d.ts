@@ -19,20 +19,13 @@ export type Locale = {
 }
 
 export type LocaleKey =
-  | 'BREAKING_NEWS'
-  | 'CHANNELS_NEW_TO_YOU'
   | 'DOWNLOAD'
   | 'FOR_YOU'
-  | 'FROM_RELATED_SEARCHES'
   | 'HIDE_CHANNEL'
   | 'MIXES'
   | 'MUTE'
   | 'NEXT_VIDEO'
-  | 'PEOPLE_ALSO_WATCHED'
-  | 'POPULAR_TODAY'
-  | 'PREVIOUSLY_WATCHED'
   | 'PREVIOUS_VIDEO'
-  | 'RECOMMENDED'
   | 'SHORTS'
   | 'STREAMED_TITLE'
   | 'TELL_US_WHY'
