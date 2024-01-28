@@ -786,8 +786,8 @@ const configureCss = (() => {
           // Video listings
           'ytd-rich-item-renderer:has(> .ytd-rich-item-renderer > ytd-ad-slot-renderer)',
           // Search results
-          '#contents.style-scope.ytd-search-pyv-renderer',
-          'ytd-ad-slot-renderer.style-scope.ytd-item-section-renderer',
+          'ytd-search-pyv-renderer.ytd-item-section-renderer',
+          'ytd-ad-slot-renderer.ytd-item-section-renderer',
           // When an ad is playing
           'ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"]',
           // Suggestd action buttons in player overlay
