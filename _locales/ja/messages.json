@@ -137,6 +137,9 @@
   "hideWatchedThreshold": {
     "message": "視聴済みの割合"
   },
+  "mobileGridView": {
+    "message": "購読と検索にグリッド ビューを使用する（縦画面のみ）"
+  },
   "mobileOnly": {
     "message": "モバイルのみ"
   },
@@ -148,9 +151,6 @@
   },
   "skipAds": {
     "message": "広告をスキップ"
-  },
-  "subscriptionsGridView": {
-    "message": "サブスクリプションのグリッドビューを使用する（縦画面のみ）"
   },
   "tidyGuideSidebar": {
     "message": "整頓されたガイドサイドバー"

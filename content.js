@@ -68,7 +68,7 @@ let config = {
   hideExploreButton: true,
   hideOpenApp: true,
   hideSubscriptionsChannelList: false,
-  subscriptionsGridView: true,
+  mobileGridView: true,
 }
 //#endregion
 
@@ -1002,9 +1002,10 @@ const configureCss = (() => {
         // Channel list at top of Subscriptions
         hideCssSelectors.push('.tab-content[tab-identifier="FEsubscriptions"] ytm-channel-list-sub-menu-renderer')
       }
-      if (config.subscriptionsGridView) {
+      if (config.mobileGridView) {
         // Based on the Home grid layout
         cssRules.push(`
+          /* Subscriptions */
           @media (min-width: 550px) and (orientation: portrait) {
             .tab-content[tab-identifier="FEsubscriptions"] ytm-section-list-renderer {
               margin: 0 16px;
@@ -1048,6 +1049,39 @@ const configureCss = (() => {
           /* The page will probably switch to the list view before it ever hits this */
           @media (min-width: 1160px) and (orientation: portrait) {
             .tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer {
+              width: calc(25% - 16px);
+            }
+          }
+
+          /* Search */
+          @media (min-width: 550px) and (orientation: portrait) {
+            ytm-search ytm-item-section-renderer {
+              margin: 0 16px;
+            }
+            ytm-search ytm-item-section-renderer > lazy-list {
+              margin: 16px -8px 0 -8px;
+            }
+            ytm-search ytm-video-with-context-renderer {
+              width: calc(50% - 16px);
+              display: inline-block !important;
+              vertical-align: top;
+              border-bottom: none !important;
+              margin-bottom: 16px;
+              margin-left: 8px;
+              margin-right: 8px;
+            }
+            ytm-search lazy-list ytm-media-item {
+              margin-top: 0 !important;
+              padding: 0 !important;
+            }
+          }
+          @media (min-width: 874px) and (orientation: portrait) {
+            ytm-search ytm-video-with-context-renderer {
+              width: calc(33.3% - 16px);
+            }
+          }
+          @media (min-width: 1160px) and (orientation: portrait) {
+            ytm-search ytm-video-with-context-renderer {
               width: calc(25% - 16px);
             }
           }

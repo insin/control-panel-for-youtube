@@ -70,7 +70,7 @@ export type SiteConfig = {
   hideExploreButton: boolean
   hideOpenApp: boolean
   hideSubscriptionsChannelList: boolean
-  subscriptionsGridView: boolean
+  mobileGridView: boolean
 }
 
 export type Version = 'mobile' | 'desktop'

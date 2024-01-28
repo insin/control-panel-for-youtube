@@ -57,7 +57,7 @@ ${messages.uiTweaks}:
 • ${messages.hideVoiceSearch}
 • ${messages.tidyGuideSidebar} 🖥️
 • ${messages.hideSubscriptionsLatestBar} 🖥️
-• ${messages.subscriptionsGridView} 📱
+• ${messages.mobileGridView} 📱
 • ${messages.hideExploreButton} 📱
 • ${messages.hideSubscriptionsChannelList} 📱
 • ${messages.hideOpenApp} 📱

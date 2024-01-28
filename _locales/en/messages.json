@@ -141,6 +141,9 @@
   "hideWatchedThreshold": {
     "message": "Watched %"
   },
+  "mobileGridView": {
+    "message": "Use grid view for Subscriptions & Search (portrait only)"
+  },
   "mobileOnly": {
     "message": "Mobile only"
   },
@@ -152,9 +155,6 @@
   },
   "skipAds": {
     "message": "Skip ads"
-  },
-  "subscriptionsGridView": {
-    "message": "Use grid view for Subscriptions (portrait only)"
   },
   "tidyGuideSidebar": {
     "message": "Tidy Guide sidebar"
