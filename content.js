@@ -423,48 +423,10 @@ const configureCss = (() => {
 
     // We only hide channels in Home, Search and Related videos
     if (config.hideChannels) {
-      let names = []
-      let onlyNames = []
-      let urls = []
-      for (let channel of config.hiddenChannels) {
-        names.push(channel.name)
-        if (channel.url) {
-          urls.push(channel.url)
-        } else {
-          onlyNames.push(channel.name)
-        }
+      if (config.hiddenChannels.length > 0) {
+        hideCssSelectors.push('.cpfyt-hide-channel')
       }
-
       if (desktop) {
-        if (urls.length > 0) {
-          let hrefs = urls.map(url => `[href="${url}"]`).join(', ')
-          hideCssSelectors.push(
-            // Home
-            `ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(#avatar-link:is(${hrefs}))`,
-            // Search
-            `ytd-search ytd-video-renderer:has(#channel-thumbnail:is(${hrefs}))`,
-            `ytd-search ytd-channel-renderer:has(#main-link:is(${hrefs}))`,
-          )
-        }
-        if (names.length > 0) {
-          let titles = names.map(url => `[title="${url}"]`).join(', ')
-          hideCssSelectors.push(
-            // Related videos only have channel names
-            `ytd-compact-video-renderer:has(#text.ytd-channel-name:is(${titles}))`,
-          )
-        }
-        // Channels hidden from a Related video will only have the channel name
-        if (onlyNames.length > 0) {
-          let titles = onlyNames.map(url => `[title="${url}"]`).join(', ')
-          hideCssSelectors.push(
-            // Home
-            `ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(#text.ytd-channel-name:is(${titles}))`,
-            // Search
-            `ytd-search ytd-video-renderer:has(#text.ytd-channel-name:is(${titles}))`,
-            `ytd-search ytd-channel-renderer:has(#text.ytd-channel-name:is(${titles}))`,
-          )
-        }
-
         // Custom elements can't be cloned so we need to style our own menu items
         cssRules.push(`
           .cpfyt-menu-item {
@@ -514,6 +476,50 @@ const configureCss = (() => {
           }
         `)
       }
+      /*
+      // TODO Remove
+      let names = []
+      let onlyNames = []
+      let urls = []
+      for (let channel of config.hiddenChannels) {
+        names.push(channel.name)
+        if (channel.url) {
+          urls.push(channel.url)
+        } else {
+          onlyNames.push(channel.name)
+        }
+      }
+
+      if (desktop) {
+        if (urls.length > 0) {
+          let hrefs = urls.map(url => `[href="${url}"]`).join(', ')
+          hideCssSelectors.push(
+            // Home
+            `ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(#avatar-link:is(${hrefs}))`,
+            // Search
+            `ytd-search ytd-video-renderer:has(#channel-thumbnail:is(${hrefs}))`,
+            `ytd-search ytd-channel-renderer:has(#main-link:is(${hrefs}))`,
+          )
+        }
+        if (names.length > 0) {
+          let titles = names.map(url => `[title="${url}"]`).join(', ')
+          hideCssSelectors.push(
+            // Related videos only have channel names
+            `ytd-compact-video-renderer:has(#text.ytd-channel-name:is(${titles}))`,
+          )
+        }
+        // Channels hidden from a Related video will only have the channel name
+        if (onlyNames.length > 0) {
+          let titles = onlyNames.map(url => `[title="${url}"]`).join(', ')
+          hideCssSelectors.push(
+            // Home
+            `ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(#text.ytd-channel-name:is(${titles}))`,
+            // Search
+            `ytd-search ytd-video-renderer:has(#text.ytd-channel-name:is(${titles}))`,
+            `ytd-search ytd-channel-renderer:has(#text.ytd-channel-name:is(${titles}))`,
+          )
+        }
+      }
       if (mobile) {
         if (urls.length > 0) {
           let hrefs = urls.map(url => `[href="${url}"]`).join(', ')
@@ -529,6 +535,7 @@ const configureCss = (() => {
           )
         }
       }
+      */
     } else {
       // Hide menu item if config is changed after it's added
       hideCssSelectors.push('#cpfyt-hide-channel')
@@ -752,6 +759,8 @@ const configureCss = (() => {
           'ytm-search ytm-video-with-context-renderer:has(a[href^="/shorts"])',
           // Under video
           'ytm-structured-description-content-renderer ytm-reel-shelf-renderer',
+          // In related
+          'ytm-item-section-renderer[data-content-type="related"] ytm-video-with-context-renderer:has(a[href^="/shorts"])',
         )
       }
     }
@@ -807,6 +816,9 @@ const configureCss = (() => {
     }
 
     if (config.hideStreamed) {
+      hideCssSelectors.push('.cpfyt-hide-streamed')
+      // TODO Remove
+      /*
       if (desktop) {
         hideCssSelectors.push(
           // Grid item (Home, Subscriptions)
@@ -831,6 +843,7 @@ const configureCss = (() => {
           `ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-video-with-context-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
         )
       }
+      */
     }
 
     if (config.hideSuggestedSections) {
@@ -881,6 +894,9 @@ const configureCss = (() => {
     }
 
     if (config.hideWatched) {
+      hideCssSelectors.push('.cpfyt-hide-watched')
+      // TODO Remove
+      /*
       let percentSelector = ''
       if (config.hideWatchedThreshold != 'any') {
         let start = Number(config.hideWatchedThreshold)
@@ -911,6 +927,7 @@ const configureCss = (() => {
           `ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-video-with-context-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
         )
       }
+      */
     }
 
     //#region Desktop-only
@@ -949,7 +966,9 @@ const configureCss = (() => {
         )
       }
       if (config.hideSubscriptionsLatestBar) {
-        hideCssSelectors.push('ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child')
+        hideCssSelectors.push(
+          'ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child'
+        )
       }
       if (config.tidyGuideSidebar) {
         hideCssSelectors.push(
@@ -1004,8 +1023,8 @@ const configureCss = (() => {
       }
       if (config.mobileGridView) {
         // Based on the Home grid layout
+        // Subscriptions
         cssRules.push(`
-          /* Subscriptions */
           @media (min-width: 550px) and (orientation: portrait) {
             .tab-content[tab-identifier="FEsubscriptions"] ytm-section-list-renderer {
               margin: 0 16px;
@@ -1015,7 +1034,7 @@ const configureCss = (() => {
             }
             .tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer {
               width: calc(50% - 16px);
-              display: inline-block !important;
+              display: inline-block;
               vertical-align: top;
               border-bottom: none !important;
               margin-bottom: 16px;
@@ -1052,8 +1071,9 @@ const configureCss = (() => {
               width: calc(25% - 16px);
             }
           }
-
-          /* Search */
+        `)
+        // Search
+        cssRules.push(`
           @media (min-width: 550px) and (orientation: portrait) {
             ytm-search ytm-item-section-renderer {
               margin: 0 16px;
@@ -1215,6 +1235,301 @@ function downloadTranscript() {
   URL.revokeObjectURL(url)
 }
 
+function handleCurrentUrl() {
+  log('handling', getCurrentUrl())
+  disconnectObservers(pageObservers, 'page')
+
+  if (isHomePage()) {
+    tweakHomePage()
+  }
+  else if (isSubscriptionsPage()) {
+    tweakSubscriptionsPage()
+  }
+  else if (isVideoPage()) {
+    tweakVideoPage()
+  }
+  else if (isSearchPage()) {
+    tweakSearchPage()
+  }
+  else if (location.pathname.startsWith('/shorts/')) {
+    if (config.redirectShorts) {
+      redirectShort()
+    }
+  }
+}
+
+function addDownloadTranscriptToDesktopMenu($menu) {
+  if (!isVideoPage()) return
+
+  let $transcript = $lastClickedElement.closest('[target-id="engagement-panel-searchable-transcript"]')
+  if (!$transcript) return
+
+  if ($menu.querySelector('.cpfyt-menu-item')) return
+
+  let $menuItems = $menu.querySelector('#items')
+  $menuItems.insertAdjacentHTML('beforeend', `
+    <div class="cpfyt-menu-item" tabindex="0">
+      <div class="cpfyt-menu-text">
+        ${getString('DOWNLOAD')}
+      </div>
+    </div>
+  `.trim())
+  let $item = $menuItems.lastElementChild
+  function download() {
+    downloadTranscript()
+    // Dismiss the menu
+    // @ts-ignore
+    document.querySelector('#content')?.click()
+  }
+  $item.addEventListener('click', download)
+  $item.addEventListener('keydown', (e) => {
+    if (e.key == ' ' || e.key == 'Enter') {
+      e.preventDefault()
+      download()
+    }
+  })
+}
+
+/** @param {HTMLElement} $menu */
+function addHideChannelToDesktopMenu($menu) {
+  let videoContainerElement
+  if (isSearchPage()) {
+    videoContainerElement = 'ytd-video-renderer'
+  }
+  else if (isVideoPage()) {
+    videoContainerElement = 'ytd-compact-video-renderer'
+  }
+  else if (isHomePage()) {
+    videoContainerElement = 'ytd-rich-item-renderer'
+  }
+
+  if (!videoContainerElement) return
+
+  let $video = /** @type {HTMLElement} */ ($lastClickedElement.closest(videoContainerElement))
+  if (!$video) return
+
+  log('found clicked video')
+  let channel = getChannelDetailsFromVideo($video)
+  if (!channel) return
+  lastClickedChannel = channel
+
+  if ($menu.querySelector('.cpfyt-menu-item')) return
+
+  let $menuItems = $menu.querySelector('#items')
+  $menuItems.insertAdjacentHTML('beforeend', `
+    <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel">
+      <div class="cpfyt-menu-icon">
+        ${Svgs.DELETE}
+      </div>
+      <div class="cpfyt-menu-text">
+        ${getString('HIDE_CHANNEL')}
+      </div>
+    </div>
+  `.trim())
+  let $item = $menuItems.lastElementChild
+  function hideChannel() {
+    log('hiding channel', lastClickedChannel)
+    config.hiddenChannels.unshift(lastClickedChannel)
+    storeConfigChanges({hiddenChannels: config.hiddenChannels})
+    configureCss()
+    handleCurrentUrl()
+    // Dismiss the menu
+    let $popupContainer = /** @type {HTMLElement} */ ($menu.closest('ytd-popup-container'))
+    $popupContainer.click()
+    // XXX Menu isn't dismissing on iPad Safari
+    if ($menu.style.display != 'none') {
+      $menu.style.display = 'none'
+      $menu.setAttribute('aria-hidden', 'true')
+    }
+  }
+  $item.addEventListener('click', hideChannel)
+  $item.addEventListener('keydown', /** @param {KeyboardEvent} e */ (e) => {
+    if (e.key == ' ' || e.key == 'Enter') {
+      e.preventDefault()
+      hideChannel()
+    }
+  })
+}
+
+/**
+ * @param {HTMLElement} $menu
+ */
+async function addHideChannelToMobileMenu($menu) {
+  if (!(isHomePage() || isSearchPage() || isVideoPage())) return
+
+  /** @type {HTMLElement} */
+  let $video = $lastClickedElement.closest('ytm-video-with-context-renderer')
+  if (!$video) return
+
+  log('found clicked video')
+  let channel = getChannelDetailsFromVideo($video)
+  if (!channel) return
+  lastClickedChannel = channel
+
+  let $menuItems = $menu.querySelector($menu.id == 'menu' ? '.menu-content' : '.bottom-sheet-media-menu-item')
+  // TOOO Figure out what we have to wait for to add menu items ASAP without them getting removed
+  await new Promise((resolve) => setTimeout(resolve, 50))
+  let hasIcon = Boolean($menuItems.querySelector('c3-icon'))
+  $menuItems.insertAdjacentHTML('beforeend', `
+    <ytm-menu-item id="cpfyt-hide-channel">
+      <button class="menu-item-button">
+        ${hasIcon ? `<c3-icon>
+          <div style="width: 100%; height: 100%; fill: currentcolor;">
+            ${Svgs.DELETE}
+          </div>
+        </c3-icon>` : ''}
+        <span class="yt-core-attributed-string" role="text">
+          ${getString('HIDE_CHANNEL')}
+        </span>
+      </button>
+    </ytm-menu-item>
+  `.trim())
+  let $button = $menuItems.lastElementChild.querySelector('button')
+  $button.addEventListener('click', () => {
+    log('hiding channel', lastClickedChannel)
+    config.hiddenChannels.unshift(lastClickedChannel)
+    storeConfigChanges({hiddenChannels: config.hiddenChannels})
+    configureCss()
+    handleCurrentUrl()
+    // Dismiss the menu
+    let $overlay = $menu.id == 'menu' ? $menu.querySelector('c3-overlay') : document.querySelector('.bottom-sheet-overlay')
+    // @ts-ignore
+    $overlay?.click()
+  })
+}
+
+/**
+ * @param {HTMLElement} $video video container element
+ * @returns {import("./types").Channel}
+ */
+function getChannelDetailsFromVideo($video) {
+  if (desktop) {
+    if ($video.tagName == 'YTD-VIDEO-RENDERER') {
+      let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('#text.ytd-channel-name a'))
+      if ($link) {
+        return {
+          name: $link.textContent,
+          url: $link.pathname,
+        }
+      }
+    }
+    else if ($video.tagName == 'YTD-COMPACT-VIDEO-RENDERER') {
+      let $link = /** @type {HTMLElement} */ ($video.querySelector('#text.ytd-channel-name'))
+      if ($link) {
+        return {
+          name: $link.getAttribute('title')
+        }
+      }
+    }
+    else if ($video.tagName == 'YTD-RICH-ITEM-RENDERER') {
+      let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('#text.ytd-channel-name a'))
+      if ($link) {
+        return {
+          name: $link.textContent,
+          url: $link.pathname,
+        }
+      }
+    }
+  }
+  if (mobile) {
+    let $thumbnailLink =/** @type {HTMLAnchorElement} */ ($video.querySelector('ytm-channel-thumbnail-with-link-renderer > a'))
+    let $name = /** @type {HTMLElement} */ ($video.querySelector('ytm-badge-and-byline-renderer .yt-core-attributed-string'))
+    if ($name) {
+      return {
+        name: $name.textContent,
+        url: $thumbnailLink?.pathname,
+      }
+    }
+  }
+  // warn('unable to get channel details from video container', $video)
+}
+
+/**
+ * When the number of items per row in Home and Subscriptions (grid view)
+ * changes responsively with width, rows are re-rendered and existing video
+ * elements are reused, so processVideo() needs to re-tag all videos.
+ * @param {{page: string}} options
+ */
+async function observeDesktopRichGridVideos(options) {
+  let {page} = options
+
+  let $renderer = await getElement('ytd-rich-grid-renderer', {
+    name: `${page} <ytd-rich-grid-renderer>`,
+    stopIf: currentUrlChanges(),
+  })
+  if (!$renderer) return
+
+  let $rows = $renderer.querySelector(':scope > #contents')
+  let itemsPerRow = $renderer.style.getPropertyValue('--ytd-rich-grid-items-per-row')
+  let itemsPerRowChanging = false
+
+  function processAllItems() {
+    let $initialItems = /** @type {NodeListOf<HTMLElement>} */ ($rows.querySelectorAll('ytd-rich-item-renderer.ytd-rich-grid-row'))
+    log(`${$initialItems.length} initial ${page} item${s($initialItems.length)}`)
+    $initialItems.forEach(processVideo)
+  }
+
+  observeElement($renderer, () => {
+    if ($renderer.style.getPropertyValue('--ytd-rich-grid-items-per-row') == itemsPerRow) return
+
+    log('items per row changed')
+    itemsPerRow = $renderer.style.getPropertyValue('--ytd-rich-grid-items-per-row')
+    itemsPerRowChanging = true
+    try {
+      processAllItems()
+    } finally {
+      // Allow row mutations to run so they can be ignored
+      Promise.resolve().then(() => {
+        itemsPerRowChanging = false
+      })
+    }
+  }, {
+    name: `${page} <ytd-rich-grid-renderer> style attribute (for items per row being changed)`,
+    observers: pageObservers,
+  }, {
+    attributes: true,
+    attributeFilter: ['style'],
+  })
+
+  observeElement($rows, (mutations) => {
+    if (itemsPerRowChanging) {
+      log('ignoring row mutations as items per row just changed', mutations)
+      return
+    }
+    for (let mutation of mutations) {
+      for (let $addedNode of mutation.addedNodes) {
+        if ($addedNode.nodeName == 'YTD-RICH-GRID-ROW') {
+          let $newItems = /** @type {HTMLElement} */ ($addedNode).querySelectorAll('ytd-rich-item-renderer')
+          log(`new ${page} row with ${$newItems.length} item${s($newItems.length)} added`)
+          $newItems.forEach(processVideo)
+        }
+      }
+    }
+  }, {
+    name: `${page} <ytd-rich-grid-renderer> rows (for new rows being added)`,
+    observers: pageObservers,
+  })
+
+  let $initialItems = /** @type {NodeListOf<HTMLElement>} */ ($rows.querySelectorAll('ytd-rich-item-renderer.ytd-rich-grid-row'))
+  log(`${$initialItems.length} initial ${page} item${s($initialItems.length)}`)
+  $initialItems.forEach(processVideo)
+}
+
+/** @param {HTMLElement} $menu */
+function onDesktopMenuAppeared($menu) {
+  log('menu appeared', {$lastClickedElement})
+
+  if (config.downloadTranscript) {
+    addDownloadTranscriptToDesktopMenu($menu)
+  }
+  if (config.hideChannels) {
+    addHideChannelToDesktopMenu($menu)
+  }
+  if (config.hideHiddenVideos) {
+    observeVideoHiddenState()
+  }
+}
+
 async function observePopups() {
   if (desktop) {
     // Desktop dialogs and menus appear in <ytd-popup-container>. Once created,
@@ -1349,6 +1664,107 @@ async function observePopups() {
 }
 
 /**
+ * Search pages are a list of sections, which can have more items added to them
+ * after they're added, so we watch for new section contents as well as for new
+ * sections.
+ * @param {{
+ *   name: string
+ *   selector: string
+ *   sectionContentsSelector: string
+ *   sectionElement: string
+ *   videoElement: string
+ * }} options
+ */
+async function observeSearchResultSections(options) {
+  let {name, selector, sectionContentsSelector, sectionElement, videoElement} = options
+  let sectionNodeName = sectionElement.toUpperCase()
+  let videoNodeName = videoElement.toUpperCase()
+
+  let $sections = await getElement(selector, {
+    name,
+    stopIf: () => !location.pathname.startsWith('/results'),
+  })
+  if (!$sections) return
+
+  let sectionCount = 0
+
+  /**
+   * On desktop, thumbnail overlays with watch progress are loazed lazily as you
+   * scroll through search results.
+   * @param {HTMLElement} $video
+   * @param {string} uniqueId
+   */
+  function waitForThumbnail($video, uniqueId) {
+    if (!desktop || !config.hideWatched) return
+
+    let $thumbnail = $video.querySelector('ytd-thumbnail')
+    if (!$thumbnail || $thumbnail.hasAttribute('loaded')) return
+
+    observeElement($thumbnail, (_, observer) => {
+      hideWatched($video)
+      observer.disconnect()
+    }, {
+      name: `${uniqueId} ytd-thumbnail (for loaded attribute appearing)`,
+      observers: pageObservers,
+    }, {
+      attributes: true,
+      attributeFilter: ['loaded'],
+    })
+  }
+
+  /**
+   * @param {HTMLElement} $section
+   * @param {number} sectionNum
+   */
+  function processSection($section, sectionNum) {
+    let itemCount = 0
+
+    observeElement($section.querySelector(sectionContentsSelector), (mutations) => {
+      for (let mutation of mutations) {
+        for (let $addedNode of mutation.addedNodes) {
+          if ($addedNode instanceof HTMLElement && $addedNode.nodeName == videoNodeName) {
+            processVideo($addedNode)
+            waitForThumbnail($addedNode, `section ${sectionNum} item ${++itemCount}`)
+          }
+        }
+      }
+    }, {
+      name: `search <${sectionElement}> ${sectionNum} #contents (for <${videoElement}>s being added)`,
+      observers: pageObservers,
+    })
+
+    let $initialItems = /** @type {NodeListOf<HTMLElement>} */ ($section.querySelectorAll(videoElement))
+    log(`${$initialItems.length} initial search item${s($initialItems.length)} in section ${sectionNum}`)
+    for (let $initialItem of $initialItems) {
+      processVideo($initialItem)
+      waitForThumbnail($initialItem, `section ${sectionNum} item ${++itemCount}`)
+    }
+  }
+
+  // New sections are added when more results are loaded
+  observeElement($sections, (mutations) => {
+    for (let mutation of mutations) {
+      for (let $addedNode of mutation.addedNodes) {
+        if ($addedNode.nodeName == sectionNodeName) {
+          let sectionNum = ++sectionCount
+          log(`search result section ${sectionNum} added`)
+          processSection(/** @type {HTMLElement} */ ($addedNode), sectionNum)
+        }
+      }
+    }
+  }, {
+    name: `search <${sectionElement}> contents (for new sections being added)`,
+    observers: pageObservers,
+  })
+
+  let $initialSections = /** @type {NodeListOf<HTMLElement>} */ ($sections.querySelectorAll(sectionElement))
+  log($initialSections.length, `initial search result section${s($initialSections.length)}`)
+  for (let $initialSection of $initialSections) {
+    processSection($initialSection, ++sectionCount)
+  }
+}
+
+/**
  * Detect navigation between pages for features which apply to specific pages.
  */
 async function observeTitle() {
@@ -1368,197 +1784,95 @@ async function observeTitle() {
   })
 }
 
-function handleCurrentUrl() {
-  log('handling', getCurrentUrl())
-  disconnectObservers(pageObservers, 'page')
-
-  if (isHomePage()) {
-    tweakHomePage()
-  }
-  else if (isVideoPage()) {
-    tweakVideoPage()
-  }
-  else if (isSearchPage()) {
-    tweakSearchPage()
-  }
-  else if (location.pathname.startsWith('/shorts/')) {
-    if (config.redirectShorts) {
-      redirectShort()
-    }
-  }
-}
-
-function addDownloadTranscriptToDesktopMenu($menu) {
-  if (!isVideoPage()) return
-
-  let $transcript = $lastClickedElement.closest('[target-id="engagement-panel-searchable-transcript"]')
-  if (!$transcript) return
-
-  if ($menu.querySelector('.cpfyt-menu-item')) return
-
-  let $menuItems = $menu.querySelector('#items')
-  $menuItems.insertAdjacentHTML('beforeend', `
-    <div class="cpfyt-menu-item" tabindex="0">
-      <div class="cpfyt-menu-text">
-        ${getString('DOWNLOAD')}
-      </div>
-    </div>
-  `.trim())
-  let $item = $menuItems.lastElementChild
-  function download() {
-    downloadTranscript()
-    // Dismiss the menu
-    // @ts-ignore
-    document.querySelector('#content')?.click()
-  }
-  $item.addEventListener('click', download)
-  $item.addEventListener('keydown', (e) => {
-    if (e.key == ' ' || e.key == 'Enter') {
-      e.preventDefault()
-      download()
-    }
+async function observeVideoAds() {
+  let $player = await getElement('#movie_player', {
+    name: 'player',
+    stopIf: currentUrlChanges(),
   })
-}
+  if (!$player) return
 
-/** @param {HTMLElement} $menu */
-function addHideChannelToDesktopMenu($menu) {
-  /** @type {import("./types").Channel} */
-  let channel
-  if (isSearchPage()) {
-    let $video = $lastClickedElement.closest('ytd-video-renderer')
-    if ($video) {
-      let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('#text.ytd-channel-name a'))
-      if ($link) {
-        channel = {
-          name: $link.textContent,
-          url: $link.pathname,
+  let $videoAds = $player.querySelector('.video-ads')
+  if (!$videoAds) {
+    $videoAds = await observeForElement($player, (mutations) => {
+      for (let mutation of mutations) {
+        for (let $addedNode of mutation.addedNodes) {
+          if ($addedNode instanceof HTMLElement && $addedNode.classList.contains('video-ads')) {
+            return $addedNode
+          }
         }
-      } else {
-        warn('unable to find channel name link in <ytd-video-renderer>')
       }
+    }, {
+      logElement: true,
+      name: '#movie_player (for .video-ads being added)',
+      targetName: '.video-ads',
+      observers: pageObservers,
+    })
+    if (!$videoAds) return
+  }
+
+  function processAdContent() {
+    let $adContent = $videoAds.firstElementChild
+    if ($adContent.classList.contains('ytp-ad-player-overlay')) {
+      tweakAdPlayerOverlay($player)
+    }
+    else if ($adContent.classList.contains('ytp-ad-action-interstitial')) {
+      tweakAdInterstitial($adContent)
+    }
+    else {
+      warn('unknown ad content', $adContent.className, $adContent.outerHTML)
     }
   }
-  else if (isVideoPage()) {
-    let $video= $lastClickedElement.closest('ytd-compact-video-renderer')
-    if ($video) {
-      // Only the channel name is available in a relate video on desktop
-      let $link = /** @type {HTMLElement} */ ($video.querySelector('#text.ytd-channel-name'))
-      if ($link) {
-        channel = {
-          name: $link.getAttribute('title')
+
+  if ($videoAds.childElementCount > 0) {
+    log('video ad content present')
+    processAdContent()
+  }
+
+  observeElement($videoAds, (mutations) => {
+    // Something added
+    if (mutations.some(mutation => mutation.addedNodes.length > 0)) {
+      log('video ad content appeared')
+      processAdContent()
+    }
+    // Something removed
+    else if (mutations.some(mutation => mutation.removedNodes.length > 0)) {
+      log('video ad content removed')
+      if (onAdRemoved) {
+        onAdRemoved()
+        onAdRemoved = null
+      }
+      // Only unmute if we know the volume wasn't initially muted
+      if (desktop) {
+        let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
+        if ($muteButton &&
+            $muteButton.dataset.titleNoTooltip != getString('MUTE') &&
+            $muteButton.dataset.cpfytWasMuted == 'false') {
+          log('unmuting audio after ads')
+          delete $muteButton.dataset.cpfytWasMuted
+          $muteButton.click()
         }
-      } else {
-        warn('unable to find channel name link in <ytd-compact-video-renderer>')
+      }
+      if (mobile) {
+        let $video = $player.querySelector('video')
+        if ($video &&
+            $video.muted &&
+            $video.dataset.cpfytWasMuted == 'false') {
+          log('unmuting audio after ads')
+          delete $video.dataset.cpfytWasMuted
+          $video.muted = false
+        }
       }
     }
-  }
-  else if (isHomePage()) {
-    let $video = $lastClickedElement.closest('ytd-rich-item-renderer')
-    let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('#text.ytd-channel-name a'))
-    if ($link) {
-      channel = {
-        name: $link.textContent,
-        url: $link.pathname,
-      }
-    } else {
-      warn('unable to find channel name link in <ytd-rich-item-renderer>')
-    }
-  }
-
-  if (!channel) return
-  lastClickedChannel = channel
-
-  if ($menu.querySelector('.cpfyt-menu-item')) return
-
-  let $menuItems = $menu.querySelector('#items')
-  $menuItems.insertAdjacentHTML('beforeend', `
-    <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel">
-      <div class="cpfyt-menu-icon">
-        ${Svgs.DELETE}
-      </div>
-      <div class="cpfyt-menu-text">
-        ${getString('HIDE_CHANNEL')}
-      </div>
-    </div>
-  `.trim())
-  let $item = $menuItems.lastElementChild
-  function hideChannel() {
-    config.hiddenChannels.unshift(lastClickedChannel)
-    storeConfigChanges({hiddenChannels: config.hiddenChannels})
-    configureCss()
-    // Dismiss the menu
-    let $popupContainer = /** @type {HTMLElement} */ ($menu.closest('ytd-popup-container'))
-    $popupContainer.click()
-    // XXX Menu isn't dismissing on iPad Safari
-    if ($menu.style.display != 'none') {
-      $menu.style.display = 'none'
-      $menu.setAttribute('aria-hidden', 'true')
-    }
-  }
-  $item.addEventListener('click', hideChannel)
-  $item.addEventListener('keydown', /** @param {KeyboardEvent} e */ (e) => {
-    if (e.key == ' ' || e.key == 'Enter') {
-      e.preventDefault()
-      hideChannel()
-    }
+  }, {
+    logElement: true,
+    name: '#movie_player > .video-ads (for content being added or removed)',
+    observers: pageObservers,
   })
 }
 
 /**
- * @param {HTMLElement} $menu
+ * If a video's action menu was opened, watch for that video being dismissed.
  */
-async function addHideChannelToMobileMenu($menu) {
-  /** @type {import("./types").Channel} */
-  let channel
-  if (isHomePage() || isSearchPage() || isVideoPage()) {
-    let $video = $lastClickedElement.closest('ytm-video-with-context-renderer')
-    if ($video) {
-      let $thumbnailLink =/** @type {HTMLAnchorElement} */ ($video.querySelector('ytm-channel-thumbnail-with-link-renderer > a'))
-      let $name = /** @type {HTMLElement} */ ($video.querySelector('ytm-badge-and-byline-renderer .yt-core-attributed-string'))
-      if ($name) {
-        channel = {
-          name: $name.textContent,
-          url: $thumbnailLink?.pathname,
-        }
-      } else {
-        warn('unable to find channel name in <ytm-video-with-context-renderer>')
-      }
-    }
-  }
-
-  if (!channel) return
-  lastClickedChannel = channel
-
-  let $menuItems = $menu.querySelector($menu.id == 'menu' ? '.menu-content' : '.bottom-sheet-media-menu-item')
-  // TOOO Figure out what we have to wait for to add menu items ASAP without them getting removed
-  await new Promise((resolve) => setTimeout(resolve, 50))
-  let hasIcon = Boolean($menuItems.querySelector('c3-icon'))
-  $menuItems.insertAdjacentHTML('beforeend', `
-    <ytm-menu-item id="cpfyt-hide-channel">
-      <button class="menu-item-button">
-        ${hasIcon ? `<c3-icon>
-          <div style="width: 100%; height: 100%; fill: currentcolor;">
-            ${Svgs.DELETE}
-          </div>
-        </c3-icon>` : ''}
-        <span class="yt-core-attributed-string" role="text">
-          ${getString('HIDE_CHANNEL')}
-        </span>
-      </button>
-    </ytm-menu-item>
-  `.trim())
-  let $button = $menuItems.lastElementChild.querySelector('button')
-  $button.addEventListener('click', () => {
-    config.hiddenChannels.unshift(lastClickedChannel)
-    storeConfigChanges({hiddenChannels: config.hiddenChannels})
-    configureCss()
-    // Dismiss the menu
-    let $overlay = $menu.id == 'menu' ? $menu.querySelector('c3-overlay') : document.querySelector('.bottom-sheet-overlay')
-    // @ts-ignore
-    $overlay?.click()
-  })
-}
-
 function observeVideoHiddenState() {
   if (!isHomePage() && !isSubscriptionsPage()) return
 
@@ -1699,19 +2013,45 @@ function observeVideoHiddenState() {
   }
 }
 
-/** @param {HTMLElement} $menu */
-function onDesktopMenuAppeared($menu) {
-  log('menu appeared', {$lastClickedElement})
+/**
+ * Calls processVideo() on initial items in a video list element, and on new
+ * items as they're added.
+ * @param {{
+ *   name: string
+ *   selector: string
+ *   stopIf?: () => boolean
+ *   page: string
+ *   videoElements: Set<string>
+ * }} options
+ */
+async function observeVideoList(options) {
+  let {name, selector, stopIf = currentUrlChanges(), page, videoElements} = options
+  let videoNodeNames = new Set(Array.from(videoElements, (name) => name.toUpperCase()))
 
-  if (config.downloadTranscript) {
-    addDownloadTranscriptToDesktopMenu($menu)
-  }
-  if (config.hideChannels) {
-    addHideChannelToDesktopMenu($menu)
-  }
-  if (config.hideHiddenVideos) {
-    observeVideoHiddenState()
-  }
+  let $list = await getElement(selector, {name, stopIf})
+  if (!$list) return
+
+  observeElement($list, (mutations) => {
+    let newItemCount = 0
+    for (let mutation of mutations) {
+      for (let $addedNode of mutation.addedNodes) {
+        if (videoNodeNames.has($addedNode.nodeName)) {
+          processVideo(/** @type {HTMLElement} */ ($addedNode))
+          newItemCount++
+        }
+      }
+    }
+    if (newItemCount > 0) {
+      log(`${newItemCount} new ${page} item${s(newItemCount)} added`)
+    }
+  }, {
+    name: `${name} (for new items being added)`,
+    observers: pageObservers,
+  })
+
+  let $initialItems = /** @type {NodeListOf<HTMLElement>} */ ($list.querySelectorAll([...videoElements].join(', ')))
+  log(`${$initialItems.length} initial ${page} item${s($initialItems.length)}`)
+  $initialItems.forEach(processVideo)
 }
 
 /** @param {MouseEvent} e */
@@ -1742,6 +2082,62 @@ function onMobileMenuAppeared($menu) {
   }
 }
 
+/** @param {HTMLElement} $video */
+function hideWatched($video) {
+  if (!config.hideWatched) return
+  // Watch % is obtained from progress bar width when a video has one
+  let $progressBar
+  if (desktop) {
+    $progressBar = $video.querySelector('#progress')
+  }
+  if (mobile) {
+    $progressBar = $video.querySelector('.thumbnail-overlay-resume-playback-progress')
+  }
+  let hide = false
+  if ($progressBar) {
+    let progress = parseInt(/** @type {HTMLElement} */ ($progressBar).style.width)
+    hide = progress >= Number(config.hideWatchedThreshold)
+  }
+  $video.classList.toggle('cpfyt-hide-watched', hide)
+}
+
+/**
+ * Tag individual video elements to be hidden by options which would need too
+ * complex or broad CSS :has() relative selectors.
+ * @param {HTMLElement} $video
+ */
+function processVideo($video) {
+  hideWatched($video)
+
+  // Streamed videos are identified using the video title's aria-label
+  if (config.hideStreamed) {
+    let $videoTitle
+    if (desktop) {
+      // Subscriptions <ytd-rich-item-renderer> has a different structure
+      $videoTitle = $video.querySelector($video.tagName == 'YTD-RICH-ITEM-RENDERER' ? '#video-title-link' : '#video-title')
+    }
+    if (mobile) {
+      $videoTitle = $video.querySelector('.media-item-headline .yt-core-attributed-string')
+    }
+    let hide = false
+    if ($videoTitle) {
+      hide = Boolean($videoTitle.getAttribute('aria-label')?.includes(getString('STREAMED_TITLE')))
+    }
+    $video.classList.toggle('cpfyt-hide-streamed', hide)
+  }
+
+  if (config.hideChannels && config.hiddenChannels.length > 0 && !isSubscriptionsPage()) {
+    let channel = getChannelDetailsFromVideo($video)
+    let hide = false
+    if (channel) {
+      hide = config.hiddenChannels.some((hiddenChannel) =>
+        channel.url && hiddenChannel.url ? channel.url == hiddenChannel.url : hiddenChannel.name == channel.name
+      )
+    }
+    $video.classList.toggle('cpfyt-hide-channel', hide)
+  }
+}
+
 async function redirectFromHome() {
   let selector = desktop ? 'a[href="/feed/subscriptions"]' : 'ytm-pivot-bar-item-renderer div.pivot-subs'
   let $subscriptionsLink = await getElement(selector, {
@@ -1760,147 +2156,6 @@ function redirectShort() {
   location.replace(`/watch?v=${videoId}${search}`)
 }
 
-async function tweakHomePage() {
-  if (config.disableHomeFeed && loggedIn) {
-    redirectFromHome()
-    return
-  }
-
-  // Add data-cpfyt-title attribute to titled shelves so they can be hidden by title
-  if (desktop && config.hideSuggestedSections) {
-    let $rows = await getElement('ytd-browse[page-subtype="home"] ytd-rich-grid-renderer > #contents', {
-      name: 'Home rows container',
-      stopIf: currentUrlChanges(),
-    })
-    if (!$rows) return
-
-    /** @param {HTMLElement} $shelf  */
-    function addTitleToShelf($shelf) {
-      let title = $shelf.querySelector('ytd-rich-shelf-renderer #title')?.textContent
-      if (title) {
-        $shelf.dataset.cpfytTitle = title
-        log('added', title, 'shelf title')
-      }
-    }
-
-    // Initial contents
-    for (let $shelf of $rows.querySelectorAll('ytd-rich-section-renderer')) {
-      addTitleToShelf(/** @type {HTMLElement} */ ($shelf))
-    }
-
-    observeElement($rows, (mutations) => {
-      for (let mutation of mutations) {
-        for (let $addedNode of mutation.addedNodes) {
-          if ($addedNode.nodeName == 'YTD-RICH-SECTION-RENDERER') {
-            addTitleToShelf(/** @type {HTMLElement} */ ($addedNode))
-          }
-        }
-      }
-    }, {
-      name: '<ytd-rich-grid-renderer> > #contents (for <ytd-rich-section-renderer>s being added)',
-      observers: pageObservers,
-    })
-  }
-
-  if (mobile && config.hideSuggestedSections) {
-    let $container = await getElement('.rich-grid-renderer-contents', {
-      name: 'Home items container',
-      stopIf: currentUrlChanges(),
-    })
-    if (!$container) return
-
-    /** @param {HTMLElement} $shelf  */
-    function addTitleToShelf($shelf) {
-      let title = $shelf.querySelector('.rich-shelf-title')?.textContent
-      if (title) {
-        $shelf.dataset.cpfytTitle = title
-        log('added', title, 'shelf title')
-      }
-    }
-
-    // Initial contents
-    for (let $shelf of $container.querySelectorAll('ytm-rich-section-renderer')) {
-      addTitleToShelf(/** @type {HTMLElement} */ ($shelf))
-    }
-
-    observeElement($container, (mutations) => {
-      for (let mutation of mutations) {
-        for (let $addedNode of mutation.addedNodes) {
-          if ($addedNode.nodeName == 'YTM-RICH-SECTION-RENDERER') {
-            addTitleToShelf(/** @type {HTMLElement} */ ($addedNode))
-          }
-        }
-      }
-    }, {
-      name: '.rich-grid-renderer-contents (for <ytm-rich-section-renderer>s being added)',
-      observers: pageObservers,
-    })
-  }
-}
-
-async function tweakSearchPage() {
-  // Add data-title attribute to titled shelves so they can be hidden by title
-  if (desktop && config.hideSuggestedSections) {
-    let $sections = await getElement('ytd-search ytd-section-list-renderer #contents', {
-      name: 'search result sections container',
-      stopIf: () => !location.pathname.startsWith('/results'),
-    })
-    if (!$sections) return
-
-    /**  @param {HTMLElement} $shelf */
-    function addTitleToShelf($shelf) {
-      let title = $shelf.querySelector('#title').textContent
-      $shelf.dataset.cpfytTitle = title
-      log('added', title, 'shelf title')
-    }
-
-    let sectionCount = 0
-    /**
-     * Tag any shelves in a section and watch for new content being added.
-     * @param {HTMLElement} $section
-     */
-    function processSection($section) {
-      let sectionId = ++sectionCount
-      observeElement($section.querySelector('#contents'), (mutations) => {
-        for (let mutation of mutations) {
-          for (let $addedNode of mutation.addedNodes) {
-            if ($addedNode.nodeName == 'YTD-SHELF-RENDERER') {
-              log(`new shelf added to section ${sectionId}`)
-              addTitleToShelf(/** @type {HTMLElement} */ ($addedNode))
-            }
-          }
-        }
-      }, {
-        name: `<ytd-item-section-renderer> ${sectionId} #contents (for <ytd-shelf-renderer>s being added)`,
-        observers: pageObservers,
-      })
-      for (let $shelf of $section.querySelectorAll('ytd-shelf-renderer')) {
-        addTitleToShelf(/** @type {HTMLElement} */ ($shelf))
-      }
-    }
-
-    // New sections are added when more results are loaded
-    observeElement($sections, (mutations) => {
-      for (let mutation of mutations) {
-        for (let $addedNode of mutation.addedNodes) {
-          if ($addedNode.nodeName == 'YTD-ITEM-SECTION-RENDERER') {
-            log('new search result section added')
-            processSection(/** @type {HTMLElement} */ ($addedNode))
-          }
-        }
-      }
-    }, {
-      name: '<ytd-section-list-renderer> #contents (for <ytd-item-section-renderer>s being added)',
-      observers: pageObservers,
-    })
-
-    let $initialSections = $sections.querySelectorAll('ytd-item-section-renderer')
-    log($initialSections.length, `initial search result section${s($initialSections.length)}`)
-    for (let $initialSection of $initialSections) {
-      processSection(/** @type {HTMLElement} */ ($initialSection))
-    }
-  }
-}
 
 function tweakAdInterstitial($adContent) {
   log('ad interstitial showing')
@@ -1996,90 +2251,64 @@ function tweakAdPlayerOverlay($player) {
   }
 }
 
-async function observeVideoAds() {
-  let $player = await getElement('#movie_player', {
-    name: 'player',
-    stopIf: currentUrlChanges(),
-  })
-  if (!$player) return
-
-  let $videoAds = $player.querySelector('.video-ads')
-  if (!$videoAds) {
-    $videoAds = await observeForElement($player, (mutations) => {
-      for (let mutation of mutations) {
-        for (let $addedNode of mutation.addedNodes) {
-          if ($addedNode instanceof HTMLElement && $addedNode.classList.contains('video-ads')) {
-            return $addedNode
-          }
-        }
-      }
-    }, {
-      logElement: true,
-      name: '#movie_player (for .video-ads being added)',
-      targetName: '.video-ads',
-      observers: pageObservers,
+async function tweakHomePage() {
+  if (config.disableHomeFeed && loggedIn) {
+    redirectFromHome()
+    return
+  }
+  if (!config.hideWatched && !config.hideStreamed && !config.hideChannels) return
+  if (desktop) {
+    observeDesktopRichGridVideos({page: 'home'})
+  }
+  if (mobile) {
+    observeVideoList({
+      name: 'home <ytm-rich-grid-renderer> contents',
+      selector: '.rich-grid-renderer-contents',
+      page: 'home',
+      videoElements: new Set(['ytm-rich-item-renderer']),
     })
-    if (!$videoAds) return
+  }
+}
+
+function tweakSearchPage() {
+  if (!config.hideWatched && !config.hideStreamed && !config.hideChannels) return
+
+  // TODO Hide ytd-channel-renderer if a channel is hidden
+
+  if (desktop) {
+    observeSearchResultSections({
+      name: 'search <ytd-section-list-renderer> contents',
+      selector: '#contents.ytd-section-list-renderer',
+      sectionContentsSelector: '#contents',
+      sectionElement: 'ytd-item-section-renderer',
+      videoElement: 'ytd-video-renderer',
+    })
   }
 
-  function processAdContent() {
-    let $adContent = $videoAds.firstElementChild
-    if ($adContent.classList.contains('ytp-ad-player-overlay')) {
-      tweakAdPlayerOverlay($player)
-    }
-    else if ($adContent.classList.contains('ytp-ad-action-interstitial')) {
-      tweakAdInterstitial($adContent)
-    }
-    else {
-      warn('unknown ad content', $adContent.className, $adContent.outerHTML)
-    }
+  if (mobile) {
+    observeSearchResultSections({
+      name: 'search <lazy-list>',
+      selector: 'ytm-section-list-renderer > lazy-list',
+      sectionContentsSelector: 'lazy-list',
+      sectionElement: 'ytm-item-section-renderer',
+      videoElement: 'ytm-video-with-context-renderer',
+    })
   }
+}
 
-  if ($videoAds.childElementCount > 0) {
-    log('video ad content present')
-    processAdContent()
+async function tweakSubscriptionsPage() {
+  if (!config.hideWatched && !config.hideStreamed) return
+  if (desktop) {
+    observeDesktopRichGridVideos({page: 'subscriptions'})
   }
-
-  observeElement($videoAds, (mutations) => {
-    // Something added
-    if (mutations.some(mutation => mutation.addedNodes.length > 0)) {
-      log('video ad content appeared')
-      processAdContent()
-    }
-    // Something removed
-    else if (mutations.some(mutation => mutation.removedNodes.length > 0)) {
-      log('video ad content removed')
-      if (onAdRemoved) {
-        onAdRemoved()
-        onAdRemoved = null
-      }
-      // Only unmute if we know the volume wasn't initially muted
-      if (desktop) {
-        let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
-        if ($muteButton &&
-            $muteButton.dataset.titleNoTooltip != getString('MUTE') &&
-            $muteButton.dataset.cpfytWasMuted == 'false') {
-          log('unmuting audio after ads')
-          delete $muteButton.dataset.cpfytWasMuted
-          $muteButton.click()
-        }
-      }
-      if (mobile) {
-        let $video = $player.querySelector('video')
-        if ($video &&
-            $video.muted &&
-            $video.dataset.cpfytWasMuted == 'false') {
-          log('unmuting audio after ads')
-          delete $video.dataset.cpfytWasMuted
-          $video.muted = false
-        }
-      }
-    }
-  }, {
-    logElement: true,
-    name: '#movie_player > .video-ads (for content being added or removed)',
-    observers: pageObservers,
-  })
+  if (mobile) {
+    observeVideoList({
+      name: 'subscriptions <lazy-list>',
+      selector: 'ytm-section-list-renderer > lazy-list',
+      page: 'subscriptions',
+      videoElements: new Set(['ytm-item-section-renderer']),
+    })
+  }
 }
 
 async function tweakVideoPage() {
@@ -2088,6 +2317,25 @@ async function tweakVideoPage() {
   }
   if (config.disableAutoplay) {
     disableAutoplay()
+  }
+
+  if (config.hideRelated || (!config.hideWatched && !config.hideStreamed && !config.hideChannels)) return
+  if (desktop) {
+    observeVideoList({
+      name: 'related <ytd-item-section-renderer> contents',
+      selector: '#related #contents.ytd-item-section-renderer',
+      page: 'related',
+      videoElements: new Set(['ytd-compact-video-renderer']),
+    })
+  }
+  if (mobile) {
+    observeVideoList({
+      name: 'related <lazy-list>',
+      selector: 'ytm-item-section-renderer[data-content-type="related"] > lazy-list',
+      page: 'related',
+      // <ytm-compact-autoplay-renderer> displays as a large item on bigger mobile screens
+      videoElements: new Set(['ytm-video-with-context-renderer', 'ytm-compact-autoplay-renderer']),
+    })
   }
 }
 //#endregion
@@ -2112,9 +2360,7 @@ function main() {
 function configChanged(changes) {
   if (!changes.hasOwnProperty('enabled')) {
     log('config changed', changes)
-    // Update styles
     configureCss()
-    // Re-run any functionality for the current URL
     handleCurrentUrl()
     return
   }
