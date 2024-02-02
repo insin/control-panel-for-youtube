@@ -1453,7 +1453,7 @@ function getChannelDetailsFromVideo($video) {
 async function observeDesktopRichGridVideos(options) {
   let {page} = options
 
-  let $renderer = await getElement('ytd-rich-grid-renderer', {
+  let $renderer = await getElement(`ytd-browse[page-subtype="${page}"] ytd-rich-grid-renderer`, {
     name: `${page} <ytd-rich-grid-renderer>`,
     stopIf: currentUrlChanges(),
   })
