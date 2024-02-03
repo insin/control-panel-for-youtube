@@ -2156,7 +2156,7 @@ async function tweakHomePage() {
   if (mobile) {
     observeVideoList({
       name: 'home <ytm-rich-grid-renderer> contents',
-      selector: '.rich-grid-renderer-contents',
+      selector: '.tab-content[tab-identifier="FEwhat_to_watch"] .rich-grid-renderer-contents',
       page: 'home',
       videoElements: new Set(['ytm-rich-item-renderer']),
     })
@@ -2171,7 +2171,7 @@ function tweakSearchPage() {
   if (desktop) {
     observeSearchResultSections({
       name: 'search <ytd-section-list-renderer> contents',
-      selector: '#contents.ytd-section-list-renderer',
+      selector: 'ytd-search #contents.ytd-section-list-renderer',
       sectionContentsSelector: '#contents',
       sectionElement: 'ytd-item-section-renderer',
       videoElement: 'ytd-video-renderer',
@@ -2181,7 +2181,7 @@ function tweakSearchPage() {
   if (mobile) {
     observeSearchResultSections({
       name: 'search <lazy-list>',
-      selector: 'ytm-section-list-renderer > lazy-list',
+      selector: 'ytm-search ytm-section-list-renderer > lazy-list',
       sectionContentsSelector: 'lazy-list',
       sectionElement: 'ytm-item-section-renderer',
       videoElement: 'ytm-video-with-context-renderer',
@@ -2197,7 +2197,7 @@ async function tweakSubscriptionsPage() {
   if (mobile) {
     observeVideoList({
       name: 'subscriptions <lazy-list>',
-      selector: 'ytm-section-list-renderer > lazy-list',
+      selector: '.tab-content[tab-identifier="FEsubscriptions"] ytm-section-list-renderer > lazy-list',
       page: 'subscriptions',
       videoElements: new Set(['ytm-item-section-renderer']),
     })
@@ -2216,7 +2216,7 @@ async function tweakVideoPage() {
   if (desktop) {
     observeVideoList({
       name: 'related <ytd-item-section-renderer> contents',
-      selector: '#related #contents.ytd-item-section-renderer',
+      selector: '#related.ytd-watch-flexy #contents.ytd-item-section-renderer',
       page: 'related',
       videoElements: new Set(['ytd-compact-video-renderer']),
     })
