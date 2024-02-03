@@ -8,6 +8,7 @@
 // @version     1
 // ==/UserScript==
 let debug = false
+let debugManualHiding = false
 
 let mobile = location.hostname == 'm.youtube.com'
 let desktop = !mobile
@@ -424,7 +425,11 @@ const configureCss = (() => {
     // We only hide channels in Home, Search and Related videos
     if (config.hideChannels) {
       if (config.hiddenChannels.length > 0) {
-        hideCssSelectors.push('.cpfyt-hide-channel')
+        if (debugManualHiding) {
+          cssRules.push('.cpfyt-hide-channel { outline: 2px solid red !important; }')
+        } else {
+          hideCssSelectors.push('.cpfyt-hide-channel')
+        }
       }
       if (desktop) {
         // Custom elements can't be cloned so we need to style our own menu items
@@ -476,66 +481,6 @@ const configureCss = (() => {
           }
         `)
       }
-      /*
-      // TODO Remove
-      let names = []
-      let onlyNames = []
-      let urls = []
-      for (let channel of config.hiddenChannels) {
-        names.push(channel.name)
-        if (channel.url) {
-          urls.push(channel.url)
-        } else {
-          onlyNames.push(channel.name)
-        }
-      }
-
-      if (desktop) {
-        if (urls.length > 0) {
-          let hrefs = urls.map(url => `[href="${url}"]`).join(', ')
-          hideCssSelectors.push(
-            // Home
-            `ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(#avatar-link:is(${hrefs}))`,
-            // Search
-            `ytd-search ytd-video-renderer:has(#channel-thumbnail:is(${hrefs}))`,
-            `ytd-search ytd-channel-renderer:has(#main-link:is(${hrefs}))`,
-          )
-        }
-        if (names.length > 0) {
-          let titles = names.map(url => `[title="${url}"]`).join(', ')
-          hideCssSelectors.push(
-            // Related videos only have channel names
-            `ytd-compact-video-renderer:has(#text.ytd-channel-name:is(${titles}))`,
-          )
-        }
-        // Channels hidden from a Related video will only have the channel name
-        if (onlyNames.length > 0) {
-          let titles = onlyNames.map(url => `[title="${url}"]`).join(', ')
-          hideCssSelectors.push(
-            // Home
-            `ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(#text.ytd-channel-name:is(${titles}))`,
-            // Search
-            `ytd-search ytd-video-renderer:has(#text.ytd-channel-name:is(${titles}))`,
-            `ytd-search ytd-channel-renderer:has(#text.ytd-channel-name:is(${titles}))`,
-          )
-        }
-      }
-      if (mobile) {
-        if (urls.length > 0) {
-          let hrefs = urls.map(url => `[href="${url}"]`).join(', ')
-          hideCssSelectors.push(
-            // Home
-            `ytm-rich-item-renderer:has(a:is(${hrefs}))`,
-            // Search
-            `ytm-search ytm-video-with-context-renderer:has(a:is(${hrefs}))`,
-            // Large item in Related videos
-            `ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-compact-autoplay-renderer:has(a:is(${hrefs}))`,
-            // Related videos
-            `ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-video-with-context-renderer:has(a:is(${hrefs}))`,
-          )
-        }
-      }
-      */
     } else {
       // Hide menu item if config is changed after it's added
       hideCssSelectors.push('#cpfyt-hide-channel')
@@ -816,34 +761,11 @@ const configureCss = (() => {
     }
 
     if (config.hideStreamed) {
-      hideCssSelectors.push('.cpfyt-hide-streamed')
-      // TODO Remove
-      /*
-      if (desktop) {
-        hideCssSelectors.push(
-          // Grid item (Home, Subscriptions)
-          `ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(#video-title-link[aria-label*="${getString('STREAMED_TITLE')}"])`,
-          // List item (Search)
-          `ytd-video-renderer:has(#video-title[aria-label*="${getString('STREAMED_TITLE')}"])`,
-          // Related video
-          `ytd-compact-video-renderer:has(#video-title[aria-label*="${getString('STREAMED_TITLE')}"])`,
-        )
+      if (debugManualHiding) {
+        cssRules.push('.cpfyt-hide-streamed { outline: 2px solid blue; }')
+      } else {
+        hideCssSelectors.push('.cpfyt-hide-streamed')
       }
-      if (mobile) {
-        hideCssSelectors.push(
-          // Home
-          `ytm-rich-item-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
-          // Subscriptions
-          `.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
-          // Search result
-          `ytm-search ytm-video-with-context-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
-          // Large item in Related videos
-          `ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-compact-autoplay-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
-          // Related videos
-          `ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-video-with-context-renderer:has(.yt-core-attributed-string[aria-label*="${getString('STREAMED_TITLE')}"])`,
-        )
-      }
-      */
     }
 
     if (config.hideSuggestedSections) {
@@ -894,40 +816,11 @@ const configureCss = (() => {
     }
 
     if (config.hideWatched) {
-      hideCssSelectors.push('.cpfyt-hide-watched')
-      // TODO Remove
-      /*
-      let percentSelector = ''
-      if (config.hideWatchedThreshold != 'any') {
-        let start = Number(config.hideWatchedThreshold)
-        percentSelector = `:is(${Array.from({length: 100 - start + 1}, (_, i) => `[style*="${i + start}%"]`).join(', ')})`
+      if (debugManualHiding) {
+        cssRules.push('.cpfyt-hide-watched { outline: 2px solid green; }')
+      } else {
+        hideCssSelectors.push('.cpfyt-hide-watched')
       }
-      if (desktop) {
-        hideCssSelectors.push(
-          // Grid item (except channel profile)
-          `ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(#progress${percentSelector})`,
-          // List item (except History, so watched videos can be removed)
-          `ytd-browse:not([page-subtype="history"]) ytd-video-renderer:has(#progress${percentSelector})`,
-          `ytd-search ytd-video-renderer:has(#progress${percentSelector})`,
-          // Related video
-          `ytd-compact-video-renderer:has(#progress${percentSelector})`,
-        )
-      }
-      if (mobile) {
-        hideCssSelectors.push(
-          // Home
-          `ytm-rich-item-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
-          // Subscriptions
-          `.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
-          // Search
-          `ytm-search ytm-video-with-context-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
-          // Large item in Related videos
-          `ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-compact-autoplay-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
-          // Related videos
-          `ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-video-with-context-renderer:has(.thumbnail-overlay-resume-playback-progress${percentSelector})`,
-        )
-      }
-      */
     }
 
     //#region Desktop-only
