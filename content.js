@@ -7,8 +7,8 @@
 // @exclude     https://www.youtube.com/embed/*
 // @version     1
 // ==/UserScript==
-let debug = false
-let debugManualHiding = false
+let debug = true
+let debugManualHiding = true
 
 let mobile = location.hostname == 'm.youtube.com'
 let desktop = !mobile
@@ -52,7 +52,7 @@ let config = {
   hideUpcoming: false,
   hideVoiceSearch: false,
   hideWatched: true,
-  hideWatchedThreshold: '100',
+  hideWatchedThreshold: '80',
   redirectShorts: true,
   skipAds: true,
   // Desktop only

@@ -84,7 +84,7 @@ let defaultConfig = {
   hideVoiceSearch: false,
   hideUpcoming: false,
   hideWatched: true,
-  hideWatchedThreshold: '100',
+  hideWatchedThreshold: '80',
   redirectShorts: true,
   skipAds: true,
   // Desktop only
