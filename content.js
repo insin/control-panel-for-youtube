@@ -244,7 +244,7 @@ let logObserverDisconnects = true
  *
  * - Defaults to {childList: true}
  * - Observers have associated names
- * - Leading call for callback
+ * - Optional leading call for callback
  * - Observers are stored in a scope object
  * - Observers already in the given scope will be disconnected
  * - onDisconnect hook for post-disconnect logic
@@ -255,7 +255,7 @@ let logObserverDisconnects = true
  *   leading?: boolean
  *   logElement?: boolean
  *   name: string
- *   observers: Map<string, import("./types").Disconnectable>
+ *   observers: Map<string, import("./types").Disconnectable> | Map<string, import("./types").Disconnectable>[]
  *   onDisconnect?: () => void
  * }} options
  * @param {MutationObserverInit} mutationObserverOptions
@@ -263,26 +263,31 @@ let logObserverDisconnects = true
  */
 function observeElement($target, callback, options, mutationObserverOptions = {childList: true}) {
   let {leading, logElement, name, observers, onDisconnect} = options
+  let observerMaps = Array.isArray(observers) ? observers : [observers]
 
   /** @type {import("./types").CustomMutationObserver} */
   let observer = Object.assign(new MutationObserver(callback), {name})
   let disconnect = observer.disconnect.bind(observer)
+  let disconnected = false
   observer.disconnect = () => {
+    if (disconnected) return
+    disconnected = true
     disconnect()
-    observers.delete(name)
+    for (let map of observerMaps) map.delete(name)
     onDisconnect?.()
     if (logObserverDisconnects) {
       log(`disconnected ${name} observer`)
     }
   }
 
-  if (observers.has(name)) {
+  if (observerMaps[0].has(name)) {
     log(`disconnecting existing ${name} observer`)
     logObserverDisconnects = false
-    observers.get(name).disconnect()
+    observerMaps[0].get(name).disconnect()
     logObserverDisconnects = true
   }
-  observers.set(name, observer)
+
+  for (let map of observerMaps) map.set(name, observer)
   if (logElement) {
     log(`observing ${name}`, $target)
   } else {
@@ -1292,7 +1297,7 @@ async function addHideChannelToMobileMenu($menu) {
 }
 
 /**
- * @param {HTMLElement} $video video container element
+ * @param {Element} $video video container element
  * @returns {import("./types").Channel}
  */
 function getChannelDetailsFromVideo($video) {
@@ -1557,91 +1562,170 @@ async function observePopups() {
 }
 
 /**
- * Search pages are a list of sections, which can have more items added to them
+ * Search pages are a list of sections, which can have video items added to them
  * after they're added, so we watch for new section contents as well as for new
- * sections.
+ * sections. When the search is changed, additional sections are removed and the
+ * first section is refreshed - it gets a can-show-more attribute while this is
+ * happening.
  * @param {{
  *   name: string
  *   selector: string
  *   sectionContentsSelector: string
  *   sectionElement: string
+ *   suggestedSectionElement?: string
  *   videoElement: string
  * }} options
  */
 async function observeSearchResultSections(options) {
-  let {name, selector, sectionContentsSelector, sectionElement, videoElement} = options
+  let {name, selector, sectionContentsSelector, sectionElement, suggestedSectionElement = null, videoElement} = options
   let sectionNodeName = sectionElement.toUpperCase()
+  let suggestedSectionNodeName = suggestedSectionElement?.toUpperCase()
   let videoNodeName = videoElement.toUpperCase()
 
   let $sections = await getElement(selector, {
     name,
-    stopIf: () => !location.pathname.startsWith('/results'),
+    stopIf: currentUrlChanges(),
   })
   if (!$sections) return
 
+  /** @type {WeakMap<Element, Map<string, import("./types").Disconnectable>>} */
+  let sectionObservers = new WeakMap()
+  /** @type {WeakMap<Element, Map<string, import("./types").Disconnectable>>} */
+  let sectionItemObservers = new WeakMap()
   let sectionCount = 0
-
-  /**
-   * On desktop, thumbnail overlays with watch progress are loazed lazily as you
-   * scroll through search results.
-   * @param {HTMLElement} $video
-   * @param {string} uniqueId
-   */
-  function waitForThumbnail($video, uniqueId) {
-    if (!desktop || !config.hideWatched) return
-
-    let $thumbnail = $video.querySelector('ytd-thumbnail')
-    if (!$thumbnail || $thumbnail.hasAttribute('loaded')) return
-
-    observeElement($thumbnail, (_, observer) => {
-      hideWatched($video)
-      observer.disconnect()
-    }, {
-      name: `${uniqueId} ytd-thumbnail (for loaded attribute appearing)`,
-      observers: pageObservers,
-    }, {
-      attributes: true,
-      attributeFilter: ['loaded'],
-    })
-  }
 
   /**
    * @param {HTMLElement} $section
    * @param {number} sectionNum
    */
   function processSection($section, sectionNum) {
+    let $contents = /** @type {HTMLElement} */ ($section.querySelector(sectionContentsSelector))
     let itemCount = 0
+    let suggestedSectionCount = 0
+    /** @type {Map<string, import("./types").Disconnectable>} */
+    let observers = new Map()
+    /** @type {Map<string, import("./types").Disconnectable>} */
+    let itemObservers = new Map()
+    sectionObservers.set($section, observers)
+    sectionItemObservers.set($section, itemObservers)
 
-    observeElement($section.querySelector(sectionContentsSelector), (mutations) => {
+    function processCurrentItems() {
+      itemCount = 0
+      suggestedSectionCount = 0
+      for (let $item of $contents.children) {
+        if ($item.nodeName == videoNodeName) {
+          processVideo($item)
+          waitForVideoOverlay($item, `section ${sectionNum} item ${++itemCount}`, itemObservers)
+        }
+        if (!config.hideSuggestedSections && suggestedSectionNodeName != null && $item.nodeName == suggestedSectionNodeName) {
+          processSuggestedSection($item)
+        }
+      }
+    }
+
+    /**
+     * If suggested sections (Latest from, People also watched, For you, etc.)
+     * aren't being hidden, we need to process their videos and watch for more
+     * being loaded.
+     * @param {Element} $suggestedSection
+     */
+    function processSuggestedSection($suggestedSection) {
+      let suggestedItemCount = 0
+      let uniqueId = `section ${sectionNum} suggested section ${++suggestedSectionCount}`
+      let $items = $suggestedSection.querySelector('#items')
+      for (let $video of $items.children) {
+        if ($video.nodeName == videoNodeName) {
+          processVideo($video)
+          waitForVideoOverlay($video, `${uniqueId} item ${++suggestedItemCount}`, itemObservers)
+        }
+      }
+      // More videos are added if the "More" control is used
+      observeElement($items, (mutations, observer) => {
+        let moreVideosAdded = false
+        for (let mutation of mutations) {
+          for (let $addedNode of mutation.addedNodes) {
+            if (!($addedNode instanceof HTMLElement)) continue
+            if ($addedNode.nodeName == videoNodeName) {
+              if (!moreVideosAdded) moreVideosAdded = true
+              processVideo($addedNode)
+              waitForVideoOverlay($addedNode, `${uniqueId} item ${++suggestedItemCount}`, itemObservers)
+            }
+          }
+        }
+        if (moreVideosAdded) {
+          observer.disconnect()
+        }
+      }, {
+        name: `${uniqueId} videos (for more being added)`,
+        observers: [itemObservers, pageObservers],
+      })
+    }
+
+    if (desktop) {
+      observeElement($section, () => {
+        if ($section.getAttribute('can-show-more') == null) {
+          log('can-show-more attribute removed - reprocessing refreshed items')
+          for (let observer of itemObservers.values()) {
+            observer.disconnect()
+          }
+          processCurrentItems()
+        }
+      }, {
+        name: `section ${sectionNum} can-show-more attribute`,
+        observers: [observers, pageObservers],
+      }, {
+        attributes: true,
+        attributeFilter: ['can-show-more'],
+      })
+    }
+
+    observeElement($contents, (mutations) => {
       for (let mutation of mutations) {
         for (let $addedNode of mutation.addedNodes) {
-          if ($addedNode instanceof HTMLElement && $addedNode.nodeName == videoNodeName) {
+          if (!($addedNode instanceof HTMLElement)) continue
+          if ($addedNode.nodeName == videoNodeName) {
             processVideo($addedNode)
-            waitForThumbnail($addedNode, `section ${sectionNum} item ${++itemCount}`)
+            waitForVideoOverlay($addedNode, `section ${sectionNum} item ${++itemCount}`, observers)
+          }
+          if (!config.hideSuggestedSections && suggestedSectionNodeName != null && $addedNode.nodeName == suggestedSectionNodeName) {
+            processSuggestedSection($addedNode)
           }
         }
       }
     }, {
-      name: `search <${sectionElement}> ${sectionNum} #contents (for <${videoElement}>s being added)`,
-      observers: pageObservers,
+      name: `section ${sectionNum} contents`,
+      observers: [observers, pageObservers],
     })
 
-    let $initialItems = /** @type {NodeListOf<HTMLElement>} */ ($section.querySelectorAll(videoElement))
-    log(`${$initialItems.length} initial search item${s($initialItems.length)} in section ${sectionNum}`)
-    for (let $initialItem of $initialItems) {
-      processVideo($initialItem)
-      waitForThumbnail($initialItem, `section ${sectionNum} item ${++itemCount}`)
-    }
+    processCurrentItems()
   }
 
-  // New sections are added when more results are loaded
   observeElement($sections, (mutations) => {
     for (let mutation of mutations) {
+      // New sections are added when more results are loaded
       for (let $addedNode of mutation.addedNodes) {
+        if (!($addedNode instanceof HTMLElement)) continue
         if ($addedNode.nodeName == sectionNodeName) {
           let sectionNum = ++sectionCount
           log(`search result section ${sectionNum} added`)
-          processSection(/** @type {HTMLElement} */ ($addedNode), sectionNum)
+          processSection($addedNode, sectionNum)
+        }
+      }
+      // Additional sections are removed when the search is changed
+      for (let $removedNode of mutation.removedNodes) {
+        if (!($removedNode instanceof HTMLElement)) continue
+        if ($removedNode.nodeName == sectionNodeName && sectionObservers.has($removedNode)) {
+          log('disconnecting removed section observers')
+          for (let observer of sectionObservers.get($removedNode).values()) {
+            observer.disconnect()
+          }
+          sectionObservers.delete($removedNode)
+          for (let observer of sectionItemObservers.get($removedNode).values()) {
+            observer.disconnect()
+          }
+          sectionObservers.delete($removedNode)
+          sectionItemObservers.delete($removedNode)
+          sectionCount--
         }
       }
     }
@@ -1924,12 +2008,15 @@ async function observeVideoList(options) {
   let $list = await getElement(selector, {name, stopIf})
   if (!$list) return
 
+  let itemCount = 0
+
   observeElement($list, (mutations) => {
     let newItemCount = 0
     for (let mutation of mutations) {
       for (let $addedNode of mutation.addedNodes) {
-        if (videoNodeNames.has($addedNode.nodeName)) {
-          processVideo(/** @type {HTMLElement} */ ($addedNode))
+        if ($addedNode instanceof HTMLElement && videoNodeNames.has($addedNode.nodeName)) {
+          processVideo($addedNode)
+          waitForVideoOverlay($addedNode, `item ${++itemCount}`)
           newItemCount++
         }
       }
@@ -1944,7 +2031,10 @@ async function observeVideoList(options) {
 
   let $initialItems = /** @type {NodeListOf<HTMLElement>} */ ($list.querySelectorAll([...videoElements].join(', ')))
   log(`${$initialItems.length} initial ${page} item${s($initialItems.length)}`)
-  $initialItems.forEach(processVideo)
+  for (let $initialItem of $initialItems) {
+    processVideo($initialItem)
+    waitForVideoOverlay($initialItem, `item ${++itemCount}`)
+  }
 }
 
 /** @param {MouseEvent} e */
@@ -1975,7 +2065,7 @@ function onMobileMenuAppeared($menu) {
   }
 }
 
-/** @param {HTMLElement} $video */
+/** @param {Element} $video */
 function hideWatched($video) {
   if (!config.hideWatched) return
   // Watch % is obtained from progress bar width when a video has one
@@ -1997,7 +2087,7 @@ function hideWatched($video) {
 /**
  * Tag individual video elements to be hidden by options which would need too
  * complex or broad CSS :has() relative selectors.
- * @param {HTMLElement} $video
+ * @param {Element} $video
  */
 function processVideo($video) {
   hideWatched($video)
@@ -2163,10 +2253,9 @@ async function tweakHomePage() {
   }
 }
 
+// TODO Hide ytd-channel-renderer if a channel is hidden
 function tweakSearchPage() {
   if (!config.hideWatched && !config.hideStreamed && !config.hideChannels) return
-
-  // TODO Hide ytd-channel-renderer if a channel is hidden
 
   if (desktop) {
     observeSearchResultSections({
@@ -2174,6 +2263,7 @@ function tweakSearchPage() {
       selector: 'ytd-search #contents.ytd-section-list-renderer',
       sectionContentsSelector: '#contents',
       sectionElement: 'ytd-item-section-renderer',
+      suggestedSectionElement: 'ytd-shelf-renderer',
       videoElement: 'ytd-video-renderer',
     })
   }
@@ -2228,6 +2318,64 @@ async function tweakVideoPage() {
       page: 'related',
       // <ytm-compact-autoplay-renderer> displays as a large item on bigger mobile screens
       videoElements: new Set(['ytm-video-with-context-renderer', 'ytm-compact-autoplay-renderer']),
+    })
+  }
+}
+
+/**
+ * Wait for video overlays with watch progress when they're loazed lazily.
+ * @param {Element} $video
+ * @param {string} uniqueId
+ * @param {Map<string, import("./types").Disconnectable>} [observers]
+ */
+function waitForVideoOverlay($video, uniqueId, observers) {
+  if (!config.hideWatched) return
+
+  if (desktop) {
+    // The overlay element is initially empty
+    let $overlays = $video.querySelector('#overlays')
+    if (!$overlays || $overlays.childElementCount > 0) return
+
+    observeElement($overlays, (mutations, observer) => {
+      let nodesAdded = false
+      for (let mutation of mutations) {
+        for (let $addedNode of mutation.addedNodes) {
+          if (!nodesAdded) nodesAdded = true
+          if ($addedNode.nodeName == 'YTD-THUMBNAIL-OVERLAY-RESUME-PLAYBACK-RENDERER') {
+            hideWatched($video)
+          }
+        }
+      }
+      if (nodesAdded) {
+        observer.disconnect()
+      }
+    }, {
+      name: `${uniqueId} #overlays (for overlay elements being added)`,
+      observers: [observers, pageObservers].filter(Boolean),
+    })
+  }
+
+  if (mobile) {
+    // The overlay element has a different initial class
+    let $placeholder = $video.querySelector('.video-thumbnail-overlay-bottom-group')
+    if (!$placeholder) return
+
+    observeElement($placeholder, (mutations, observer) => {
+      let nodesAdded = false
+      for (let mutation of mutations) {
+        for (let $addedNode of mutation.addedNodes) {
+          if (!nodesAdded) nodesAdded = true
+          if ($addedNode.nodeName == 'YTM-THUMBNAIL-OVERLAY-RESUME-PLAYBACK-RENDERER') {
+            hideWatched($video)
+          }
+        }
+      }
+      if (nodesAdded) {
+        observer.disconnect()
+      }
+    }, {
+      name: `${uniqueId} .video-thumbnail-overlay-bottom-group (for overlay elements being added)`,
+      observers: [observers, pageObservers].filter(Boolean),
     })
   }
 }
