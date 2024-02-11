@@ -1773,7 +1773,8 @@ async function observeVideoAds() {
     $videoAds = await observeForElement($player, (mutations) => {
       for (let mutation of mutations) {
         for (let $addedNode of mutation.addedNodes) {
-          if ($addedNode instanceof HTMLElement && $addedNode.classList.contains('video-ads')) {
+          if (!($addedNode instanceof HTMLElement)) continue
+          if ($addedNode.classList.contains('video-ads')) {
             return $addedNode
           }
         }
@@ -1991,8 +1992,7 @@ function observeVideoHiddenState() {
 }
 
 /**
- * Calls processVideo() on initial items in a video list element, and on new
- * items as they're added.
+ * Processes initial videos in a list element, and new videos as they're added.
  * @param {{
  *   name: string
  *   selector: string
@@ -2014,7 +2014,8 @@ async function observeVideoList(options) {
     let newItemCount = 0
     for (let mutation of mutations) {
       for (let $addedNode of mutation.addedNodes) {
-        if ($addedNode instanceof HTMLElement && videoNodeNames.has($addedNode.nodeName)) {
+        if (!($addedNode instanceof HTMLElement)) continue
+        if (videoNodeNames.has($addedNode.nodeName)) {
           processVideo($addedNode)
           waitForVideoOverlay($addedNode, `item ${++itemCount}`)
           newItemCount++
@@ -2029,12 +2030,15 @@ async function observeVideoList(options) {
     observers: pageObservers,
   })
 
-  let $initialItems = /** @type {NodeListOf<HTMLElement>} */ ($list.querySelectorAll([...videoElements].join(', ')))
-  log(`${$initialItems.length} initial ${page} item${s($initialItems.length)}`)
-  for (let $initialItem of $initialItems) {
-    processVideo($initialItem)
-    waitForVideoOverlay($initialItem, `item ${++itemCount}`)
+  let initialItemCount = 0
+  for (let $initialItem of $list.children) {
+    if (videoNodeNames.has($initialItem.nodeName)) {
+      processVideo($initialItem)
+      waitForVideoOverlay($initialItem, `item ${++itemCount}`)
+      initialItemCount++
+    }
   }
+  log(`${initialItemCount} initial ${page} item${s(initialItemCount)}`)
 }
 
 /** @param {MouseEvent} e */
@@ -2303,15 +2307,68 @@ async function tweakVideoPage() {
   }
 
   if (config.hideRelated || (!config.hideWatched && !config.hideStreamed && !config.hideChannels)) return
+
   if (desktop) {
-    observeVideoList({
-      name: 'related <ytd-item-section-renderer> contents',
-      selector: '#related.ytd-watch-flexy #contents.ytd-item-section-renderer',
-      page: 'related',
-      videoElements: new Set(['ytd-compact-video-renderer']),
+    let $section = await getElement('#related.ytd-watch-flexy ytd-item-section-renderer', {
+      name: 'related <ytd-item-section-renderer>',
+      stopIf: currentUrlChanges(),
     })
+    if (!$section) return
+
+    let $contents = $section.querySelector('#contents')
+    let itemCount = 0
+
+    function processCurrentItems() {
+      itemCount = 0
+      for (let $item of $contents.children) {
+        if ($item.nodeName == 'YTD-COMPACT-VIDEO-RENDERER') {
+          processVideo($item)
+          waitForVideoOverlay($item, `related item ${++itemCount}`)
+        }
+      }
+    }
+
+    // If the video changes (e.g. a related video is clicked) on desktop,
+    // the related items section is refreshed - the section has a hidden
+    // attribute while this is happening.
+    observeElement($section, () => {
+      if ($section.getAttribute('hidden') == null) {
+        log('hidden attribute removed - reprocessing refreshed items')
+        processCurrentItems()
+      }
+    }, {
+      name: 'related <ytd-item-section-renderer> hidden attribute',
+      observers: pageObservers,
+    }, {
+      attributes: true,
+      attributeFilter: ['hidden'],
+    })
+
+    observeElement($contents, (mutations) => {
+      let newItemCount = 0
+      for (let mutation of mutations) {
+        for (let $addedNode of mutation.addedNodes) {
+          if (!($addedNode instanceof HTMLElement)) continue
+          if ($addedNode.nodeName == 'YTD-COMPACT-VIDEO-RENDERER') {
+            processVideo($addedNode)
+            waitForVideoOverlay($addedNode, `related item ${++itemCount}`)
+            newItemCount++
+          }
+        }
+      }
+      if (newItemCount > 0) {
+        log(`${newItemCount} new related item${s(newItemCount)} added`)
+      }
+    }, {
+      name: `related <ytd-item-section-renderer> contents (for new items being added)`,
+      observers: pageObservers,
+    })
+
+    processCurrentItems()
   }
+
   if (mobile) {
+    // If the video changes on mobile, related videos are rendered from scratch
     observeVideoList({
       name: 'related <lazy-list>',
       selector: 'ytm-item-section-renderer[data-content-type="related"] > lazy-list',
