@@ -4,6 +4,7 @@ const semver = require('semver')
 
 const contentPath = './content.js'
 const manifestPaths = ['./manifest.json', './Safari/Shared (Extension)/Resources/manifest.json']
+const optionsPath = './options.html'
 const safariProjectPath = './safari/Control Panel for YouTube.xcodeproj/project.pbxproj'
 
 let releaseType = process.argv[2]
@@ -34,6 +35,13 @@ for (let manifestPath of manifestPaths) {
     {encoding: 'utf8'}
   )
 }
+
+fs.writeFileSync(
+  optionsPath,
+  fs.readFileSync(optionsPath, {encoding: 'utf8'})
+    .replace(/id="version">[^<]+</, `id="version">v${nextVersion}<`),
+  {encoding: 'utf8'}
+)
 
 fs.writeFileSync(
   safariProjectPath,

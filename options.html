@@ -309,6 +309,27 @@
         </label>
       </section>
     </section>
+
+    <section class="group labelled debug">
+      <label id="debugOptions">Debug options</label>
+      <section class="checkbox">
+        <label>
+          <span id="debug">Debug mode</span>
+          <input type="checkbox" name="debug">
+          <span class="toggle"></span>
+        </label>
+        <p id="debugNote">Enables debug logging</p>
+      </section>
+      <section class="checkbox">
+        <label>
+          <span id="debugManualHiding">Debug manual hiding</span>
+          <input type="checkbox" name="debugManualHiding">
+          <span class="toggle"></span>
+        </label>
+        <p id="debugManualHidingNote">Highlights elements instead of hiding them</p>
+      </section>
+    </section>
+    <div id="version">v1.0.0<span id="debugCountdown"></span></div>
   </form>
   <div class="firefox-sizer">This text is only here to force the popup to its max width in Firefox</div>
   <script src="options.js"></script>

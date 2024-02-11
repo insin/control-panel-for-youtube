@@ -33,6 +33,8 @@ export type LocaleKey =
 export type OptionsConfig = EmbedConfig & SiteConfig
 
 export type SiteConfig = {
+  debug?: boolean,
+  debugManualHiding?: boolean,
   enabled: boolean
   version?: Version
   disableAutoplay: boolean

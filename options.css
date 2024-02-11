@@ -23,6 +23,7 @@ body.macOS.browserAction {
 }
 
 body.desktop .mobile,
+body:not(.debug) .debug,
 body:not(.hiddenChannels) #hiddenChannelsDetails,
 body:not(.hidingWatched) .hidingWatched,
 body.mobile .desktop {
@@ -116,6 +117,15 @@ body.disabled:not(.safari) form > section {
 }
 
 .firefox-sizer {
+  display: none;
+}
+
+#version {
+  text-align: center;
+  font-size: 75%;
+  margin-top: 12px;
+}
+body.disabled #version {
   display: none;
 }
 

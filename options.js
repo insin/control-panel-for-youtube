@@ -246,6 +246,32 @@ function main() {
     $form.addEventListener('change', onFormChanged)
     $hiddenChannelsDetails.addEventListener('toggle', updateHiddenChannelsDisplay)
     chrome.storage.local.onChanged.addListener(onStorageChanged)
+
+    $body.classList.toggle('debug', optionsConfig.debug || optionsConfig.debugManualHiding)
+    if (!optionsConfig.debug && !optionsConfig.debugManualHiding) {
+      let $version = document.querySelector('#version')
+      let $debugCountdown = document.querySelector('#debugCountdown')
+      let debugCountdown = 5
+
+      function onClick(e) {
+        if (e.target === $version || $version.contains(/** @type {Node} */ (e.target))) {
+          debugCountdown--
+        } else {
+          debugCountdown = 5
+        }
+
+        if (debugCountdown == 0) {
+          $body.classList.add('debug')
+          $debugCountdown.textContent = ''
+          $form.removeEventListener('click', onClick)
+        }
+        else if (debugCountdown <= 3) {
+          $debugCountdown.textContent = ` (${debugCountdown})`
+        }
+      }
+
+      $form.addEventListener('click', onClick)
+    }
   })
 }
 

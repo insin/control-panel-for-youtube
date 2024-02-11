@@ -7,8 +7,8 @@
 // @exclude     https://www.youtube.com/embed/*
 // @version     1
 // ==/UserScript==
-let debug = true
-let debugManualHiding = true
+let debug = false
+let debugManualHiding = false
 
 let mobile = location.hostname == 'm.youtube.com'
 let desktop = !mobile
@@ -2426,6 +2426,18 @@ function onConfigChange(storageChanges) {
       .map(([key, {newValue}]) => [key, newValue])
   )
   if (Object.keys(configChanges).length > 0) {
+    if ('debug' in configChanges) {
+      log('disabling debug mode')
+      debug = configChanges.debug
+      log('enabled debug mode')
+      return
+    }
+    if ('debugManualHiding' in configChanges) {
+      debugManualHiding = configChanges.debugManualHiding
+      log(`${debugManualHiding ? 'en' : 'dis'}abled debugging manual hiding`)
+      configureCss()
+      return
+    }
     Object.assign(config, configChanges)
     configChanged(configChanges)
   }
@@ -2444,6 +2456,13 @@ if (!isUserscript) {
   chrome.storage.local.get((storedConfig) => {
     Object.assign(config, storedConfig)
     log('initial config', {...config, version}, {lang, loggedIn})
+
+    if (config.debug) {
+      debug = true
+    }
+    if (config.debugManualHiding) {
+      debugManualHiding = true
+    }
 
     // Let the options page know which version is being used
     chrome.storage.local.set({version})
