@@ -377,6 +377,8 @@ const configureCss = (() => {
       hideCssSelectors.push(
         // Thumbnail for cued ad when autoplay is disabled
         '#movie_player.ad-showing .ytp-cued-thumbnail-overlay-image',
+        // Ad video
+        '#movie_player.ad-showing video',
         // Ad title
         '#movie_player.ad-showing .ytp-chrome-top',
         // Ad overlay content
@@ -741,6 +743,8 @@ const configureCss = (() => {
           '#below #panels',
           // After an ad
           '.ytp-ad-action-interstitial',
+          // Paid content overlay
+          '.ytp-paid-content-overlay',
           // Above Related videos
           '#player-ads',
           // In Related videos
@@ -755,6 +759,8 @@ const configureCss = (() => {
           '.mealbar-promo-renderer',
           // Search results
           'ytm-search ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
+          // Paid content overlay
+          'ytm-paid-content-overlay-renderer',
           // Directly under video
           'ytm-companion-slot:has(> ytm-companion-ad-renderer)',
           // Directly under comments entry point at narrow sizes
@@ -1415,7 +1421,7 @@ async function observeDesktopRichGridVideos(options) {
 
 /** @param {HTMLElement} $menu */
 function onDesktopMenuAppeared($menu) {
-  log('menu appeared', {$lastClickedElement})
+  log('menu appeared')
 
   if (config.downloadTranscript) {
     addDownloadTranscriptToDesktopMenu($menu)
