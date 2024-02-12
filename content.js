@@ -2335,19 +2335,19 @@ async function tweakVideoPage() {
     }
 
     // If the video changes (e.g. a related video is clicked) on desktop,
-    // the related items section is refreshed - the section has a hidden
+    // the related items section is refreshed - the section has a can-show-more
     // attribute while this is happening.
     observeElement($section, () => {
-      if ($section.getAttribute('hidden') == null) {
-        log('hidden attribute removed - reprocessing refreshed items')
+      if ($section.getAttribute('can-show-more') == null) {
+        log('can-show-more attribute removed - reprocessing refreshed items')
         processCurrentItems()
       }
     }, {
-      name: 'related <ytd-item-section-renderer> hidden attribute',
+      name: 'related <ytd-item-section-renderer> can-show-more attribute',
       observers: pageObservers,
     }, {
       attributes: true,
-      attributeFilter: ['hidden'],
+      attributeFilter: ['can-show-more'],
     })
 
     observeElement($contents, (mutations) => {
