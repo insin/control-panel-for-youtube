@@ -569,7 +569,11 @@ const configureCss = (() => {
           }
         }
       `)
-      hideCssSelectors.push(`.${Classes.HIDE_HIDDEN}`)
+      if (debugManualHiding) {
+        cssRules.push(`.${Classes.HIDE_HIDDEN} { outline: 2px solid magenta !important; }`)
+      } else {
+        hideCssSelectors.push(`.${Classes.HIDE_HIDDEN}`)
+      }
     }
 
     if (config.hideLive) {
@@ -1372,6 +1376,11 @@ async function observeDesktopRichGridVideos(options) {
   /** @param {Element} $video */
   function processVideo($video) {
     manuallyHideVideo($video)
+
+    // Re-hide hidden videos if they're re-rendered, e.g. grid size changes
+    if (config.hideHiddenVideos) {
+      $video.classList.toggle(Classes.HIDE_HIDDEN, Boolean($video.querySelector('ytd-rich-grid-media[is-dismissed]')))
+    }
 
     // When grid contents are refreshed (e.g. clicking the Subscriptions nav
     // item on the Subscriptions page after some time), video elements are
