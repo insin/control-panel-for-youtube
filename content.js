@@ -118,6 +118,7 @@ const undoHideDelayMs = 5000
 const Classes = {
   HIDE_CHANNEL: 'cpfyt-hide-channel',
   HIDE_HIDDEN: 'cpfyt-hide-hidden',
+  HIDE_OPEN_APP: 'cpfyt-hide-open-app',
   HIDE_STREAMED: 'cpfyt-hide-streamed',
   HIDE_WATCHED: 'cpfyt-hide-watched',
 }
@@ -926,7 +927,7 @@ const configureCss = (() => {
           // The user menu is replaced with "Open App" on videos when logged out
           'html.watch-scroll .mobile-topbar-header-sign-in-button',
           // The overflow menu has an Open App menu item we'll add this class to
-          'ytm-menu-item.open-app-menu-item',
+          `ytm-menu-item.${Classes.HIDE_OPEN_APP}`,
           // The last item in the full screen menu is Open App
           '#menu .multi-page-menu-system-link-list:has(+ ytm-privacy-tos-footer-renderer)',
         )
@@ -2120,7 +2121,7 @@ function onMobileMenuAppeared($menu) {
     for (let $menuItem of menuItems) {
       if ($menuItem.textContent == 'Open App') {
         log('tagging Open App menu item')
-        $menuItem.classList.add('open-app-menu-item')
+        $menuItem.classList.add(Classes.HIDE_OPEN_APP)
         break
       }
     }

@@ -247,7 +247,7 @@ function main() {
     $hiddenChannelsDetails.addEventListener('toggle', updateHiddenChannelsDisplay)
     chrome.storage.local.onChanged.addListener(onStorageChanged)
 
-    $body.classList.toggle('debug', optionsConfig.debug || optionsConfig.debugManualHiding)
+    $body.classList.toggle('debug', Boolean(optionsConfig.debug || optionsConfig.debugManualHiding))
     if (!optionsConfig.debug && !optionsConfig.debugManualHiding) {
       let $version = document.querySelector('#version')
       let $debugCountdown = document.querySelector('#debugCountdown')
