@@ -205,7 +205,7 @@ function getElement(selector, {
        warn(`stopped waiting for ${name || selector} after ${reason}`)
      }
      else if (Date.now() > startTime) {
-       log(`${name || selector} appeared after ${Date.now() - startTime}ms`)
+       log(`${name || selector} appeared after`, Date.now() - startTime, 'ms')
      }
      if (rafId) {
        cancelAnimationFrame(rafId)
@@ -326,7 +326,7 @@ function observeForElement($target, getter, options, mutationObserverOptions) {
       if ($result) {
         found = true
         if (Date.now() > startTime) {
-          log(`${targetName} appeared after ${Date.now() - startTime}ms`)
+          log(`${targetName} appeared after`, Date.now() - startTime, 'ms')
         }
         observer.disconnect()
         resolve($result)
@@ -1130,7 +1130,6 @@ function downloadTranscript() {
   }
 
   let $link = document.createElement('a')
-  log('transcript', sections.join('\n\n'))
   let url = URL.createObjectURL(new Blob([sections.join('\n\n')], {type: "text/plain"}))
   let title = /** @type {HTMLElement} */ (document.querySelector('#above-the-fold #title'))?.innerText ?? 'transcript'
   $link.setAttribute('href', url)
@@ -1348,12 +1347,7 @@ function getChannelDetailsFromVideo($video) {
   // warn('unable to get channel details from video container', $video)
 }
 
-/**
- * When the number of items per row in Home and Subscriptions (grid view)
- * changes responsively with width, rows are re-rendered and existing video
- * elements are reused, so processVideo() needs to re-tag all videos.
- * @param {{page: string}} options
- */
+/** @param {{page: 'home' | 'subscriptions'}} options */
 async function observeDesktopRichGridVideos(options) {
   let {page} = options
 
@@ -1366,13 +1360,55 @@ async function observeDesktopRichGridVideos(options) {
   let $rows = $renderer.querySelector(':scope > #contents')
   let itemsPerRow = $renderer.style.getPropertyValue('--ytd-rich-grid-items-per-row')
   let itemsPerRowChanging = false
+  let observingRefreshCanary = false
 
-  function processAllItems() {
-    let $initialItems = /** @type {NodeListOf<HTMLElement>} */ ($rows.querySelectorAll('ytd-rich-item-renderer.ytd-rich-grid-row'))
-    log(`${$initialItems.length} initial ${page} item${s($initialItems.length)}`)
-    $initialItems.forEach(processVideo)
+  /** @param {Element} $video */
+  function processVideo($video) {
+    manuallyHideVideo($video)
+
+    // When grid contents are refreshed (e.g. clicking the Subscriptions nav
+    // item on the Subscriptions page after some time), video elements are
+    // re-used, so need to be re-checked for manual hiding. We observe the first
+    // video's URL as a signal this has happened.
+    if (!observingRefreshCanary) {
+      let $thumbnailLink = /** @type {HTMLAnchorElement} */ ($video.querySelector('a#thumbnail'))
+      // Some Home screen items (e.g. Mixes, promoted videos) won't have a link
+      if (!$thumbnailLink) return
+
+      observeElement($thumbnailLink, (mutations, observer) => {
+        if (!$thumbnailLink.href.endsWith(mutations[0].oldValue)) {
+          log('refresh canary href changed', mutations[0].oldValue, '→', $thumbnailLink.href)
+          // On the Home page, the type of video might change after a refresh,
+          // so also re-observe the refresh canary when re-processing videos.
+          if (page == 'home') {
+            observer.disconnect()
+            observingRefreshCanary = false
+          }
+          processAllVideos()
+        }
+      }, {
+        name: `refresh canary href`,
+        observers: pageObservers,
+      }, {
+        attributes: true,
+        attributeFilter: ['href'],
+        attributeOldValue: true,
+      })
+      observingRefreshCanary = true
+    }
   }
 
+  function processAllVideos() {
+    let $videos = $rows.querySelectorAll('ytd-rich-item-renderer.ytd-rich-grid-row')
+    if ($videos.length > 0) {
+      log('processing', $videos.length, `${page} video${s($videos.length)}`)
+    }
+    $videos.forEach(processVideo)
+  }
+
+  // When the number of items per row changes responsively with width, rows are
+  // re-rendered and existing video elements are reused, so all videos need to
+  // be re-checked for manual hiding.
   observeElement($renderer, () => {
     if ($renderer.style.getPropertyValue('--ytd-rich-grid-items-per-row') == itemsPerRow) return
 
@@ -1380,43 +1416,51 @@ async function observeDesktopRichGridVideos(options) {
     itemsPerRow = $renderer.style.getPropertyValue('--ytd-rich-grid-items-per-row')
     itemsPerRowChanging = true
     try {
-      processAllItems()
+      processAllVideos()
     } finally {
-      // Allow row mutations to run so they can be ignored
+      // Allow content mutations to run so they can be ignored
       Promise.resolve().then(() => {
         itemsPerRowChanging = false
       })
     }
   }, {
-    name: `${page} <ytd-rich-grid-renderer> style attribute (for items per row being changed)`,
+    name: `${page} <ytd-rich-grid-renderer> style attribute (for --ytd-rich-grid-items-per-row changing)`,
     observers: pageObservers,
   }, {
     attributes: true,
     attributeFilter: ['style'],
   })
 
+  // Process videos in new rows as they're added
   observeElement($rows, (mutations) => {
     if (itemsPerRowChanging) {
-      log('ignoring row mutations as items per row just changed', mutations)
+      log('ignoring row mutations as items per row just changed')
       return
     }
+    let videosAdded = 0
     for (let mutation of mutations) {
       for (let $addedNode of mutation.addedNodes) {
+        if (!($addedNode instanceof HTMLElement)) continue
         if ($addedNode.nodeName == 'YTD-RICH-GRID-ROW') {
-          let $newItems = /** @type {HTMLElement} */ ($addedNode).querySelectorAll('ytd-rich-item-renderer')
-          log(`new ${page} row with ${$newItems.length} item${s($newItems.length)} added`)
-          $newItems.forEach(processVideo)
+          let $contents = $addedNode.querySelector('#contents')
+          for (let $item of $contents.children) {
+            if ($item.nodeName == 'YTD-RICH-ITEM-RENDERER') {
+              processVideo($item)
+              videosAdded++
+            }
+          }
         }
       }
+    }
+    if (videosAdded > 0) {
+      log(videosAdded, `video${s(videosAdded)} added`)
     }
   }, {
     name: `${page} <ytd-rich-grid-renderer> rows (for new rows being added)`,
     observers: pageObservers,
   })
 
-  let $initialItems = /** @type {NodeListOf<HTMLElement>} */ ($rows.querySelectorAll('ytd-rich-item-renderer.ytd-rich-grid-row'))
-  log(`${$initialItems.length} initial ${page} item${s($initialItems.length)}`)
-  $initialItems.forEach(processVideo)
+  processAllVideos()
 }
 
 /** @param {HTMLElement} $menu */
@@ -1620,7 +1664,7 @@ async function observeSearchResultSections(options) {
       suggestedSectionCount = 0
       for (let $item of $contents.children) {
         if ($item.nodeName == videoNodeName) {
-          processVideo($item)
+          manuallyHideVideo($item)
           waitForVideoOverlay($item, `section ${sectionNum} item ${++itemCount}`, itemObservers)
         }
         if (!config.hideSuggestedSections && suggestedSectionNodeName != null && $item.nodeName == suggestedSectionNodeName) {
@@ -1641,7 +1685,7 @@ async function observeSearchResultSections(options) {
       let $items = $suggestedSection.querySelector('#items')
       for (let $video of $items.children) {
         if ($video.nodeName == videoNodeName) {
-          processVideo($video)
+          manuallyHideVideo($video)
           waitForVideoOverlay($video, `${uniqueId} item ${++suggestedItemCount}`, itemObservers)
         }
       }
@@ -1653,7 +1697,7 @@ async function observeSearchResultSections(options) {
             if (!($addedNode instanceof HTMLElement)) continue
             if ($addedNode.nodeName == videoNodeName) {
               if (!moreVideosAdded) moreVideosAdded = true
-              processVideo($addedNode)
+              manuallyHideVideo($addedNode)
               waitForVideoOverlay($addedNode, `${uniqueId} item ${++suggestedItemCount}`, itemObservers)
             }
           }
@@ -1690,7 +1734,7 @@ async function observeSearchResultSections(options) {
         for (let $addedNode of mutation.addedNodes) {
           if (!($addedNode instanceof HTMLElement)) continue
           if ($addedNode.nodeName == videoNodeName) {
-            processVideo($addedNode)
+            manuallyHideVideo($addedNode)
             waitForVideoOverlay($addedNode, `section ${sectionNum} item ${++itemCount}`, observers)
           }
           if (!config.hideSuggestedSections && suggestedSectionNodeName != null && $addedNode.nodeName == suggestedSectionNodeName) {
@@ -1713,7 +1757,7 @@ async function observeSearchResultSections(options) {
         if (!($addedNode instanceof HTMLElement)) continue
         if ($addedNode.nodeName == sectionNodeName) {
           let sectionNum = ++sectionCount
-          log(`search result section ${sectionNum} added`)
+          log('search result section', sectionNum, 'added')
           processSection($addedNode, sectionNum)
         }
       }
@@ -2022,14 +2066,14 @@ async function observeVideoList(options) {
       for (let $addedNode of mutation.addedNodes) {
         if (!($addedNode instanceof HTMLElement)) continue
         if (videoNodeNames.has($addedNode.nodeName)) {
-          processVideo($addedNode)
+          manuallyHideVideo($addedNode)
           waitForVideoOverlay($addedNode, `item ${++itemCount}`)
           newItemCount++
         }
       }
     }
     if (newItemCount > 0) {
-      log(`${newItemCount} new ${page} item${s(newItemCount)} added`)
+      log(newItemCount, `${page} video${s(newItemCount)} added`)
     }
   }, {
     name: `${name} (for new items being added)`,
@@ -2039,12 +2083,12 @@ async function observeVideoList(options) {
   let initialItemCount = 0
   for (let $initialItem of $list.children) {
     if (videoNodeNames.has($initialItem.nodeName)) {
-      processVideo($initialItem)
+      manuallyHideVideo($initialItem)
       waitForVideoOverlay($initialItem, `item ${++itemCount}`)
       initialItemCount++
     }
   }
-  log(`${initialItemCount} initial ${page} item${s(initialItemCount)}`)
+  log(initialItemCount, `initial ${page} video${s(initialItemCount)}`)
 }
 
 /** @param {MouseEvent} e */
@@ -2099,7 +2143,7 @@ function hideWatched($video) {
  * complex or broad CSS :has() relative selectors.
  * @param {Element} $video
  */
-function processVideo($video) {
+function manuallyHideVideo($video) {
   hideWatched($video)
 
   // Streamed videos are identified using the video title's aria-label
@@ -2328,7 +2372,7 @@ async function tweakVideoPage() {
       itemCount = 0
       for (let $item of $contents.children) {
         if ($item.nodeName == 'YTD-COMPACT-VIDEO-RENDERER') {
-          processVideo($item)
+          manuallyHideVideo($item)
           waitForVideoOverlay($item, `related item ${++itemCount}`)
         }
       }
@@ -2356,14 +2400,14 @@ async function tweakVideoPage() {
         for (let $addedNode of mutation.addedNodes) {
           if (!($addedNode instanceof HTMLElement)) continue
           if ($addedNode.nodeName == 'YTD-COMPACT-VIDEO-RENDERER') {
-            processVideo($addedNode)
+            manuallyHideVideo($addedNode)
             waitForVideoOverlay($addedNode, `related item ${++itemCount}`)
             newItemCount++
           }
         }
       }
       if (newItemCount > 0) {
-        log(`${newItemCount} new related item${s(newItemCount)} added`)
+        log(newItemCount, `related item${s(newItemCount)} added`)
       }
     }, {
       name: `related <ytd-item-section-renderer> contents (for new items being added)`,
