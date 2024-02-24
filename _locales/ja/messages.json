@@ -29,6 +29,9 @@
   "extensionDescription": {
     "message": "不足しているオプションとUIの改善を追加して、YouTubeをより制御できるようにします"
   },
+  "extensionName": {
+    "message": "Control Panel for YouTube"
+  },
   "features": {
     "message": "特徴"
   },
