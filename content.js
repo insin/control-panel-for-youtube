@@ -115,6 +115,13 @@ function getString(code) {
 
 const undoHideDelayMs = 5000
 
+const Classes = {
+  HIDE_CHANNEL: 'cpfyt-hide-channel',
+  HIDE_HIDDEN: 'cpfyt-hide-hidden',
+  HIDE_STREAMED: 'cpfyt-hide-streamed',
+  HIDE_WATCHED: 'cpfyt-hide-watched',
+}
+
 const Svgs = {
   DELETE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M11 17H9V8h2v9zm4-9h-2v9h2V8zm4-4v1h-1v16H6V5H5V4h4V3h6v1h4zm-2 1H7v15h10V5z"></path></svg>',
 }
@@ -433,9 +440,9 @@ const configureCss = (() => {
     if (config.hideChannels) {
       if (config.hiddenChannels.length > 0) {
         if (debugManualHiding) {
-          cssRules.push('.cpfyt-hide-channel { outline: 2px solid red !important; }')
+          cssRules.push(`.${Classes.HIDE_CHANNEL} { outline: 2px solid red !important; }`)
         } else {
-          hideCssSelectors.push('.cpfyt-hide-channel')
+          hideCssSelectors.push(`.${Classes.HIDE_CHANNEL}`)
         }
       }
       if (desktop) {
@@ -490,7 +497,7 @@ const configureCss = (() => {
       }
     } else {
       // Hide menu item if config is changed after it's added
-      hideCssSelectors.push('#cpfyt-hide-channel')
+      hideCssSelectors.push('#cpfyt-hide-channel-menu-item')
     }
 
     if (config.hideChat) {
@@ -562,7 +569,7 @@ const configureCss = (() => {
           }
         }
       `)
-      hideCssSelectors.push('.cpfyt-hidden-video')
+      hideCssSelectors.push(`.${Classes.HIDE_HIDDEN}`)
     }
 
     if (config.hideLive) {
@@ -773,9 +780,9 @@ const configureCss = (() => {
 
     if (config.hideStreamed) {
       if (debugManualHiding) {
-        cssRules.push('.cpfyt-hide-streamed { outline: 2px solid blue; }')
+        cssRules.push(`.${Classes.HIDE_STREAMED} { outline: 2px solid blue; }`)
       } else {
-        hideCssSelectors.push('.cpfyt-hide-streamed')
+        hideCssSelectors.push(`.${Classes.HIDE_STREAMED}`)
       }
     }
 
@@ -828,9 +835,9 @@ const configureCss = (() => {
 
     if (config.hideWatched) {
       if (debugManualHiding) {
-        cssRules.push('.cpfyt-hide-watched { outline: 2px solid green; }')
+        cssRules.push(`.${Classes.HIDE_WATCHED} { outline: 2px solid green; }`)
       } else {
-        hideCssSelectors.push('.cpfyt-hide-watched')
+        hideCssSelectors.push(`.${Classes.HIDE_WATCHED}`)
       }
     }
 
@@ -1274,7 +1281,7 @@ async function addHideChannelToMobileMenu($menu) {
   await new Promise((resolve) => setTimeout(resolve, 50))
   let hasIcon = Boolean($menuItems.querySelector('c3-icon'))
   $menuItems.insertAdjacentHTML('beforeend', `
-    <ytm-menu-item id="cpfyt-hide-channel">
+    <ytm-menu-item id="cpfyt-hide-channel-menu-item">
       <button class="menu-item-button">
         ${hasIcon ? `<c3-icon>
           <div style="width: 100%; height: 100%; fill: currentcolor;">
@@ -1936,12 +1943,12 @@ function observeVideoHiddenState() {
         startTime = Date.now()
         timeout = setTimeout(() => {
           let $elementToHide = $video.closest('ytd-rich-item-renderer')
-          $elementToHide?.classList.add('cpfyt-hidden-video')
+          $elementToHide?.classList.add(Classes.HIDE_HIDDEN)
           cleanup()
           // Remove the class if the Undo button is clicked later, e.g. if
           // this feature is disabled after hiding a video.
           $undoButton.addEventListener('click', () => {
-            $elementToHide?.classList.remove('cpfyt-hidden-video')
+            $elementToHide?.classList.remove(Classes.HIDE_HIDDEN)
           })
         }, undoHideDelayMs)
       }
@@ -2018,12 +2025,12 @@ function observeVideoHiddenState() {
             if (isSubscriptionsPage()) {
               $elementToHide = $container.closest('ytm-item-section-renderer')
             }
-            $elementToHide?.classList.add('cpfyt-hidden-video')
+            $elementToHide?.classList.add(Classes.HIDE_HIDDEN)
             cleanup()
             // Remove the class if the Undo button is clicked later, e.g. if
             // this feature is disabled after hiding a video.
             $undoButton.addEventListener('click', () => {
-              $elementToHide?.classList.remove('cpfyt-hidden-video')
+              $elementToHide?.classList.remove(Classes.HIDE_HIDDEN)
             })
           }, undoHideDelayMs)
           function undoClicked() {
@@ -2135,7 +2142,7 @@ function hideWatched($video) {
     let progress = parseInt(/** @type {HTMLElement} */ ($progressBar).style.width)
     hide = progress >= Number(config.hideWatchedThreshold)
   }
-  $video.classList.toggle('cpfyt-hide-watched', hide)
+  $video.classList.toggle(Classes.HIDE_WATCHED, hide)
 }
 
 /**
@@ -2160,7 +2167,7 @@ function manuallyHideVideo($video) {
     if ($videoTitle) {
       hide = Boolean($videoTitle.getAttribute('aria-label')?.includes(getString('STREAMED_TITLE')))
     }
-    $video.classList.toggle('cpfyt-hide-streamed', hide)
+    $video.classList.toggle(Classes.HIDE_STREAMED, hide)
   }
 
   if (config.hideChannels && config.hiddenChannels.length > 0 && !isSubscriptionsPage()) {
@@ -2171,7 +2178,7 @@ function manuallyHideVideo($video) {
         channel.url && hiddenChannel.url ? channel.url == hiddenChannel.url : hiddenChannel.name == channel.name
       )
     }
-    $video.classList.toggle('cpfyt-hide-channel', hide)
+    $video.classList.toggle(Classes.HIDE_CHANNEL, hide)
   }
 }
 
