@@ -607,7 +607,7 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // Channel name / Videos / About
-          '#structured-description .ytd-structured-description-content-renderer',
+          '#structured-description .ytd-structured-description-content-renderer:not(#items, ytd-video-description-transcript-section-renderer)',
           // Game name and Gaming link
           '#above-the-fold + ytd-metadata-row-container-renderer',
         )
