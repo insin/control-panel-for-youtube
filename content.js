@@ -451,7 +451,7 @@ const configureCss = (() => {
           .cpfyt-menu-item {
             align-items: center;
             cursor: pointer;
-            display: flex;
+            display: flex !important;
             min-height: 36px;
             padding: 0 12px 0 16px;
           }
@@ -1181,7 +1181,7 @@ function addDownloadTranscriptToDesktopMenu($menu) {
 
   let $menuItems = $menu.querySelector('#items')
   $menuItems.insertAdjacentHTML('beforeend', `
-    <div class="cpfyt-menu-item" tabindex="0">
+    <div class="cpfyt-menu-item" tabindex="0" style="display: none">
       <div class="cpfyt-menu-text">
         ${getString('DOWNLOAD')}
       </div>
@@ -1230,7 +1230,7 @@ function addHideChannelToDesktopMenu($menu) {
 
   let $menuItems = $menu.querySelector('#items')
   $menuItems.insertAdjacentHTML('beforeend', `
-    <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel">
+    <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
       <div class="cpfyt-menu-icon">
         ${Svgs.DELETE}
       </div>
