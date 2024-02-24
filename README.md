@@ -4,58 +4,33 @@
 
 **Control Panel for YouTube is a browser extension which gives you more control over your YouTube experience by adding missing options and UI improvements**
 
-For installations links and FAQs visit the [Control Panel for YouTube website](https://jbscript.dev/control-panel-for-youtube)
+This is the support repository for Control Panel for YouTube - for installation links, information about the extension, and FAQs, please visit the [Control Panel for YouTube website](https://jbscript.dev/control-panel-for-youtube).
 
-## Features (🖥️: Desktop only, 📱: Mobile only)
+## Bug reports
 
-### Video lists
+To report a bug, [create a new Issue](/issues/new).
 
-- Hide Shorts
-- Hide Sponsored videos & promos
-- Hide Live videos
-- Hide Streamed videos
-- Hide Mixes
-- Hide Upcoming videos
-- Hide watched videos
-- Hide hidden videos
-  - Hides the "Undo" button after 5 seconds
-- Hide channels
-  - Adds "Hide channel" to video menus
-- Disable Home feed
-- Fill gaps created by hidden videos 🖥️
-- Hide suggested sections 🖥️
+Please include:
 
-### Video pages
+- The version of Control Panel for YouTube you're using
+- The browser and operating system you're using it on
+- Relevant URLs when shareable (e.g. a YouTube video a feature isn't working on)
 
-- Skip ads
-- Disable Autoplay
-- Hide Related videos
-- Hide the Next button
-- Hide video metadata
-- Hide Comments
-- Redirect Shorts to the normal player
-- Hide video end cards 🖥️
-- Hide video endscreen content 🖥️
-- Hide Merch, Offers etc. 🖥️
-- Hide Chat 🖥️
-- Make Transcript downloadable 🖥️
+Screenshots would be appreciated where a feature should be hiding something but isn't, as you may be seeing something we haven't encountered during development, particularly on your personal Home and Subscriptions pages.
 
-### UI tweaks
+If you're familiar with web development, a snapshot of the `outerHTML` of specific elements a feature isn't working on would also be appreciated if you think it would be relevant.
 
-- Hide categories in Home
-- Hide Search with your voice
-- Tidy Guide sidebar 🖥️
-- Hide "Latest" bar in Subscriptions 🖥️
-- Use grid view for Subscriptions (portrait only) 📱
-- Hide Explore button in Home 📱
-- Hide channel list in Subscriptions 📱
-- Hide Open App links 📱
+## New feature or enhancement requests
 
-### Embedded videos
+To request new features or enhancements, [create a new Issue](https://github.com/insin/control-panel-for-youtube/issues/new).
 
-- Hide Share button
-- Hide pause overlay
-- Hide video endscreen content
+## Support and discussion
+
+For support which isn't a bug report or feature request, please see the [Discussions page](https://github.com/insin/control-panel-for-youtube/discussions).
+
+## New translations
+
+If you would like to translate Control Panel for YouTube's options into your language, please create a copy of the English [messages.json](./_locales/en/messages.json) file, translate the `"message"` strings into your language, then create a new Issue and include the translated JSON.
 
 ## Attribution
 

@@ -516,7 +516,6 @@ const configureCss = (() => {
     }
 
     if (config.hideHiddenVideos) {
-      // From https://kittygiraudel.com/2021/04/11/css-pie-timer-revisited/
       // The mobile version doesn't have any HTML hooks for appearance mode, so
       // we'll just use the current backgroundColor.
       let bgColor = getComputedStyle(document.documentElement).backgroundColor
