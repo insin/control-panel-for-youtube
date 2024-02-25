@@ -1,6 +1,7 @@
 // ==UserScript==
 // @name        Control Panel for YouTube
 // @description Gives you more control over YouTube by adding missing options and UI improvements
+// @icon        https://raw.githubusercontent.com/insin/control-panel-for-youtube/master/icons/icon32.png
 // @namespace   https://jbscript.dev/control-panel-for-youtube
 // @match       https://www.youtube.com/*
 // @match       https://m.youtube.com/*
