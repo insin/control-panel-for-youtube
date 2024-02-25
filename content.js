@@ -50,6 +50,7 @@ let config = {
   hideShorts: true,
   hideSponsored: true,
   hideStreamed: false,
+  hideSuggestedSections: true,
   hideUpcoming: false,
   hideVoiceSearch: false,
   hideWatched: true,
@@ -64,7 +65,6 @@ let config = {
   hideEndVideos: true,
   hideMerchEtc: true,
   hideSubscriptionsLatestBar: false,
-  hideSuggestedSections: true,
   tidyGuideSidebar: false,
   // Mobile only
   hideExploreButton: true,
@@ -607,7 +607,7 @@ const configureCss = (() => {
     if (config.hideMetadata) {
       if (desktop) {
         hideCssSelectors.push(
-          // Channel name / Videos / About
+          // Channel name / Videos / About (but not Transcript or their mutual container)
           '#structured-description .ytd-structured-description-content-renderer:not(#items, ytd-video-description-transcript-section-renderer)',
           // Game name and Gaming link
           '#above-the-fold + ytd-metadata-row-container-renderer',
@@ -663,17 +663,12 @@ const configureCss = (() => {
         `)
       }
       if (mobile) {
-        // Hide Previous and Next buttons when the Previous button isn't enabled
-        cssRules.push(`
-          .player-controls-middle-core-buttons > button[aria-label="${getString('PREVIOUS_VIDEO')}"],
-          .player-controls-middle-core-buttons > button[aria-label="${getString('NEXT_VIDEO')}"] {
-            display: none;
-          }
-          .player-controls-middle-core-buttons > button[aria-label="${getString('PREVIOUS_VIDEO')}"][aria-disabled="false"],
-          .player-controls-middle-core-buttons > button[aria-label="${getString('PREVIOUS_VIDEO')}"][aria-disabled="false"] ~ button[aria-label="${getString('NEXT_VIDEO')}"] {
-            display: revert;
-          }
-        `)
+        hideCssSelectors.push(
+          // Hide the Previous button when it's disabled, as it otherwise takes you to the previously-watched video
+          `.player-controls-middle-core-buttons > button[aria-label="${getString('PREVIOUS_VIDEO')}"][aria-disabled="true"]`,
+          // Always hide the Next button as it takes you to a random video, even if you just used Previous
+          `.player-controls-middle-core-buttons > button[aria-label="${getString('NEXT_VIDEO')}"]`,
+        )
       }
     }
 
@@ -775,6 +770,7 @@ const configureCss = (() => {
           'ytm-paid-content-overlay-renderer',
           // Directly under video
           'ytm-companion-slot:has(> ytm-companion-ad-renderer)',
+          'ytm-watch ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
           // Directly under comments entry point at narrow sizes
           '.related-chips-slot-wrapper ytm-item-section-renderer[section-identifier="comments-entry-point"] + ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
           // In Related videos
@@ -805,10 +801,14 @@ const configureCss = (() => {
         )
       }
       if (mobile) {
-        hideCssSelectors.push(
-          // Shelves in Home
-          `.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer`,
-        )
+        // Logged-out users can get a "Try searching to get started" Home page
+        // section which this would hide.
+        if (loggedIn) {
+          hideCssSelectors.push(
+            // Shelves in Home
+            '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer',
+          )
+        }
       }
     }
 
@@ -2115,7 +2115,7 @@ function onDocumentClick(e) {
 
 /** @param {HTMLElement} $menu */
 function onMobileMenuAppeared($menu) {
-  log('menu appeared', {$lastClickedElement})
+  log('menu appeared')
 
   if (config.hideOpenApp && (isSearchPage() || isVideoPage())) {
     let menuItems = $menu.querySelectorAll('ytm-menu-item')

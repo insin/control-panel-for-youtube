@@ -52,6 +52,7 @@ export type SiteConfig = {
   hideShorts: boolean
   hideSponsored: boolean
   hideStreamed: boolean
+  hideSuggestedSections: boolean
   hideUpcoming: boolean
   hideVoiceSearch: boolean
   hideWatched: boolean
@@ -66,7 +67,6 @@ export type SiteConfig = {
   hideEndVideos: boolean
   hideMerchEtc: boolean
   hideSubscriptionsLatestBar: boolean
-  hideSuggestedSections: boolean
   tidyGuideSidebar: boolean
   // Mobile only
   hideExploreButton: boolean

@@ -23,6 +23,7 @@ ${messages.videoLists}:
 
 • ${messages.hideShorts}
 • ${messages.hideSponsored}
+• ${messages.hideSuggestedSections}
 • ${messages.hideLive}
 • ${messages.hideStreamed}
 • ${messages.hideMixes}
@@ -34,7 +35,6 @@ ${messages.videoLists}:
   • ${messages.hideChannelsNote}
 • ${messages.disableHomeFeed}
 • ${messages.fillGaps} 🖥️
-• ${messages.hideSuggestedSections} 🖥️
 
 ${messages.videoPages}:
 

@@ -81,6 +81,7 @@ let defaultConfig = {
   hideShorts: true,
   hideSponsored: true,
   hideStreamed: false,
+  hideSuggestedSections: true,
   hideVoiceSearch: false,
   hideUpcoming: false,
   hideWatched: true,
@@ -95,7 +96,6 @@ let defaultConfig = {
   hideEndVideos: true,
   hideMerchEtc: true,
   hideSubscriptionsLatestBar: false,
-  hideSuggestedSections: true,
   tidyGuideSidebar: false,
   // Mobile only
   hideExploreButton: true,
