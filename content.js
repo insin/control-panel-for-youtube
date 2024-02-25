@@ -6,7 +6,7 @@
 // @match       https://www.youtube.com/*
 // @match       https://m.youtube.com/*
 // @exclude     https://www.youtube.com/embed/*
-// @version     1
+// @version     2
 // ==/UserScript==
 let debug = false
 let debugManualHiding = false
