@@ -997,9 +997,9 @@ const configureCss = (() => {
             ytm-search ytm-item-section-renderer > lazy-list {
               margin: 16px -8px 0 -8px;
             }
-            ytm-search ytm-video-with-context-renderer {
+            ytm-search .adaptive-feed-item {
               width: calc(50% - 16px);
-              display: inline-block !important;
+              display: inline-block;
               vertical-align: top;
               border-bottom: none !important;
               margin-bottom: 16px;
@@ -1012,12 +1012,12 @@ const configureCss = (() => {
             }
           }
           @media (min-width: 874px) and (orientation: portrait) {
-            ytm-search ytm-video-with-context-renderer {
+            ytm-search .adaptive-feed-item {
               width: calc(33.3% - 16px);
             }
           }
           @media (min-width: 1160px) and (orientation: portrait) {
-            ytm-search ytm-video-with-context-renderer {
+            ytm-search .adaptive-feed-item {
               width: calc(25% - 16px);
             }
           }
