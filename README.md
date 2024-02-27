@@ -37,6 +37,10 @@ You can also follow the [@ControlPanelFYT](https://twitter.com/ControlPanelFYT) 
 
 If you would like to translate Control Panel for YouTube's options into your language, please create a copy of the English [messages.json](./_locales/en/messages.json) file, translate the `"message"` strings into your language, then create a new Issue and include the translated JSON.
 
+## Thanks
+
+- [@Catastravia](https://github.com/Catastravia) for [improving the Japanese translation](https://github.com/insin/control-panel-for-youtube/issues/22)
+
 ## Attribution
 
 Icon adapted from "Floor hatch icon" by [Delapouite](https://delapouite.com/) from [game-icons.net](https://game-icons.net), [CC 3.0 BY](https://creativecommons.org/licenses/by/3.0/)

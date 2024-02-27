@@ -6,7 +6,7 @@
     "message": "デスクトップのみ"
   },
   "disableAutoplay": {
-    "message": "オートプレイを無効にする"
+    "message": "自動再生を無効にする"
   },
   "disableHomeFeed": {
     "message": "ホームフィードを無効にする"
@@ -15,7 +15,7 @@
     "message": "ログインしている場合のみ - サブスクリプションにリダイレクト"
   },
   "downloadTranscript": {
-    "message": "トランスクリプトをダウンロード可能にする"
+    "message": "文字起こしをダウンロード可能にする"
   },
   "embeddedVideos": {
     "message": "埋め込まれた動画"
@@ -36,7 +36,7 @@
     "message": "特徴"
   },
   "fillGaps": {
-    "message": "非表示になっているビデオによって作成されたギャップを埋める"
+    "message": "非表示になっているビデオによって作成された隙間を埋める"
   },
   "hiddenChannelsSummary": {
     "message": "隠しチャンネル ($COUNT$)",
@@ -108,7 +108,7 @@
     "message": "アプリを開くリンクを非表示"
   },
   "hideRelated": {
-    "message": "関連する動画を非表示"
+    "message": "関連動画を非表示"
   },
   "hideShorts": {
     "message": "ショート動画を非表示"
@@ -117,7 +117,7 @@
     "message": "スポンサード動画とプロモーションを非表示"
   },
   "hideStreamed": {
-    "message": "ストリームされた動画を非表示"
+    "message": "配信済みの動画を非表示"
   },
   "hideSubscriptionsChannelList": {
     "message": "登録チャンネルのチャンネルリストを非表示にする"
@@ -129,10 +129,10 @@
     "message": "提案されたセクションを非表示"
   },
   "hideUpcoming": {
-    "message": "予定されている動画を非表示"
+    "message": "公開予定の動画を非表示"
   },
   "hideVoiceSearch": {
-    "message": "非表示 音声検索"
+    "message": "音声検索を非表示"
   },
   "hideWatched": {
     "message": "視聴済みの動画を非表示"
