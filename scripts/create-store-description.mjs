@@ -2,6 +2,17 @@ import fs from 'node:fs'
 
 import clipboard from 'clipboardy'
 
+let extraTranslations = {
+  "desktopVersion": {
+    "en": " (desktop version)",
+    "ja": "（デスクトップ版）"
+  },
+  "mobileVersion": {
+    "en": " (mobile version)",
+    "ja": "（モバイル版）"
+  }
+}
+
 let localeCode = process.argv[2] || 'en'
 
 if (process.argv.some(arg => /^-h|--help$/.test(arg))) {
@@ -13,11 +24,14 @@ Usage:
   process.exit(1)
 }
 
+// Get translated messages for locale
 let locale = JSON.parse(fs.readFileSync(`./_locales/${localeCode}/messages.json`, {encoding: 'utf8'}))
 let messages = Object.fromEntries(Object.entries(locale).map(([prop, value]) => ([prop, value.message])))
+// Add extra translations
+Object.assign(messages, Object.fromEntries(Object.entries(extraTranslations).map(([prop, value]) => [prop, value[localeCode]])))
 
 let storeDescription = `
-${messages.features} (🖥️: ${messages.desktopOnly}, 📱: ${messages.mobileOnly})
+${messages.features}
 
 ${messages.videoLists}:
 
@@ -34,7 +48,7 @@ ${messages.videoLists}:
 • ${messages.hideChannels}
   • ${messages.hideChannelsNote}
 • ${messages.disableHomeFeed}
-• ${messages.fillGaps} 🖥️
+• ${messages.fillGaps}${messages.desktopVersion}
 
 ${messages.videoPages}:
 
@@ -45,22 +59,22 @@ ${messages.videoPages}:
 • ${messages.hideMetadata}
 • ${messages.hideComments}
 • ${messages.redirectShorts}
-• ${messages.hideEndCards} 🖥️
-• ${messages.hideEndVideos} 🖥️
-• ${messages.hideMerchEtc} 🖥️
-• ${messages.hideChat} 🖥️
-• ${messages.downloadTranscript} 🖥️
+• ${messages.hideEndCards}${messages.desktopVersion}
+• ${messages.hideEndVideos}${messages.desktopVersion}
+• ${messages.hideMerchEtc}${messages.desktopVersion}
+• ${messages.hideChat}${messages.desktopVersion}
+• ${messages.downloadTranscript}${messages.desktopVersion}
 
 ${messages.uiTweaks}:
 
 • ${messages.hideHomeCategories}
 • ${messages.hideVoiceSearch}
-• ${messages.tidyGuideSidebar} 🖥️
-• ${messages.hideSubscriptionsLatestBar} 🖥️
-• ${messages.mobileGridView} 📱
-• ${messages.hideExploreButton} 📱
-• ${messages.hideSubscriptionsChannelList} 📱
-• ${messages.hideOpenApp} 📱
+• ${messages.tidyGuideSidebar}${messages.desktopVersion}
+• ${messages.hideSubscriptionsLatestBar}${messages.desktopVersion}
+• ${messages.mobileGridView}${messages.mobileVersion}
+• ${messages.hideExploreButton}${messages.mobileVersion}
+• ${messages.hideSubscriptionsChannelList}${messages.mobileVersion}
+• ${messages.hideOpenApp}${messages.mobileVersion}
 
 ${messages.embeddedVideos}:
 
