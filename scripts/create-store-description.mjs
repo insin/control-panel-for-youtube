@@ -2,6 +2,33 @@ import fs from 'node:fs'
 
 import clipboard from 'clipboardy'
 
+let captions = {
+  "subs": {
+    "en": "Improved Subscriptions page, which acts more like an inbox of videos",
+    "ja": "ビデオの受信箱のように機能する、改善されたサブスクリプションページ"
+  },
+  "ads": {
+    "en": "Video ads can be automatically skipped and other promoted content is hidden",
+    "ja": "動画広告は自動的にスキップされ、他のプロモーションコンテンツは非表示になります"
+  },
+  "search": {
+    "en": "Nothing but search results on the Search page, no suggested sections",
+    "ja": "検索ページでは検索結果のみ表示され、提案されたセクションは表示されません"
+  },
+  "home": {
+    "en": "Hide non-video content on the Home page and improve YouTube's built-in hiding",
+    "ja": "ホームページの非動画コンテンツを非表示にし、YouTubeの組み込み非表示機能を改善します"
+  },
+  "disengage": {
+    "en": "Disable related videos, the Home timeline and other algorithmic content",
+    "ja": "関連動画、ホームタイムライン、およびその他のアルゴリズムコンテンツを無効にします"
+  },
+  "embedded": {
+    "en": "Hide algorithmic recommendations when viewing YouTube videos embedded in other sites",
+    "ja": "他のサイトに埋め込まれたYouTube動画を表示する際にアルゴリズム推薦を非表示にします"
+  }
+}
+
 let extraTranslations = {
   "desktopVersion": {
     "en": " (desktop version)",
