@@ -47,6 +47,7 @@ let config = {
   hideMixes: false,
   hideNextButton: true,
   hideRelated: false,
+  hideShareThanksClip: false,
   hideShorts: true,
   hideSponsored: true,
   hideStreamed: false,
@@ -80,25 +81,32 @@ let config = {
  */
 const locales = {
   'en': {
+    CLIP: 'Clip',
     DOWNLOAD: 'Download',
     FOR_YOU: 'For you',
     HIDE_CHANNEL: 'Hide channel',
     MIXES: 'Mixes',
     MUTE: 'Mute',
     NEXT_VIDEO: 'Next video',
+    OPEN_APP: 'Open App',
     PREVIOUS_VIDEO: 'Previous video',
+    SHARE: 'Share',
     SHORTS: 'Shorts',
     STREAMED_TITLE: 'views Streamed',
     TELL_US_WHY: 'Tell us why',
+    THANKS: 'Thanks',
   },
   'ja-JP': {
+    CLIP: 'クリップ',
     DOWNLOAD: 'オフライン',
     FOR_YOU: 'あなたへのおすすめ',
     HIDE_CHANNEL: 'チャンネルを隠す',
     MIXES: 'ミックス',
     MUTE: 'ミュート（消音）',
     NEXT_VIDEO: '次の動画',
+    OPEN_APP: 'アプリを開く',
     PREVIOUS_VIDEO: '前の動画',
+    SHARE: '共有',
     SHORTS: 'ショート',
     STREAMED_TITLE: '前 に配信済み',
     TELL_US_WHY: '理由を教えてください',
@@ -122,6 +130,7 @@ const Classes = {
   HIDE_OPEN_APP: 'cpfyt-hide-open-app',
   HIDE_STREAMED: 'cpfyt-hide-streamed',
   HIDE_WATCHED: 'cpfyt-hide-watched',
+  HIDE_SHARE_THANKS_CLIP: 'cpfyt-hide-share-thanks-clip',
 }
 
 const Svgs = {
@@ -681,6 +690,24 @@ const configureCss = (() => {
       }
     }
 
+    if (config.hideShareThanksClip) {
+      if (desktop) {
+        hideCssSelectors.push(
+          // Buttons
+          `ytd-menu-renderer yt-button-view-model:has(> button-view-model > button[aria-label="${getString('SHARE')}"])`,
+          `ytd-menu-renderer yt-button-view-model:has(> button-view-model > button[aria-label="${getString('THANKS')}"])`,
+          `ytd-menu-renderer yt-button-view-model:has(> button-view-model > button[aria-label="${getString('CLIP')}"])`,
+          // Menu items
+          `.${Classes.HIDE_SHARE_THANKS_CLIP}`,
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(
+          `ytm-slim-video-action-bar-renderer button-view-model:has(> button[aria-label="${getString('SHARE')}"])`,
+        )
+      }
+    }
+
     if (config.hideShorts) {
       if (desktop) {
         hideCssSelectors.push(
@@ -1206,6 +1233,22 @@ function addDownloadTranscriptToDesktopMenu($menu) {
   })
 }
 
+function handleDesktopChannelMenu($menu) {
+  if (!isVideoPage()) return
+
+  let $channelMenuRenderer = $lastClickedElement.closest('ytd-menu-renderer.ytd-watch-metadata')
+  if (!$channelMenuRenderer) return
+
+  let $menuItems = /** @type {NodeListOf<HTMLElement>} */ ($menu.querySelectorAll('ytd-menu-service-item-renderer'))
+  let testLabels = new Set([getString('SHARE'), getString('THANKS'), getString('CLIP')])
+  for (let $menuItem of $menuItems) {
+    if (testLabels.has($menuItem.querySelector('yt-formatted-string')?.textContent)) {
+      log('tagging Share/Thanks/Clip menu item')
+      $menuItem.classList.add(Classes.HIDE_SHARE_THANKS_CLIP)
+    }
+  }
+}
+
 /** @param {HTMLElement} $menu */
 function addHideChannelToDesktopMenu($menu) {
   let videoContainerElement
@@ -1493,6 +1536,9 @@ function onDesktopMenuAppeared($menu) {
   }
   if (config.hideHiddenVideos) {
     observeVideoHiddenState()
+  }
+  if (config.hideShareThanksClip) {
+    handleDesktopChannelMenu($menu)
   }
 }
 
@@ -2121,7 +2167,7 @@ function onMobileMenuAppeared($menu) {
   if (config.hideOpenApp && (isSearchPage() || isVideoPage())) {
     let menuItems = $menu.querySelectorAll('ytm-menu-item')
     for (let $menuItem of menuItems) {
-      if ($menuItem.textContent == 'Open App') {
+      if ($menuItem.textContent == getString('OPEN_APP')) {
         log('tagging Open App menu item')
         $menuItem.classList.add(Classes.HIDE_OPEN_APP)
         break

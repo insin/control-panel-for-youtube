@@ -111,6 +111,9 @@
   "hideRelated": {
     "message": "Hide Related videos"
   },
+  "hideShareThanksClip": {
+    "message": "Hide Share/Thanks/Clip buttons"
+  },
   "hideShorts": {
     "message": "Hide Shorts"
   },

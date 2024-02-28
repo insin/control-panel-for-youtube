@@ -19,16 +19,20 @@ export type Locale = {
 }
 
 export type LocaleKey =
+  | 'CLIP'
   | 'DOWNLOAD'
   | 'FOR_YOU'
   | 'HIDE_CHANNEL'
   | 'MIXES'
   | 'MUTE'
   | 'NEXT_VIDEO'
+  | 'OPEN_APP'
   | 'PREVIOUS_VIDEO'
+  | 'SHARE'
   | 'SHORTS'
   | 'STREAMED_TITLE'
   | 'TELL_US_WHY'
+  | 'THANKS'
 
 export type OptionsConfig = EmbedConfig & SiteConfig
 
@@ -49,6 +53,7 @@ export type SiteConfig = {
   hideMixes: boolean
   hideNextButton: boolean
   hideRelated: boolean
+  hideShareThanksClip: boolean
   hideShorts: boolean
   hideSponsored: boolean
   hideStreamed: boolean
