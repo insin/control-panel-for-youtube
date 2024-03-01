@@ -3,7 +3,7 @@ const fs = require('fs')
 const semver = require('semver')
 
 const contentPath = './content.js'
-const manifestPaths = ['./manifest.json', './Safari/Shared (Extension)/Resources/manifest.json']
+const manifestPaths = ['./manifest.mv2.json', './manifest.mv3.json', './Safari/Shared (Extension)/Resources/manifest.json']
 const optionsPath = './options.html'
 const safariProjectPath = './safari/Control Panel for YouTube.xcodeproj/project.pbxproj'
 

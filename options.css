@@ -23,10 +23,10 @@ body.macOS.browserAction {
 }
 
 body.desktop .mobile,
+body.mobile .desktop,
 body:not(.debug) .debug,
 body:not(.hiddenChannels) #hiddenChannelsDetails,
-body:not(.hidingWatched) .hidingWatched,
-body.mobile .desktop {
+body:not(.hidingWatched) .hidingWatched {
   display: none;
 }
 
@@ -116,10 +116,6 @@ body.disabled:not(.safari) form > section {
   border-bottom: 1px solid var(--border-color);
 }
 
-.firefox-sizer {
-  display: none;
-}
-
 #version {
   text-align: center;
   font-size: 75%;
@@ -131,22 +127,12 @@ body.disabled #version {
 
 /* Firefox overrides */
 @-moz-document url-prefix() {
-  body.browserAction .firefox-sizer {
-    display: block;
-    line-height: 0;
-    visibility: hidden;
-  }
-  /* https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Browser_styles#manifest_v3_migration */
-  html, body {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-  }
   body {
+    font-family: inherit;
     font-size: 15px;
   }
   body.browserAction {
-    min-width: 0;
+    min-width: auto;
     max-width: 400px;
   }
   section {

@@ -1,6 +1,7 @@
 .DS_Store
 TODO.md
 browser_action.html
+manifest.json
 node_modules/
 scripts/translations.json
 web-ext-artifacts/

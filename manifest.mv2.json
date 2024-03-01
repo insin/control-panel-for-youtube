@@ -1,5 +1,5 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "default_locale": "en",
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
@@ -38,9 +38,11 @@
     }
   ],
   "options_ui": {
+    "browser_style": true,
     "page": "options.html"
   },
-  "action": {
+  "browser_action": {
+    "browser_style": true,
     "default_title": "__MSG_extensionName__",
     "default_popup": "browser_action.html"
   },
