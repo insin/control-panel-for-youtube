@@ -33,6 +33,7 @@ export type LocaleKey =
   | 'STREAMED_TITLE'
   | 'TELL_US_WHY'
   | 'THANKS'
+  | 'UNHIDE_CHANNEL'
 
 export type OptionsConfig = EmbedConfig & SiteConfig
 

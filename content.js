@@ -95,6 +95,7 @@ const locales = {
     STREAMED_TITLE: 'views Streamed',
     TELL_US_WHY: 'Tell us why',
     THANKS: 'Thanks',
+    UNHIDE_CHANNEL: 'Unhide channel',
   },
   'ja-JP': {
     CLIP: 'クリップ',
@@ -110,6 +111,7 @@ const locales = {
     SHORTS: 'ショート',
     STREAMED_TITLE: '前 に配信済み',
     TELL_US_WHY: '理由を教えてください',
+    UNHIDE_CHANNEL: 'チャンネルの再表示',
   }
 }
 
@@ -135,6 +137,7 @@ const Classes = {
 
 const Svgs = {
   DELETE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M11 17H9V8h2v9zm4-9h-2v9h2V8zm4-4v1h-1v16H6V5H5V4h4V3h6v1h4zm-2 1H7v15h10V5z"></path></svg>',
+  RESTORE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M460-347.692h40V-535.23l84 83.538L612.308-480 480-612.308 347.692-480 376-451.692l84-83.538v187.538ZM304.615-160Q277-160 258.5-178.5 240-197 240-224.615V-720h-40v-40h160v-30.77h240V-760h160v40h-40v495.385Q720-197 701.5-178.5 683-160 655.385-160h-350.77ZM680-720H280v495.385q0 9.23 7.692 16.923Q295.385-200 304.615-200h350.77q9.23 0 16.923-7.692Q680-215.385 680-224.615V-720Zm-400 0v520-520Z"/></svg>',
 }
 
 //#region State
@@ -253,6 +256,13 @@ function getElement(selector, {
 
    queryElement()
  })
+}
+
+/** @param {import("./types").Channel} channel */
+function isChannelHidden(channel) {
+  return config.hiddenChannels.some((hiddenChannel) =>
+    channel.url && hiddenChannel.url ? channel.url == hiddenChannel.url : hiddenChannel.name == channel.name
+  )
 }
 
 let logObserverDisconnects = true
@@ -1201,6 +1211,7 @@ function handleCurrentUrl() {
   }
 }
 
+/** @param {HTMLElement} $menu */
 function addDownloadTranscriptToDesktopMenu($menu) {
   if (!isVideoPage()) return
 
@@ -1225,7 +1236,7 @@ function addDownloadTranscriptToDesktopMenu($menu) {
     document.querySelector('#content')?.click()
   }
   $item.addEventListener('click', download)
-  $item.addEventListener('keydown', (e) => {
+  $item.addEventListener('keydown', /** @param {KeyboardEvent} e */ (e) => {
     if (e.key == ' ' || e.key == 'Enter') {
       e.preventDefault()
       download()
@@ -1233,24 +1244,103 @@ function addDownloadTranscriptToDesktopMenu($menu) {
   })
 }
 
-function handleDesktopChannelMenu($menu) {
+/** @param {HTMLElement} $menu */
+function handleDesktopWatchChannelMenu($menu) {
   if (!isVideoPage()) return
 
   let $channelMenuRenderer = $lastClickedElement.closest('ytd-menu-renderer.ytd-watch-metadata')
   if (!$channelMenuRenderer) return
 
-  let $menuItems = /** @type {NodeListOf<HTMLElement>} */ ($menu.querySelectorAll('ytd-menu-service-item-renderer'))
-  let testLabels = new Set([getString('SHARE'), getString('THANKS'), getString('CLIP')])
-  for (let $menuItem of $menuItems) {
-    if (testLabels.has($menuItem.querySelector('yt-formatted-string')?.textContent)) {
-      log('tagging Share/Thanks/Clip menu item')
-      $menuItem.classList.add(Classes.HIDE_SHARE_THANKS_CLIP)
+  if (config.hideShareThanksClip) {
+    let $menuItems = /** @type {NodeListOf<HTMLElement>} */ ($menu.querySelectorAll('ytd-menu-service-item-renderer'))
+    let testLabels = new Set([getString('SHARE'), getString('THANKS'), getString('CLIP')])
+    for (let $menuItem of $menuItems) {
+      if (testLabels.has($menuItem.querySelector('yt-formatted-string')?.textContent)) {
+        log('tagging Share/Thanks/Clip menu item')
+        $menuItem.classList.add(Classes.HIDE_SHARE_THANKS_CLIP)
+      }
+    }
+  }
+
+  if (config.hideChannels) {
+    let $channelLink = /** @type {HTMLAnchorElement} */ (document.querySelector('#channel-name a'))
+    if (!$channelLink) {
+      warn('channel link not found in video page')
+      return
+    }
+
+    let channel = {
+      name: $channelLink.textContent,
+      url: $channelLink.pathname,
+    }
+    lastClickedChannel = channel
+
+    let $item = $menu.querySelector('#cpfyt-hide-channel-menu-item')
+
+    function configureMenuItem(channel) {
+      let hidden = isChannelHidden(channel)
+      $item.querySelector('.cpfyt-menu-icon').innerHTML = hidden ? Svgs.RESTORE : Svgs.DELETE
+      $item.querySelector('.cpfyt-menu-text').textContent = getString(hidden ? 'UNHIDE_CHANNEL' : 'HIDE_CHANNEL')
+    }
+
+    // The same menu can be reused, so we reconfigure it if it exists. If the
+    // menu item is reused, we're just changing [lastClickedChannel], which is
+    // why [toggleHideChannel] uses it.
+    if (!$item) {
+      let hidden = isChannelHidden(channel)
+
+      function toggleHideChannel() {
+        let hidden = isChannelHidden(lastClickedChannel)
+        if (hidden) {
+          log('unhiding channel', lastClickedChannel)
+          config.hiddenChannels = config.hiddenChannels.filter((hiddenChannel) =>
+            hiddenChannel.url ? lastClickedChannel.url != hiddenChannel.url : hiddenChannel.name != lastClickedChannel.name
+          )
+        } else {
+          log('hiding channel', lastClickedChannel)
+          config.hiddenChannels.unshift(lastClickedChannel)
+        }
+        configureMenuItem(lastClickedChannel)
+        storeConfigChanges({hiddenChannels: config.hiddenChannels})
+        configureCss()
+        handleCurrentUrl()
+        // Dismiss the menu
+        let $popupContainer = /** @type {HTMLElement} */ ($menu.closest('ytd-popup-container'))
+        $popupContainer.click()
+        // XXX Menu isn't dismissing on iPad Safari
+        if ($menu.style.display != 'none') {
+          $menu.style.display = 'none'
+          $menu.setAttribute('aria-hidden', 'true')
+        }
+      }
+
+      let $menuItems = $menu.querySelector('#items')
+      $menuItems.insertAdjacentHTML('beforeend', `
+        <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
+          <div class="cpfyt-menu-icon">
+            ${hidden ? Svgs.RESTORE : Svgs.DELETE}
+          </div>
+          <div class="cpfyt-menu-text">
+            ${getString(hidden ? 'UNHIDE_CHANNEL' : 'HIDE_CHANNEL')}
+          </div>
+        </div>
+      `.trim())
+      $item = $menuItems.lastElementChild
+      $item.addEventListener('click', toggleHideChannel)
+      $item.addEventListener('keydown', /** @param {KeyboardEvent} e */ (e) => {
+        if (e.key == ' ' || e.key == 'Enter') {
+          e.preventDefault()
+          toggleHideChannel()
+        }
+      })
+    } else {
+      configureMenuItem(channel)
     }
   }
 }
 
 /** @param {HTMLElement} $menu */
-function addHideChannelToDesktopMenu($menu) {
+function addHideChannelToDesktopVideoMenu($menu) {
   let videoContainerElement
   if (isSearchPage()) {
     videoContainerElement = 'ytd-video-renderer'
@@ -1272,7 +1362,7 @@ function addHideChannelToDesktopMenu($menu) {
   if (!channel) return
   lastClickedChannel = channel
 
-  if ($menu.querySelector('.cpfyt-menu-item')) return
+  if ($menu.querySelector('#cpfyt-hide-channel-menu-item')) return
 
   let $menuItems = $menu.querySelector('#items')
   $menuItems.insertAdjacentHTML('beforeend', `
@@ -1310,10 +1400,8 @@ function addHideChannelToDesktopMenu($menu) {
   })
 }
 
-/**
- * @param {HTMLElement} $menu
- */
-async function addHideChannelToMobileMenu($menu) {
+/** @param {HTMLElement} $menu */
+async function addHideChannelToMobileVideoMenu($menu) {
   if (!(isHomePage() || isSearchPage() || isVideoPage())) return
 
   /** @type {HTMLElement} */
@@ -1532,13 +1620,13 @@ function onDesktopMenuAppeared($menu) {
     addDownloadTranscriptToDesktopMenu($menu)
   }
   if (config.hideChannels) {
-    addHideChannelToDesktopMenu($menu)
+    addHideChannelToDesktopVideoMenu($menu)
   }
   if (config.hideHiddenVideos) {
     observeVideoHiddenState()
   }
-  if (config.hideShareThanksClip) {
-    handleDesktopChannelMenu($menu)
+  if (config.hideChannels || config.hideShareThanksClip) {
+    handleDesktopWatchChannelMenu($menu)
   }
 }
 
@@ -2176,7 +2264,7 @@ function onMobileMenuAppeared($menu) {
   }
 
   if (config.hideChannels) {
-    addHideChannelToMobileMenu($menu)
+    addHideChannelToMobileVideoMenu($menu)
   }
   if (config.hideHiddenVideos) {
     observeVideoHiddenState()
@@ -2231,9 +2319,7 @@ function manuallyHideVideo($video) {
     let channel = getChannelDetailsFromVideo($video)
     let hide = false
     if (channel) {
-      hide = config.hiddenChannels.some((hiddenChannel) =>
-        channel.url && hiddenChannel.url ? channel.url == hiddenChannel.url : hiddenChannel.name == channel.name
-      )
+      hide = isChannelHidden(channel)
     }
     $video.classList.toggle(Classes.HIDE_CHANNEL, hide)
   }
@@ -2596,22 +2682,24 @@ function onConfigChange(storageChanges) {
       .filter(([key]) => config.hasOwnProperty(key) && key != 'version')
       .map(([key, {newValue}]) => [key, newValue])
   )
-  if (Object.keys(configChanges).length > 0) {
-    if ('debug' in configChanges) {
-      log('disabling debug mode')
-      debug = configChanges.debug
-      log('enabled debug mode')
-      return
-    }
-    if ('debugManualHiding' in configChanges) {
-      debugManualHiding = configChanges.debugManualHiding
-      log(`${debugManualHiding ? 'en' : 'dis'}abled debugging manual hiding`)
-      configureCss()
-      return
-    }
-    Object.assign(config, configChanges)
-    configChanged(configChanges)
+  if (Object.keys(configChanges).length == 0) return
+
+  if ('debug' in configChanges) {
+    log('disabling debug mode')
+    debug = configChanges.debug
+    log('enabled debug mode')
+    return
   }
+
+  if ('debugManualHiding' in configChanges) {
+    debugManualHiding = configChanges.debugManualHiding
+    log(`${debugManualHiding ? 'en' : 'dis'}abled debugging manual hiding`)
+    configureCss()
+    return
+  }
+
+  Object.assign(config, configChanges)
+  configChanged(configChanges)
 }
 
 /** @param {Partial<import("./types").SiteConfig>} configChanges */
