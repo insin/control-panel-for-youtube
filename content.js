@@ -89,6 +89,7 @@ const locales = {
     MUTE: 'Mute',
     NEXT_VIDEO: 'Next video',
     OPEN_APP: 'Open App',
+    PAUSE: 'Pause',
     PREVIOUS_VIDEO: 'Previous video',
     SHARE: 'Share',
     SHORTS: 'Shorts',
@@ -127,6 +128,7 @@ function getString(code) {
 const undoHideDelayMs = 5000
 
 const Classes = {
+  HIDDEN_CHANNEL_OVERLAY: 'cpfyt-hidden-channel-overlay',
   HIDE_CHANNEL: 'cpfyt-hide-channel',
   HIDE_HIDDEN: 'cpfyt-hide-hidden',
   HIDE_OPEN_APP: 'cpfyt-hide-open-app',
@@ -182,6 +184,16 @@ function dedent(str) {
   return str.replace(/(\r?\n)[ \t]+$/, '$1')
 }
 
+/**
+ * @param {Map<string, import("./types").Disconnectable>} observers
+ * @param {string} name
+ */
+function disconnectObserver(observers, name) {
+  if (!observers.has(name)) return
+  observers.get(name).disconnect()
+  observers.delete(name)
+}
+
 /** @param {Map<string, import("./types").Disconnectable>} observers */
 function disconnectObservers(observers, scope) {
   if (observers.size == 0) return
@@ -190,6 +202,7 @@ function disconnectObservers(observers, scope) {
     Array.from(observers.keys())
   )
   logObserverDisconnects = false
+  // Assumption: disconnect() will also remove the disconnectable from the map
   for (let observer of observers.values()) observer.disconnect()
   logObserverDisconnects = true
 }
@@ -263,6 +276,14 @@ function isChannelHidden(channel) {
   return config.hiddenChannels.some((hiddenChannel) =>
     channel.url && hiddenChannel.url ? channel.url == hiddenChannel.url : hiddenChannel.name == channel.name
   )
+}
+
+/**
+ * Using heuristics as <video> doesn't have an attribute for this.
+ * @param {HTMLVideoElement} $video
+ */
+function isVideoPlaying($video) {
+  return !$video.paused && !$video.ended && $video.readyState > 2
 }
 
 let logObserverDisconnects = true
@@ -466,6 +487,24 @@ const configureCss = (() => {
           hideCssSelectors.push(`.${Classes.HIDE_CHANNEL}`)
         }
       }
+      // Hide video and channel branding for ignored channels with an overlay
+      cssRules.push(`
+        #movie_player.${Classes.HIDDEN_CHANNEL_OVERLAY} video,
+        #movie_player.${Classes.HIDDEN_CHANNEL_OVERLAY} .ytp-iv-player-content .iv-branding,
+        #movie_player.${Classes.HIDDEN_CHANNEL_OVERLAY}.ytp-chrome-top-buttons button[aria-owns="iv-drawer"] {
+          display: none !important;
+        }
+        #movie_player.${Classes.HIDDEN_CHANNEL_OVERLAY} .ytp-overlay::after {
+          content: "You hid this channel with Control Panel for YouTube\\A\\APress Play if you want to watch this video";
+          font-size: 16px;
+          white-space: pre-wrap;
+          position: absolute;
+          inset: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      `)
       if (desktop) {
         // Custom elements can't be cloned so we need to style our own menu items
         cssRules.push(`
@@ -1245,7 +1284,7 @@ function addDownloadTranscriptToDesktopMenu($menu) {
 }
 
 /** @param {HTMLElement} $menu */
-function handleDesktopWatchChannelMenu($menu) {
+async function handleDesktopWatchChannelMenu($menu) {
   if (!isVideoPage()) return
 
   let $channelMenuRenderer = $lastClickedElement.closest('ytd-menu-renderer.ytd-watch-metadata')
@@ -1263,16 +1302,9 @@ function handleDesktopWatchChannelMenu($menu) {
   }
 
   if (config.hideChannels) {
-    let $channelLink = /** @type {HTMLAnchorElement} */ (document.querySelector('#channel-name a'))
-    if (!$channelLink) {
-      warn('channel link not found in video page')
-      return
-    }
+    let channel = await getChannelDetailsFromWatchPage()
+    if (!channel) return
 
-    let channel = {
-      name: $channelLink.textContent,
-      url: $channelLink.pathname,
-    }
     lastClickedChannel = channel
 
     let $item = $menu.querySelector('#cpfyt-hide-channel-menu-item')
@@ -1312,6 +1344,7 @@ function handleDesktopWatchChannelMenu($menu) {
           $menu.style.display = 'none'
           $menu.setAttribute('aria-hidden', 'true')
         }
+        hiddenChannelOverlay()
       }
 
       let $menuItems = $menu.querySelector('#items')
@@ -1489,6 +1522,24 @@ function getChannelDetailsFromVideo($video) {
     }
   }
   // warn('unable to get channel details from video container', $video)
+}
+
+/**
+ * @returns {Promise<import("./types").Channel>}
+ */
+async function getChannelDetailsFromWatchPage() {
+  let $channelLink = /** @type {HTMLAnchorElement} */ (await getElement('#channel-name a', {
+    name: 'channel link',
+    stopIf: currentUrlChanges(),
+  }))
+  if (!$channelLink) {
+    warn('channel link not found in watch page')
+    return
+  }
+  return {
+    name: $channelLink.textContent,
+    url: $channelLink.pathname,
+  }
 }
 
 /** @param {{page: 'home' | 'subscriptions'}} options */
@@ -2498,12 +2549,92 @@ async function tweakSubscriptionsPage() {
   }
 }
 
+async function hiddenChannelOverlay() {
+  let $player = await getElement('#movie_player', {
+    name: 'player',
+    stopIf: currentUrlChanges(),
+  })
+  if (!$player) return
+
+  let channel = await getChannelDetailsFromWatchPage()
+  if (!channel) return
+
+  let hidden = isChannelHidden(channel)
+  $player.classList.toggle(Classes.HIDDEN_CHANNEL_OVERLAY, hidden)
+  if (!hidden) {
+    disconnectObserver(pageObservers, 'hidden channel video playing event listener')
+    disconnectObserver(pageObservers, 'hidden channel video play event listener')
+    return
+  }
+
+  // TODO What happens if an ad starts playing?
+  let $video = $player.querySelector('video')
+  let playing = isVideoPlaying($video)
+
+  // If the video is still loading, wait for it to start playing
+  if (!playing && $video.readyState < 3) {
+    playing = await new Promise(resolve => {
+      let resolved = false
+      function onPlaying() {
+        pageObservers.delete('hidden channel video playing event listener')
+        resolved = true
+        resolve(true)
+      }
+      $video.addEventListener('playing', onPlaying, {once: true})
+      pageObservers.set('hidden channel video playing event listener', {
+        disconnect() {
+          pageObservers.delete('hidden channel video playing event listener')
+          if (resolved) return
+          $video.removeEventListener('playing', onPlaying)
+          if (logObserverDisconnects) {
+            log('removed hidden channel video playing event listener')
+          }
+          resolve(false)
+        }
+      })
+    })
+    if (!playing) return
+  }
+
+  if (desktop) {
+    let $playButton = /** @type {HTMLButtonElement} */ ($player.querySelector('button.ytp-play-button'))
+    if ($playButton && $playButton.dataset.titleNoTooltip == getString('PAUSE')) {
+      $playButton.click()
+    }
+  }
+  if (mobile) {
+    // TODO Click the control overlay to show it and use the pause button instead?
+    if (playing) {
+      $video.pause()
+    }
+  }
+
+  // Remove the overlay if the user plays the video
+  function onPlay() {
+    pageObservers.delete('hidden channel video play event listener')
+    $player.classList.remove(Classes.HIDDEN_CHANNEL_OVERLAY)
+  }
+  $video.addEventListener('play', onPlay, {once: true})
+  pageObservers.set('hidden channel video play event listener', {
+    disconnect() {
+      pageObservers.delete('hidden channel video play event listener')
+      $video.removeEventListener('play', onPlay)
+      if (logObserverDisconnects) {
+        log('removed hidden channel video play event listener')
+      }
+    }
+  })
+}
+
 async function tweakVideoPage() {
   if (config.skipAds) {
     observeVideoAds()
   }
   if (config.disableAutoplay) {
     disableAutoplay()
+  }
+  if (config.hideChannels) {
+    hiddenChannelOverlay()
   }
 
   if (config.hideRelated || (!config.hideWatched && !config.hideStreamed && !config.hideChannels)) return

@@ -5,7 +5,7 @@ export type Channel = {
 
 export type CustomMutationObserver = MutationObserver & {name: string, onDisconnect?: () => void}
 
-export type Disconnectable = {name: string, disconnect: () => void}
+export type Disconnectable = {name?: string, disconnect: () => void}
 
 export type EmbedConfig = {
   enabled: boolean
@@ -27,6 +27,7 @@ export type LocaleKey =
   | 'MUTE'
   | 'NEXT_VIDEO'
   | 'OPEN_APP'
+  | 'PAUSE'
   | 'PREVIOUS_VIDEO'
   | 'SHARE'
   | 'SHORTS'
