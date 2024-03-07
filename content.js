@@ -186,11 +186,11 @@ function dedent(str) {
 function disconnectObservers(observers, scope) {
   if (observers.size == 0) return
   log(
-    `disconnecting ${observers.size} ${scope} observer${s(pageObservers.size)}`,
-    Array.from(observers.values(), observer => observer.name)
+    `disconnecting ${observers.size} ${scope} observer${s(observers.size)}`,
+    Array.from(observers.keys())
   )
   logObserverDisconnects = false
-  for (let observer of pageObservers.values()) observer.disconnect()
+  for (let observer of observers.values()) observer.disconnect()
   logObserverDisconnects = true
 }
 
