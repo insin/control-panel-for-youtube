@@ -836,6 +836,10 @@ const configureCss = (() => {
           `ytd-search #contents.ytd-item-section-renderer > ytd-shelf-renderer`,
           // People also search for in Search
           'ytd-search #contents.ytd-item-section-renderer > ytd-horizontal-card-list-renderer',
+          // Recommended videos in a Playlist
+          'ytd-browse[page-subtype="playlist"] ytd-item-section-renderer[is-playlist-video-container]',
+          // Recommended playlists in a Playlist
+          'ytd-browse[page-subtype="playlist"] ytd-item-section-renderer[is-playlist-shelf]',
         )
       }
       if (mobile) {
