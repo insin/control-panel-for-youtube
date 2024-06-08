@@ -1,0 +1,174 @@
+{
+  "anyPercent": {
+    "message": "любой %"
+  },
+  "desktopOnly": {
+    "message": "Только для компьютеров"
+  },
+  "disableAutoplay": {
+    "message": "Отключить автовоспроизведение"
+  },
+  "disableHomeFeed": {
+    "message": "Отключить ленту на домашней странице"
+  },
+  "disableHomeFeedNote": {
+    "message": "Только при выполненном входе - перенаправляет в Подписки"
+  },
+  "downloadTranscript": {
+    "message": "Сделать стенограмму доступной для скачивания"
+  },
+  "embeddedVideos": {
+    "message": "Встроенные видео"
+  },
+  "enabled": {
+    "message": "Включено"
+  },
+  "experimentalFeatures": {
+    "message": "Экспериментальные функции"
+  },
+  "extensionDescription": {
+    "message": "Даёт вам больше контроля над YouTube за счёт добавления недостающих опций и улучшений пользовательского интерфейса",
+    "description": "<= 112 символов"
+  },
+  "extensionName": {
+    "message": "Панель управления для YouTube"
+  },
+  "features": {
+    "message": "Функции"
+  },
+  "fillGaps": {
+    "message": "Заполнить пробелы, созданные скрытыми видео"
+  },
+  "hiddenChannelsSummary": {
+    "message": "Скрытые каналы ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
+  },
+  "hideChannels": {
+    "message": "Скрывать каналы"
+  },
+  "hideChannelsNote": {
+    "message": "Добавить \"Скрыть канал\" в меню видео"
+  },
+  "hideChat": {
+    "message": "Скрывать Чат"
+  },
+  "hideComments": {
+    "message": "Скрывать Комментарии"
+  },
+  "hideEmbedEndVideos": {
+    "message": "Скрывать содержимое конечного экрана видео"
+  },
+  "hideEmbedPauseOverlay": {
+    "message": "Скрывать оверлэй паузы"
+  },
+  "hideEmbedShareButton": {
+    "message": "Скрывать кнопку Поделиться"
+  },
+  "hideEndCards": {
+    "message": "Скрывать карточки в конце видео"
+  },
+  "hideEndVideos": {
+    "message": "Скрывать содержимое конечного экрана видео"
+  },
+  "hideExploreButton": {
+    "message": "Скрыть кнопку Обхор на Домашней странице"
+  },
+  "hideHiddenVideos": {
+    "message": "Скрывать скрытые видео"
+  },
+  "hideHiddenVideosNote": {
+    "message": "Скрывает кнопку \"Отменить\" через 5 секунд"
+  },
+  "hideHomeCategories": {
+    "message": "Скрывать категории на Домашней странице"
+  },
+  "hideLive": {
+    "message": "Скрывать Лайв видео"
+  },
+  "hideMerchEtc": {
+    "message": "Скрывать Мерч, Предложения и т.п."
+  },
+  "hideMetadata": {
+    "message": "Скрывать метаданные видео"
+  },
+  "hideMixes": {
+    "message": "Скрывать Миксы"
+  },
+  "hideNextButton": {
+    "message": "Скрывать кнопку Далее"
+  },
+  "hideNextButtonNote": {
+    "message": "Когда не просматривается видео в плейлисте"
+  },
+  "hideOpenApp": {
+    "message": "Скрыть ссылки для открытия в приложении"
+  },
+  "hideRelated": {
+    "message": "Скрыть Связанные видео"
+  },
+  "hideShareThanksClip": {
+    "message": "Скрыть кноки Поделиться/Спасибо/Клип"
+  },
+  "hideShorts": {
+    "message": "Скрывать Шортсы"
+  },
+  "hideSponsored": {
+    "message": "Скрывать промо и видео от спонсоров"
+  },
+  "hideStreamed": {
+    "message": "Скрывать стримы"
+  },
+  "hideSubscriptionsChannelList": {
+    "message": "Скрывать список каналов в Подписках"
+  },
+  "hideSubscriptionsLatestBar": {
+    "message": "Скрыть \"Последние\" в Подписках"
+  },
+  "hideSuggestedSections": {
+    "message": "Скрыть предлагаемые разделы"
+  },
+  "hideUpcoming": {
+    "message": "Скрыть Предстоящие видео"
+  },
+  "hideVoiceSearch": {
+    "message": "Скрывать голосовой поиск"
+  },
+  "hideWatched": {
+    "message": "Скрывать просмотренные видео"
+  },
+  "hideWatchedThreshold": {
+    "message": "Просмотрено %"
+  },
+  "mobileGridView": {
+    "message": "Использовать вид сетки для подписок и поиска (только в портретной ориентации)"
+  },
+  "mobileOnly": {
+    "message": "Только для мобильных устройств"
+  },
+  "redirectShorts": {
+    "message": "Перенаправить Шортсы на нормальный плеер"
+  },
+  "shorts": {
+    "message": "Шортсы"
+  },
+  "skipAds": {
+    "message": "Пропускать рекламу"
+  },
+  "tidyGuideSidebar": {
+    "message": "Аккуратная боковая панель путеводителя"
+  },
+  "uiTweaks": {
+    "message": "Настройки пользовательского интерфейса"
+  },
+  "videoLists": {
+    "message": "Списки видео"
+  },
+  "videoPages": {
+    "message": "Страницы видео"
+  }
+}
