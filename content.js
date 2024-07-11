@@ -61,6 +61,7 @@ let config = {
   // Desktop only
   downloadTranscript: true,
   fillGaps: true,
+  fullSizeTheaterMode: false,
   hideChat: false,
   hideEndCards: false,
   hideEndVideos: true,
@@ -904,6 +905,14 @@ const configureCss = (() => {
           ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child > #content {
             margin-left: 8px !important;
             margin-right: 8px !important;
+          }
+        `)
+      }
+      if (config.fullSizeTheaterMode) {
+        // 56px is the height of #container.ytd-masthead
+        cssRules.push(`
+          ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container {
+            max-height: calc(100vh - 56px);
           }
         `)
       }
@@ -2347,6 +2356,14 @@ function redirectShort() {
   location.replace(`/watch?v=${videoId}${search}`)
 }
 
+/**
+ * Forces the video to resize if options which affect its size are used.
+ */
+function triggerVideoPageResize() {
+  if (isVideoPage()) {
+    window.dispatchEvent(new Event('resize'))
+  }
+}
 
 function tweakAdInterstitial($adContent) {
   log('ad interstitial showing')
@@ -2652,6 +2669,7 @@ let isUserscript =  !(
 function main() {
   if (config.enabled) {
     configureCss()
+    triggerVideoPageResize()
     observeTitle()
     observePopups()
     document.addEventListener('click', onDocumentClick, true)
@@ -2663,6 +2681,7 @@ function configChanged(changes) {
   if (!changes.hasOwnProperty('enabled')) {
     log('config changed', changes)
     configureCss()
+    triggerVideoPageResize()
     handleCurrentUrl()
     return
   }
@@ -2672,6 +2691,7 @@ function configChanged(changes) {
     main()
   } else {
     configureCss()
+    triggerVideoPageResize()
     disconnectObservers(pageObservers, 'page')
     disconnectObservers(globalObservers,' global')
     document.removeEventListener('click', onDocumentClick, true)

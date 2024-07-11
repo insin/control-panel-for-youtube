@@ -9,6 +9,7 @@ for (let translationId of [
   'embeddedVideos',
   'enabled',
   'fillGaps',
+  'fullSizeTheaterMode',
   'hideChannels',
   'hideChannelsNote',
   'hideChat',
@@ -93,6 +94,7 @@ let defaultConfig = {
   // Desktop only
   downloadTranscript: true,
   fillGaps: true,
+  fullSizeTheaterMode: false,
   hideChat: false,
   hideEndCards: false,
   hideEndVideos: true,

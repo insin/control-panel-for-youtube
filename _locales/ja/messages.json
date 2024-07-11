@@ -38,6 +38,9 @@
   "fillGaps": {
     "message": "非表示になっているビデオによって作成された隙間を埋める"
   },
+  "fullSizeTheaterMode": {
+    "message": "フルサイズシアターモード"
+  },
   "hiddenChannelsSummary": {
     "message": "隠しチャンネル ($COUNT$)",
     "placeholders": {

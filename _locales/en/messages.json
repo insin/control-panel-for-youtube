@@ -39,6 +39,9 @@
   "fillGaps": {
     "message": "Fill gaps created by hidden videos"
   },
+  "fullSizeTheaterMode": {
+    "message": "Full size theater mode"
+  },
   "hiddenChannelsSummary": {
     "message": "Hidden channels ($COUNT$)",
     "placeholders": {
