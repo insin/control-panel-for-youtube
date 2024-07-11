@@ -26,6 +26,7 @@ for (let translationId of [
   'hideLive',
   'hideMerchEtc',
   'hideMetadata',
+  'hideMiniplayerButton',
   'hideMixes',
   'hideNextButton',
   'hideNextButtonNote',
@@ -99,6 +100,7 @@ let defaultConfig = {
   hideEndCards: false,
   hideEndVideos: true,
   hideMerchEtc: true,
+  hideMiniplayerButton: false,
   hideSubscriptionsLatestBar: false,
   tidyGuideSidebar: false,
   // Mobile only

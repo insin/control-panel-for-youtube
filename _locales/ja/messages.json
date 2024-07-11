@@ -98,6 +98,9 @@
   "hideMetadata": {
     "message": "ビデオのメタデータを非表示"
   },
+  "hideMiniplayerButton": {
+    "message": "ミニプレイヤー非表示ボタン"
+  },
   "hideMixes": {
     "message": "ミックスを非表示"
   },

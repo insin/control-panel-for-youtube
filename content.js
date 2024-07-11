@@ -66,6 +66,7 @@ let config = {
   hideEndCards: false,
   hideEndVideos: true,
   hideMerchEtc: true,
+  hideMiniplayerButton: false,
   hideSubscriptionsLatestBar: false,
   tidyGuideSidebar: false,
   // Mobile only
@@ -931,6 +932,9 @@ const configureCss = (() => {
           // Offers
           '#offer-module',
         )
+      }
+      if (config.hideMiniplayerButton) {
+        hideCssSelectors.push('#movie_player .ytp-miniplayer-button')
       }
       if (config.hideSubscriptionsLatestBar) {
         hideCssSelectors.push(

@@ -99,6 +99,9 @@
   "hideMetadata": {
     "message": "Hide video metadata"
   },
+  "hideMiniplayerButton": {
+    "message": "Hide Miniplayer button"
+  },
   "hideMixes": {
     "message": "Hide Mixes"
   },
