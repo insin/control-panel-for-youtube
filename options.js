@@ -1,5 +1,16 @@
 document.title = chrome.i18n.getMessage('extensionName')
 
+for (let optionValue of [
+  'large',
+  'medium',
+  'small',
+]) {
+  let label = chrome.i18n.getMessage(optionValue)
+  for (let $option of document.querySelectorAll(`option[value="${optionValue}"]`)) {
+    $option.textContent = label
+  }
+}
+
 for (let translationId of [
   'anyPercent',
   'disableAutoplay',
@@ -102,6 +113,7 @@ let defaultConfig = {
   hideMerchEtc: true,
   hideMiniplayerButton: false,
   hideSubscriptionsLatestBar: false,
+  searchThumbnailSize: 'medium',
   tidyGuideSidebar: false,
   // Mobile only
   hideExploreButton: true,

@@ -150,6 +150,12 @@
   "hideWatchedThreshold": {
     "message": "Watched %"
   },
+  "large": {
+    "message": "Large"
+  },
+  "medium": {
+    "message": "Medium"
+  },
   "mobileGridView": {
     "message": "Use grid view for Subscriptions & Search (portrait only)"
   },
@@ -159,11 +165,17 @@
   "redirectShorts": {
     "message": "Redirect Shorts to the normal player"
   },
+  "searchThumbnailSize": {
+    "message": "Search thumbnail size"
+  },
   "shorts": {
     "message": "Shorts"
   },
   "skipAds": {
     "message": "Skip ads"
+  },
+  "small": {
+    "message": "Small"
   },
   "tidyGuideSidebar": {
     "message": "Tidy Guide sidebar"

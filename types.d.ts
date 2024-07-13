@@ -75,6 +75,7 @@ export type SiteConfig = {
   hideMerchEtc: boolean
   hideMiniplayerButton: boolean
   hideSubscriptionsLatestBar: boolean
+  searchThumbnailSize: 'large' | 'medium' | 'small'
   tidyGuideSidebar: boolean
   // Mobile only
   hideExploreButton: boolean

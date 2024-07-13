@@ -149,6 +149,12 @@
   "hideWatchedThreshold": {
     "message": "視聴済みの割合"
   },
+  "large": {
+    "message": "大"
+  },
+  "medium": {
+    "message": "中"
+  },
   "mobileGridView": {
     "message": "購読と検索にグリッド ビューを使用する（縦画面のみ）"
   },
@@ -158,11 +164,17 @@
   "redirectShorts": {
     "message": "ショート動画を通常のプレイヤーにリダイレクト"
   },
+  "searchThumbnailSize": {
+    "message": "検索サムネイルサイズ"
+  },
   "shorts": {
     "message": "ショート動画"
   },
   "skipAds": {
     "message": "広告をスキップ"
+  },
+  "small": {
+    "message": "小"
   },
   "tidyGuideSidebar": {
     "message": "整頓されたガイドサイドバー"

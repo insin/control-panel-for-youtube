@@ -68,6 +68,7 @@ let config = {
   hideMerchEtc: true,
   hideMiniplayerButton: false,
   hideSubscriptionsLatestBar: false,
+  searchThumbnailSize: 'medium',
   tidyGuideSidebar: false,
   // Mobile only
   hideExploreButton: true,
@@ -940,6 +941,16 @@ const configureCss = (() => {
         hideCssSelectors.push(
           'ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child'
         )
+      }
+      if (config.searchThumbnailSize != 'large') {
+        cssRules.push(`
+          ytd-search ytd-video-renderer ytd-thumbnail.ytd-video-renderer {
+            max-width: ${{
+              medium: 420,
+              small: 360,
+            }[config.searchThumbnailSize]}px !important;
+          }
+        `)
       }
       if (config.tidyGuideSidebar) {
         hideCssSelectors.push(
