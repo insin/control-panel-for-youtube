@@ -2,6 +2,9 @@
   "anyPercent": {
     "message": "どれでも ％"
   },
+  "auto": {
+    "message": "オート"
+  },
   "desktopOnly": {
     "message": "デスクトップのみ"
   },
@@ -154,6 +157,12 @@
   },
   "medium": {
     "message": "中"
+  },
+  "minimumGridItemsPerRow": {
+    "message": "行あたりの最小グリッド項目数"
+  },
+  "minimumGridItemsPerRowNote": {
+    "message": "ホームとサブスクリプション内で"
   },
   "mobileGridView": {
     "message": "購読と検索にグリッド ビューを使用する（縦画面のみ）"

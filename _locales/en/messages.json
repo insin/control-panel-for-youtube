@@ -2,6 +2,9 @@
   "anyPercent": {
     "message": "any %"
   },
+  "auto": {
+    "message": "Auto"
+  },
   "desktopOnly": {
     "message": "Desktop only"
   },
@@ -155,6 +158,12 @@
   },
   "medium": {
     "message": "Medium"
+  },
+  "minimumGridItemsPerRow": {
+    "message": "Minimum grid items per row"
+  },
+  "minimumGridItemsPerRowNote": {
+    "message": "In Home and Subscriptions"
   },
   "mobileGridView": {
     "message": "Use grid view for Subscriptions & Search (portrait only)"

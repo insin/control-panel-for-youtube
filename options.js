@@ -1,6 +1,7 @@
 document.title = chrome.i18n.getMessage('extensionName')
 
 for (let optionValue of [
+  'auto',
   'large',
   'medium',
   'small',
@@ -54,6 +55,8 @@ for (let translationId of [
   'hideVoiceSearch',
   'hideWatched',
   'hideWatchedThreshold',
+  'minimumGridItemsPerRow',
+  'minimumGridItemsPerRowNote',
   'mobileGridView',
   'redirectShorts',
   'skipAds',
@@ -113,6 +116,7 @@ let defaultConfig = {
   hideMerchEtc: true,
   hideMiniplayerButton: false,
   hideSubscriptionsLatestBar: false,
+  minimumGridItemsPerRow: 'auto',
   searchThumbnailSize: 'medium',
   tidyGuideSidebar: false,
   // Mobile only

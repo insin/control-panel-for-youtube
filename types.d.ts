@@ -75,6 +75,7 @@ export type SiteConfig = {
   hideMerchEtc: boolean
   hideMiniplayerButton: boolean
   hideSubscriptionsLatestBar: boolean
+  minimumGridItemsPerRow: 'auto' | '3' | '4' | '5' | '6'
   searchThumbnailSize: 'large' | 'medium' | 'small'
   tidyGuideSidebar: boolean
   // Mobile only
