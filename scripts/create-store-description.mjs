@@ -75,6 +75,9 @@ ${messages.videoLists}:
 • ${messages.hideChannels}
   • ${messages.hideChannelsNote}
 • ${messages.disableHomeFeed}
+• ${messages.searchThumbnailSize}${messages.desktopVersion}
+• ${messages.minimumGridItemsPerRow}${messages.desktopVersion}
+  • ${messages.minimumGridItemsPerRowNote}
 • ${messages.fillGaps}${messages.desktopVersion}
 
 ${messages.videoPages}:
@@ -87,6 +90,8 @@ ${messages.videoPages}:
 • ${messages.hideMetadata}
 • ${messages.hideComments}
 • ${messages.redirectShorts}
+• ${messages.fullSizeTheaterMode}${messages.desktopVersion}
+• ${messages.hideMiniplayerButton}${messages.desktopVersion}
 • ${messages.hideEndCards}${messages.desktopVersion}
 • ${messages.hideEndVideos}${messages.desktopVersion}
 • ${messages.hideMerchEtc}${messages.desktopVersion}
