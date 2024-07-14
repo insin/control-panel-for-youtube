@@ -59,6 +59,7 @@ for (let translationId of [
   'minimumGridItemsPerRowNote',
   'mobileGridView',
   'redirectShorts',
+  'searchThumbnailSize',
   'skipAds',
   'tidyGuideSidebar',
   'uiTweaks',
