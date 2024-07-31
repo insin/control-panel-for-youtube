@@ -1589,7 +1589,7 @@ async function observeDesktopRichGridVideos(options) {
   }
 
   function processAllVideos() {
-    let $videos = $rows.querySelectorAll('ytd-rich-item-renderer.ytd-rich-grid-row')
+    let $videos = $rows.querySelectorAll('ytd-rich-item-renderer.ytd-rich-grid-renderer')
     if ($videos.length > 0) {
       log('processing', $videos.length, `${page} video${s($videos.length)}`)
     }
