@@ -400,7 +400,7 @@ const configureCss = (() => {
     if (config.skipAds) {
       // Display a black overlay while ads are playing
       cssRules.push(`
-        .ytp-ad-player-overlay, .ytp-ad-action-interstitial {
+        .ytp-ad-player-overlay-layout, .ytp-ad-action-interstitial {
           background: black;
           z-index: 10;
         }
@@ -414,7 +414,7 @@ const configureCss = (() => {
         // Ad title
         '#movie_player.ad-showing .ytp-chrome-top',
         // Ad overlay content
-        '#movie_player.ad-showing .ytp-ad-player-overlay > div',
+        '#movie_player.ad-showing .ytp-ad-player-overlay-layout > div',
         '#movie_player.ad-showing .ytp-ad-action-interstitial > div',
         // Yellow ad progress bar
         '#movie_player.ad-showing .ytp-play-progress',
@@ -1997,7 +1997,7 @@ async function observeVideoAds() {
 
   function processAdContent() {
     let $adContent = $videoAds.firstElementChild
-    if ($adContent.classList.contains('ytp-ad-player-overlay')) {
+    if ($adContent.classList.contains('ytp-ad-player-overlay-layout')) {
       tweakAdPlayerOverlay($player)
     }
     else if ($adContent.classList.contains('ytp-ad-action-interstitial')) {
