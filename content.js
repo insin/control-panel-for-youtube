@@ -1542,9 +1542,7 @@ async function observeDesktopRichGridVideos(options) {
   })
   if (!$renderer) return
 
-  let $rows = $renderer.querySelector(':scope > #contents')
-  let itemsPerRow = $renderer.style.getPropertyValue('--ytd-rich-grid-items-per-row')
-  let itemsPerRowChanging = false
+  let $gridContents = $renderer.querySelector(':scope > #contents')
   let observingRefreshCanary = false
 
   /** @param {Element} $video */
@@ -1577,7 +1575,7 @@ async function observeDesktopRichGridVideos(options) {
           processAllVideos()
         }
       }, {
-        name: `refresh canary href`,
+        name: 'refresh canary href',
         observers: pageObservers,
       }, {
         attributes: true,
@@ -1589,56 +1587,22 @@ async function observeDesktopRichGridVideos(options) {
   }
 
   function processAllVideos() {
-    let $videos = $rows.querySelectorAll('ytd-rich-item-renderer.ytd-rich-grid-renderer')
+    let $videos = $gridContents.querySelectorAll('ytd-rich-item-renderer.ytd-rich-grid-renderer')
     if ($videos.length > 0) {
       log('processing', $videos.length, `${page} video${s($videos.length)}`)
     }
     $videos.forEach(processVideo)
   }
 
-  // When the number of items per row changes responsively with width, rows are
-  // re-rendered and existing video elements are reused, so all videos need to
-  // be re-checked for manual hiding.
-  observeElement($renderer, () => {
-    if ($renderer.style.getPropertyValue('--ytd-rich-grid-items-per-row') == itemsPerRow) return
-
-    log('items per row changed')
-    itemsPerRow = $renderer.style.getPropertyValue('--ytd-rich-grid-items-per-row')
-    itemsPerRowChanging = true
-    try {
-      processAllVideos()
-    } finally {
-      // Allow content mutations to run so they can be ignored
-      Promise.resolve().then(() => {
-        itemsPerRowChanging = false
-      })
-    }
-  }, {
-    name: `${page} <ytd-rich-grid-renderer> style attribute (for --ytd-rich-grid-items-per-row changing)`,
-    observers: pageObservers,
-  }, {
-    attributes: true,
-    attributeFilter: ['style'],
-  })
-
-  // Process videos in new rows as they're added
-  observeElement($rows, (mutations) => {
-    if (itemsPerRowChanging) {
-      log('ignoring row mutations as items per row just changed')
-      return
-    }
+  // Process new videos as they're added
+  observeElement($gridContents, (mutations) => {
     let videosAdded = 0
     for (let mutation of mutations) {
       for (let $addedNode of mutation.addedNodes) {
         if (!($addedNode instanceof HTMLElement)) continue
-        if ($addedNode.nodeName == 'YTD-RICH-GRID-ROW') {
-          let $contents = $addedNode.querySelector('#contents')
-          for (let $item of $contents.children) {
-            if ($item.nodeName == 'YTD-RICH-ITEM-RENDERER') {
-              processVideo($item)
-              videosAdded++
-            }
-          }
+        if ($addedNode.nodeName == 'YTD-RICH-ITEM-RENDERER') {
+          processVideo($addedNode)
+          videosAdded++
         }
       }
     }
@@ -1646,7 +1610,7 @@ async function observeDesktopRichGridVideos(options) {
       log(videosAdded, `video${s(videosAdded)} added`)
     }
   }, {
-    name: `${page} <ytd-rich-grid-renderer> rows (for new rows being added)`,
+    name: `${page} <ytd-rich-grid-renderer> #contents (for new videos being added)`,
     observers: pageObservers,
   })
 
