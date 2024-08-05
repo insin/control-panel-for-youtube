@@ -6,7 +6,7 @@
 // @match       https://www.youtube.com/*
 // @match       https://m.youtube.com/*
 // @exclude     https://www.youtube.com/embed/*
-// @version     7
+// @version     8
 // ==/UserScript==
 let debug = false
 let debugManualHiding = false
@@ -833,7 +833,7 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // Shelves in Home
-          'ytd-browse[page-subtype="home"] ytd-rich-section-renderer',
+          'ytd-browse[page-subtype="home"] ytd-rich-section-renderer:not(:has(> #content > ytd-rich-shelf-renderer[is-shorts]))',
           // Looking for something different? tile in Home
           'ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(> #content > ytd-feed-nudge-renderer)',
           // Suggested content shelves in Search
@@ -843,7 +843,7 @@ const configureCss = (() => {
           // Recommended videos in a Playlist
           'ytd-browse[page-subtype="playlist"] ytd-item-section-renderer[is-playlist-video-container]',
           // Recommended playlists in a Playlist
-          'ytd-browse[page-subtype="playlist"] ytd-item-section-renderer[is-playlist-shelf]',
+          'ytd-browse[page-subtype="playlist"] ytd-item-section-renderer[is-playlist-video-container] + ytd-item-section-renderer',
         )
       }
       if (mobile) {
