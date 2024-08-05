@@ -894,6 +894,21 @@ const configureCss = (() => {
 
     //#region Desktop-only
     if (desktop) {
+      // Fix spaces & gaps caused by left gutter margin on first column items
+      cssRules.push(`
+        /* Remove left gutter margin from first column items */
+        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
+          margin-left: calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
+        }
+        /* Apply the left gutter as padding in the grid contents instead */
+        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) #contents.ytd-rich-grid-renderer {
+          padding-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * 2) !important;
+        }
+        /* Adjust non-grid items so they don't double the gutter */
+        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) #contents.ytd-rich-grid-renderer > :not(ytd-rich-item-renderer) {
+          margin-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * -1) !important;
+        }
+      `)
       if (config.fullSizeTheaterMode) {
         // 56px is the height of #container.ytd-masthead
         cssRules.push(`
