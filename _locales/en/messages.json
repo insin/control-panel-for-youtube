@@ -39,9 +39,6 @@
   "features": {
     "message": "Features"
   },
-  "fillGaps": {
-    "message": "Fill gaps created by hidden videos"
-  },
   "fullSizeTheaterMode": {
     "message": "Full size theater mode"
   },

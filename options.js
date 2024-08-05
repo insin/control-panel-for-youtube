@@ -20,7 +20,6 @@ for (let translationId of [
   'downloadTranscript',
   'embeddedVideos',
   'enabled',
-  'fillGaps',
   'fullSizeTheaterMode',
   'hideChannels',
   'hideChannelsNote',
@@ -109,7 +108,6 @@ let defaultConfig = {
   skipAds: true,
   // Desktop only
   downloadTranscript: true,
-  fillGaps: true,
   fullSizeTheaterMode: false,
   hideChat: false,
   hideEndCards: false,

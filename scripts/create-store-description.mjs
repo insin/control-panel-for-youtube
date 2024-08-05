@@ -78,7 +78,6 @@ ${messages.videoLists}:
 • ${messages.searchThumbnailSize}${messages.desktopVersion}
 • ${messages.minimumGridItemsPerRow}${messages.desktopVersion}
   • ${messages.minimumGridItemsPerRowNote}
-• ${messages.fillGaps}${messages.desktopVersion}
 
 ${messages.videoPages}:
 

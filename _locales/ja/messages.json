@@ -38,9 +38,6 @@
   "features": {
     "message": "特徴"
   },
-  "fillGaps": {
-    "message": "非表示になっているビデオによって作成された隙間を埋める"
-  },
   "fullSizeTheaterMode": {
     "message": "フルサイズシアターモード"
   },

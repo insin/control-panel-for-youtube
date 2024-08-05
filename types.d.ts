@@ -67,7 +67,6 @@ export type SiteConfig = {
   skipAds: boolean
   // Desktop only
   downloadTranscript: boolean
-  fillGaps: boolean
   fullSizeTheaterMode: boolean
   hideChat: boolean
   hideEndCards: boolean

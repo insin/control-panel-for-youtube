@@ -60,7 +60,6 @@ let config = {
   skipAds: true,
   // Desktop only
   downloadTranscript: true,
-  fillGaps: true,
   fullSizeTheaterMode: false,
   hideChat: false,
   hideEndCards: false,
@@ -895,23 +894,6 @@ const configureCss = (() => {
 
     //#region Desktop-only
     if (desktop) {
-      if (config.fillGaps) {
-        cssRules.push(`
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-row,
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-row > #contents {
-            display: contents !important;
-          }
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-renderer > #contents {
-            width: auto !important;
-            padding-left: 16px !important;
-            padding-right: 16px !important;
-          }
-          ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child > #content {
-            margin-left: 8px !important;
-            margin-right: 8px !important;
-          }
-        `)
-      }
       if (config.fullSizeTheaterMode) {
         // 56px is the height of #container.ytd-masthead
         cssRules.push(`
