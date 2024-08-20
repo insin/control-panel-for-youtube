@@ -2,6 +2,9 @@
   "anyPercent": {
     "message": "どれでも ％"
   },
+  "auto": {
+    "message": "オート"
+  },
   "desktopOnly": {
     "message": "デスクトップのみ"
   },
@@ -35,8 +38,8 @@
   "features": {
     "message": "特徴"
   },
-  "fillGaps": {
-    "message": "非表示になっているビデオによって作成された隙間を埋める"
+  "fullSizeTheaterMode": {
+    "message": "フルサイズシアターモード"
   },
   "hiddenChannelsSummary": {
     "message": "隠しチャンネル ($COUNT$)",
@@ -95,6 +98,9 @@
   "hideMetadata": {
     "message": "ビデオのメタデータを非表示"
   },
+  "hideMiniplayerButton": {
+    "message": "ミニプレイヤー非表示ボタン"
+  },
   "hideMixes": {
     "message": "ミックスを非表示"
   },
@@ -143,6 +149,18 @@
   "hideWatchedThreshold": {
     "message": "視聴済みの割合"
   },
+  "large": {
+    "message": "大"
+  },
+  "medium": {
+    "message": "中"
+  },
+  "minimumGridItemsPerRow": {
+    "message": "行あたりの最小グリッド項目数"
+  },
+  "minimumGridItemsPerRowNote": {
+    "message": "ホームとサブスクリプション内で"
+  },
   "mobileGridView": {
     "message": "購読と検索にグリッド ビューを使用する（縦画面のみ）"
   },
@@ -152,11 +170,17 @@
   "redirectShorts": {
     "message": "ショート動画を通常のプレイヤーにリダイレクト"
   },
+  "searchThumbnailSize": {
+    "message": "検索サムネイルサイズ"
+  },
   "shorts": {
     "message": "ショート動画"
   },
   "skipAds": {
     "message": "広告をスキップ"
+  },
+  "small": {
+    "message": "小"
   },
   "tidyGuideSidebar": {
     "message": "整頓されたガイドサイドバー"

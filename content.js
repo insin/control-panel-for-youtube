@@ -6,7 +6,7 @@
 // @match       https://www.youtube.com/*
 // @match       https://m.youtube.com/*
 // @exclude     https://www.youtube.com/embed/*
-// @version     3
+// @version     8
 // ==/UserScript==
 let debug = false
 let debugManualHiding = false
@@ -60,12 +60,15 @@ let config = {
   skipAds: true,
   // Desktop only
   downloadTranscript: true,
-  fillGaps: true,
+  fullSizeTheaterMode: false,
   hideChat: false,
   hideEndCards: false,
   hideEndVideos: true,
   hideMerchEtc: true,
+  hideMiniplayerButton: false,
   hideSubscriptionsLatestBar: false,
+  minimumGridItemsPerRow: 'auto',
+  searchThumbnailSize: 'medium',
   tidyGuideSidebar: false,
   // Mobile only
   hideExploreButton: true,
@@ -396,7 +399,7 @@ const configureCss = (() => {
     if (config.skipAds) {
       // Display a black overlay while ads are playing
       cssRules.push(`
-        .ytp-ad-player-overlay, .ytp-ad-action-interstitial {
+        .ytp-ad-player-overlay, .ytp-ad-player-overlay-layout, .ytp-ad-action-interstitial {
           background: black;
           z-index: 10;
         }
@@ -411,6 +414,7 @@ const configureCss = (() => {
         '#movie_player.ad-showing .ytp-chrome-top',
         // Ad overlay content
         '#movie_player.ad-showing .ytp-ad-player-overlay > div',
+        '#movie_player.ad-showing .ytp-ad-player-overlay-layout > div',
         '#movie_player.ad-showing .ytp-ad-action-interstitial > div',
         // Yellow ad progress bar
         '#movie_player.ad-showing .ytp-play-progress',
@@ -829,7 +833,7 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // Shelves in Home
-          'ytd-browse[page-subtype="home"] ytd-rich-section-renderer',
+          'ytd-browse[page-subtype="home"] ytd-rich-section-renderer:not(:has(> #content > ytd-rich-shelf-renderer[is-shorts]))',
           // Looking for something different? tile in Home
           'ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(> #content > ytd-feed-nudge-renderer)',
           // Suggested content shelves in Search
@@ -839,7 +843,7 @@ const configureCss = (() => {
           // Recommended videos in a Playlist
           'ytd-browse[page-subtype="playlist"] ytd-item-section-renderer[is-playlist-video-container]',
           // Recommended playlists in a Playlist
-          'ytd-browse[page-subtype="playlist"] ytd-item-section-renderer[is-playlist-shelf]',
+          'ytd-browse[page-subtype="playlist"] ytd-item-section-renderer[is-playlist-video-container] + ytd-item-section-renderer',
         )
       }
       if (mobile) {
@@ -890,20 +894,26 @@ const configureCss = (() => {
 
     //#region Desktop-only
     if (desktop) {
-      if (config.fillGaps) {
+      // Fix spaces & gaps caused by left gutter margin on first column items
+      cssRules.push(`
+        /* Remove left gutter margin from first column items */
+        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
+          margin-left: calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
+        }
+        /* Apply the left gutter as padding in the grid contents instead */
+        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) #contents.ytd-rich-grid-renderer {
+          padding-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * 2) !important;
+        }
+        /* Adjust non-grid items so they don't double the gutter */
+        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) #contents.ytd-rich-grid-renderer > :not(ytd-rich-item-renderer) {
+          margin-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * -1) !important;
+        }
+      `)
+      if (config.fullSizeTheaterMode) {
+        // 56px is the height of #container.ytd-masthead
         cssRules.push(`
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-row,
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-row > #contents {
-            display: contents !important;
-          }
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-renderer > #contents {
-            width: auto !important;
-            padding-left: 16px !important;
-            padding-right: 16px !important;
-          }
-          ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child > #content {
-            margin-left: 8px !important;
-            margin-right: 8px !important;
+          ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container {
+            max-height: calc(100vh - 56px);
           }
         `)
       }
@@ -923,10 +933,35 @@ const configureCss = (() => {
           '#offer-module',
         )
       }
+      if (config.hideMiniplayerButton) {
+        hideCssSelectors.push('#movie_player .ytp-miniplayer-button')
+      }
       if (config.hideSubscriptionsLatestBar) {
         hideCssSelectors.push(
           'ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child'
         )
+      }
+      if (config.minimumGridItemsPerRow != 'auto') {
+        let gridItemsPerRow = Number(config.minimumGridItemsPerRow)
+        let exclude = []
+        for (let i = 6; i > gridItemsPerRow; i--) {
+          exclude.push(`[elements-per-row="${i}"]`)
+        }
+        cssRules.push(`
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-renderer${exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''} {
+            --ytd-rich-grid-items-per-row: ${gridItemsPerRow} !important;
+          }
+        `)
+      }
+      if (config.searchThumbnailSize != 'large') {
+        cssRules.push(`
+          ytd-search ytd-video-renderer ytd-thumbnail.ytd-video-renderer {
+            max-width: ${{
+              medium: 420,
+              small: 360,
+            }[config.searchThumbnailSize]}px !important;
+          }
+        `)
       }
       if (config.tidyGuideSidebar) {
         hideCssSelectors.push(
@@ -1505,9 +1540,7 @@ async function observeDesktopRichGridVideos(options) {
   })
   if (!$renderer) return
 
-  let $rows = $renderer.querySelector(':scope > #contents')
-  let itemsPerRow = $renderer.style.getPropertyValue('--ytd-rich-grid-items-per-row')
-  let itemsPerRowChanging = false
+  let $gridContents = $renderer.querySelector(':scope > #contents')
   let observingRefreshCanary = false
 
   /** @param {Element} $video */
@@ -1540,7 +1573,7 @@ async function observeDesktopRichGridVideos(options) {
           processAllVideos()
         }
       }, {
-        name: `refresh canary href`,
+        name: 'refresh canary href',
         observers: pageObservers,
       }, {
         attributes: true,
@@ -1552,56 +1585,22 @@ async function observeDesktopRichGridVideos(options) {
   }
 
   function processAllVideos() {
-    let $videos = $rows.querySelectorAll('ytd-rich-item-renderer.ytd-rich-grid-row')
+    let $videos = $gridContents.querySelectorAll('ytd-rich-item-renderer.ytd-rich-grid-renderer')
     if ($videos.length > 0) {
       log('processing', $videos.length, `${page} video${s($videos.length)}`)
     }
     $videos.forEach(processVideo)
   }
 
-  // When the number of items per row changes responsively with width, rows are
-  // re-rendered and existing video elements are reused, so all videos need to
-  // be re-checked for manual hiding.
-  observeElement($renderer, () => {
-    if ($renderer.style.getPropertyValue('--ytd-rich-grid-items-per-row') == itemsPerRow) return
-
-    log('items per row changed')
-    itemsPerRow = $renderer.style.getPropertyValue('--ytd-rich-grid-items-per-row')
-    itemsPerRowChanging = true
-    try {
-      processAllVideos()
-    } finally {
-      // Allow content mutations to run so they can be ignored
-      Promise.resolve().then(() => {
-        itemsPerRowChanging = false
-      })
-    }
-  }, {
-    name: `${page} <ytd-rich-grid-renderer> style attribute (for --ytd-rich-grid-items-per-row changing)`,
-    observers: pageObservers,
-  }, {
-    attributes: true,
-    attributeFilter: ['style'],
-  })
-
-  // Process videos in new rows as they're added
-  observeElement($rows, (mutations) => {
-    if (itemsPerRowChanging) {
-      log('ignoring row mutations as items per row just changed')
-      return
-    }
+  // Process new videos as they're added
+  observeElement($gridContents, (mutations) => {
     let videosAdded = 0
     for (let mutation of mutations) {
       for (let $addedNode of mutation.addedNodes) {
         if (!($addedNode instanceof HTMLElement)) continue
-        if ($addedNode.nodeName == 'YTD-RICH-GRID-ROW') {
-          let $contents = $addedNode.querySelector('#contents')
-          for (let $item of $contents.children) {
-            if ($item.nodeName == 'YTD-RICH-ITEM-RENDERER') {
-              processVideo($item)
-              videosAdded++
-            }
-          }
+        if ($addedNode.nodeName == 'YTD-RICH-ITEM-RENDERER') {
+          processVideo($addedNode)
+          videosAdded++
         }
       }
     }
@@ -1609,7 +1608,7 @@ async function observeDesktopRichGridVideos(options) {
       log(videosAdded, `video${s(videosAdded)} added`)
     }
   }, {
-    name: `${page} <ytd-rich-grid-renderer> rows (for new rows being added)`,
+    name: `${page} <ytd-rich-grid-renderer> #contents (for new videos being added)`,
     observers: pageObservers,
   })
 
@@ -1996,7 +1995,7 @@ async function observeVideoAds() {
 
   function processAdContent() {
     let $adContent = $videoAds.firstElementChild
-    if ($adContent.classList.contains('ytp-ad-player-overlay')) {
+    if ($adContent.classList.contains('ytp-ad-player-overlay') || $adContent.classList.contains('ytp-ad-player-overlay-layout')) {
       tweakAdPlayerOverlay($player)
     }
     else if ($adContent.classList.contains('ytp-ad-action-interstitial')) {
@@ -2347,6 +2346,14 @@ function redirectShort() {
   location.replace(`/watch?v=${videoId}${search}`)
 }
 
+/**
+ * Forces the video to resize if options which affect its size are used.
+ */
+function triggerVideoPageResize() {
+  if (isVideoPage()) {
+    window.dispatchEvent(new Event('resize'))
+  }
+}
 
 function tweakAdInterstitial($adContent) {
   log('ad interstitial showing')
@@ -2652,6 +2659,7 @@ let isUserscript =  !(
 function main() {
   if (config.enabled) {
     configureCss()
+    triggerVideoPageResize()
     observeTitle()
     observePopups()
     document.addEventListener('click', onDocumentClick, true)
@@ -2663,6 +2671,7 @@ function configChanged(changes) {
   if (!changes.hasOwnProperty('enabled')) {
     log('config changed', changes)
     configureCss()
+    triggerVideoPageResize()
     handleCurrentUrl()
     return
   }
@@ -2672,6 +2681,7 @@ function configChanged(changes) {
     main()
   } else {
     configureCss()
+    triggerVideoPageResize()
     disconnectObservers(pageObservers, 'page')
     disconnectObservers(globalObservers,' global')
     document.removeEventListener('click', onDocumentClick, true)

@@ -67,12 +67,15 @@ export type SiteConfig = {
   skipAds: boolean
   // Desktop only
   downloadTranscript: boolean
-  fillGaps: boolean
+  fullSizeTheaterMode: boolean
   hideChat: boolean
   hideEndCards: boolean
   hideEndVideos: boolean
   hideMerchEtc: boolean
+  hideMiniplayerButton: boolean
   hideSubscriptionsLatestBar: boolean
+  minimumGridItemsPerRow: 'auto' | '3' | '4' | '5' | '6'
+  searchThumbnailSize: 'large' | 'medium' | 'small'
   tidyGuideSidebar: boolean
   // Mobile only
   hideExploreButton: boolean

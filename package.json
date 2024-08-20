@@ -44,8 +44,8 @@
   "devDependencies": {
     "@types/chrome": "0.0.x",
     "@types/greasemonkey": "4.x",
-    "clipboardy": "3.x",
+    "clipboardy": "4.x",
     "semver": "7.x",
-    "web-ext": "7.x"
+    "web-ext": "8.x"
   }
 }

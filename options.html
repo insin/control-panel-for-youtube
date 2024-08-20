@@ -43,6 +43,29 @@
           <span class="toggle"></span>
         </label>
       </section>
+      <section class="select desktop">
+        <label>
+          <span id="searchThumbnailSize">Search thumbnail size</span>
+          <select name="searchThumbnailSize">
+            <option value="large">Large</option>
+            <option value="medium">Medium</option>
+            <option value="small">Small</option>
+          </select>
+        </label>
+      </section>
+      <section class="select desktop">
+        <label>
+          <span id="minimumGridItemsPerRow">Minimum grid items per row</span>
+          <select name="minimumGridItemsPerRow">
+            <option value="auto">Auto</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select>
+        </label>
+        <p id="minimumGridItemsPerRowNote">In Home and Subscriptions</p>
+      </section>
       <section class="checkbox">
         <label>
           <span id="hideMixes">Hide Mixes</span>
@@ -114,13 +137,6 @@
           <div id="hiddenChannels"></div>
         </details>
       </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="fillGaps">Fill gaps created by hidden videos</span>
-          <input type="checkbox" name="fillGaps">
-          <span class="toggle"></span>
-        </label>
-      </section>
       <section class="checkbox mobile">
         <label>
           <span id="mobileGridView">Use grid view for Subcriptions & Search (portrait only)</span>
@@ -155,6 +171,13 @@
           <span class="toggle"></span>
         </label>
       </section>
+      <section class="checkbox desktop">
+        <label>
+          <span id="fullSizeTheaterMode">Full size theater mode</span>
+          <input type="checkbox" name="fullSizeTheaterMode">
+          <span class="toggle"></span>
+        </label>
+      </section>
       <section class="checkbox">
         <label>
           <span id="hideRelated">Hide Related videos</span>
@@ -185,6 +208,13 @@
         <p class="desktop" id="hideNextButtonNote">
           When not watching a video in a playlist
         </p>
+      </section>
+      <section class="checkbox desktop">
+        <label>
+          <span id="hideMiniplayerButton">Hide Miniplayer button</span>
+          <input type="checkbox" name="hideMiniplayerButton">
+          <span class="toggle"></span>
+        </label>
       </section>
       <section class="checkbox desktop">
         <label>
@@ -336,7 +366,7 @@
         <p id="debugManualHidingNote">Highlights elements instead of hiding them</p>
       </section>
     </section>
-    <div id="version">v1.1.0<span id="debugCountdown"></span></div>
+    <div id="version">v1.2.4<span id="debugCountdown"></span></div>
   </form>
   <script src="options.js"></script>
 </body>

@@ -1,5 +1,17 @@
 document.title = chrome.i18n.getMessage('extensionName')
 
+for (let optionValue of [
+  'auto',
+  'large',
+  'medium',
+  'small',
+]) {
+  let label = chrome.i18n.getMessage(optionValue)
+  for (let $option of document.querySelectorAll(`option[value="${optionValue}"]`)) {
+    $option.textContent = label
+  }
+}
+
 for (let translationId of [
   'anyPercent',
   'disableAutoplay',
@@ -8,7 +20,7 @@ for (let translationId of [
   'downloadTranscript',
   'embeddedVideos',
   'enabled',
-  'fillGaps',
+  'fullSizeTheaterMode',
   'hideChannels',
   'hideChannelsNote',
   'hideChat',
@@ -25,6 +37,7 @@ for (let translationId of [
   'hideLive',
   'hideMerchEtc',
   'hideMetadata',
+  'hideMiniplayerButton',
   'hideMixes',
   'hideNextButton',
   'hideNextButtonNote',
@@ -41,8 +54,11 @@ for (let translationId of [
   'hideVoiceSearch',
   'hideWatched',
   'hideWatchedThreshold',
+  'minimumGridItemsPerRow',
+  'minimumGridItemsPerRowNote',
   'mobileGridView',
   'redirectShorts',
+  'searchThumbnailSize',
   'skipAds',
   'tidyGuideSidebar',
   'uiTweaks',
@@ -92,12 +108,15 @@ let defaultConfig = {
   skipAds: true,
   // Desktop only
   downloadTranscript: true,
-  fillGaps: true,
+  fullSizeTheaterMode: false,
   hideChat: false,
   hideEndCards: false,
   hideEndVideos: true,
   hideMerchEtc: true,
+  hideMiniplayerButton: false,
   hideSubscriptionsLatestBar: false,
+  minimumGridItemsPerRow: 'auto',
+  searchThumbnailSize: 'medium',
   tidyGuideSidebar: false,
   // Mobile only
   hideExploreButton: true,

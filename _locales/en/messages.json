@@ -2,6 +2,9 @@
   "anyPercent": {
     "message": "any %"
   },
+  "auto": {
+    "message": "Auto"
+  },
   "desktopOnly": {
     "message": "Desktop only"
   },
@@ -36,8 +39,8 @@
   "features": {
     "message": "Features"
   },
-  "fillGaps": {
-    "message": "Fill gaps created by hidden videos"
+  "fullSizeTheaterMode": {
+    "message": "Full size theater mode"
   },
   "hiddenChannelsSummary": {
     "message": "Hidden channels ($COUNT$)",
@@ -96,6 +99,9 @@
   "hideMetadata": {
     "message": "Hide video metadata"
   },
+  "hideMiniplayerButton": {
+    "message": "Hide Miniplayer button"
+  },
   "hideMixes": {
     "message": "Hide Mixes"
   },
@@ -144,6 +150,18 @@
   "hideWatchedThreshold": {
     "message": "Watched %"
   },
+  "large": {
+    "message": "Large"
+  },
+  "medium": {
+    "message": "Medium"
+  },
+  "minimumGridItemsPerRow": {
+    "message": "Minimum grid items per row"
+  },
+  "minimumGridItemsPerRowNote": {
+    "message": "In Home and Subscriptions"
+  },
   "mobileGridView": {
     "message": "Use grid view for Subscriptions & Search (portrait only)"
   },
@@ -153,11 +171,17 @@
   "redirectShorts": {
     "message": "Redirect Shorts to the normal player"
   },
+  "searchThumbnailSize": {
+    "message": "Search thumbnail size"
+  },
   "shorts": {
     "message": "Shorts"
   },
   "skipAds": {
     "message": "Skip ads"
+  },
+  "small": {
+    "message": "Small"
   },
   "tidyGuideSidebar": {
     "message": "Tidy Guide sidebar"
