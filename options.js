@@ -58,6 +58,7 @@ for (let translationId of [
   'minimumGridItemsPerRowNote',
   'mobileGridView',
   'redirectShorts',
+  'removePink',
   'searchThumbnailSize',
   'skipAds',
   'tidyGuideSidebar',
@@ -116,6 +117,7 @@ let defaultConfig = {
   hideMiniplayerButton: false,
   hideSubscriptionsLatestBar: false,
   minimumGridItemsPerRow: 'auto',
+  removePink: false,
   searchThumbnailSize: 'medium',
   tidyGuideSidebar: false,
   // Mobile only

@@ -171,6 +171,9 @@
   "redirectShorts": {
     "message": "Redirect Shorts to the normal player"
   },
+  "removePink": {
+    "message": "Remove pink from progress bar"
+  },
   "searchThumbnailSize": {
     "message": "Search thumbnail size"
   },

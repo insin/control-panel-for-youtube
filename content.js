@@ -953,6 +953,13 @@ const configureCss = (() => {
           }
         `)
       }
+      if (config.removePink) {
+        cssRules.push(`
+          .ytp-cairo-refresh-signature-moments .ytp-play-progress {
+            background: #f03 !important;
+          }
+        `)
+      }
       if (config.searchThumbnailSize != 'large') {
         cssRules.push(`
           ytd-search ytd-video-renderer ytd-thumbnail.ytd-video-renderer {
