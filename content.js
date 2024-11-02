@@ -955,7 +955,8 @@ const configureCss = (() => {
       }
       if (config.removePink) {
         cssRules.push(`
-          .ytp-cairo-refresh-signature-moments .ytp-play-progress {
+          .ytp-cairo-refresh-signature-moments .ytp-play-progress,
+          #progress.ytd-thumbnail-overlay-resume-playback-renderer {
             background: #f03 !important;
           }
         `)
