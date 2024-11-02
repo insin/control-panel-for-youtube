@@ -2283,7 +2283,7 @@ function onMobileMenuAppeared($menu) {
 
 /** @param {Element} $video */
 function hideWatched($video) {
-  if (!config.hideWatched) return
+  if (!config.hideWatched || isSearchPage()) return
   // Watch % is obtained from progress bar width when a video has one
   let $progressBar
   if (desktop) {
@@ -2477,7 +2477,7 @@ async function tweakHomePage() {
 
 // TODO Hide ytd-channel-renderer if a channel is hidden
 function tweakSearchPage() {
-  if (!config.hideWatched && !config.hideStreamed && !config.hideChannels) return
+  if (!config.hideStreamed && !config.hideChannels) return
 
   if (desktop) {
     observeSearchResultSections({
