@@ -1109,6 +1109,15 @@ const configureCss = (() => {
           }
         `)
       }
+      if (config.removePink) {
+        cssRules.push(`
+          .YtChapteredProgressBarChapteredPlayerBarChapterRefresh,
+          .YtChapteredProgressBarChapteredPlayerBarFill,
+          .thumbnail-overlay-resume-playback-progress {
+            background: #f03 !important;
+          }
+        `)
+      }
     }
     //#endregion
 

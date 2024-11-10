@@ -106,6 +106,7 @@ let defaultConfig = {
   hideWatched: true,
   hideWatchedThreshold: '80',
   redirectShorts: true,
+  removePink: false,
   skipAds: true,
   // Desktop only
   downloadTranscript: true,
@@ -117,7 +118,6 @@ let defaultConfig = {
   hideMiniplayerButton: false,
   hideSubscriptionsLatestBar: false,
   minimumGridItemsPerRow: 'auto',
-  removePink: false,
   searchThumbnailSize: 'medium',
   tidyGuideSidebar: false,
   // Mobile only

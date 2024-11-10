@@ -64,6 +64,7 @@ export type SiteConfig = {
   hideWatched: boolean
   hideWatchedThreshold: string
   redirectShorts: boolean
+  removePink: boolean
   skipAds: boolean
   // Desktop only
   downloadTranscript: boolean
@@ -75,7 +76,6 @@ export type SiteConfig = {
   hideMiniplayerButton: boolean
   hideSubscriptionsLatestBar: boolean
   minimumGridItemsPerRow: 'auto' | '3' | '4' | '5' | '6'
-  removePink: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small'
   tidyGuideSidebar: boolean
   // Mobile only
