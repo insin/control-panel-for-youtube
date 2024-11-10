@@ -963,7 +963,8 @@ const configureCss = (() => {
       }
       if (config.searchThumbnailSize != 'large') {
         cssRules.push(`
-          ytd-search ytd-video-renderer ytd-thumbnail.ytd-video-renderer {
+          ytd-search ytd-video-renderer ytd-thumbnail.ytd-video-renderer,
+          ytd-search yt-lockup-view-model .yt-lockup-view-model-wiz__content-image {
             max-width: ${{
               medium: 420,
               small: 360,
