@@ -101,6 +101,7 @@ ${messages.uiTweaks}:
 
 • ${messages.hideHomeCategories}
 • ${messages.hideVoiceSearch}
+• ${messages.hidePink}
 • ${messages.tidyGuideSidebar}${messages.desktopVersion}
 • ${messages.hideSubscriptionsLatestBar}${messages.desktopVersion}
 • ${messages.mobileGridView}${messages.mobileVersion}
