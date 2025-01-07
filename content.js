@@ -58,6 +58,7 @@ let config = {
   hideWatched: true,
   hideWatchedThreshold: '80',
   redirectShorts: true,
+  removePink: false,
   skipAds: true,
   // Desktop only
   downloadTranscript: true,
