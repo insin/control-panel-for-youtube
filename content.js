@@ -525,12 +525,6 @@ const configureCss = (() => {
       hideCssSelectors.push('#cpfyt-hide-channel-menu-item')
     }
 
-    if (config.hideChat) {
-      if (desktop) {
-        hideCssSelectors.push('#chat-container')
-      }
-    }
-
     if (config.hideComments) {
       if (desktop) {
         hideCssSelectors.push('#comments')
@@ -643,6 +637,8 @@ const configureCss = (() => {
           'ytm-video-description-gaming-section-renderer',
           // Channel name / Videos / About
           'ytm-structured-description-content-renderer ytm-video-description-infocards-section-renderer',
+          // Music
+          'ytm-structured-description-content-renderer ytm-horizontal-card-list-renderer',
         )
       }
     }
@@ -916,6 +912,16 @@ const configureCss = (() => {
             max-height: calc(100vh - 56px);
           }
         `)
+      }
+      if (config.hideChat) {
+        hideCssSelectors.push(
+          // Live chat / Chat replay
+          '#chat-container',
+          // "Live chat replay" panel in video metadata
+          '#teaser-carousel.ytd-watch-metadata',
+          // Chat panel in theater mode
+          '#full-bleed-container.ytd-watch-flexy #panels-full-bleed-container.ytd-watch-flexy',
+        )
       }
       if (config.hideEndCards) {
         hideCssSelectors.push('#movie_player .ytp-ce-element')
