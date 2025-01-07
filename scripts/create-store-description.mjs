@@ -83,6 +83,7 @@ ${messages.videoPages}:
 
 • ${messages.skipAds}
 • ${messages.disableAutoplay}
+• ${messages.hideAI}
 • ${messages.hideRelated}
 • ${messages.hideNextButton}
 • ${messages.hideShareThanksClip}

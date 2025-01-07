@@ -86,6 +86,7 @@ let defaultConfig = {
   version: /(Android|iP(ad|hone))/.test(navigator.userAgent) ? 'mobile' : 'desktop',
   disableAutoplay: true,
   disableHomeFeed: false,
+  hideAI: true,
   hiddenChannels: [],
   hideChannels: true,
   hideComments: false,

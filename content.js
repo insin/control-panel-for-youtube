@@ -37,6 +37,7 @@ let config = {
   version,
   disableAutoplay: true,
   disableHomeFeed: false,
+  hideAI: true,
   hiddenChannels: [],
   hideChannels: true,
   hideComments: false,
@@ -449,6 +450,17 @@ const configureCss = (() => {
           // Bottom nav item
           'ytm-pivot-bar-item-renderer:has(> div.pivot-w2w)',
         )
+      }
+    }
+
+    if (config.hideAI) {
+      if (desktop) {
+        const geminiSvgPath = 'M480-80q0-83-31.5-156T363-363q-54-54-127-85.5T80-480q83 0 156-31.5T363-597q54-54 85.5-127T480-880q0 83 31.5 156T597-597q54 54 127 85.5T880-480q-83 0-156 31.5T597-363q-54 54-85.5 127T480-80Z'
+        hideCssSelectors.push(`#expandable-metadata.ytd-watch-flexy:has(path[d="${geminiSvgPath}"])`)
+      }
+      if (mobile) {
+        const geminiSvgPath = 'M6 0c0 3.314-2.69 6-6 6 3.31 0 6 2.686 6 6 0-3.314 2.69-6 6-6-3.31 0-6-2.686-6-6Z'
+        hideCssSelectors.push(`ytm-expandable-metadata-renderer:has(path[d="${geminiSvgPath}"])`)
       }
     }
 

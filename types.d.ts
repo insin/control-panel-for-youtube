@@ -44,6 +44,7 @@ export type SiteConfig = {
   version?: Version
   disableAutoplay: boolean
   disableHomeFeed: boolean
+  hideAI: boolean
   hiddenChannels: Channel[]
   hideChannels: boolean
   hideComments: boolean
