@@ -50,6 +50,9 @@
       }
     }
   },
+  "hideAI": {
+    "message": "AIを隠す"
+  },
   "hideChannels": {
     "message": "チャンネルを非表示"
   },

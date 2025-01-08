@@ -51,6 +51,9 @@
       }
     }
   },
+  "hideAI": {
+    "message": "Hide AI"
+  },
   "hideChannels": {
     "message": "Hide channels"
   },

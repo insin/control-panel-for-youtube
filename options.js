@@ -21,6 +21,7 @@ for (let translationId of [
   'embeddedVideos',
   'enabled',
   'fullSizeTheaterMode',
+  'hideAI',
   'hideChannels',
   'hideChannelsNote',
   'hideChat',
