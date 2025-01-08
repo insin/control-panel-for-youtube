@@ -33,6 +33,7 @@ function warn(...args) {
 //#region Default config
 /** @type {import("./types").SiteConfig} */
 let config = {
+  debug: false,
   enabled: true,
   version,
   disableAutoplay: true,

@@ -8,6 +8,7 @@ export type CustomMutationObserver = MutationObserver & {name: string, onDisconn
 export type Disconnectable = {name: string, disconnect: () => void}
 
 export type EmbedConfig = {
+  debug?: boolean;
   enabled: boolean
   hideEmbedEndVideos: boolean
   hideEmbedPauseOverlay: boolean
