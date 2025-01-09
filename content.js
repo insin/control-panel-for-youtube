@@ -763,6 +763,7 @@ const configureCss = (() => {
           'ytm-pivot-bar-item-renderer:has(> div.pivot-shorts)',
           // Home shelf
           'ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
+          'ytm-rich-section-renderer:has(ytm-shorts-lockup-view-model)',
           // Subscriptions shelf
           '.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(ytm-reel-shelf-renderer)',
           // Search shelf
