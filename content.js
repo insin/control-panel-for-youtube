@@ -892,7 +892,12 @@ const configureCss = (() => {
         hideCssSelectors.push('#voice-search-button')
       }
       if (mobile) {
-        hideCssSelectors.push('.searchbox-voice-search-wrapper')
+        hideCssSelectors.push(
+          // Outside of Search
+          '.ytSearchboxComponentVoiceSearchWrapper',
+          // In Search
+          '.mobile-topbar-header-voice-search-button',
+        )
       }
     }
 
