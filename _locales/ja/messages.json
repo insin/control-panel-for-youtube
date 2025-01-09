@@ -51,7 +51,7 @@
     }
   },
   "hideAI": {
-    "message": "AIを隠す"
+    "message": "AI概要を非表示"
   },
   "hideChannels": {
     "message": "チャンネルを非表示"
@@ -174,7 +174,7 @@
     "message": "ショート動画を通常のプレイヤーにリダイレクト"
   },
   "removePink": {
-    "message": "進捗バーからピンクを削除する"
+    "message": "進捗バーからピンク色を削除する"
   },
   "searchThumbnailSize": {
     "message": "検索サムネイルサイズ"

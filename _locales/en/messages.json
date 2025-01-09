@@ -52,7 +52,7 @@
     }
   },
   "hideAI": {
-    "message": "Hide AI"
+    "message": "Hide AI summaries"
   },
   "hideChannels": {
     "message": "Hide channels"
@@ -175,7 +175,7 @@
     "message": "Redirect Shorts to the normal player"
   },
   "removePink": {
-    "message": "Remove pink from progress bar"
+    "message": "Remove pink from progress bars"
   },
   "searchThumbnailSize": {
     "message": "Search thumbnail size"
