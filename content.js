@@ -897,6 +897,8 @@ const configureCss = (() => {
           '.ytSearchboxComponentVoiceSearchWrapper',
           // In Search
           '.mobile-topbar-header-voice-search-button',
+          // Logged out home page
+          '.search-bar-entry-point-voice-search-button',
         )
       }
     }
