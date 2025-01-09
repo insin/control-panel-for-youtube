@@ -860,12 +860,17 @@ const configureCss = (() => {
         )
       }
       if (mobile) {
-        // Logged-out users can get a "Try searching to get started" Home page
-        // section which this would hide.
         if (loggedIn) {
           hideCssSelectors.push(
             // Shelves in Home
             '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer',
+          )
+        } else {
+          // Logged-out users can get "Try searching to get started" Home page
+          // sections we don't want to hide.
+          hideCssSelectors.push(
+            // Shelves in Home
+            '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer:not(:has(ytm-search-bar-entry-point-view-model, ytm-feed-nudge-renderer))',
           )
         }
       }
