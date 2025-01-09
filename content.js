@@ -824,8 +824,8 @@ const configureCss = (() => {
           // Directly under video
           'ytm-companion-slot:has(> ytm-companion-ad-renderer)',
           // Directly under comments entry point (narrow)
-          '.related-chips-slot-wrapper ytm-item-section-renderer[section-identifier="comments-entry-point"] + ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
-          // In Relatd videos (narrow)
+          'ytm-item-section-renderer[section-identifier="comments-entry-point"] + ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
+          // In Related videos (narrow)
           'ytm-watch ytm-item-section-renderer[data-content-type="result"]:has(> lazy-list > ad-slot-renderer)',
           // In Related videos (wide)
           'ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ad-slot-renderer',
