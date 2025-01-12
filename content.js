@@ -2424,7 +2424,7 @@ function redirectShort() {
  * Forces the video to resize if options which affect its size are used.
  */
 function triggerVideoPageResize() {
-  if (isVideoPage()) {
+  if (desktop && isVideoPage()) {
     window.dispatchEvent(new Event('resize'))
   }
 }
