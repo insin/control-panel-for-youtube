@@ -92,6 +92,9 @@
   "hideHomeCategories": {
     "message": "ホームのカテゴリを非表示"
   },
+  "hideInfoPanels": {
+    "message": "情報パネルを非表示にする"
+  },
   "hideLive": {
     "message": "ライブ動画を非表示"
   },

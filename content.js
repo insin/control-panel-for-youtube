@@ -44,6 +44,7 @@ let config = {
   hideComments: false,
   hideHiddenVideos: true,
   hideHomeCategories: false,
+  hideInfoPanels: false,
   hideLive: false,
   hideMetadata: false,
   hideMixes: false,
@@ -605,6 +606,25 @@ const configureCss = (() => {
         cssRules.push(`.${Classes.HIDE_HIDDEN} { outline: 2px solid magenta !important; }`)
       } else {
         hideCssSelectors.push(`.${Classes.HIDE_HIDDEN}`)
+      }
+    }
+
+    if (config.hideInfoPanels) {
+      if (desktop) {
+        hideCssSelectors.push(
+          // In Search
+          'ytd-clarification-renderer',
+          'ytd-info-panel-container-renderer',
+          // Below video
+          '#clarify-box',
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(
+          // In Search and below video
+          'ytm-clarification-renderer',
+          'ytm-info-panel-container-renderer',
+        )
       }
     }
 

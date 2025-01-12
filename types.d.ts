@@ -51,6 +51,7 @@ export type SiteConfig = {
   hideComments: boolean
   hideHiddenVideos: boolean
   hideHomeCategories: boolean
+  hideInfoPanels: boolean
   hideLive: boolean
   hideMetadata: boolean
   hideMixes: boolean

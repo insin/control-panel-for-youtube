@@ -93,6 +93,9 @@
   "hideHomeCategories": {
     "message": "Hide categories in Home"
   },
+  "hideInfoPanels": {
+    "message": "Hide information panels"
+  },
   "hideLive": {
     "message": "Hide Live videos"
   },
