@@ -13,6 +13,7 @@ for (let optionValue of [
 }
 
 for (let translationId of [
+  'alwaysUseTheaterMode',
   'anyPercent',
   'disableAutoplay',
   'disableHomeFeed',
@@ -115,6 +116,7 @@ let defaultConfig = {
   removePink: false,
   skipAds: true,
   // Desktop only
+  alwaysUseTheaterMode: false,
   downloadTranscript: true,
   fullSizeTheaterMode: false,
   hideChat: false,

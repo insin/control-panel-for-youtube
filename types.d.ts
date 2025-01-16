@@ -71,6 +71,7 @@ export type SiteConfig = {
   removePink: boolean
   skipAds: boolean
   // Desktop only
+  alwaysUseTheaterMode: boolean
   downloadTranscript: boolean
   fullSizeTheaterMode: boolean
   hideChat: boolean

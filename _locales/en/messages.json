@@ -1,4 +1,7 @@
 {
+  "alwaysUseTheaterMode": {
+    "message": "Always use theater mode"
+  },
   "anyPercent": {
     "message": "any %"
   },

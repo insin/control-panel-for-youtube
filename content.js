@@ -1237,6 +1237,25 @@ function isVideoPage() {
 }
 
 //#region Tweak functions
+async function alwaysUseTheaterMode() {
+  let $player = await getElement('#movie_player', {
+    name: 'player (alwaysUseTheaterMode)',
+    stopIf: currentUrlChanges(),
+  })
+  if (!$player) return
+  if (!$player.closest('#player-full-bleed-container')) {
+    let $sizeButton = /** @type {HTMLButtonElement} */ ($player.querySelector('button.ytp-size-button'))
+    if ($sizeButton) {
+      log('alwaysUseTheaterMode: clicking size button')
+      $sizeButton.click()
+    } else {
+      warn('alwaysUseTheaterMode: size button not found')
+    }
+  } else {
+    log('alwaysUseTheaterMode: already using theater mode')
+  }
+}
+
 async function disableAutoplay() {
   if (desktop) {
     let $autoplayButton = await getElement('button[data-tooltip-target-id="ytp-autonav-toggle-button"]', {
@@ -2067,7 +2086,7 @@ async function observeTitle() {
 
 async function observeVideoAds() {
   let $player = await getElement('#movie_player', {
-    name: 'player',
+    name: 'player (skipAds)',
     stopIf: currentUrlChanges(),
   })
   if (!$player) return
@@ -2614,6 +2633,9 @@ async function tweakVideoPage() {
   }
   if (config.disableAutoplay) {
     disableAutoplay()
+  }
+  if (config.alwaysUseTheaterMode) {
+    alwaysUseTheaterMode()
   }
 
   if (config.hideRelated || (!config.hideWatched && !config.hideStreamed && !config.hideChannels)) return

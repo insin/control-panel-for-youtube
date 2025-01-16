@@ -93,6 +93,7 @@ ${messages.videoPages}:
 • ${messages.hideMetadata}
 • ${messages.hideComments}
 • ${messages.redirectShorts}
+• ${messages.alwaysUseTheaterMode}${messages.desktopVersion}
 • ${messages.fullSizeTheaterMode}${messages.desktopVersion}
 • ${messages.hideMiniplayerButton}${messages.desktopVersion}
 • ${messages.hideEndCards}${messages.desktopVersion}

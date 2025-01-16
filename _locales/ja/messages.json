@@ -1,4 +1,7 @@
 {
+  "alwaysUseTheaterMode": {
+    "message": "常にシアターモードを使用する"
+  },
   "anyPercent": {
     "message": "どれでも ％"
   },
