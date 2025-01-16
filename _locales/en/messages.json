@@ -111,6 +111,9 @@
   "hideMixes": {
     "message": "Hide Mixes"
   },
+  "hideMoviesAndTV": {
+    "message": "Hide Movies and TV"
+  },
   "hideNextButton": {
     "message": "Hide the Next button"
   },

@@ -71,6 +71,7 @@ ${messages.videoLists}:
 • ${messages.hideLive}
 • ${messages.hideStreamed}
 • ${messages.hideMixes}
+• ${messages.hideMoviesAndTV}
 • ${messages.hideUpcoming}
 • ${messages.hideWatched}
 • ${messages.hideHiddenVideos}

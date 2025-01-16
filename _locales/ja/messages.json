@@ -110,6 +110,9 @@
   "hideMixes": {
     "message": "ミックスを非表示"
   },
+  "hideMoviesAndTV": {
+    "message": "の映画とテレビ番組非表示"
+  },
   "hideNextButton": {
     "message": "次へボタンを非表示"
   },
