@@ -36,6 +36,7 @@ let config = {
   debug: false,
   enabled: true,
   version,
+  alwaysUseTheaterMode: false,
   disableAutoplay: true,
   disableHomeFeed: false,
   hideAI: true,
