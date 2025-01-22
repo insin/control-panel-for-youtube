@@ -2635,7 +2635,7 @@ async function tweakVideoPage() {
   if (config.disableAutoplay) {
     disableAutoplay()
   }
-  if (config.alwaysUseTheaterMode) {
+  if (desktop && config.alwaysUseTheaterMode) {
     alwaysUseTheaterMode()
   }
 
