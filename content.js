@@ -1572,8 +1572,6 @@ async function addHideChannelToMobileVideoMenu($menu) {
   lastClickedChannel = channel
 
   let $menuItems = $menu.querySelector($menu.id == 'menu' ? '.menu-content' : '.bottom-sheet-media-menu-item')
-  // TOOO Figure out what we have to wait for to add menu items ASAP without them getting removed
-  await new Promise((resolve) => setTimeout(resolve, 50))
   let hasIcon = Boolean($menuItems.querySelector('c3-icon'))
   $menuItems.insertAdjacentHTML('beforeend', `
     <ytm-menu-item id="cpfyt-hide-channel-menu-item">
@@ -1596,10 +1594,6 @@ async function addHideChannelToMobileVideoMenu($menu) {
     storeConfigChanges({hiddenChannels: config.hiddenChannels})
     configureCss()
     handleCurrentUrl()
-    // Dismiss the menu
-    let $overlay = $menu.id == 'menu' ? $menu.querySelector('c3-overlay') : document.querySelector('.bottom-sheet-overlay')
-    // @ts-ignore
-    $overlay?.click()
   })
 }
 
