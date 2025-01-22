@@ -1573,7 +1573,7 @@ async function addHideChannelToMobileVideoMenu($menu) {
 
   let $menuItems = $menu.querySelector($menu.id == 'menu' ? '.menu-content' : '.bottom-sheet-media-menu-item')
   let hasIcon = Boolean($menuItems.querySelector('c3-icon'))
-  $menuItems.insertAdjacentHTML('beforeend', `
+  let hideChannelMenuItemHTML = `
     <ytm-menu-item id="cpfyt-hide-channel-menu-item">
       <button class="menu-item-button">
         ${hasIcon ? `<c3-icon>
@@ -1586,8 +1586,14 @@ async function addHideChannelToMobileVideoMenu($menu) {
         </span>
       </button>
     </ytm-menu-item>
-  `.trim())
-  let $button = $menuItems.lastElementChild.querySelector('button')
+  `.trim()
+  let $cancelMenuItem = $menu.querySelector('ytm-menu-item:has(.menu-cancel-button')
+  if ($cancelMenuItem) {
+    $cancelMenuItem.insertAdjacentHTML('beforebegin', hideChannelMenuItemHTML)
+  } else {
+    $menuItems.insertAdjacentHTML('beforeend', hideChannelMenuItemHTML)
+  }
+  let $button = $menuItems.querySelector('#cpfyt-hide-channel-menu-item button')
   $button.addEventListener('click', () => {
     log('hiding channel', lastClickedChannel)
     config.hiddenChannels.unshift(lastClickedChannel)
