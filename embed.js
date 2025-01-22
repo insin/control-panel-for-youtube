@@ -14,6 +14,7 @@ let config = {
   hideEmbedEndVideos: true,
   hideEmbedPauseOverlay: true,
   hideEmbedShareButton: false,
+  hideInfoPanels: false,
 }
 //#endregion
 
@@ -66,6 +67,10 @@ const configureCss = (() => {
 
     if (config.hideEmbedShareButton) {
       hideCssSelectors.push('.ytp-share-button')
+    }
+
+    if (config.hideInfoPanels) {
+      hideCssSelectors.push('.ytp-info-panel-preview')
     }
 
     if (hideCssSelectors.length > 0) {
