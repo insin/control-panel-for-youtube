@@ -775,7 +775,7 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push(
-          `ytm-slim-video-action-bar-renderer button-view-model:has(> button[aria-label="${getString('SHARE')}"])`,
+          `ytm-slim-video-action-bar-renderer button-view-model:has(button[aria-label="${getString('SHARE')}"])`,
         )
       }
     }
