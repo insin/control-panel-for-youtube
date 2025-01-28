@@ -6,7 +6,7 @@
 // @match       https://www.youtube.com/*
 // @match       https://m.youtube.com/*
 // @exclude     https://www.youtube.com/embed/*
-// @version     9
+// @version     14
 // ==/UserScript==
 let debug = false
 let debugManualHiding = false
@@ -33,18 +33,23 @@ function warn(...args) {
 //#region Default config
 /** @type {import("./types").SiteConfig} */
 let config = {
+  debug: false,
   enabled: true,
   version,
+  alwaysUseTheaterMode: false,
   disableAutoplay: true,
   disableHomeFeed: false,
+  hideAI: true,
   hiddenChannels: [],
   hideChannels: true,
   hideComments: false,
   hideHiddenVideos: true,
   hideHomeCategories: false,
+  hideInfoPanels: false,
   hideLive: false,
   hideMetadata: false,
   hideMixes: false,
+  hideMoviesAndTV: false,
   hideNextButton: true,
   hideRelated: false,
   hideShareThanksClip: false,
@@ -57,6 +62,7 @@ let config = {
   hideWatched: true,
   hideWatchedThreshold: '80',
   redirectShorts: true,
+  removePink: false,
   skipAds: true,
   // Desktop only
   downloadTranscript: true,
@@ -452,6 +458,17 @@ const configureCss = (() => {
       }
     }
 
+    if (config.hideAI) {
+      if (desktop) {
+        const geminiSvgPath = 'M480-80q0-83-31.5-156T363-363q-54-54-127-85.5T80-480q83 0 156-31.5T363-597q54-54 85.5-127T480-880q0 83 31.5 156T597-597q54 54 127 85.5T880-480q-83 0-156 31.5T597-363q-54 54-85.5 127T480-80Z'
+        hideCssSelectors.push(`#expandable-metadata:has(path[d="${geminiSvgPath}"])`)
+      }
+      if (mobile) {
+        const geminiSvgPath = 'M6 0c0 3.314-2.69 6-6 6 3.31 0 6 2.686 6 6 0-3.314 2.69-6 6-6-3.31 0-6-2.686-6-6Z'
+        hideCssSelectors.push(`ytm-expandable-metadata-renderer:has(path[d="${geminiSvgPath}"])`)
+      }
+    }
+
     if (config.hideHomeCategories) {
       if (desktop) {
         hideCssSelectors.push('ytd-browse[page-subtype="home"] #header')
@@ -525,12 +542,6 @@ const configureCss = (() => {
       hideCssSelectors.push('#cpfyt-hide-channel-menu-item')
     }
 
-    if (config.hideChat) {
-      if (desktop) {
-        hideCssSelectors.push('#chat-container')
-      }
-    }
-
     if (config.hideComments) {
       if (desktop) {
         hideCssSelectors.push('#comments')
@@ -600,6 +611,25 @@ const configureCss = (() => {
       }
     }
 
+    if (config.hideInfoPanels) {
+      if (desktop) {
+        hideCssSelectors.push(
+          // In Search
+          'ytd-clarification-renderer',
+          'ytd-info-panel-container-renderer',
+          // Below video
+          '#clarify-box',
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(
+          // In Search and below video
+          'ytm-clarification-renderer',
+          'ytm-info-panel-container-renderer',
+        )
+      }
+    }
+
     if (config.hideLive) {
       if (desktop) {
         hideCssSelectors.push(
@@ -643,6 +673,8 @@ const configureCss = (() => {
           'ytm-video-description-gaming-section-renderer',
           // Channel name / Videos / About
           'ytm-structured-description-content-renderer ytm-video-description-infocards-section-renderer',
+          // Music
+          'ytm-structured-description-content-renderer ytm-horizontal-card-list-renderer',
         )
       }
     }
@@ -658,6 +690,8 @@ const configureCss = (() => {
           'ytd-radio-renderer',
           // Related video
           'ytd-compact-radio-renderer',
+          // Search result and related video
+          'yt-lockup-view-model:has(a[href*="start_radio=1"])',
         )
       }
       if (mobile) {
@@ -668,6 +702,30 @@ const configureCss = (() => {
           'ytm-rich-item-renderer:has(> ytm-radio-renderer)',
           // Search result
           'ytm-compact-radio-renderer',
+        )
+      }
+    }
+
+    if (config.hideMoviesAndTV) {
+      if (desktop) {
+        hideCssSelectors.push(
+          // In Home
+          'ytd-rich-item-renderer.ytd-rich-grid-renderer:has(a[href$="pp=sAQB"])',
+          // In Search
+          'ytd-movie-renderer',
+          // In Related videos
+          'ytd-compact-movie-renderer',
+          'ytd-compact-video-renderer:has(a[href$="pp=sAQB"])',
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(
+          // In Home
+          '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-item-renderer:has(a[href$="pp=sAQB"])',
+          // In Search
+          'ytm-search ytm-video-with-context-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_YPC"])',
+          // In Related videos
+          'ytm-item-section-renderer[data-content-type="related"] ytm-video-with-context-renderer:has(a[href$="pp=sAQB"])'
         )
       }
     }
@@ -717,7 +775,7 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push(
-          `ytm-slim-video-action-bar-renderer button-view-model:has(> button[aria-label="${getString('SHARE')}"])`,
+          `ytm-slim-video-action-bar-renderer button-view-model:has(button[aria-label="${getString('SHARE')}"])`,
         )
       }
     }
@@ -751,6 +809,7 @@ const configureCss = (() => {
           'ytm-pivot-bar-item-renderer:has(> div.pivot-shorts)',
           // Home shelf
           'ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
+          'ytm-rich-section-renderer:has(ytm-shorts-lockup-view-model)',
           // Subscriptions shelf
           '.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(ytm-reel-shelf-renderer)',
           // Search shelf
@@ -812,8 +871,8 @@ const configureCss = (() => {
           // Directly under video
           'ytm-companion-slot:has(> ytm-companion-ad-renderer)',
           // Directly under comments entry point (narrow)
-          '.related-chips-slot-wrapper ytm-item-section-renderer[section-identifier="comments-entry-point"] + ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
-          // In Relatd videos (narrow)
+          'ytm-item-section-renderer[section-identifier="comments-entry-point"] + ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
+          // In Related videos (narrow)
           'ytm-watch ytm-item-section-renderer[data-content-type="result"]:has(> lazy-list > ad-slot-renderer)',
           // In Related videos (wide)
           'ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ad-slot-renderer',
@@ -847,12 +906,17 @@ const configureCss = (() => {
         )
       }
       if (mobile) {
-        // Logged-out users can get a "Try searching to get started" Home page
-        // section which this would hide.
         if (loggedIn) {
           hideCssSelectors.push(
             // Shelves in Home
             '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer',
+          )
+        } else {
+          // Logged-out users can get "Try searching to get started" Home page
+          // sections we don't want to hide.
+          hideCssSelectors.push(
+            // Shelves in Home
+            '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer:not(:has(ytm-search-bar-entry-point-view-model, ytm-feed-nudge-renderer))',
           )
         }
       }
@@ -880,7 +944,14 @@ const configureCss = (() => {
         hideCssSelectors.push('#voice-search-button')
       }
       if (mobile) {
-        hideCssSelectors.push('.searchbox-voice-search-wrapper')
+        hideCssSelectors.push(
+          // Outside of Search
+          '.ytSearchboxComponentVoiceSearchWrapper',
+          // In Search
+          '.mobile-topbar-header-voice-search-button',
+          // Logged out home page
+          '.search-bar-entry-point-voice-search-button',
+        )
       }
     }
 
@@ -916,6 +987,16 @@ const configureCss = (() => {
             max-height: calc(100vh - 56px);
           }
         `)
+      }
+      if (config.hideChat) {
+        hideCssSelectors.push(
+          // Live chat / Chat replay
+          '#chat-container',
+          // "Live chat replay" panel in video metadata
+          '#teaser-carousel.ytd-watch-metadata',
+          // Chat panel in theater mode
+          '#full-bleed-container.ytd-watch-flexy #panels-full-bleed-container.ytd-watch-flexy',
+        )
       }
       if (config.hideEndCards) {
         hideCssSelectors.push('#movie_player .ytp-ce-element')
@@ -956,7 +1037,8 @@ const configureCss = (() => {
       if (config.removePink) {
         cssRules.push(`
           .ytp-cairo-refresh-signature-moments .ytp-play-progress,
-          #progress.ytd-thumbnail-overlay-resume-playback-renderer {
+          #progress.ytd-thumbnail-overlay-resume-playback-renderer,
+          #progress.yt-page-navigation-progress {
             background: #f03 !important;
           }
         `)
@@ -1156,6 +1238,25 @@ function isVideoPage() {
 }
 
 //#region Tweak functions
+async function alwaysUseTheaterMode() {
+  let $player = await getElement('#movie_player', {
+    name: 'player (alwaysUseTheaterMode)',
+    stopIf: currentUrlChanges(),
+  })
+  if (!$player) return
+  if (!$player.closest('#player-full-bleed-container')) {
+    let $sizeButton = /** @type {HTMLButtonElement} */ ($player.querySelector('button.ytp-size-button'))
+    if ($sizeButton) {
+      log('alwaysUseTheaterMode: clicking size button')
+      $sizeButton.click()
+    } else {
+      warn('alwaysUseTheaterMode: size button not found')
+    }
+  } else {
+    log('alwaysUseTheaterMode: already using theater mode')
+  }
+}
+
 async function disableAutoplay() {
   if (desktop) {
     let $autoplayButton = await getElement('button[data-tooltip-target-id="ytp-autonav-toggle-button"]', {
@@ -1471,10 +1572,8 @@ async function addHideChannelToMobileVideoMenu($menu) {
   lastClickedChannel = channel
 
   let $menuItems = $menu.querySelector($menu.id == 'menu' ? '.menu-content' : '.bottom-sheet-media-menu-item')
-  // TOOO Figure out what we have to wait for to add menu items ASAP without them getting removed
-  await new Promise((resolve) => setTimeout(resolve, 50))
   let hasIcon = Boolean($menuItems.querySelector('c3-icon'))
-  $menuItems.insertAdjacentHTML('beforeend', `
+  let hideChannelMenuItemHTML = `
     <ytm-menu-item id="cpfyt-hide-channel-menu-item">
       <button class="menu-item-button">
         ${hasIcon ? `<c3-icon>
@@ -1487,18 +1586,20 @@ async function addHideChannelToMobileVideoMenu($menu) {
         </span>
       </button>
     </ytm-menu-item>
-  `.trim())
-  let $button = $menuItems.lastElementChild.querySelector('button')
+  `.trim()
+  let $cancelMenuItem = $menu.querySelector('ytm-menu-item:has(.menu-cancel-button')
+  if ($cancelMenuItem) {
+    $cancelMenuItem.insertAdjacentHTML('beforebegin', hideChannelMenuItemHTML)
+  } else {
+    $menuItems.insertAdjacentHTML('beforeend', hideChannelMenuItemHTML)
+  }
+  let $button = $menuItems.querySelector('#cpfyt-hide-channel-menu-item button')
   $button.addEventListener('click', () => {
     log('hiding channel', lastClickedChannel)
     config.hiddenChannels.unshift(lastClickedChannel)
     storeConfigChanges({hiddenChannels: config.hiddenChannels})
     configureCss()
     handleCurrentUrl()
-    // Dismiss the menu
-    let $overlay = $menu.id == 'menu' ? $menu.querySelector('c3-overlay') : document.querySelector('.bottom-sheet-overlay')
-    // @ts-ignore
-    $overlay?.click()
   })
 }
 
@@ -1986,7 +2087,7 @@ async function observeTitle() {
 
 async function observeVideoAds() {
   let $player = await getElement('#movie_player', {
-    name: 'player',
+    name: 'player (skipAds)',
     stopIf: currentUrlChanges(),
   })
   if (!$player) return
@@ -2368,7 +2469,7 @@ function redirectShort() {
  * Forces the video to resize if options which affect its size are used.
  */
 function triggerVideoPageResize() {
-  if (isVideoPage()) {
+  if (desktop && isVideoPage()) {
     window.dispatchEvent(new Event('resize'))
   }
 }
@@ -2533,6 +2634,9 @@ async function tweakVideoPage() {
   }
   if (config.disableAutoplay) {
     disableAutoplay()
+  }
+  if (desktop && config.alwaysUseTheaterMode) {
+    alwaysUseTheaterMode()
   }
 
   if (config.hideRelated || (!config.hideWatched && !config.hideStreamed && !config.hideChannels)) return
