@@ -1,4 +1,7 @@
 {
+  "alwaysUseTheaterMode": {
+    "message": "Always use theater mode"
+  },
   "anyPercent": {
     "message": "any %"
   },
@@ -51,6 +54,9 @@
       }
     }
   },
+  "hideAI": {
+    "message": "Hide AI summaries"
+  },
   "hideChannels": {
     "message": "Hide channels"
   },
@@ -90,6 +96,9 @@
   "hideHomeCategories": {
     "message": "Hide categories in Home"
   },
+  "hideInfoPanels": {
+    "message": "Hide information panels"
+  },
   "hideLive": {
     "message": "Hide Live videos"
   },
@@ -104,6 +113,9 @@
   },
   "hideMixes": {
     "message": "Hide Mixes"
+  },
+  "hideMoviesAndTV": {
+    "message": "Hide Movies and TV"
   },
   "hideNextButton": {
     "message": "Hide the Next button"
@@ -170,6 +182,9 @@
   },
   "redirectShorts": {
     "message": "Redirect Shorts to the normal player"
+  },
+  "removePink": {
+    "message": "Remove pink from progress bars"
   },
   "searchThumbnailSize": {
     "message": "Search thumbnail size"

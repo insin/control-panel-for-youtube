@@ -8,10 +8,12 @@ export type CustomMutationObserver = MutationObserver & {name: string, onDisconn
 export type Disconnectable = {name: string, disconnect: () => void}
 
 export type EmbedConfig = {
+  debug?: boolean;
   enabled: boolean
   hideEmbedEndVideos: boolean
   hideEmbedPauseOverlay: boolean
   hideEmbedShareButton: boolean
+  hideInfoPanels: boolean
 }
 
 export type Locale = {
@@ -44,14 +46,17 @@ export type SiteConfig = {
   version?: Version
   disableAutoplay: boolean
   disableHomeFeed: boolean
+  hideAI: boolean
   hiddenChannels: Channel[]
   hideChannels: boolean
   hideComments: boolean
   hideHiddenVideos: boolean
   hideHomeCategories: boolean
+  hideInfoPanels: boolean
   hideLive: boolean
   hideMetadata: boolean
   hideMixes: boolean
+  hideMoviesAndTV: boolean
   hideNextButton: boolean
   hideRelated: boolean
   hideShareThanksClip: boolean
@@ -64,8 +69,10 @@ export type SiteConfig = {
   hideWatched: boolean
   hideWatchedThreshold: string
   redirectShorts: boolean
+  removePink: boolean
   skipAds: boolean
   // Desktop only
+  alwaysUseTheaterMode: boolean
   downloadTranscript: boolean
   fullSizeTheaterMode: boolean
   hideChat: boolean

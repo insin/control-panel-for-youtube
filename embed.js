@@ -2,17 +2,19 @@ let debug = false
 
 function log(...args) {
   if (debug) {
-    console.log('🖼️', ...args)
+    console.log('🛏️', ...args)
   }
 }
 
 //#region Default config
 /** @type {Partial<import("./types").EmbedConfig>} */
 let config = {
+  debug: false,
   enabled: true,
   hideEmbedEndVideos: true,
   hideEmbedPauseOverlay: true,
   hideEmbedShareButton: false,
+  hideInfoPanels: false,
 }
 //#endregion
 
@@ -67,6 +69,10 @@ const configureCss = (() => {
       hideCssSelectors.push('.ytp-share-button')
     }
 
+    if (config.hideInfoPanels) {
+      hideCssSelectors.push('.ytp-info-panel-preview')
+    }
+
     if (hideCssSelectors.length > 0) {
       cssRules.push(`
         ${hideCssSelectors.join(',\n')} {
@@ -111,10 +117,17 @@ function onConfigChange(storageChanges) {
       .filter(([key]) => config.hasOwnProperty(key))
       .map(([key, {newValue}]) => [key, newValue])
   )
-  if (Object.keys(configChanges).length > 0) {
-    Object.assign(config, configChanges)
-    configChanged(configChanges)
+  if (Object.keys(configChanges).length == 0) return
+
+  if ('debug' in configChanges) {
+    log('disabling debug mode')
+    debug = configChanges.debug
+    log('enabled debug mode')
+    return
   }
+
+  Object.assign(config, configChanges)
+  configChanged(configChanges)
 }
 
 chrome.storage.local.get((storedConfig) => {
@@ -124,6 +137,7 @@ chrome.storage.local.get((storedConfig) => {
       Object.entries(storedConfig).filter(([key]) => config.hasOwnProperty(key))
     )
   )
+  debug = config.debug
   log('initial config', config)
   chrome.storage.local.onChanged.addListener(onConfigChange)
   window.addEventListener('unload', () => {

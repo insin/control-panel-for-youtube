@@ -1,4 +1,7 @@
 {
+  "alwaysUseTheaterMode": {
+    "message": "常にシアターモードを使用する"
+  },
   "anyPercent": {
     "message": "どれでも ％"
   },
@@ -50,6 +53,9 @@
       }
     }
   },
+  "hideAI": {
+    "message": "AI概要を非表示"
+  },
   "hideChannels": {
     "message": "チャンネルを非表示"
   },
@@ -89,6 +95,9 @@
   "hideHomeCategories": {
     "message": "ホームのカテゴリを非表示"
   },
+  "hideInfoPanels": {
+    "message": "情報パネルを非表示にする"
+  },
   "hideLive": {
     "message": "ライブ動画を非表示"
   },
@@ -103,6 +112,9 @@
   },
   "hideMixes": {
     "message": "ミックスを非表示"
+  },
+  "hideMoviesAndTV": {
+    "message": "の映画とテレビ番組非表示"
   },
   "hideNextButton": {
     "message": "次へボタンを非表示"
@@ -169,6 +181,9 @@
   },
   "redirectShorts": {
     "message": "ショート動画を通常のプレイヤーにリダイレクト"
+  },
+  "removePink": {
+    "message": "進捗バーからピンク色を削除する"
   },
   "searchThumbnailSize": {
     "message": "検索サムネイルサイズ"

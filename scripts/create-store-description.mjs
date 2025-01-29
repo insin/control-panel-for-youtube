@@ -60,6 +60,9 @@ Object.assign(messages, Object.fromEntries(Object.entries(extraTranslations).map
 let storeDescription = `
 ${messages.features}
 
+• ${messages.hideAI}
+• ${messages.removePink}
+
 ${messages.videoLists}:
 
 • ${messages.hideShorts}
@@ -68,6 +71,7 @@ ${messages.videoLists}:
 • ${messages.hideLive}
 • ${messages.hideStreamed}
 • ${messages.hideMixes}
+• ${messages.hideMoviesAndTV}
 • ${messages.hideUpcoming}
 • ${messages.hideWatched}
 • ${messages.hideHiddenVideos}
@@ -89,6 +93,7 @@ ${messages.videoPages}:
 • ${messages.hideMetadata}
 • ${messages.hideComments}
 • ${messages.redirectShorts}
+• ${messages.alwaysUseTheaterMode}${messages.desktopVersion}
 • ${messages.fullSizeTheaterMode}${messages.desktopVersion}
 • ${messages.hideMiniplayerButton}${messages.desktopVersion}
 • ${messages.hideEndCards}${messages.desktopVersion}
@@ -99,6 +104,7 @@ ${messages.videoPages}:
 
 ${messages.uiTweaks}:
 
+• ${messages.hideInfoPanels}
 • ${messages.hideHomeCategories}
 • ${messages.hideVoiceSearch}
 • ${messages.tidyGuideSidebar}${messages.desktopVersion}
