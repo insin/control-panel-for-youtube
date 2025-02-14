@@ -1038,7 +1038,12 @@ const configureCss = (() => {
         cssRules.push(`
           .ytp-play-progress,
           #progress.ytd-thumbnail-overlay-resume-playback-renderer,
-          #progress.yt-page-navigation-progress {
+          .ytThumbnailOverlayProgressBarHostWatchedProgressBarSegmentModern,
+          .ytChapteredProgressBarChapteredPlayerBarChapterRefresh,
+          .ytChapteredProgressBarChapteredPlayerBarFillRefresh,
+          .ytProgressBarLineProgressBarPlayedRefresh,
+          #progress.yt-page-navigation-progress,
+          .progress-bar-played.ytd-progress-bar-line {
             background: #f03 !important;
           }
         `)
@@ -1193,9 +1198,12 @@ const configureCss = (() => {
       }
       if (config.removePink) {
         cssRules.push(`
-          .YtChapteredProgressBarChapteredPlayerBarChapterRefresh,
-          .YtChapteredProgressBarChapteredPlayerBarFill,
-          .thumbnail-overlay-resume-playback-progress {
+          .ytp-play-progress,
+          .thumbnail-overlay-resume-playback-progress,
+          .ytChapteredProgressBarChapteredPlayerBarChapterRefresh,
+          .ytChapteredProgressBarChapteredPlayerBarFillRefresh,
+          .ytProgressBarLineProgressBarPlayedRefresh,
+          .ytThumbnailOverlayProgressBarHostWatchedProgressBarSegmentModern {
             background: #f03 !important;
           }
         `)
