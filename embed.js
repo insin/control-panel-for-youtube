@@ -7,7 +7,7 @@ function log(...args) {
 }
 
 //#region Default config
-/** @type {Partial<import("./types").EmbedConfig>} */
+/** @type {import("./types").EmbedConfig} */
 let config = {
   debug: false,
   enabled: true,
@@ -15,6 +15,7 @@ let config = {
   hideEmbedPauseOverlay: true,
   hideEmbedShareButton: false,
   hideInfoPanels: false,
+  removePink: false,
 }
 //#endregion
 
@@ -71,6 +72,14 @@ const configureCss = (() => {
 
     if (config.hideInfoPanels) {
       hideCssSelectors.push('.ytp-info-panel-preview')
+    }
+
+    if (config.removePink) {
+      cssRules.push(`
+        .ytp-play-progress {
+          background-color: #f03 !important;
+        }
+      `)
     }
 
     if (hideCssSelectors.length > 0) {

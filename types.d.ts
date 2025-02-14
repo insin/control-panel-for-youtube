@@ -14,6 +14,7 @@ export type EmbedConfig = {
   hideEmbedPauseOverlay: boolean
   hideEmbedShareButton: boolean
   hideInfoPanels: boolean
+  removePink: boolean
 }
 
 export type Locale = {
