@@ -1,37 +1,28 @@
-# [Control Panel for YouTube](https://jbscript.dev/control-panel-for-youtube)
+# [Control Panel for YouTube](https://soitis.dev/control-panel-for-youtube)
 
-[![](icons/icon128.png)](https://jbscript.dev/control-panel-for-youtube)
+[![](icons/icon128.png)](https://soitis.dev/control-panel-for-youtube)
 
 **Control Panel for YouTube is a browser extension which gives you more control over your YouTube experience by adding missing options and UI improvements**
 
 > [!IMPORTANT]
-> This is the support repository for Control Panel for YouTube - for installation links, information about the extension, and FAQs, please visit the [Control Panel for YouTube website](https://jbscript.dev/control-panel-for-youtube).
+> This is the support repository for Control Panel for YouTube - for installation links, information about the extension, and FAQs, please visit the [Control Panel for YouTube website](https://soitis.dev/control-panel-for-youtube).
 
-## Bug reports
+Check the latest updates and availability for your browser on the [releases page](https://github.com/insin/control-panel-for-youtube/releases).
 
-To report a bug, [create a new Issue](https://github.com/insin/control-panel-for-youtube/issues/new).
+Follow [@soitis.dev](https://bsky.app/profile/soitis.dev) on Bluesky for extension news and other announcements.
+
+## Support
+
+To report a bug [create a new Issue](https://github.com/insin/control-panel-for-youtube/issues/new) here on GitHub.
 
 Please include:
 
 - The version of Control Panel for YouTube you're using
 - The browser and operating system you're using it on
 - Relevant URLs if applicable (e.g. a specific YouTube video a feature isn't working on)
-- Relevant screenshots if applicable (e.g. the extension isn't hiding something it should, or vice-versa)
+- Relevant screenshots if applicable
 
-## New feature or enhancement requests
-
-To request new features or enhancements, [create a new Issue](https://github.com/insin/control-panel-for-youtube/issues/new).
-
-> [!NOTE]
-> If you don't have a GitHub account, Tweet or DM details of bugs or feature requests to [@ControlPanelFYT](https://twitter.com/ControlPanelFYT).
->
-> If you don't have a Twitter account or want to provide more information than a Tweet allows, send an email to jonathan.buchanan+extensions@gmail.com instead.
-
-## Support and discussion
-
-For support which isn't a bug report or feature request, please see the [Discussions page](https://github.com/insin/control-panel-for-youtube/discussions).
-
-You can also follow the [@ControlPanelFYT](https://twitter.com/ControlPanelFYT) account on Twitter for the latest release news and other info.
+If you don't have a GitHub account, you can use the [Browser Extension Feedback & Support form](https://soitis.dev/extensions/feedback) on our website instead, or email [extensions@soitis.dev](mailto:extensions@soitis.dev).
 
 ## New translations
 
