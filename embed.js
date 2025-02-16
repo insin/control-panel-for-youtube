@@ -77,7 +77,7 @@ const configureCss = (() => {
     if (config.removePink) {
       cssRules.push(`
         .ytp-play-progress {
-          background-color: #f03 !important;
+          background: #f03 !important;
         }
       `)
     }
