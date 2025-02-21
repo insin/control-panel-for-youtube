@@ -45,6 +45,7 @@ export type SiteConfig = {
   debugManualHiding?: boolean,
   enabled: boolean
   version?: Version
+  defaultChannelVideoTab: boolean
   disableAutoplay: boolean
   disableHomeFeed: boolean
   hideAI: boolean

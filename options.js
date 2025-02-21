@@ -89,6 +89,7 @@ let defaultConfig = {
   enabled: true,
   // Default based on platform until the content script runs
   version: /(Android|iP(ad|hone))/.test(navigator.userAgent) ? 'mobile' : 'desktop',
+  defaultChannelVideoTab: true,
   disableAutoplay: true,
   disableHomeFeed: false,
   hideAI: true,

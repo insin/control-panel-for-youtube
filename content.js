@@ -36,6 +36,7 @@ let config = {
   debug: false,
   enabled: true,
   version,
+  defaultChannelVideoTab: true,
   disableAutoplay: true,
   disableHomeFeed: false,
   hideAI: true,
@@ -2104,6 +2105,26 @@ async function observeTitle() {
   })
 }
 
+function observeStartNavigationEvent() {
+  function handleNavigateStart() {
+    log('yt-navigate-start', {currentUrl: getCurrentUrl()})
+    if (config.defaultChannelVideoTab && URL_CHANNEL_RE.test(location.pathname)) {
+      let section = location.pathname.match(URL_CHANNEL_RE)[1]
+      let isHomeTab = section == undefined || section == 'featured'
+      if (isHomeTab) {
+        let redirect = location.pathname.replace(section ? '/featured' : /\/?$/, '/videos')
+        // TODO Redirect without breaking the back button, or causing a full refresh
+      }
+    }
+  }
+  document.addEventListener('yt-navigate-start', handleNavigateStart)
+  globalObservers.set('document-yt-navigate-start', {
+    disconnect() {
+      document.removeEventListener('yt-navigate-start', handleNavigateStart)
+    }
+  })
+}
+
 async function observeVideoAds() {
   let $player = await getElement('#movie_player', {
     name: 'player (skipAds)',
@@ -2835,6 +2856,7 @@ function main() {
     configureCss()
     triggerVideoPageResize()
     observeTitle()
+    observeStartNavigationEvent()
     observePopups()
     document.addEventListener('click', onDocumentClick, true)
     globalObservers.set('document-click', {
