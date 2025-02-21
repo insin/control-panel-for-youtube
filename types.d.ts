@@ -5,7 +5,7 @@ export type Channel = {
 
 export type CustomMutationObserver = MutationObserver & {name: string, onDisconnect?: () => void}
 
-export type Disconnectable = {name: string, disconnect: () => void}
+export type Disconnectable = {disconnect: () => void}
 
 export type EmbedConfig = {
   debug?: boolean;

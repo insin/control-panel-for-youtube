@@ -2837,6 +2837,11 @@ function main() {
     observeTitle()
     observePopups()
     document.addEventListener('click', onDocumentClick, true)
+    globalObservers.set('document-click', {
+      disconnect() {
+        document.removeEventListener('click', onDocumentClick, true)
+      }
+    })
   }
 }
 
@@ -2858,7 +2863,6 @@ function configChanged(changes) {
     triggerVideoPageResize()
     disconnectObservers(pageObservers, 'page')
     disconnectObservers(globalObservers,' global')
-    document.removeEventListener('click', onDocumentClick, true)
   }
 }
 
