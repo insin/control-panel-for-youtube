@@ -61,6 +61,7 @@ for (let translationId of [
   'minimumGridItemsPerRow',
   'minimumGridItemsPerRowNote',
   'mobileGridView',
+  'pauseChannelTrailers',
   'redirectShorts',
   'removePink',
   'searchThumbnailSize',
@@ -126,6 +127,7 @@ let defaultConfig = {
   hideMiniplayerButton: false,
   hideSubscriptionsLatestBar: false,
   minimumGridItemsPerRow: 'auto',
+  pauseChannelTrailers: true,
   searchThumbnailSize: 'medium',
   tidyGuideSidebar: false,
   // Mobile only

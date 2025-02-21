@@ -179,6 +179,9 @@
   "mobileOnly": {
     "message": "モバイルのみ"
   },
+  "pauseChannelTrailers": {
+    "message": "チャンネルのトレーラーを自動的に一時停止する"
+  },
   "redirectShorts": {
     "message": "ショート動画を通常のプレイヤーにリダイレクト"
   },

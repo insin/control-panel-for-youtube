@@ -180,6 +180,9 @@
   "mobileOnly": {
     "message": "Mobile only"
   },
+  "pauseChannelTrailers": {
+    "message": "Automatically pause channel trailers"
+  },
   "redirectShorts": {
     "message": "Redirect Shorts to the normal player"
   },

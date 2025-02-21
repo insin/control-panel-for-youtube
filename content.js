@@ -36,7 +36,6 @@ let config = {
   debug: false,
   enabled: true,
   version,
-  alwaysUseTheaterMode: false,
   disableAutoplay: true,
   disableHomeFeed: false,
   hideAI: true,
@@ -65,6 +64,7 @@ let config = {
   removePink: false,
   skipAds: true,
   // Desktop only
+  alwaysUseTheaterMode: false,
   downloadTranscript: true,
   fullSizeTheaterMode: false,
   hideChat: false,
@@ -74,6 +74,7 @@ let config = {
   hideMiniplayerButton: false,
   hideSubscriptionsLatestBar: false,
   minimumGridItemsPerRow: 'auto',
+  pauseChannelTrailers: true,
   searchThumbnailSize: 'medium',
   tidyGuideSidebar: false,
   // Mobile only
@@ -148,6 +149,9 @@ const Svgs = {
   DELETE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M11 17H9V8h2v9zm4-9h-2v9h2V8zm4-4v1h-1v16H6V5H5V4h4V3h6v1h4zm-2 1H7v15h10V5z"></path></svg>',
   RESTORE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M460-347.692h40V-535.23l84 83.538L612.308-480 480-612.308 347.692-480 376-451.692l84-83.538v187.538ZM304.615-160Q277-160 258.5-178.5 240-197 240-224.615V-720h-40v-40h160v-30.77h240V-760h160v40h-40v495.385Q720-197 701.5-178.5 683-160 655.385-160h-350.77ZM680-720H280v495.385q0 9.23 7.692 16.923Q295.385-200 304.615-200h350.77q9.23 0 16.923-7.692Q680-215.385 680-224.615V-720Zm-400 0v520-520Z"/></svg>',
 }
+
+// YouTube channel URLs: https://support.google.com/youtube/answer/6180214
+const URL_CHANNEL_RE = /\/(?:@([^\/]+)|(?:c|channel|user)\/([^\/]+))(?:\/(featured|videos|shorts|playlists|community))?\/?$/
 
 //#region State
 /** @type {() => void} */
@@ -1233,6 +1237,10 @@ function isHomePage() {
   return location.pathname == '/'
 }
 
+function isChannelPage() {
+  return URL_CHANNEL_RE.test(location.pathname)
+}
+
 function isSearchPage() {
   return location.pathname == '/results'
 }
@@ -1369,6 +1377,9 @@ function handleCurrentUrl() {
   }
   else if (isSearchPage()) {
     tweakSearchPage()
+  }
+  else if (isChannelPage()) {
+    tweakChannelPage()
   }
   else if (location.pathname.startsWith('/shorts/')) {
     if (config.redirectShorts) {
@@ -2592,6 +2603,39 @@ async function tweakHomePage() {
       page: 'home',
       videoElements: new Set(['ytm-rich-item-renderer']),
     })
+  }
+}
+
+async function tweakChannelPage() {
+  let seen = new Map()
+  function isOnFeaturedTab() {
+    if (!seen.has(location.pathname)) {
+      let section = location.pathname.match(URL_CHANNEL_RE).at(-1)
+      seen.set(location.pathname, section == undefined || section == 'featured')
+    }
+    return seen.get(location.pathname)
+  }
+
+  if (desktop && config.pauseChannelTrailers && isOnFeaturedTab()) {
+    let $channelTrailer = /** @type {HTMLVideoElement} */ (
+      await getElement('ytd-channel-video-player-renderer video', {
+        name: `channel trailer`,
+        stopIf: () => !isOnFeaturedTab(),
+        timeout: 2000,
+      })
+    )
+    if ($channelTrailer) {
+      $channelTrailer.pause()
+      function pauseTrailer() {
+        log(`pauseChannelTrailers: pausing channel trailer`)
+        $channelTrailer.pause()
+      }
+      if ($channelTrailer.paused) {
+        $channelTrailer.addEventListener('play', pauseTrailer, {once: true})
+      } else {
+        pauseTrailer()
+      }
+    }
   }
 }
 
