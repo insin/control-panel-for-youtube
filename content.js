@@ -151,7 +151,7 @@ const Svgs = {
 }
 
 // YouTube channel URLs: https://support.google.com/youtube/answer/6180214
-const URL_CHANNEL_RE = /\/(?:@([^\/]+)|(?:c|channel|user)\/([^\/]+))(?:\/(featured|videos|shorts|playlists|community))?\/?$/
+const URL_CHANNEL_RE = /\/(?:@[^\/]+|(?:c|channel|user)\/[^\/]+)(?:\/(featured|videos|shorts|playlists|community))?\/?$/
 
 //#region State
 /** @type {() => void} */
@@ -2610,7 +2610,7 @@ async function tweakChannelPage() {
   let seen = new Map()
   function isOnFeaturedTab() {
     if (!seen.has(location.pathname)) {
-      let section = location.pathname.match(URL_CHANNEL_RE).at(-1)
+      let section = location.pathname.match(URL_CHANNEL_RE)[1]
       seen.set(location.pathname, section == undefined || section == 'featured')
     }
     return seen.get(location.pathname)
