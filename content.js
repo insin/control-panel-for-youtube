@@ -1006,7 +1006,11 @@ const configureCss = (() => {
         hideCssSelectors.push('#movie_player .ytp-ce-element')
       }
       if (config.hideEndVideos) {
-        hideCssSelectors.push('#movie_player .ytp-endscreen-content')
+        hideCssSelectors.push(
+          '#movie_player .ytp-endscreen-content',
+          '#movie_player .ytp-endscreen-previous',
+          '#movie_player .ytp-endscreen-next',
+        )
       }
       if (config.hideMerchEtc) {
         hideCssSelectors.push(
