@@ -622,6 +622,8 @@ const configureCss = (() => {
           'ytd-clarification-renderer',
           'ytd-info-panel-container-renderer',
           // Below video
+          '#middle-row.ytd-watch-metadata:has(> ytd-info-panel-content-renderer:only-child)',
+          'ytd-info-panel-content-renderer',
           '#clarify-box',
         )
       }
