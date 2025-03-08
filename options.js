@@ -27,7 +27,6 @@ for (let translationId of [
   'hideChannelsNote',
   'hideChat',
   'hideComments',
-  'hideEmbedEndVideos',
   'hideEmbedPauseOverlay',
   'hideEmbedShareButton',
   'hideEndCards',
@@ -136,7 +135,6 @@ let defaultConfig = {
   hideSubscriptionsChannelList: false,
   mobileGridView: true,
   // Embedded videos
-  hideEmbedEndVideos: true,
   hideEmbedPauseOverlay: true,
   hideEmbedShareButton: false,
 }

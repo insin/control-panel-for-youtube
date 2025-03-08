@@ -68,9 +68,6 @@
   "hideComments": {
     "message": "コメントを非表示"
   },
-  "hideEmbedEndVideos": {
-    "message": "ビデオのエンドスクリーンのコンテンツを非表示"
-  },
   "hideEmbedPauseOverlay": {
     "message": "一時停止オーバーレイを非表示"
   },

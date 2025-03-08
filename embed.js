@@ -11,10 +11,10 @@ function log(...args) {
 let config = {
   debug: false,
   enabled: true,
-  hideEmbedEndVideos: true,
   hideEmbedPauseOverlay: true,
   hideEmbedShareButton: false,
   hideEndCards: false,
+  hideEndVideos: true,
   hideInfoPanels: false,
   removePink: false,
 }
@@ -59,10 +59,6 @@ const configureCss = (() => {
     let cssRules = []
     let hideCssSelectors = []
 
-    if (config.hideEmbedEndVideos) {
-      hideCssSelectors.push('.videowall-endscreen')
-    }
-
     if (config.hideEmbedPauseOverlay) {
       hideCssSelectors.push('.ytp-pause-overlay-container')
     }
@@ -73,6 +69,10 @@ const configureCss = (() => {
 
     if (config.hideEndCards) {
       hideCssSelectors.push('.ytp-ce-element')
+    }
+
+    if (config.hideEndVideos) {
+      hideCssSelectors.push('.videowall-endscreen')
     }
 
     if (config.hideInfoPanels) {

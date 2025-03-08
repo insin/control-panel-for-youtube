@@ -118,7 +118,6 @@ ${messages.embeddedVideos}:
 
 • ${messages.hideEmbedShareButton}
 • ${messages.hideEmbedPauseOverlay}
-• ${messages.hideEmbedEndVideos}
 `.trim()
 
 if (process.argv[3] == 'html') {

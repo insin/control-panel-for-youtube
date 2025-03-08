@@ -10,10 +10,10 @@ export type Disconnectable = {disconnect: () => void}
 export type EmbedConfig = {
   debug?: boolean;
   enabled: boolean
-  hideEmbedEndVideos: boolean
   hideEmbedPauseOverlay: boolean
   hideEmbedShareButton: boolean
   hideEndCards: boolean
+  hideEndVideos: boolean
   hideInfoPanels: boolean
   removePink: boolean
 }
