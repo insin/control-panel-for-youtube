@@ -13,6 +13,7 @@ export type EmbedConfig = {
   hideEmbedEndVideos: boolean
   hideEmbedPauseOverlay: boolean
   hideEmbedShareButton: boolean
+  hideEndCards: boolean
   hideInfoPanels: boolean
   removePink: boolean
 }

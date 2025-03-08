@@ -14,6 +14,7 @@ let config = {
   hideEmbedEndVideos: true,
   hideEmbedPauseOverlay: true,
   hideEmbedShareButton: false,
+  hideEndCards: false,
   hideInfoPanels: false,
   removePink: false,
 }
@@ -68,6 +69,10 @@ const configureCss = (() => {
 
     if (config.hideEmbedShareButton) {
       hideCssSelectors.push('.ytp-share-button')
+    }
+
+    if (config.hideEndCards) {
+      hideCssSelectors.push('.ytp-ce-element')
     }
 
     if (config.hideInfoPanels) {
