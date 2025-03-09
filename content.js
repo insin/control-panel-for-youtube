@@ -1685,8 +1685,7 @@ function getChannelDetailsFromVideo($video) {
 function observeDesktopRichGridItemContent($gridItem, uniqueId) {
   observeDesktopRichGridVideoProgress($gridItem, uniqueId)
 
-  // For videos, observe their thumbnail for the href changing if they get
-  // replaced with a different video.
+  // For videos, observe the thumbnail link for the videoId being changed
   let $thumbnailLink = /** @type {HTMLAnchorElement} */ ($gridItem.querySelector('ytd-rich-grid-media a#thumbnail'))
   /** @type {import("./types").CustomMutationObserver} */
   let thumbnailObserver
@@ -1697,8 +1696,10 @@ function observeDesktopRichGridItemContent($gridItem, uniqueId) {
       return
     }
     thumbnailObserver = observeElement($thumbnailLink, (mutations) => {
-      if (!$thumbnailLink.href.endsWith(mutations[0].oldValue)) {
+      let searchParams = new URLSearchParams($thumbnailLink.search)
+      if (searchParams.has('v') && !mutations[0].oldValue.includes(searchParams.get('v'))) {
         log(`${uniqueId} #thumbnail href changed`, mutations[0].oldValue, '→', $thumbnailLink.href)
+        // TODO Do we need to wait for new video details to render?
         manuallyHideVideo($gridItem)
       }
     }, {
@@ -1724,7 +1725,7 @@ function observeDesktopRichGridItemContent($gridItem, uniqueId) {
         if (!($addedNode instanceof HTMLElement)) continue
         if ($addedNode.nodeName == 'YTD-RICH-GRID-MEDIA') {
           log(uniqueId, 'video added', $addedNode)
-          // TODO Do we need to wait for video contents to render? Will progress be updated at the same time?
+          // TODO Do we need to wait for new video details to render?
           $thumbnailLink = /** @type {HTMLAnchorElement} */ ($gridItem.querySelector('ytd-rich-grid-media a#thumbnail'))
           observeThumbnail()
           manuallyHideVideo($gridItem)
