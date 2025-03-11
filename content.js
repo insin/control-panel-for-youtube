@@ -1050,10 +1050,10 @@ const configureCss = (() => {
         cssRules.push(`
           .ytp-play-progress,
           #progress.ytd-thumbnail-overlay-resume-playback-renderer,
-          .ytThumbnailOverlayProgressBarHostWatchedProgressBarSegmentModern,
-          .ytChapteredProgressBarChapteredPlayerBarChapterRefresh,
-          .ytChapteredProgressBarChapteredPlayerBarFillRefresh,
-          .ytProgressBarLineProgressBarPlayedRefresh,
+          .ytThumbnailOverlayProgressBarHostWatchedProgressBarSegment,
+          .ytChapteredProgressBarChapteredPlayerBarChapterSeen,
+          .ytChapteredProgressBarChapteredPlayerBarFill,
+          .ytProgressBarLineProgressBarPlayed,
           #progress.yt-page-navigation-progress,
           .progress-bar-played.ytd-progress-bar-line {
             background: #f03 !important;
@@ -1212,10 +1212,10 @@ const configureCss = (() => {
         cssRules.push(`
           .ytp-play-progress,
           .thumbnail-overlay-resume-playback-progress,
-          .ytChapteredProgressBarChapteredPlayerBarChapterRefresh,
-          .ytChapteredProgressBarChapteredPlayerBarFillRefresh,
-          .ytProgressBarLineProgressBarPlayedRefresh,
-          .ytThumbnailOverlayProgressBarHostWatchedProgressBarSegmentModern {
+          .ytChapteredProgressBarChapteredPlayerBarChapterSeen,
+          .ytChapteredProgressBarChapteredPlayerBarFill,
+          .ytProgressBarLineProgressBarPlayed,
+          .ytThumbnailOverlayProgressBarHostWatchedProgressBarSegment {
             background: #f03 !important;
           }
         `)
