@@ -795,6 +795,8 @@ const configureCss = (() => {
           `ytd-mini-guide-entry-renderer[aria-label="${getString('SHORTS')}"]`,
           // Grid shelf
           'ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer[is-shorts])',
+          // Group of 3 Shorts in Home grid
+          'ytd-browse[page-subtype="home"] ytd-rich-grid-group',
           // Chips
           `yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="${getString('SHORTS')}"])`,
           // List shelf (except History, so watched Shorts can be removed)
