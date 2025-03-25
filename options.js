@@ -27,7 +27,6 @@ for (let translationId of [
   'hideChannelsNote',
   'hideChat',
   'hideComments',
-  'hideEmbedEndVideos',
   'hideEmbedPauseOverlay',
   'hideEmbedShareButton',
   'hideEndCards',
@@ -61,6 +60,7 @@ for (let translationId of [
   'minimumGridItemsPerRow',
   'minimumGridItemsPerRowNote',
   'mobileGridView',
+  'pauseChannelTrailers',
   'redirectShorts',
   'removePink',
   'searchThumbnailSize',
@@ -126,6 +126,7 @@ let defaultConfig = {
   hideMiniplayerButton: false,
   hideSubscriptionsLatestBar: false,
   minimumGridItemsPerRow: 'auto',
+  pauseChannelTrailers: true,
   searchThumbnailSize: 'medium',
   tidyGuideSidebar: false,
   // Mobile only
@@ -134,7 +135,6 @@ let defaultConfig = {
   hideSubscriptionsChannelList: false,
   mobileGridView: true,
   // Embedded videos
-  hideEmbedEndVideos: true,
   hideEmbedPauseOverlay: true,
   hideEmbedShareButton: false,
 }

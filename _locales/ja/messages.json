@@ -68,9 +68,6 @@
   "hideComments": {
     "message": "コメントを非表示"
   },
-  "hideEmbedEndVideos": {
-    "message": "ビデオのエンドスクリーンのコンテンツを非表示"
-  },
   "hideEmbedPauseOverlay": {
     "message": "一時停止オーバーレイを非表示"
   },
@@ -178,6 +175,9 @@
   },
   "mobileOnly": {
     "message": "モバイルのみ"
+  },
+  "pauseChannelTrailers": {
+    "message": "チャンネルのトレーラーを自動的に一時停止する"
   },
   "redirectShorts": {
     "message": "ショート動画を通常のプレイヤーにリダイレクト"

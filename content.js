@@ -6,7 +6,7 @@
 // @match       https://www.youtube.com/*
 // @match       https://m.youtube.com/*
 // @exclude     https://www.youtube.com/embed/*
-// @version     14
+// @version     17
 // ==/UserScript==
 let debug = false
 let debugManualHiding = false
@@ -36,7 +36,6 @@ let config = {
   debug: false,
   enabled: true,
   version,
-  alwaysUseTheaterMode: false,
   disableAutoplay: true,
   disableHomeFeed: false,
   hideAI: true,
@@ -65,6 +64,7 @@ let config = {
   removePink: false,
   skipAds: true,
   // Desktop only
+  alwaysUseTheaterMode: false,
   downloadTranscript: true,
   fullSizeTheaterMode: false,
   hideChat: false,
@@ -74,6 +74,7 @@ let config = {
   hideMiniplayerButton: false,
   hideSubscriptionsLatestBar: false,
   minimumGridItemsPerRow: 'auto',
+  pauseChannelTrailers: true,
   searchThumbnailSize: 'medium',
   tidyGuideSidebar: false,
   // Mobile only
@@ -148,6 +149,9 @@ const Svgs = {
   DELETE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M11 17H9V8h2v9zm4-9h-2v9h2V8zm4-4v1h-1v16H6V5H5V4h4V3h6v1h4zm-2 1H7v15h10V5z"></path></svg>',
   RESTORE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M460-347.692h40V-535.23l84 83.538L612.308-480 480-612.308 347.692-480 376-451.692l84-83.538v187.538ZM304.615-160Q277-160 258.5-178.5 240-197 240-224.615V-720h-40v-40h160v-30.77h240V-760h160v40h-40v495.385Q720-197 701.5-178.5 683-160 655.385-160h-350.77ZM680-720H280v495.385q0 9.23 7.692 16.923Q295.385-200 304.615-200h350.77q9.23 0 16.923-7.692Q680-215.385 680-224.615V-720Zm-400 0v520-520Z"/></svg>',
 }
+
+// YouTube channel URLs: https://support.google.com/youtube/answer/6180214
+const URL_CHANNEL_RE = /\/(?:@[^\/]+|(?:c|channel|user)\/[^\/]+)(?:\/(featured|videos|shorts|playlists|community))?\/?$/
 
 //#region State
 /** @type {() => void} */
@@ -618,6 +622,8 @@ const configureCss = (() => {
           'ytd-clarification-renderer',
           'ytd-info-panel-container-renderer',
           // Below video
+          '#middle-row.ytd-watch-metadata:has(> ytd-info-panel-content-renderer:only-child)',
+          'ytd-info-panel-content-renderer',
           '#clarify-box',
         )
       }
@@ -789,6 +795,8 @@ const configureCss = (() => {
           `ytd-mini-guide-entry-renderer[aria-label="${getString('SHORTS')}"]`,
           // Grid shelf
           'ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer[is-shorts])',
+          // Group of 3 Shorts in Home grid
+          'ytd-browse[page-subtype="home"] ytd-rich-grid-group',
           // Chips
           `yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="${getString('SHORTS')}"])`,
           // List shelf (except History, so watched Shorts can be removed)
@@ -1002,7 +1010,11 @@ const configureCss = (() => {
         hideCssSelectors.push('#movie_player .ytp-ce-element')
       }
       if (config.hideEndVideos) {
-        hideCssSelectors.push('#movie_player .ytp-endscreen-content')
+        hideCssSelectors.push(
+          '#movie_player .ytp-endscreen-content',
+          '#movie_player .ytp-endscreen-previous',
+          '#movie_player .ytp-endscreen-next',
+        )
       }
       if (config.hideMerchEtc) {
         hideCssSelectors.push(
@@ -1036,9 +1048,14 @@ const configureCss = (() => {
       }
       if (config.removePink) {
         cssRules.push(`
-          .ytp-cairo-refresh-signature-moments .ytp-play-progress,
+          .ytp-play-progress,
           #progress.ytd-thumbnail-overlay-resume-playback-renderer,
-          #progress.yt-page-navigation-progress {
+          .ytThumbnailOverlayProgressBarHostWatchedProgressBarSegment,
+          .ytChapteredProgressBarChapteredPlayerBarChapterSeen,
+          .ytChapteredProgressBarChapteredPlayerBarFill,
+          .ytProgressBarLineProgressBarPlayed,
+          #progress.yt-page-navigation-progress,
+          .progress-bar-played.ytd-progress-bar-line {
             background: #f03 !important;
           }
         `)
@@ -1193,9 +1210,12 @@ const configureCss = (() => {
       }
       if (config.removePink) {
         cssRules.push(`
-          .YtChapteredProgressBarChapteredPlayerBarChapterRefresh,
-          .YtChapteredProgressBarChapteredPlayerBarFill,
-          .thumbnail-overlay-resume-playback-progress {
+          .ytp-play-progress,
+          .thumbnail-overlay-resume-playback-progress,
+          .ytChapteredProgressBarChapteredPlayerBarChapterSeen,
+          .ytChapteredProgressBarChapteredPlayerBarFill,
+          .ytProgressBarLineProgressBarPlayed,
+          .ytThumbnailOverlayProgressBarHostWatchedProgressBarSegment {
             background: #f03 !important;
           }
         `)
@@ -1223,6 +1243,10 @@ const configureCss = (() => {
 
 function isHomePage() {
   return location.pathname == '/'
+}
+
+function isChannelPage() {
+  return URL_CHANNEL_RE.test(location.pathname)
 }
 
 function isSearchPage() {
@@ -1361,6 +1385,9 @@ function handleCurrentUrl() {
   }
   else if (isSearchPage()) {
     tweakSearchPage()
+  }
+  else if (isChannelPage()) {
+    tweakChannelPage()
   }
   else if (location.pathname.startsWith('/shorts/')) {
     if (config.redirectShorts) {
@@ -1649,9 +1676,152 @@ function getChannelDetailsFromVideo($video) {
   // warn('unable to get channel details from video container', $video)
 }
 
+/**
+ * If you navigate back to Home or Subscriptions (or click their own nav item
+ * again) after a period of time, their contents will be refreshed, reusing
+ * elements. We need to detect this and re-apply manual hiding preferences for
+ * the updated video in each element.
+ * @param {Element} $gridItem
+ * @param {string} uniqueId
+ */
+function observeDesktopRichGridItemContent($gridItem, uniqueId) {
+  observeDesktopRichGridVideoProgress($gridItem, uniqueId)
+
+  // For videos, observe the thumbnail link for the videoId being changed
+  let $thumbnailLink = /** @type {HTMLAnchorElement} */ ($gridItem.querySelector('ytd-rich-grid-media a#thumbnail'))
+  /** @type {import("./types").CustomMutationObserver} */
+  let thumbnailObserver
+
+  function observeThumbnail() {
+    if (!$thumbnailLink) {
+      log(`${uniqueId} has no video #thumbnail`)
+      return
+    }
+    thumbnailObserver = observeElement($thumbnailLink, (mutations) => {
+      let searchParams = new URLSearchParams($thumbnailLink.search)
+      if (searchParams.has('v') && !mutations[0].oldValue.includes(searchParams.get('v'))) {
+        log(`${uniqueId} #thumbnail href changed`, mutations[0].oldValue, '→', $thumbnailLink.href)
+        manuallyHideVideo($gridItem)
+      }
+    }, {
+      name: `${uniqueId} #thumbnail href`,
+      observers: pageObservers,
+    }, {
+      attributes: true,
+      attributeFilter: ['href'],
+      attributeOldValue: true,
+    })
+  }
+
+  if ($thumbnailLink) {
+    observeThumbnail()
+  }
+
+  // Observe the content of the grid item for a video being added or removed
+  // when grid contents are refreshed.
+  let $content = $gridItem.querySelector(':scope > #content')
+  observeElement($content, (mutations) => {
+    for (let mutation of mutations) {
+      for (let $addedNode of mutation.addedNodes) {
+        if (!($addedNode instanceof HTMLElement)) continue
+        if ($addedNode.nodeName == 'YTD-RICH-GRID-MEDIA') {
+          log(uniqueId, 'video added', $addedNode)
+          $thumbnailLink = /** @type {HTMLAnchorElement} */ ($gridItem.querySelector('ytd-rich-grid-media a#thumbnail'))
+          observeThumbnail()
+          manuallyHideVideo($gridItem)
+          if (config.hideWatched) {
+            observeDesktopRichGridVideoProgress($gridItem, uniqueId)
+          }
+        }
+      }
+      for (let $removedNode of mutation.removedNodes) {
+        if (!($removedNode instanceof HTMLElement)) continue
+        if ($removedNode.nodeName == 'YTD-RICH-GRID-MEDIA') {
+          log(uniqueId, 'video removed', $removedNode)
+          $thumbnailLink = null
+          thumbnailObserver?.disconnect()
+          manuallyHideVideo($gridItem)
+        }
+      }
+    }
+  }, {
+    name: `${uniqueId} #content`,
+    observers: pageObservers,
+  })
+}
+
+/**
+ * If you watch a video then navigate back to Home or Subscriptions without
+ * causing their contents to be refreshed, its watch progress will be updated
+ * in-place.
+ * @param {Element} $video
+ * @param {string} uniqueId
+ */
+function observeDesktopRichGridVideoProgress($video, uniqueId) {
+  let $overlays = $video.querySelector('ytd-rich-grid-media #overlays')
+  if (!$overlays) {
+    log(uniqueId, 'has no video #overlay')
+    return
+  }
+
+  let $progress = $overlays.querySelector('#progress')
+  /** @type {import("./types").CustomMutationObserver} */
+  let progressObserver
+
+  function observeProgress() {
+    if (!$progress) {
+      log(`${uniqueId} has no #progress`)
+      return
+    }
+    progressObserver = observeElement($progress, (mutations) => {
+      if (mutations.length > 0) {
+        log(`${uniqueId} #progress style changed`)
+        hideWatched($video)
+      }
+    }, {
+      name: `${uniqueId} #progress (for style changes)`,
+      observers: pageObservers,
+    }, {
+      attributes: true,
+      attributeFilter: ['style'],
+    })
+  }
+
+  if ($progress) {
+    observeProgress()
+  }
+
+  // Observe overlay contents for a progress bar being added or removed when
+  // the video is updated.
+  observeElement($overlays, (mutations) => {
+    for (let mutation of mutations) {
+      for (let $addedNode of mutation.addedNodes) {
+        if (!($addedNode instanceof HTMLElement)) continue
+        if ($addedNode.nodeName == 'YTD-THUMBNAIL-OVERLAY-RESUME-PLAYBACK-RENDERER') {
+          $progress = $addedNode.querySelector('#progress')
+          observeProgress()
+          hideWatched($video)
+        }
+      }
+      for (let $removedNode of mutation.removedNodes) {
+        if (!($removedNode instanceof HTMLElement)) continue
+        if ($removedNode.nodeName == 'YTD-THUMBNAIL-OVERLAY-RESUME-PLAYBACK-RENDERER') {
+          $progress = null
+          progressObserver?.disconnect()
+          hideWatched($video)
+        }
+      }
+    }
+  }, {
+    name: `${uniqueId} #overlays (for #progress being added or removed)`,
+    observers: pageObservers,
+  })
+}
+
 /** @param {{page: 'home' | 'subscriptions'}} options */
-async function observeDesktopRichGridVideos(options) {
+async function observeDesktopRichGridItems(options) {
   let {page} = options
+  let itemCount = 0
 
   let $renderer = await getElement(`ytd-browse[page-subtype="${page}"] ytd-rich-grid-renderer`, {
     name: `${page} <ytd-rich-grid-renderer>`,
@@ -1660,47 +1830,14 @@ async function observeDesktopRichGridVideos(options) {
   if (!$renderer) return
 
   let $gridContents = $renderer.querySelector(':scope > #contents')
-  let observingRefreshCanary = false
 
-  /** @param {Element} $video */
-  function processVideo($video) {
-    manuallyHideVideo($video)
-
-    // Re-hide hidden videos if they're re-rendered, e.g. grid size changes
-    if (config.hideHiddenVideos) {
-      $video.classList.toggle(Classes.HIDE_HIDDEN, Boolean($video.querySelector('ytd-rich-grid-media[is-dismissed]')))
-    }
-
-    // When grid contents are refreshed (e.g. clicking the Subscriptions nav
-    // item on the Subscriptions page after some time), video elements are
-    // re-used, so need to be re-checked for manual hiding. We observe the first
-    // video's URL as a signal this has happened.
-    if (!observingRefreshCanary) {
-      let $thumbnailLink = /** @type {HTMLAnchorElement} */ ($video.querySelector('a#thumbnail'))
-      // Some Home screen items (e.g. Mixes, promoted videos) won't have a link
-      if (!$thumbnailLink) return
-
-      observeElement($thumbnailLink, (mutations, observer) => {
-        if (!$thumbnailLink.href.endsWith(mutations[0].oldValue)) {
-          log('refresh canary href changed', mutations[0].oldValue, '→', $thumbnailLink.href)
-          // On the Home page, the type of video might change after a refresh,
-          // so also re-observe the refresh canary when re-processing videos.
-          if (page == 'home') {
-            observer.disconnect()
-            observingRefreshCanary = false
-          }
-          processAllVideos()
-        }
-      }, {
-        name: 'refresh canary href',
-        observers: pageObservers,
-      }, {
-        attributes: true,
-        attributeFilter: ['href'],
-        attributeOldValue: true,
-      })
-      observingRefreshCanary = true
-    }
+  /**
+   * @param {Element} $gridItem
+   * @param {string} $gridItem
+   */
+  function processGridItem($gridItem, uniqueId) {
+    manuallyHideVideo($gridItem)
+    observeDesktopRichGridItemContent($gridItem, uniqueId)
   }
 
   function processAllVideos() {
@@ -1708,7 +1845,9 @@ async function observeDesktopRichGridVideos(options) {
     if ($videos.length > 0) {
       log('processing', $videos.length, `${page} video${s($videos.length)}`)
     }
-    $videos.forEach(processVideo)
+    for (let $video of $videos) {
+      processGridItem($video, `grid item ${++itemCount}`)
+    }
   }
 
   // Process new videos as they're added
@@ -1718,7 +1857,7 @@ async function observeDesktopRichGridVideos(options) {
       for (let $addedNode of mutation.addedNodes) {
         if (!($addedNode instanceof HTMLElement)) continue
         if ($addedNode.nodeName == 'YTD-RICH-ITEM-RENDERER') {
-          processVideo($addedNode)
+          processGridItem($addedNode, `grid item ${++itemCount}`)
           videosAdded++
         }
       }
@@ -2415,7 +2554,7 @@ function hideWatched($video) {
 /**
  * Tag individual video elements to be hidden by options which would need too
  * complex or broad CSS :has() relative selectors.
- * @param {Element} $video
+ * @param {Element} $video video container element
  */
 function manuallyHideVideo($video) {
   hideWatched($video)
@@ -2575,7 +2714,7 @@ async function tweakHomePage() {
   }
   if (!config.hideWatched && !config.hideStreamed && !config.hideChannels) return
   if (desktop) {
-    observeDesktopRichGridVideos({page: 'home'})
+    observeDesktopRichGridItems({page: 'home'})
   }
   if (mobile) {
     observeVideoList({
@@ -2584,6 +2723,39 @@ async function tweakHomePage() {
       page: 'home',
       videoElements: new Set(['ytm-rich-item-renderer']),
     })
+  }
+}
+
+async function tweakChannelPage() {
+  let seen = new Map()
+  function isOnFeaturedTab() {
+    if (!seen.has(location.pathname)) {
+      let section = location.pathname.match(URL_CHANNEL_RE)[1]
+      seen.set(location.pathname, section == undefined || section == 'featured')
+    }
+    return seen.get(location.pathname)
+  }
+
+  if (desktop && config.pauseChannelTrailers && isOnFeaturedTab()) {
+    let $channelTrailer = /** @type {HTMLVideoElement} */ (
+      await getElement('ytd-channel-video-player-renderer video', {
+        name: `channel trailer`,
+        stopIf: () => !isOnFeaturedTab(),
+        timeout: 2000,
+      })
+    )
+    if ($channelTrailer) {
+      $channelTrailer.pause()
+      function pauseTrailer() {
+        log(`pauseChannelTrailers: pausing channel trailer`)
+        $channelTrailer.pause()
+      }
+      if ($channelTrailer.paused) {
+        $channelTrailer.addEventListener('play', pauseTrailer, {once: true})
+      } else {
+        pauseTrailer()
+      }
+    }
   }
 }
 
@@ -2616,7 +2788,7 @@ function tweakSearchPage() {
 async function tweakSubscriptionsPage() {
   if (!config.hideWatched && !config.hideStreamed) return
   if (desktop) {
-    observeDesktopRichGridVideos({page: 'subscriptions'})
+    observeDesktopRichGridItems({page: 'subscriptions'})
   }
   if (mobile) {
     observeVideoList({
@@ -2785,6 +2957,11 @@ function main() {
     observeTitle()
     observePopups()
     document.addEventListener('click', onDocumentClick, true)
+    globalObservers.set('document-click', {
+      disconnect() {
+        document.removeEventListener('click', onDocumentClick, true)
+      }
+    })
   }
 }
 
@@ -2806,7 +2983,6 @@ function configChanged(changes) {
     triggerVideoPageResize()
     disconnectObservers(pageObservers, 'page')
     disconnectObservers(globalObservers,' global')
-    document.removeEventListener('click', onDocumentClick, true)
   }
 }
 

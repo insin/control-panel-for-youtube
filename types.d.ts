@@ -5,15 +5,17 @@ export type Channel = {
 
 export type CustomMutationObserver = MutationObserver & {name: string, onDisconnect?: () => void}
 
-export type Disconnectable = {name: string, disconnect: () => void}
+export type Disconnectable = {disconnect: () => void}
 
 export type EmbedConfig = {
   debug?: boolean;
   enabled: boolean
-  hideEmbedEndVideos: boolean
   hideEmbedPauseOverlay: boolean
   hideEmbedShareButton: boolean
+  hideEndCards: boolean
+  hideEndVideos: boolean
   hideInfoPanels: boolean
+  removePink: boolean
 }
 
 export type Locale = {
@@ -82,6 +84,7 @@ export type SiteConfig = {
   hideMiniplayerButton: boolean
   hideSubscriptionsLatestBar: boolean
   minimumGridItemsPerRow: 'auto' | '3' | '4' | '5' | '6'
+  pauseChannelTrailers: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small'
   tidyGuideSidebar: boolean
   // Mobile only

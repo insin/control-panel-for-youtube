@@ -69,9 +69,6 @@
   "hideComments": {
     "message": "Hide Comments"
   },
-  "hideEmbedEndVideos": {
-    "message": "Hide video endscreen content"
-  },
   "hideEmbedPauseOverlay": {
     "message": "Hide pause overlay"
   },
@@ -179,6 +176,9 @@
   },
   "mobileOnly": {
     "message": "Mobile only"
+  },
+  "pauseChannelTrailers": {
+    "message": "Automatically pause channel trailers"
   },
   "redirectShorts": {
     "message": "Redirect Shorts to the normal player"

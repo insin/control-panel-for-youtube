@@ -7,14 +7,16 @@ function log(...args) {
 }
 
 //#region Default config
-/** @type {Partial<import("./types").EmbedConfig>} */
+/** @type {import("./types").EmbedConfig} */
 let config = {
   debug: false,
   enabled: true,
-  hideEmbedEndVideos: true,
   hideEmbedPauseOverlay: true,
   hideEmbedShareButton: false,
+  hideEndCards: false,
+  hideEndVideos: true,
   hideInfoPanels: false,
+  removePink: false,
 }
 //#endregion
 
@@ -57,10 +59,6 @@ const configureCss = (() => {
     let cssRules = []
     let hideCssSelectors = []
 
-    if (config.hideEmbedEndVideos) {
-      hideCssSelectors.push('.videowall-endscreen')
-    }
-
     if (config.hideEmbedPauseOverlay) {
       hideCssSelectors.push('.ytp-pause-overlay-container')
     }
@@ -69,8 +67,24 @@ const configureCss = (() => {
       hideCssSelectors.push('.ytp-share-button')
     }
 
+    if (config.hideEndCards) {
+      hideCssSelectors.push('.ytp-ce-element')
+    }
+
+    if (config.hideEndVideos) {
+      hideCssSelectors.push('.videowall-endscreen')
+    }
+
     if (config.hideInfoPanels) {
       hideCssSelectors.push('.ytp-info-panel-preview')
+    }
+
+    if (config.removePink) {
+      cssRules.push(`
+        .ytp-play-progress {
+          background: #f03 !important;
+        }
+      `)
     }
 
     if (hideCssSelectors.length > 0) {

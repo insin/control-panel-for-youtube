@@ -261,7 +261,7 @@ body.iOS.safari form > section:not(:first-of-type) {
 }
 /* All options should have a dividing line */
 body.iOS.safari section.group section {
-  border-top: 1px solid rgb(236, 236, 237);
+  border-top: 1px solid var(--border-color);
 }
 /* Options should not be indented by default */
 body.iOS.safari section.group > section {
