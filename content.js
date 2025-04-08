@@ -691,7 +691,7 @@ const configureCss = (() => {
           // Chip in Home
           `yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="${getString('MIXES')}"])`,
           // Grid item
-          'ytd-rich-item-renderer:has(a[href$="start_radio=1"])',
+          'ytd-rich-item-renderer:has(a[href*="start_radio=1"])',
           // List item
           'ytd-radio-renderer',
           // Related video
