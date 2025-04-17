@@ -102,7 +102,8 @@ const locales = {
     PREVIOUS_VIDEO: 'Previous video',
     SHARE: 'Share',
     SHORTS: 'Shorts',
-    STREAMED_TITLE: 'views Streamed',
+    STREAMED_METADATA_INNERTEXT_RE: '\\nStreamed',
+    STREAMED_TITLE_ARIA_LABEL: 'views Streamed',
     TELL_US_WHY: 'Tell us why',
     THANKS: 'Thanks',
     UNHIDE_CHANNEL: 'Unhide channel',
@@ -119,7 +120,8 @@ const locales = {
     PREVIOUS_VIDEO: '前の動画',
     SHARE: '共有',
     SHORTS: 'ショート',
-    STREAMED_TITLE: '前 に配信済み',
+    STREAMED_METADATA_INNERTEXT_RE: 'に配信済み$',
+    STREAMED_TITLE_ARIA_LABEL: '前 に配信済み',
     TELL_US_WHY: '理由を教えてください',
     UNHIDE_CHANNEL: 'チャンネルの再表示',
   }
@@ -2561,6 +2563,7 @@ function manuallyHideVideo($video) {
 
   // Streamed videos are identified using the video title's aria-label
   if (config.hideStreamed) {
+    /** @type {HTMLElement} */
     let $videoTitle
     if (desktop) {
       // Subscriptions <ytd-rich-item-renderer> has a different structure
@@ -2571,7 +2574,12 @@ function manuallyHideVideo($video) {
     }
     let hide = false
     if ($videoTitle) {
-      hide = Boolean($videoTitle.getAttribute('aria-label')?.includes(getString('STREAMED_TITLE')))
+      hide = Boolean($videoTitle.getAttribute('aria-label')?.includes(getString('STREAMED_TITLE_ARIA_LABEL')))
+      // Fall back to the metadata line on desktop
+      if (!hide && desktop) {
+        let $metadataLine = /** @type {HTMLElement} */ ($video.querySelector('#metadata-line'))
+        hide = Boolean($metadataLine?.innerText.match(getString('STREAMED_METADATA_INNERTEXT_RE')))
+      }
     }
     $video.classList.toggle(Classes.HIDE_STREAMED, hide)
   }
