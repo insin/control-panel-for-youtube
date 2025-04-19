@@ -800,7 +800,7 @@ const configureCss = (() => {
           // Group of 3 Shorts in Home grid
           'ytd-browse[page-subtype="home"] ytd-rich-grid-group',
           // Chips
-          `yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="${getString('SHORTS')}"])`,
+          `yt-chip-cloud-chip-renderer:has(> #chip-container > yt-formatted-string[title="${getString('SHORTS')}"])`,
           // List shelf (except History, so watched Shorts can be removed)
           'ytd-browse:not([page-subtype="history"]) ytd-reel-shelf-renderer',
           'ytd-search ytd-reel-shelf-renderer',
