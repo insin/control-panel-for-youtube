@@ -106,7 +106,6 @@ const locales = {
   'en': {
     CLIP: 'Clip',
     DOWNLOAD: 'Download',
-    FOR_YOU: 'For you',
     HIDE_CHANNEL: 'Hide channel',
     MIXES: 'Mixes',
     MUTE: 'Mute',
@@ -124,7 +123,6 @@ const locales = {
   'ja-JP': {
     CLIP: 'クリップ',
     DOWNLOAD: 'オフライン',
-    FOR_YOU: 'あなたへのおすすめ',
     HIDE_CHANNEL: 'チャンネルを隠す',
     MIXES: 'ミックス',
     MUTE: 'ミュート（消音）',
@@ -137,6 +135,22 @@ const locales = {
     STREAMED_TITLE_ARIA_LABEL: '前 に配信済み',
     TELL_US_WHY: '理由を教えてください',
     UNHIDE_CHANNEL: 'チャンネルの再表示',
+  },
+  'zh-Hans-CN': {
+    CLIP: '剪辑',
+    DOWNLOAD: '下载',
+    HIDE_CHANNEL: '隐藏频道',
+    MIXES: '合辑',
+    MUTE: '静音',
+    NEXT_VIDEO: '下一个视频',
+    OPEN_APP: '打开应用',
+    PREVIOUS_VIDEO: '上一个视频',
+    SHARE: '分享',
+    STREAMED_METADATA_INNERTEXT_RE: '直播时间：',
+    STREAMED_TITLE_ARIA_LABEL: '直播时间：',
+    TELL_US_WHY: '告诉我们原因',
+    THANKS: '感谢',
+    UNHIDE_CHANNEL: '取消隐藏频道',
   }
 }
 

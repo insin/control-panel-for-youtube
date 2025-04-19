@@ -25,7 +25,6 @@ export type Locale = {
 export type LocaleKey =
   | 'CLIP'
   | 'DOWNLOAD'
-  | 'FOR_YOU'
   | 'HIDE_CHANNEL'
   | 'MIXES'
   | 'MUTE'
@@ -34,6 +33,7 @@ export type LocaleKey =
   | 'PREVIOUS_VIDEO'
   | 'SHARE'
   | 'SHORTS'
+  // This needs to match both innerText and textContent
   | 'STREAMED_METADATA_INNERTEXT_RE'
   | 'STREAMED_TITLE_ARIA_LABEL'
   | 'TELL_US_WHY'
