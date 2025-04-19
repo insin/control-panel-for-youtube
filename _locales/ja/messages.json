@@ -1,4 +1,7 @@
 {
+  "alwaysUseOriginalAudio": {
+    "message": "常にオリジナル音声を使用する"
+  },
   "alwaysUseTheaterMode": {
     "message": "常にシアターモードを使用する"
   },

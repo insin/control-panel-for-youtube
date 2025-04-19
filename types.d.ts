@@ -40,6 +40,13 @@ export type LocaleKey =
   | 'THANKS'
   | 'UNHIDE_CHANNEL'
 
+export type PageLocale = {
+  [key in PageLocaleKey]?: string
+}
+
+export type PageLocaleKey =
+  | 'ORIGINAL'
+
 export type OptionsConfig = EmbedConfig & SiteConfig
 
 export type SiteConfig = {
@@ -75,6 +82,7 @@ export type SiteConfig = {
   removePink: boolean
   skipAds: boolean
   // Desktop only
+  alwaysUseOriginalAudio: boolean
   alwaysUseTheaterMode: boolean
   downloadTranscript: boolean
   fullSizeTheaterMode: boolean

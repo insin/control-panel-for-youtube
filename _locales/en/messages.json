@@ -1,4 +1,7 @@
 {
+  "alwaysUseOriginalAudio": {
+    "message": "Always use original audio"
+  },
   "alwaysUseTheaterMode": {
     "message": "Always use theater mode"
   },

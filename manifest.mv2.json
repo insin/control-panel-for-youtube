@@ -37,6 +37,9 @@
       "all_frames": true
     }
   ],
+  "web_accessible_resources": [
+    "page.js"
+  ],
   "options_ui": {
     "browser_style": true,
     "page": "options.html"

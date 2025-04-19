@@ -1,4 +1,7 @@
 {
+  "alwaysUseOriginalAudio": {
+    "message": "始终使用原始音频"
+  },
   "alwaysUseTheaterMode": {
     "message": "始终剧院模式"
   },

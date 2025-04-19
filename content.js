@@ -18,6 +18,18 @@ let version = mobile ? 'mobile' : 'desktop'
 let lang = mobile ? document.body.lang : document.documentElement.lang
 let loggedIn = /(^|; )SID=/.test(document.cookie)
 
+let $pageScript = document.createElement('script')
+$pageScript.src = chrome.runtime.getURL('page.js')
+document.documentElement.appendChild($pageScript)
+
+/**
+ * Features which need to access DOM expandos run in the page script, as they're
+ * not accessible in content scripts.
+ */
+function messagePageScript(message) {
+  window.postMessage(message, location.origin)
+}
+
 function log(...args) {
   if (debug) {
     console.log('🙋', ...args)
@@ -64,6 +76,7 @@ let config = {
   removePink: false,
   skipAds: true,
   // Desktop only
+  alwaysUseOriginalAudio: false,
   alwaysUseTheaterMode: false,
   downloadTranscript: true,
   fullSizeTheaterMode: false,
@@ -1264,6 +1277,16 @@ function isVideoPage() {
 }
 
 //#region Tweak functions
+async function alwaysUseOriginalAudio() {
+  let $player = await getElement('#movie_player', {
+    name: 'player (alwaysUseOriginalAudio)',
+    stopIf: currentUrlChanges(),
+  })
+  if (!$player) return
+
+  messagePageScript({feature: 'alwaysUseOriginalAudio', debug})
+}
+
 async function alwaysUseTheaterMode() {
   let $player = await getElement('#movie_player', {
     name: 'player (alwaysUseTheaterMode)',
@@ -2817,6 +2840,9 @@ async function tweakVideoPage() {
   }
   if (desktop && config.alwaysUseTheaterMode) {
     alwaysUseTheaterMode()
+  }
+  if (desktop && config.alwaysUseOriginalAudio) {
+    alwaysUseOriginalAudio()
   }
 
   if (config.hideRelated || (!config.hideWatched && !config.hideStreamed && !config.hideChannels)) return
