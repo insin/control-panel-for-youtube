@@ -18,8 +18,17 @@ let version = mobile ? 'mobile' : 'desktop'
 let lang = mobile ? document.body.lang : document.documentElement.lang
 let loggedIn = /(^|; )SID=/.test(document.cookie)
 
+let pendingMessages = []
+let pageScriptLoaded = false
 let $pageScript = document.createElement('script')
 $pageScript.src = chrome.runtime.getURL('page.js')
+$pageScript.onload = function() {
+  pageScriptLoaded = true
+  if (pendingMessages.length > 0) {
+    pendingMessages.map(messagePageScript)
+    pendingMessages = []
+  }
+}
 document.documentElement.appendChild($pageScript)
 
 /**
@@ -27,7 +36,11 @@ document.documentElement.appendChild($pageScript)
  * not accessible in content scripts.
  */
 function messagePageScript(message) {
-  window.postMessage(message, location.origin)
+  if (!pageScriptLoaded) {
+    pendingMessages.push(message)
+  } else {
+    window.postMessage(message, location.origin)
+  }
 }
 
 function log(...args) {
@@ -3086,10 +3099,6 @@ if (!isUserscript) {
     // Let the options page know which version is being used
     chrome.storage.local.set({version})
     chrome.storage.local.onChanged.addListener(onConfigChange)
-
-    window.addEventListener('unload', () => {
-      chrome.storage.local.onChanged.removeListener(onConfigChange)
-    }, {once: true})
 
     main()
   })

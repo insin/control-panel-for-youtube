@@ -41,11 +41,30 @@ function getString(code) {
   return (locales[lang] || locales['en'])[code] || locales['en'][code];
 }
 
-function alwaysUseOriginalAudio() {
+async function alwaysUseOriginalAudio() {
   let $player = document.querySelector('#movie_player')
   // @ts-ignore
+  let playerState = $player.getPlayerState?.()
+  if (playerState != null && playerState != 1) {
+    log('alwaysUseOriginalAudio: waiting for video to start playing')
+    await new Promise((resolve) => {
+      function onStateChange(playerState) {
+        if (playerState == 1) {
+          log('alwaysUseOriginalAudio: video started playing')
+          $player.removeEventListener('onStateChange', onStateChange)
+          resolve()
+        }
+      }
+      $player.addEventListener('onStateChange', onStateChange)
+    })
+  }
+  // @ts-ignore
   let tracks = $player?.getAvailableAudioTracks?.()
-  if (!tracks || tracks.length == 1) return
+  if (!tracks || tracks.length <= 1) {
+    log('alwaysUseOriginalAudio: no alternative tracks available')
+    return
+  }
+
   let originalTrack = tracks.find((track) => {
     for (let prop in track) {
       if (Object.prototype.toString.call(track[prop]) == '[object Object]' &&
@@ -57,7 +76,7 @@ function alwaysUseOriginalAudio() {
     }
   })
   if (!originalTrack) {
-    warn('alwaysUseOriginalAudio: could not find original track')
+    warn('alwaysUseOriginalAudio: could not find original track', tracks)
     return
   }
 
@@ -74,9 +93,10 @@ function alwaysUseOriginalAudio() {
 }
 
 window.addEventListener('message', (e) => {
+  if (e.source !== window) return
   let message = e.data
-  debug = Boolean(message.debug)
-  if (message.feature == 'alwaysUseOriginalAudio') alwaysUseOriginalAudio()
+  debug = Boolean(message?.debug)
+  if (message?.feature == 'alwaysUseOriginalAudio') alwaysUseOriginalAudio()
 })
 
 }()
