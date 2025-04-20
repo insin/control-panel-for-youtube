@@ -120,6 +120,7 @@ body.disabled:not(.safari) form > section {
   text-align: center;
   font-size: 75%;
   margin-top: 12px;
+  margin-bottom: 8px;
 }
 body.disabled #version {
   display: none;
