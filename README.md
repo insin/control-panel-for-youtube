@@ -32,6 +32,7 @@ If you would like to translate Control Panel for YouTube's options into your lan
 
 - [@Catastravia](https://github.com/Catastravia) for [improving the Japanese translation](https://github.com/insin/control-panel-for-youtube/issues/22)
 - [@movcoa](https://github.com/movcoa) for [providing a Chinese translation](https://github.com/insin/control-panel-for-youtube/issues/67)
+- [@tohu-sand](https://github.com/tohu-sand) for [improving the Japanese translation](https://github.com/insin/control-panel-for-youtube/pull/68)
 
 ## Attribution
 

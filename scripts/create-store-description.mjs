@@ -103,6 +103,7 @@ ${messages.videoPages}:
 • ${messages.redirectShorts}
 • ${messages.alwaysUseTheaterMode}${messages.desktopVersion}
 • ${messages.fullSizeTheaterMode}${messages.desktopVersion}
+• ${messages.alwaysUseOriginalAudio}${messages.desktopVersion}
 • ${messages.hideMiniplayerButton}${messages.desktopVersion}
 • ${messages.hideEndCards}${messages.desktopVersion}
 • ${messages.hideEndVideos}${messages.desktopVersion}
