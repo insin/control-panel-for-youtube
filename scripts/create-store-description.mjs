@@ -70,6 +70,7 @@ ${messages.features}
 
 • ${messages.hideAI}
 • ${messages.removePink}
+• ${messages.pauseChannelTrailers}${messages.desktopVersion}
 
 ${messages.videoLists}:
 
@@ -129,27 +130,10 @@ ${messages.embeddedVideos}:
 • ${messages.hideEmbedPauseOverlay}
 `.trim()
 
-if (process.argv[3] == 'html') {
-  // XXX This depends _very specifically_ on the way dashes, spaces and newlines
-  //     are used in the template string above.
-  storeDescription = storeDescription
-    // 2 nested items
-    .replace(/^• ([^\n]+)\n  • ([^\n]+)\n  • ([^\n]+)/gm, '<li>$1<ul>\n<li>$2</li>\n<li>$3</li></ul></li>')
-    // 1 nested item
-    .replace(/^• ([^\n]+)\n  • ([^\n]+)/gm, '<li>$1<ul>\n<li>$2</li></ul></li>')
-    // No nested items
-    .replace(/^• ([^\n]+)/gm, '<li>$1</li>')
-    // Section titles
-    .replace(/^([^\n<][^\n]+)\n\n/gm, '<strong>$1</strong>\n<ul>\n')
-    // Remaining empty lines
-    .replace(/^$/gm, '</ul>\n')
-    .replace(/$/, '\n</ul>')
-}
-
 if (process.argv[3] == 'md') {
   storeDescription = storeDescription
     // Section titles
-    .replace(/^([^:\n]+):$/gm, '### $1')
+    .replace(/^([^:\n]+):$/gm, '**$1:**')
     // List tiems
     .replace(/•/g, '-')
 }
