@@ -737,7 +737,7 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // Chip in Home
-          `yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="${getString('MIXES')}"])`,
+          `yt-chip-cloud-chip-renderer:has(> #chip-container > yt-formatted-string[title="${getString('MIXES')}"])`,
           // Grid item
           'ytd-rich-item-renderer:has(a[href*="start_radio=1"])',
           // List item
