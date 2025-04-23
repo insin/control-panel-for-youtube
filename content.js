@@ -518,6 +518,12 @@ const configureCss = (() => {
     if (config.hideHomeCategories) {
       if (desktop) {
         hideCssSelectors.push('ytd-browse[page-subtype="home"] #header')
+        // Remove the hidden header's height from the frosted glass element
+        cssRules.push(`
+          #frosted-glass.with-chipbar {
+            height: 56px !important;
+          }
+        `)
       }
       if (mobile) {
         hideCssSelectors.push('.tab-content[tab-identifier="FEwhat_to_watch"] .rich-grid-sticky-header')
