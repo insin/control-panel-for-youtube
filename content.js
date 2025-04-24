@@ -800,9 +800,9 @@ const configureCss = (() => {
       if (mobile) {
         hideCssSelectors.push(
           // Hide the Previous button when it's disabled, as it otherwise takes you to the previously-watched video
-          `.player-controls-middle-core-buttons > button[aria-label="${getString('PREVIOUS_VIDEO')}"][aria-disabled="true"]`,
+          `.player-controls-middle-core-buttons button[aria-label="${getString('PREVIOUS_VIDEO')}"][aria-disabled="true"]`,
           // Always hide the Next button as it takes you to a random video, even if you just used Previous
-          `.player-controls-middle-core-buttons > button[aria-label="${getString('NEXT_VIDEO')}"]`,
+          `.player-controls-middle-core-buttons button[aria-label="${getString('NEXT_VIDEO')}"]`,
         )
       }
     }
