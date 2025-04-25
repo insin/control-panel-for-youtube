@@ -750,6 +750,8 @@ const configureCss = (() => {
           'ytd-compact-radio-renderer',
           // Search result and related video
           'yt-lockup-view-model:has(a[href*="start_radio=1"])',
+          // Video endscreen item
+          '.ytp-videowall-still[data-is-mix="true"]',
         )
       }
       if (mobile) {
