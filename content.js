@@ -1773,6 +1773,48 @@ function getChannelDetailsFromVideo($video) {
   // warn('unable to get channel details from video container', $video)
 }
 
+async function observeDesktopEndscreenVideos() {
+  let $endscreenContent = await getElement('.ytp-endscreen-content', {
+    name: 'endscreen content',
+    stopIf: currentUrlChanges(),
+  })
+  if (!$endscreenContent) return
+
+  /** @type {import("./types").Disconnectable} */
+  let firstItemObserver
+
+  function processItems() {
+    for (let $item of $endscreenContent.children) {
+      let $channelInfo = /** @type {HTMLElement} */ ($item.querySelector('.ytp-videowall-still-info-author'))
+      let name = $channelInfo?.innerText?.split('•')?.[0]?.trim()
+      $item.classList.toggle(Classes.HIDE_CHANNEL, isChannelHidden({name}))
+    }
+  }
+
+  observeElement($endscreenContent, () => {
+    processItems()
+    if (!firstItemObserver && $endscreenContent.firstElementChild) {
+      firstItemObserver = observeElement($endscreenContent.firstElementChild, () => {
+        processItems()
+      }, {
+        name: 'endscreen item changes',
+        observers: pageObservers,
+      }, {
+        attributes: true,
+        attributeFilter: ['href'],
+      })
+    }
+    else if (firstItemObserver && $endscreenContent.childElementCount == 0) {
+      firstItemObserver?.disconnect()
+      firstItemObserver = null
+    }
+  }, {
+    name: 'endscreen content',
+    observers: pageObservers,
+    leading: true,
+  })
+}
+
 /**
  * If you navigate back to Home or Subscriptions (or click their own nav item
  * again) after a period of time, their contents will be refreshed, reusing
@@ -2921,6 +2963,9 @@ async function tweakVideoPage() {
   }
   if (desktop && config.alwaysUseOriginalAudio) {
     alwaysUseOriginalAudio()
+  }
+  if (desktop && config.hideChannels && !config.hideEndVideos && config.hiddenChannels.length > 0) {
+    observeDesktopEndscreenVideos()
   }
 
   if (config.hideRelated || (!config.hideWatched && !config.hideStreamed && !config.hideChannels)) return
