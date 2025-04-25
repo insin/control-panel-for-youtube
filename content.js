@@ -621,6 +621,10 @@ const configureCss = (() => {
           border-radius: 50%;
           margin: 0.5em;
           display: inline-block;
+          cursor: pointer;
+        }
+        .cpfyt-pie:hover {
+          --cpfyt-pie-color: #f03;
         }
         .cpfyt-pie::before,
         .cpfyt-pie::after {
@@ -2379,10 +2383,8 @@ function observeVideoHiddenState() {
     let $video = $lastClickedElement?.closest('ytd-rich-grid-media')
     if (!$video) return
 
-    observeElement($video, (_, observer) => {
+    observeElement($video, () => {
       if (!$video.hasAttribute('is-dismissed')) return
-
-      observer.disconnect()
 
       log('video hidden, showing timer')
       let $actions = $video.querySelector('ytd-notification-multi-action-renderer')
@@ -2400,6 +2402,10 @@ function observeVideoHiddenState() {
         if (delay) $pie.style.setProperty('--cpfyt-pie-delay', `${delay}ms`)
         if (direction) $pie.style.setProperty('--cpfyt-pie-direction', direction)
         if (duration) $pie.style.setProperty('--cpfyt-pie-duration', `${duration}ms`)
+        $pie.addEventListener('click', () => {
+          stopTimer()
+          cleanup()
+        })
         $actions.appendChild($pie)
       }
 
@@ -2417,6 +2423,10 @@ function observeVideoHiddenState() {
         }, undoHideDelayMs)
       }
 
+      function stopTimer() {
+        clearTimeout(timeout)
+      }
+
       function cleanup() {
         $undoButton.removeEventListener('click', onUndoClick)
         if ($tellUsWhyButton) {
@@ -2426,13 +2436,13 @@ function observeVideoHiddenState() {
       }
 
       function onUndoClick() {
-        clearTimeout(timeout)
+        stopTimer()
         cleanup()
       }
 
       function onTellUsWhyClick() {
         let elapsedTime = Date.now() - startTime
-        clearTimeout(timeout)
+        stopTimer()
         displayPie({
           direction: 'reverse',
           delay: Math.round((elapsedTime - undoHideDelayMs) / 4),
