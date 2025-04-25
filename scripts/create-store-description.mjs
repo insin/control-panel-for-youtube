@@ -104,6 +104,7 @@ ${messages.videoPages}:
 • ${messages.redirectShorts}
 • ${messages.alwaysUseTheaterMode}${messages.desktopVersion}
 • ${messages.fullSizeTheaterMode}${messages.desktopVersion}
+  • ${messages.fullSizeTheaterModeHideHeader} / ${messages.fullSizeTheaterModeHideScrollbar}
 • ${messages.alwaysUseOriginalAudio}${messages.desktopVersion}
 • ${messages.hideMiniplayerButton}${messages.desktopVersion}
 • ${messages.hideEndCards}${messages.desktopVersion}
