@@ -83,6 +83,9 @@
   "hideEmbedShareButton": {
     "message": "共有ボタンを非表示"
   },
+  "hideEmptySidebar": {
+    "message": "サイドバーが空の場合は非表示にする"
+  },
   "hideEndCards": {
     "message": "動画のエンドカードを非表示"
   },

@@ -97,6 +97,7 @@ ${messages.videoPages}:
 • ${messages.skipAds}
 • ${messages.disableAutoplay}
 • ${messages.hideRelated}
+  • ${messages.config.hideEmptySidebar}${messages.desktopVersion}
 • ${messages.hideNextButton}
 • ${messages.hideShareThanksClip}
 • ${messages.hideMetadata}

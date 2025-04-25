@@ -84,6 +84,9 @@
   "hideEmbedShareButton": {
     "message": "Hide Share button"
   },
+  "hideEmptySidebar": {
+    "message": "Hide sidebar when it's empty"
+  },
   "hideEndCards": {
     "message": "Hide video end cards"
   },

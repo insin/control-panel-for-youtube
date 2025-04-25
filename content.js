@@ -98,6 +98,7 @@ let config = {
   fullSizeTheaterModeHideHeader: true,
   fullSizeTheaterModeHideScrollbar: false,
   hideChat: false,
+  hideEmptySidebar: false,
   hideEndCards: false,
   hideEndVideos: true,
   hideMerchEtc: true,
@@ -878,6 +879,16 @@ const configureCss = (() => {
     if (config.hideRelated) {
       if (desktop) {
         hideCssSelectors.push('#related')
+        if (config.hideEmptySidebar) {
+          // Hide the sidebar when there's nothing to show or showing in it
+          let sidebarVisibleContentSelectors = [
+            'ytd-engagement-panel-section-list-renderer[visibility="ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"]',
+            !config.hideMerchEtc && '#donation-shelf:not(:empty)',
+            !config.hideChat && '#chat-container ytd-live-chat-frame',
+            'ytd-playlist-panel-renderer:not([hidden])',
+          ].filter(Boolean)
+          hideCssSelectors.push(`#secondary.ytd-watch-flexy:not(:has(${sidebarVisibleContentSelectors.join(', ')}))`)
+        }
       }
       if (mobile) {
         hideCssSelectors.push('ytm-item-section-renderer[section-identifier="related-items"]')
@@ -1167,12 +1178,10 @@ const configureCss = (() => {
       }
       if (config.hideMerchEtc) {
         hideCssSelectors.push(
-          // Tickets
           '#ticket-shelf',
-          // Merch
           'ytd-merch-shelf-renderer',
-          // Offers
           '#offer-module',
+          '#donation-shelf',
         )
       }
       if (config.hideMiniplayerButton) {

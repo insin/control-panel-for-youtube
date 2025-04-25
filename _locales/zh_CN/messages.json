@@ -84,6 +84,9 @@
   "hideEmbedShareButton": {
     "message": "隐藏分享按钮"
   },
+  "hideEmptySidebar": {
+    "message": "侧边栏为空时隐藏"
+  },
   "hideEndCards": {
     "message": "隐藏视频结束卡"
   },

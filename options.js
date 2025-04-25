@@ -32,6 +32,7 @@ for (let translationId of [
   'hideComments',
   'hideEmbedPauseOverlay',
   'hideEmbedShareButton',
+  'hideEmptySidebar',
   'hideEndCards',
   'hideEndVideos',
   'hideExploreButton',
@@ -128,6 +129,7 @@ let defaultConfig = {
   fullSizeTheaterModeHideHeader: true,
   fullSizeTheaterModeHideScrollbar: false,
   hideChat: false,
+  hideEmptySidebar: false,
   hideEndCards: false,
   hideEndVideos: true,
   hideMerchEtc: true,
@@ -240,6 +242,7 @@ function updateDisplay() {
   $body.classList.toggle('disabled', !optionsConfig.enabled)
   $body.classList.toggle('fullSizeTheaterMode', optionsConfig.fullSizeTheaterMode)
   $body.classList.toggle('hiddenChannels', shouldDisplayHiddenChannels())
+  $body.classList.toggle('hidingRelated', optionsConfig.hideRelated)
   $body.classList.toggle('hidingWatched', optionsConfig.hideWatched)
   $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
   updateHiddenChannelsDisplay()
