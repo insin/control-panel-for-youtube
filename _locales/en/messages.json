@@ -48,6 +48,12 @@
   "fullSizeTheaterMode": {
     "message": "Full size theater mode"
   },
+  "fullSizeTheaterModeHideHeader": {
+    "message": "Hide header"
+  },
+  "fullSizeTheaterModeHideScrollbar": {
+    "message": "Hide scrollbar"
+  },
   "hiddenChannelsSummary": {
     "message": "Hidden channels ($COUNT$)",
     "placeholders": {

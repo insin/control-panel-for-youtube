@@ -93,6 +93,8 @@ let config = {
   alwaysUseTheaterMode: false,
   downloadTranscript: true,
   fullSizeTheaterMode: false,
+  fullSizeTheaterModeHideHeader: true,
+  fullSizeTheaterModeHideScrollbar: false,
   hideChat: false,
   hideEndCards: false,
   hideEndVideos: true,
@@ -1043,12 +1045,43 @@ const configureCss = (() => {
         }
       `)
       if (config.fullSizeTheaterMode) {
-        // 56px is the height of #container.ytd-masthead
-        cssRules.push(`
-          ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container {
-            max-height: calc(100vh - 56px);
-          }
-        `)
+        // TODO Observe current theater mode state to get rid of these :has()
+        if (config.fullSizeTheaterModeHideHeader) {
+          cssRules.push(`
+            /* Hide header until you hover */
+            #content.ytd-app:has(> #page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) #masthead-container #masthead {
+              transform: translateY(-100%);
+              transition: transform .15s ease-in !important;
+            }
+            #content.ytd-app:has(> #page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) #masthead-container:hover #masthead {
+              transform: translateY(0);
+              transition: transform .3s ease-out !important;
+            }
+            /* Reclaim header space */
+            #content.ytd-app:has(> #page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) #page-manager {
+              margin-top: 0 !important;
+            }
+            /* Make theater mode fullscreen */
+            ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container {
+              max-height: 100vh;
+              height: 100vh;
+            }
+          `)
+        } else {
+          // 56px is the height of #container.ytd-masthead
+          cssRules.push(`
+            ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container {
+              max-height: calc(100vh - 56px);
+            }
+          `)
+        }
+        if (config.fullSizeTheaterModeHideScrollbar) {
+          cssRules.push(`
+            html:has(#page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) {
+              scrollbar-width: none;
+            }
+          `)
+        }
       }
       if (config.hideChat) {
         hideCssSelectors.push(

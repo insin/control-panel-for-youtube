@@ -48,6 +48,12 @@
   "fullSizeTheaterMode": {
     "message": "全屏影院模式"
   },
+  "fullSizeTheaterModeHideHeader": {
+    "message": "隐藏标题栏"
+  },
+  "fullSizeTheaterModeHideScrollbar": {
+    "message": "隐藏滚动条"
+  },
   "hiddenChannelsSummary": {
     "message": "隐藏频道 ($COUNT$)",
     "placeholders": {

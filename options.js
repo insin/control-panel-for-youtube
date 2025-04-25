@@ -23,6 +23,8 @@ for (let translationId of [
   'embeddedVideos',
   'enabled',
   'fullSizeTheaterMode',
+  'fullSizeTheaterModeHideHeader',
+  'fullSizeTheaterModeHideScrollbar',
   'hideAI',
   'hideChannels',
   'hideChannelsNote',
@@ -121,6 +123,8 @@ let defaultConfig = {
   alwaysUseTheaterMode: false,
   downloadTranscript: true,
   fullSizeTheaterMode: false,
+  fullSizeTheaterModeHideHeader: true,
+  fullSizeTheaterModeHideScrollbar: false,
   hideChat: false,
   hideEndCards: false,
   hideEndVideos: true,
@@ -232,6 +236,7 @@ function shouldDisplayHiddenChannels() {
 function updateDisplay() {
   $body.classList.toggle('desktop', optionsConfig.version == 'desktop')
   $body.classList.toggle('disabled', !optionsConfig.enabled)
+  $body.classList.toggle('fullSizeTheaterMode', optionsConfig.fullSizeTheaterMode)
   $body.classList.toggle('hiddenChannels', shouldDisplayHiddenChannels())
   $body.classList.toggle('hidingWatched', optionsConfig.hideWatched)
   $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
