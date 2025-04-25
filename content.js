@@ -795,7 +795,7 @@ const configureCss = (() => {
     if (config.hideNextButton) {
       if (desktop) {
         // Hide the Next by default so it doesn't flash in and out of visibility
-        // Show Next is Previous is enabled (e.g. when viewing a playlist video)
+        // Show Next if Previous is enabled (e.g. when viewing a playlist video)
         cssRules.push(`
           .ytp-chrome-controls .ytp-next-button {
             display: none !important;
