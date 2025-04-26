@@ -36,6 +36,7 @@ export type LocaleKey =
   // This needs to match both innerText and textContent
   | 'STREAMED_METADATA_INNERTEXT_RE'
   | 'STREAMED_TITLE_ARIA_LABEL'
+  | 'TAKE_SNAPSHOT'
   | 'TELL_US_WHY'
   | 'THANKS'
   | 'UNHIDE_CHANNEL'

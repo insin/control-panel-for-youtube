@@ -131,6 +131,7 @@ const locales = {
     SHORTS: 'Shorts',
     STREAMED_METADATA_INNERTEXT_RE: '\\n\\s*Streamed',
     STREAMED_TITLE_ARIA_LABEL: 'views Streamed',
+    TAKE_SNAPSHOT: 'Take snapshot',
     TELL_US_WHY: 'Tell us why',
     THANKS: 'Thanks',
     UNHIDE_CHANNEL: 'Unhide channel',
@@ -148,6 +149,7 @@ const locales = {
     SHORTS: 'ショート',
     STREAMED_METADATA_INNERTEXT_RE: 'に配信済み\\s*$',
     STREAMED_TITLE_ARIA_LABEL: '前 に配信済み',
+    TAKE_SNAPSHOT: 'スナップショットを撮る',
     TELL_US_WHY: '理由を教えてください',
     UNHIDE_CHANNEL: 'チャンネルの再表示',
   },
@@ -163,6 +165,7 @@ const locales = {
     SHARE: '分享',
     STREAMED_METADATA_INNERTEXT_RE: '直播时间：',
     STREAMED_TITLE_ARIA_LABEL: '直播时间：',
+    TAKE_SNAPSHOT: '截取快照',
     TELL_US_WHY: '告诉我们原因',
     THANKS: '感谢',
     UNHIDE_CHANNEL: '取消隐藏频道',
@@ -2098,6 +2101,55 @@ async function observePopups() {
         observers: globalObservers,
       })
     }
+
+    if (true /* config.addTakeSnapshot*/) {
+      let $contextMenu = /** @type {HTMLElement} */ ($popupContainer.querySelector('.ytp-popup.ytp-contextmenu'))
+
+      function addTakeShapshotMenuItem() {
+        let $firstMenuItem = $contextMenu.querySelector('.ytp-menuitem')
+        $firstMenuItem.insertAdjacentHTML('afterend', `
+<div id="cpfyt-snaphot-menu-item" class="ytp-menuitem" role="menuitem" tabindex="0">
+  <div class="ytp-menuitem-icon">
+    <svg fill="#fff" height="24px" viewBox="0 -960 960 960" width="24px">
+      <path d="M480-400q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0 80q66 0 113-47t47-113q0-66-47-113t-113-47q-66 0-113 47t-47 113q0 66 47 113t113 47ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/>
+    </svg>
+  </div>
+  <div class="ytp-menuitem-label">${getString('TAKE_SNAPSHOT')}</div>
+  <div class="ytp-menuitem-content"></div>
+</div>
+        `.trim())
+        $contextMenu.querySelector('#cpfyt-snaphot-menu-item').addEventListener('click', takeSnapshot)
+        // Adjust context menu height for new item
+        let height = `${parseInt($contextMenu.style.height) + 40}px`
+        $contextMenu.style.height = height
+        if ($contextMenu.children[0]) {
+          /** @type {HTMLElement} */ ($contextMenu.children[0]).style.height = height
+          if ($contextMenu.children[0].children[0]) {
+            /** @type {HTMLElement} */ ($contextMenu.children[0].children[0]).style.height = height
+          }
+        }
+      }
+
+      if ($contextMenu) {
+        addTakeShapshotMenuItem()
+      } else {
+        observeElement(document.body, (mutations, observer) => {
+          for (let mutation of mutations) {
+            for (let $el of mutation.addedNodes) {
+              if ($el instanceof HTMLElement && $el.classList.contains('ytp-contextmenu')) {
+                $contextMenu = $el
+                observer.disconnect()
+                addTakeShapshotMenuItem()
+                return
+              }
+            }
+          }
+        }, {
+          name: '<body> (for player context menu being added)',
+          observers: globalObservers,
+        })
+      }
+    }
   }
 
   if (mobile) {
@@ -2753,6 +2805,36 @@ function redirectShort() {
   let search = location.search ? location.search.replace('?', '&') : ''
   log('redirecting Short to normal player')
   location.replace(`/watch?v=${videoId}${search}`)
+}
+
+function takeSnapshot() {
+  let $video = /** @type {HTMLVideoElement} */ (document.querySelector('#movie_player video'))
+  if (!$video) {
+    warn('takeSnapshot: video not found')
+    return
+  }
+
+  let $canvas = document.createElement('canvas')
+  $canvas.width = $video.videoWidth
+  $canvas.height = $video.videoHeight
+
+  try {
+    let context = $canvas.getContext('2d')
+    context.drawImage($video, 0, 0, $canvas.width, $canvas.height)
+    let $a = document.createElement('a')
+    $a.href = $canvas.toDataURL('image/jpeg')
+    $a.download = [
+      document.querySelector('#text.ytd-channel-name')?.getAttribute('title'),
+      document.querySelector('#title.ytd-watch-metadata yt-formatted-string')?.getAttribute('title'),
+      $video.currentTime
+    ].filter(Boolean).join(' - ') + '.png'
+    log('takeSnapshot:', $a.download)
+    document.body.appendChild($a)
+    $a.click()
+    document.body.removeChild($a)
+  } catch (e) {
+    warn('error taking screenshot', e)
+  }
 }
 
 /**
