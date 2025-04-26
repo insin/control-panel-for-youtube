@@ -1507,11 +1507,11 @@ function addDownloadTranscriptToDesktopMenu($menu) {
 
   let $menuItems = $menu.querySelector('#items')
   $menuItems.insertAdjacentHTML('beforeend', `
-    <div class="cpfyt-menu-item" tabindex="0" style="display: none">
-      <div class="cpfyt-menu-text">
-        ${getString('DOWNLOAD')}
-      </div>
-    </div>
+<div class="cpfyt-menu-item" tabindex="0" style="display: none">
+  <div class="cpfyt-menu-text">
+    ${getString('DOWNLOAD')}
+  </div>
+</div>
   `.trim())
   let $item = $menuItems.lastElementChild
   function download() {
@@ -1601,14 +1601,14 @@ function handleDesktopWatchChannelMenu($menu) {
 
       let $menuItems = $menu.querySelector('#items')
       $menuItems.insertAdjacentHTML('beforeend', `
-        <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
-          <div class="cpfyt-menu-icon">
-            ${hidden ? Svgs.RESTORE : Svgs.DELETE}
-          </div>
-          <div class="cpfyt-menu-text">
-            ${getString(hidden ? 'UNHIDE_CHANNEL' : 'HIDE_CHANNEL')}
-          </div>
-        </div>
+<div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
+  <div class="cpfyt-menu-icon">
+    ${hidden ? Svgs.RESTORE : Svgs.DELETE}
+  </div>
+  <div class="cpfyt-menu-text">
+    ${getString(hidden ? 'UNHIDE_CHANNEL' : 'HIDE_CHANNEL')}
+  </div>
+</div>
       `.trim())
       $item = $menuItems.lastElementChild
       $item.addEventListener('click', toggleHideChannel)
@@ -1651,14 +1651,14 @@ function addHideChannelToDesktopVideoMenu($menu) {
 
   let $menuItems = $menu.querySelector('#items')
   $menuItems.insertAdjacentHTML('beforeend', `
-    <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
-      <div class="cpfyt-menu-icon">
-        ${Svgs.DELETE}
-      </div>
-      <div class="cpfyt-menu-text">
-        ${getString('HIDE_CHANNEL')}
-      </div>
-    </div>
+<div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
+  <div class="cpfyt-menu-icon">
+    ${Svgs.DELETE}
+  </div>
+  <div class="cpfyt-menu-text">
+    ${getString('HIDE_CHANNEL')}
+  </div>
+</div>
   `.trim())
   let $item = $menuItems.lastElementChild
   function hideChannel() {
