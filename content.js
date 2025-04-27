@@ -1123,7 +1123,7 @@ const configureCss = (() => {
             #content.ytd-app:has(> #page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) #page-manager {
               margin-top: 0 !important;
             }
-            /* Make theater mode fullscreen */
+            /* Make theater mode full view height */
             ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container {
               max-height: 100vh;
               height: 100vh;
