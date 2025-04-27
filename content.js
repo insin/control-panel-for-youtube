@@ -775,22 +775,22 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // In Home
-          'ytd-rich-item-renderer.ytd-rich-grid-renderer:has(a[href$="pp=sAQB"])',
+          'ytd-rich-item-renderer.ytd-rich-grid-renderer:has(a[href*="&pp=sAQB"])',
           // In Search
           'ytd-movie-renderer',
           // In Related videos
           'ytd-compact-movie-renderer',
-          'ytd-compact-video-renderer:has(a[href$="pp=sAQB"])',
+          'ytd-compact-video-renderer:has(a[href*="&pp=sAQB"])',
         )
       }
       if (mobile) {
         hideCssSelectors.push(
           // In Home
-          '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-item-renderer:has(a[href$="pp=sAQB"])',
+          '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-item-renderer:has(a[href*="&pp=sAQB"])',
           // In Search
           'ytm-search ytm-video-with-context-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_YPC"])',
           // In Related videos
-          'ytm-item-section-renderer[data-content-type="related"] ytm-video-with-context-renderer:has(a[href$="pp=sAQB"])'
+          'ytm-item-section-renderer[data-content-type="related"] ytm-video-with-context-renderer:has(a[href*="&pp=sAQB"])'
         )
       }
     }
