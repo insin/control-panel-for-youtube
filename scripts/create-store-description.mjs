@@ -45,6 +45,11 @@ let extraTranslations = {
     "en": " (mobile version)",
     "ja": "（モバイル版）",
     "zh_CN": "（手机版）",
+  },
+  "takeSnapshot": {
+    "en": 'Take snapshot',
+    "ja": 'スナップショットを撮る',
+    "zh_CN": '截取快照',
   }
 }
 
@@ -80,8 +85,10 @@ ${messages.videoLists}:
 • ${messages.hideLive}
 • ${messages.hideStreamed}
 • ${messages.hideMixes}
+• ${messages.hidePlaylists}
 • ${messages.hideMoviesAndTV}
 • ${messages.hideUpcoming}
+• ${messages.hideMembersOnly}
 • ${messages.hideWatched}
 • ${messages.hideHiddenVideos}
   • ${messages.hideHiddenVideosNote}
@@ -111,6 +118,7 @@ ${messages.videoPages}:
 • ${messages.hideEndVideos}${messages.desktopVersion}
 • ${messages.hideMerchEtc}${messages.desktopVersion}
 • ${messages.hideChat}${messages.desktopVersion}
+• ${messages.takeSnapshot}${messages.desktopVersion}
 • ${messages.downloadTranscript}${messages.desktopVersion}
 
 ${messages.uiTweaks}:
