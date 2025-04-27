@@ -2883,8 +2883,8 @@ function takeSnapshot() {
     let $a = document.createElement('a')
     $a.href = $canvas.toDataURL('image/jpeg')
     $a.download = [
-      document.querySelector('#text.ytd-channel-name')?.getAttribute('title'),
-      document.querySelector('#title.ytd-watch-metadata yt-formatted-string')?.getAttribute('title'),
+      document.querySelector('ytd-watch-flexy #text.ytd-channel-name')?.getAttribute('title'),
+      document.querySelector('ytd-watch-flexy #title.ytd-watch-metadata yt-formatted-string')?.getAttribute('title'),
       $video.currentTime
     ].filter(Boolean).join(' - ') + '.png'
     log('takeSnapshot:', $a.download)
