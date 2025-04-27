@@ -108,6 +108,9 @@
   "hideLive": {
     "message": "Hide Live videos"
   },
+  "hideMembersOnly": {
+    "message": "Hide Members only videos"
+  },
   "hideMerchEtc": {
     "message": "Hide Merch, Offers etc."
   },

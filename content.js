@@ -71,6 +71,7 @@ let config = {
   hideHomeCategories: false,
   hideInfoPanels: false,
   hideLive: false,
+  hideMembersOnly: false,
   hideMetadata: false,
   hideMixes: false,
   hideMoviesAndTV: false,
@@ -122,6 +123,7 @@ const locales = {
     CLIP: 'Clip',
     DOWNLOAD: 'Download',
     HIDE_CHANNEL: 'Hide channel',
+    HOME: 'Home',
     MIXES: 'Mixes',
     MUTE: 'Mute',
     NEXT_VIDEO: 'Next video',
@@ -140,6 +142,7 @@ const locales = {
     CLIP: 'クリップ',
     DOWNLOAD: 'オフライン',
     HIDE_CHANNEL: 'チャンネルを隠す',
+    HOME: 'ホーム',
     MIXES: 'ミックス',
     MUTE: 'ミュート（消音）',
     NEXT_VIDEO: '次の動画',
@@ -157,6 +160,7 @@ const locales = {
     CLIP: '剪辑',
     DOWNLOAD: '下载',
     HIDE_CHANNEL: '隐藏频道',
+    HOME: '首页',
     MIXES: '合辑',
     MUTE: '静音',
     NEXT_VIDEO: '下一个视频',
@@ -720,6 +724,35 @@ const configureCss = (() => {
       }
     }
 
+    if (config.hideMembersOnly) {
+      if (desktop) {
+        hideCssSelectors.push(
+          // Grid item (Home, Subscriptions, Channel videos tab)
+          'ytd-rich-item-renderer:has(.badge-style-type-members-only)',
+          // List item (Search)
+          'ytd-video-renderer:has(.badge-style-type-members-only)',
+          // Related video
+          'ytd-compact-video-renderer:has(.badge-style-type-members-only)',
+          // Playlist in channel Home tab
+          'ytd-item-section-renderer[page-subtype="channels"]:has(.badge-style-type-members-only)',
+          // Video endscreen
+          // TODO Hide by href based on any of the first 12 items in #related being members only videos
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(
+          // Home
+          'ytm-rich-item-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])',
+          // Subscriptions
+          '.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])',
+          // Search
+          'ytm-search ytm-video-with-context-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])',
+          // Playlist in channel Home tab
+          `ytm-browse .tab-content[tab-title="${getString('HOME')}"] ytm-shelf-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])`,
+        )
+      }
+    }
+
     if (config.hideMetadata) {
       if (desktop) {
         hideCssSelectors.push(
@@ -1037,11 +1070,11 @@ const configureCss = (() => {
       // Fix spaces & gaps caused by left gutter margin on first column items
       cssRules.push(`
         /* Remove left gutter margin from first column items */
-        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
+        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="channels"]) ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
           margin-left: calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
         }
         /* Apply the left gutter as padding in the grid contents instead */
-        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) #contents.ytd-rich-grid-renderer {
+        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="channels"]) #contents.ytd-rich-grid-renderer {
           padding-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * 2) !important;
         }
         /* Adjust non-grid items so they don't double the gutter */

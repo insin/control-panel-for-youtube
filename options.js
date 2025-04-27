@@ -101,6 +101,7 @@ let defaultConfig = {
   hideHomeCategories: false,
   hideInfoPanels: false,
   hideLive: false,
+  hideMembersOnly: false,
   hideMetadata: false,
   hideMixes: false,
   hideMoviesAndTV: false,

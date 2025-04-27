@@ -107,6 +107,9 @@
   "hideLive": {
     "message": "ライブ動画を非表示"
   },
+  "hideMembersOnly": {
+    "message": "メンバー限定動画を非表示にする"
+  },
   "hideMerchEtc": {
     "message": "商品、オファーなどを非表示"
   },

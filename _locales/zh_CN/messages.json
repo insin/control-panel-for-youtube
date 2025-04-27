@@ -108,6 +108,9 @@
   "hideLive": {
     "message": "隐藏视频直播"
   },
+  "hideMembersOnly": {
+    "message": "隐藏会员专属视频"
+  },
   "hideMerchEtc": {
     "message": "隐藏商品、优惠等."
   },

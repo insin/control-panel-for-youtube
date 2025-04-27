@@ -26,6 +26,7 @@ export type LocaleKey =
   | 'CLIP'
   | 'DOWNLOAD'
   | 'HIDE_CHANNEL'
+  | 'HOME'
   | 'MIXES'
   | 'MUTE'
   | 'NEXT_VIDEO'
@@ -65,6 +66,7 @@ export type SiteConfig = {
   hideHomeCategories: boolean
   hideInfoPanels: boolean
   hideLive: boolean
+  hideMembersOnly: boolean
   hideMetadata: boolean
   hideMixes: boolean
   hideMoviesAndTV: boolean
