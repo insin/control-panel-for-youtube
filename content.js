@@ -977,6 +977,8 @@ const configureCss = (() => {
           hideCssSelectors.push(
             // Shelves in Home
             '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer',
+            // Looking for something different? tile in Home
+            'ytm-rich-item-renderer:has(> .feed-nudge-wrapper)',
           )
         } else {
           // Logged-out users can get "Try searching to get started" Home page
