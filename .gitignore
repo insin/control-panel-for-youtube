@@ -5,3 +5,4 @@ manifest.json
 node_modules/
 scripts/translations.json
 web-ext-artifacts/
+wip/
