@@ -135,6 +135,9 @@
   "hideOpenApp": {
     "message": "隐藏打开应用程序链接"
   },
+  "hidePlaylists": {
+    "message": "隐藏播放列表"
+  },
   "hideRelated": {
     "message": "隐藏相关视频"
   },

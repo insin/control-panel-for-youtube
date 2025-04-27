@@ -106,6 +106,7 @@ let defaultConfig = {
   hideMixes: false,
   hideMoviesAndTV: false,
   hideNextButton: true,
+  hidePlaylists: false,
   hideRelated: false,
   hideShareThanksClip: false,
   hideShorts: true,

@@ -135,6 +135,9 @@
   "hideOpenApp": {
     "message": "Hide Open App links"
   },
+  "hidePlaylists": {
+    "message": "Hide Playlists"
+  },
   "hideRelated": {
     "message": "Hide Related videos"
   },

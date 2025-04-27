@@ -76,6 +76,7 @@ let config = {
   hideMixes: false,
   hideMoviesAndTV: false,
   hideNextButton: true,
+  hidePlaylists: false,
   hideRelated: false,
   hideShareThanksClip: false,
   hideShorts: true,
@@ -847,6 +848,29 @@ const configureCss = (() => {
           `.player-controls-middle-core-buttons button[aria-label="${getString('PREVIOUS_VIDEO')}"][aria-disabled="true"]`,
           // Always hide the Next button as it takes you to a random video, even if you just used Previous
           `.player-controls-middle-core-buttons button[aria-label="${getString('NEXT_VIDEO')}"]`,
+        )
+      }
+    }
+
+    if (config.hidePlaylists) {
+      if (desktop) {
+        hideCssSelectors.push(
+          // Home
+          'ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(.yt-lockup-view-model-wiz)',
+          // Search and Related
+          'yt-lockup-view-model:has(> .yt-lockup-view-model-wiz)',
+          // Video endscreen
+          '.ytp-videowall-still[data-is-list="true"][data-is-mix="false"]',
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(
+          // Home
+          '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-item-renderer:has(> yt-lockup-view-model > .yt-lockup-view-model-wiz)',
+          // Search
+          'ytm-search ytm-compact-playlist-renderer',
+          // Related
+          'ytm-item-section-renderer[section-identifier="related-items"] ytm-compact-playlist-renderer',
         )
       }
     }

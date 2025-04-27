@@ -71,6 +71,7 @@ export type SiteConfig = {
   hideMixes: boolean
   hideMoviesAndTV: boolean
   hideNextButton: boolean
+  hidePlaylists: boolean
   hideRelated: boolean
   hideShareThanksClip: boolean
   hideShorts: boolean

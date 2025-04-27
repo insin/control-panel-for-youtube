@@ -134,6 +134,9 @@
   "hideOpenApp": {
     "message": "アプリを開くリンクを非表示"
   },
+  "hidePlaylists": {
+    "message": "再生リストを非表示にする"
+  },
   "hideRelated": {
     "message": "関連動画を非表示"
   },
