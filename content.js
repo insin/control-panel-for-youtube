@@ -2886,7 +2886,7 @@ function takeSnapshot() {
       document.querySelector('ytd-watch-flexy #text.ytd-channel-name')?.getAttribute('title'),
       document.querySelector('ytd-watch-flexy #title.ytd-watch-metadata yt-formatted-string')?.getAttribute('title'),
       $video.currentTime
-    ].filter(Boolean).join(' - ') + '.png'
+    ].filter(Boolean).join(' - ') + '.jpg'
     log('takeSnapshot:', $a.download)
     document.body.appendChild($a)
     $a.click()
