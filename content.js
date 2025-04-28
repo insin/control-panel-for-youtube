@@ -515,6 +515,7 @@ const configureCss = (() => {
     }
 
     if (config.hideAI) {
+      // e.g. https://www.youtube.com/results?search_query=howtobasic+wedges
       if (desktop) {
         const geminiSvgPath = 'M480-80q0-83-31.5-156T363-363q-54-54-127-85.5T80-480q83 0 156-31.5T363-597q54-54 85.5-127T480-880q0 83 31.5 156T597-597q54 54 127 85.5T880-480q-83 0-156 31.5T597-363q-54 54-85.5 127T480-80Z'
         hideCssSelectors.push(`#expandable-metadata:has(path[d="${geminiSvgPath}"])`)
