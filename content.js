@@ -824,7 +824,7 @@ const configureCss = (() => {
           // In Search
           'ytm-search ytm-video-with-context-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_YPC"])',
           // In Related videos
-          'ytm-item-section-renderer[data-content-type="related"] ytm-video-with-context-renderer:has(a[href*="&pp=sAQB"])'
+          'ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(a[href*="&pp=sAQB"])',
         )
       }
     }
@@ -943,7 +943,7 @@ const configureCss = (() => {
           // Under video
           'ytm-structured-description-content-renderer ytm-reel-shelf-renderer',
           // In related
-          'ytm-item-section-renderer[data-content-type="related"] ytm-video-with-context-renderer:has(a[href^="/shorts"])',
+          'ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(a[href^="/shorts"])',
         )
       }
     }
@@ -3174,7 +3174,7 @@ async function tweakVideoPage() {
     // If the video changes on mobile, related videos are rendered from scratch
     observeVideoList({
       name: 'related <lazy-list>',
-      selector: 'ytm-item-section-renderer[data-content-type="related"] > lazy-list',
+      selector: 'ytm-item-section-renderer[section-identifier="related-items"] > lazy-list',
       page: 'related',
       // <ytm-compact-autoplay-renderer> displays as a large item on bigger mobile screens
       videoElements: new Set(['ytm-video-with-context-renderer', 'ytm-compact-autoplay-renderer']),
