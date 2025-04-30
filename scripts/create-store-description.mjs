@@ -124,6 +124,7 @@ ${messages.videoPages}:
 ${messages.uiTweaks}:
 
 • ${messages.hideInfoPanels}
+• ${messages.hideChannelBanner}
 • ${messages.hideHomeCategories}
 • ${messages.hideVoiceSearch}
 • ${messages.tidyGuideSidebar}${messages.desktopVersion}

@@ -66,6 +66,9 @@
   "hideAI": {
     "message": "Hide AI summaries"
   },
+  "hideChannelBanner": {
+    "message": "Hide channel banner images"
+  },
   "hideChannels": {
     "message": "Hide channels"
   },

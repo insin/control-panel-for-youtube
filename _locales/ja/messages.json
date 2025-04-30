@@ -65,6 +65,9 @@
   "hideAI": {
     "message": "AIによる概要を非表示"
   },
+  "hideChannelBanner": {
+    "message": "チャンネルバナー画像を非表示にする"
+  },
   "hideChannels": {
     "message": "チャンネルを非表示"
   },

@@ -63,8 +63,9 @@ let config = {
   version,
   disableAutoplay: true,
   disableHomeFeed: false,
-  hideAI: true,
   hiddenChannels: [],
+  hideAI: true,
+  hideChannelBanner: false,
   hideChannels: true,
   hideComments: false,
   hideHiddenVideos: true,
@@ -523,6 +524,15 @@ const configureCss = (() => {
       if (mobile) {
         const geminiSvgPath = 'M6 0c0 3.314-2.69 6-6 6 3.31 0 6 2.686 6 6 0-3.314 2.69-6 6-6-3.31 0-6-2.686-6-6Z'
         hideCssSelectors.push(`ytm-expandable-metadata-renderer:has(path[d="${geminiSvgPath}"])`)
+      }
+    }
+
+    if (config.hideChannelBanner) {
+      if (desktop) {
+        hideCssSelectors.push('ytd-browse[page-subtype="channels"] #page-header-banner')
+      }
+      if (mobile) {
+        hideCssSelectors.push('html[cpfyt-page="channel"] .page-header-view-model-wiz__page-header-banner-container')
       }
     }
 
@@ -1535,6 +1545,7 @@ function handleCurrentUrl() {
   log('handling', getCurrentUrl())
   disconnectObservers(pageObservers, 'page')
 
+  let page = ''
   if (isHomePage()) {
     tweakHomePage()
   }
@@ -1548,9 +1559,15 @@ function handleCurrentUrl() {
     tweakSearchPage()
   }
   else if (isChannelPage()) {
+    page = 'channel'
     tweakChannelPage()
   }
-  else if (location.pathname.startsWith('/shorts/')) {
+  // Add a current page indicator to html[cpfyt-page] when we need a CSS hook
+  if (mobile && document.documentElement.getAttribute('cpfyt-page') != page) {
+    document.documentElement.setAttribute('cpfyt-page', page)
+  }
+
+  if (location.pathname.startsWith('/shorts/')) {
     if (config.redirectShorts) {
       redirectShort()
     }

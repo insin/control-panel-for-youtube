@@ -66,6 +66,9 @@
   "hideAI": {
     "message": "隐藏AI摘要"
   },
+  "hideChannelBanner": {
+    "message": "隐藏频道横幅图片"
+  },
   "hideChannels": {
     "message": "隐藏频道"
   },
