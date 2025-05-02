@@ -1,4 +1,7 @@
 {
+  "addTakeSnapshot": {
+    "message": "ビデオメニューにスナップショットを追加"
+  },
   "alwaysUseOriginalAudio": {
     "message": "常にオリジナル音声を使用する"
   },
@@ -197,6 +200,18 @@
   "pauseChannelTrailers": {
     "message": "チャンネルのトレーラーを自動的に一時停止"
   },
+  "qualityFull": {
+    "message": "最高"
+  },
+  "qualityHigh": {
+    "message": "高"
+  },
+  "qualityLow": {
+    "message": "低"
+  },
+  "qualityMedium": {
+    "message": "中"
+  },
   "redirectShorts": {
     "message": "ショート動画を通常のプレイヤーにリダイレクト"
   },
@@ -214,6 +229,12 @@
   },
   "small": {
     "message": "小"
+  },
+  "snapshotFormat": {
+    "message": "スナップショット形式"
+  },
+  "snapshotQuality": {
+    "message": "品質"
   },
   "tidyGuideSidebar": {
     "message": "サイドバーを整理する"

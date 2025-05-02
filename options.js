@@ -13,6 +13,7 @@ for (let optionValue of [
 }
 
 for (let translationId of [
+  'addTakeSnapshot',
   'alwaysUseOriginalAudio',
   'alwaysUseTheaterMode',
   'anyPercent',
@@ -67,10 +68,16 @@ for (let translationId of [
   'minimumGridItemsPerRowNote',
   'mobileGridView',
   'pauseChannelTrailers',
+  'qualityFull',
+  'qualityHigh',
+  'qualityLow',
+  'qualityMedium',
   'redirectShorts',
   'removePink',
   'searchThumbnailSize',
   'skipAds',
+  'snapshotFormat',
+  'snapshotQuality',
   'tidyGuideSidebar',
   'uiTweaks',
   'videoLists',
@@ -125,6 +132,7 @@ let defaultConfig = {
   removePink: false,
   skipAds: true,
   // Desktop only
+  addTakeSnapshot: true,
   alwaysUseOriginalAudio: false,
   alwaysUseTheaterMode: false,
   downloadTranscript: true,
@@ -140,6 +148,8 @@ let defaultConfig = {
   minimumGridItemsPerRow: 'auto',
   pauseChannelTrailers: true,
   searchThumbnailSize: 'medium',
+  snapshotFormat: 'jpeg',
+  snapshotQuality: '0.92',
   tidyGuideSidebar: false,
   // Mobile only
   hideExploreButton: true,
@@ -245,7 +255,9 @@ function updateDisplay() {
   $body.classList.toggle('fullSizeTheaterMode', optionsConfig.fullSizeTheaterMode)
   $body.classList.toggle('hiddenChannels', shouldDisplayHiddenChannels())
   $body.classList.toggle('hidingWatched', optionsConfig.hideWatched)
+  $body.classList.toggle('jpegSnapshot', optionsConfig.snapshotFormat == 'jpeg')
   $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
+  $body.classList.toggle('snapshot', optionsConfig.addTakeSnapshot)
   updateHiddenChannelsDisplay()
 }
 

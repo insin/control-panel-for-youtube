@@ -325,6 +325,33 @@
       </section>
       <section class="checkbox desktop">
         <label>
+          <span id="addTakeSnapshot">Add Take snaphot to video menu</span>
+          <input type="checkbox" name="addTakeSnapshot">
+          <span class="toggle"></span>
+        </label>
+        <section class="select snapshot">
+          <label>
+            <span id="snapshotFormat">Snapshot format</span>
+            <select name="snapshotFormat">
+              <option value="jpeg">JPG</option>
+              <option value="png">PNG</option>
+            </select>
+          </label>
+        </section>
+        <section class="select snapshot jpegSnapshot">
+          <label>
+            <span id="snapshotQuality">Quality</span>
+            <select name="snapshotQuality">
+              <option id="qualityFull" value="1.0">Full</option>
+              <option id="qualityHigh" value="0.92">High</option>
+              <option id="qualityMedium" value="0.75">Medium</option>
+              <option id="qualityLow" value="0.5">Low</option>
+            </select>
+          </label>
+        </section>
+      </section>
+      <section class="checkbox desktop">
+        <label>
           <span id="downloadTranscript">Make Transcript downloadable</span>
           <input type="checkbox" name="downloadTranscript">
           <span class="toggle"></span>

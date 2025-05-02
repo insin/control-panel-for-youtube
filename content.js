@@ -92,6 +92,7 @@ let config = {
   removePink: false,
   skipAds: true,
   // Desktop only
+  addTakeSnapshot: true,
   alwaysUseOriginalAudio: false,
   alwaysUseTheaterMode: false,
   downloadTranscript: true,
@@ -107,6 +108,8 @@ let config = {
   minimumGridItemsPerRow: 'auto',
   pauseChannelTrailers: true,
   searchThumbnailSize: 'medium',
+  snapshotFormat: 'jpeg',
+  snapshotQuality: '0.92',
   tidyGuideSidebar: false,
   // Mobile only
   hideExploreButton: true,
@@ -1118,6 +1121,9 @@ const configureCss = (() => {
           margin-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * -1) !important;
         }
       `)
+      if (!config.addTakeSnapshot) {
+        hideCssSelectors.push('#cpfyt-snaphot-menu-item')
+      }
       if (config.fullSizeTheaterMode) {
         // TODO Observe current theater mode state to get rid of these :has()
         if (config.fullSizeTheaterModeHideHeader) {
@@ -2180,12 +2186,12 @@ async function observePopups() {
       })
     }
 
-    if (true /* config.addTakeSnapshot*/) {
+    if (config.addTakeSnapshot) {
       let $contextMenu = /** @type {HTMLElement} */ ($popupContainer.querySelector('.ytp-popup.ytp-contextmenu'))
 
       function addTakeShapshotMenuItem() {
-        let $firstMenuItem = $contextMenu.querySelector('.ytp-menuitem')
-        $firstMenuItem.insertAdjacentHTML('afterend', `
+        let $insertAfter = $contextMenu.querySelector('.ytp-menuitem:last-child')
+        $insertAfter.insertAdjacentHTML('afterend', `
 <div id="cpfyt-snaphot-menu-item" class="ytp-menuitem" role="menuitem" tabindex="0">
   <div class="ytp-menuitem-icon">
     <svg fill="#fff" height="24px" viewBox="0 -960 960 960" width="24px">
@@ -2900,12 +2906,12 @@ function takeSnapshot() {
     let context = $canvas.getContext('2d')
     context.drawImage($video, 0, 0, $canvas.width, $canvas.height)
     let $a = document.createElement('a')
-    $a.href = $canvas.toDataURL('image/jpeg')
+    $a.href = $canvas.toDataURL(`image/${config.snapshotFormat}`, Number(config.snapshotQuality))
     $a.download = [
       document.querySelector('ytd-watch-flexy #text.ytd-channel-name')?.getAttribute('title'),
       document.querySelector('ytd-watch-flexy #title.ytd-watch-metadata yt-formatted-string')?.getAttribute('title'),
       $video.currentTime
-    ].filter(Boolean).join(' - ') + '.jpg'
+    ].filter(Boolean).join(' - ') + {jpeg: '.jpg', png: '.png'}[config.snapshotFormat]
     log('takeSnapshot:', $a.download)
     document.body.appendChild($a)
     $a.click()

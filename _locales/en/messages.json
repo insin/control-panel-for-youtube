@@ -1,4 +1,7 @@
 {
+  "addTakeSnapshot": {
+    "message": "Add Take snapshot to video menu"
+  },
   "alwaysUseOriginalAudio": {
     "message": "Always use original audio"
   },
@@ -198,6 +201,18 @@
   "pauseChannelTrailers": {
     "message": "Automatically pause channel trailers"
   },
+  "qualityFull": {
+    "message": "Full"
+  },
+  "qualityHigh": {
+    "message": "High"
+  },
+  "qualityLow": {
+    "message": "Low"
+  },
+  "qualityMedium": {
+    "message": "Medium"
+  },
   "redirectShorts": {
     "message": "Redirect Shorts to the normal player"
   },
@@ -215,6 +230,12 @@
   },
   "small": {
     "message": "Small"
+  },
+  "snapshotFormat": {
+    "message": "Snapshot format"
+  },
+  "snapshotQuality": {
+    "message": "Quality"
   },
   "tidyGuideSidebar": {
     "message": "Tidy Guide sidebar"

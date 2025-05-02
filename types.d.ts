@@ -87,6 +87,7 @@ export type SiteConfig = {
   removePink: boolean
   skipAds: boolean
   // Desktop only
+  addTakeSnapshot: boolean
   alwaysUseOriginalAudio: boolean
   alwaysUseTheaterMode: boolean
   downloadTranscript: boolean
@@ -102,6 +103,8 @@ export type SiteConfig = {
   minimumGridItemsPerRow: 'auto' | '3' | '4' | '5' | '6'
   pauseChannelTrailers: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small'
+  snapshotFormat: 'jpeg' | 'png'
+  snapshotQuality: string
   tidyGuideSidebar: boolean
   // Mobile only
   hideExploreButton: boolean

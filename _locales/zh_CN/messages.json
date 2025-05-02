@@ -1,4 +1,7 @@
 {
+  "addTakeSnapshot": {
+    "message": "将截图功能添加到视频菜单"
+  },
   "alwaysUseOriginalAudio": {
     "message": "始终使用原始音频"
   },
@@ -198,6 +201,18 @@
   "pauseChannelTrailers": {
     "message": "自动暂停频道预告片"
   },
+  "qualityFull": {
+    "message": "最高"
+  },
+  "qualityHigh": {
+    "message": "高"
+  },
+  "qualityLow": {
+    "message": "低"
+  },
+  "qualityMedium": {
+    "message": "中"
+  },
   "redirectShorts": {
     "message": "将短视频重定向至普通播放器"
   },
@@ -215,6 +230,12 @@
   },
   "small": {
     "message": "小号"
+  },
+  "snapshotFormat": {
+    "message": "截图格式"
+  },
+  "snapshotQuality": {
+    "message": "质量"
   },
   "tidyGuideSidebar": {
     "message": "整理侧边栏订阅"
