@@ -3062,12 +3062,12 @@ async function tweakChannelPage() {
       })
     )
     if ($channelTrailer) {
-      $channelTrailer.pause()
       function pauseTrailer() {
-        log(`pauseChannelTrailers: pausing channel trailer`)
+        log(`pauseChannelTrailers: pausing channel trailer`, {readyState: $channelTrailer.readyState})
         $channelTrailer.pause()
       }
-      if ($channelTrailer.paused) {
+      // Prevent the next play attempt if the trailer hasn't started yet
+      if ($channelTrailer.paused && $channelTrailer.readyState == 0) {
         $channelTrailer.addEventListener('play', pauseTrailer, {once: true})
       } else {
         pauseTrailer()
