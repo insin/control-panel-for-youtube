@@ -118,7 +118,7 @@ ${messages.videoPages}:
 • ${messages.hideEndVideos}${messages.desktopVersion}
 • ${messages.hideMerchEtc}${messages.desktopVersion}
 • ${messages.hideChat}${messages.desktopVersion}
-• ${messages.takeSnapshot}${messages.desktopVersion}
+• ${messages.takeSnapshot} (JPEG / PNG) ${messages.desktopVersion}
 • ${messages.downloadTranscript}${messages.desktopVersion}
 
 ${messages.uiTweaks}:
