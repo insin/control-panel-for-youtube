@@ -55,7 +55,7 @@ class ViewController: PlatformViewController, WKNavigationDelegate, WKScriptMess
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
 #if os(iOS)
         if (message.body as! String == "open-ad") {
-            let url = URL(string: "https://jbscript.dev/control-panel-for-twitter")!
+            let url = URL(string: "https://soitis.dev/control-panel-for-twitter")!
             if UIApplication.shared.canOpenURL(url){
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }

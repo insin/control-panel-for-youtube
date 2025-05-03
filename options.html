@@ -98,6 +98,13 @@
       </section>
       <section class="checkbox">
         <label>
+          <span id="hidePlaylists">Hide Playlists</span>
+          <input type="checkbox" name="hidePlaylists">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox">
+        <label>
           <span id="hideMoviesAndTV">Hide Movies and TV</span>
           <input type="checkbox" name="hideMoviesAndTV">
           <span class="toggle"></span>
@@ -107,6 +114,13 @@
         <label>
           <span id="hideUpcoming">Hide Upcoming videos</span>
           <input type="checkbox" name="hideUpcoming">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox">
+        <label>
+          <span id="hideMembersOnly">Hide Members only videos</span>
+          <input type="checkbox" name="hideMembersOnly">
           <span class="toggle"></span>
         </label>
       </section>
@@ -214,6 +228,27 @@
           <input type="checkbox" name="fullSizeTheaterMode">
           <span class="toggle"></span>
         </label>
+        <section class="checkbox fullSizeTheaterMode">
+          <label>
+            <span id="fullSizeTheaterModeHideHeader">Hide header</span>
+            <input type="checkbox" name="fullSizeTheaterModeHideHeader">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox fullSizeTheaterMode">
+          <label>
+            <span id="fullSizeTheaterModeHideScrollbar">Hide scrollbar</span>
+            <input type="checkbox" name="fullSizeTheaterModeHideScrollbar">
+            <span class="toggle"></span>
+          </label>
+        </section>
+      </section>
+      <section class="checkbox desktop">
+        <label>
+          <span id="alwaysUseOriginalAudio">Always use original audio</span>
+          <input type="checkbox" name="alwaysUseOriginalAudio">
+          <span class="toggle"></span>
+        </label>
       </section>
       <section class="checkbox">
         <label>
@@ -290,6 +325,33 @@
       </section>
       <section class="checkbox desktop">
         <label>
+          <span id="addTakeSnapshot">Add Take snaphot to video menu</span>
+          <input type="checkbox" name="addTakeSnapshot">
+          <span class="toggle"></span>
+        </label>
+        <section class="select snapshot">
+          <label>
+            <span id="snapshotFormat">Snapshot format</span>
+            <select name="snapshotFormat">
+              <option value="jpeg">JPEG</option>
+              <option value="png">PNG</option>
+            </select>
+          </label>
+        </section>
+        <section class="select snapshot jpegSnapshot">
+          <label>
+            <span id="snapshotQuality">Quality</span>
+            <select name="snapshotQuality">
+              <option id="qualityFull" value="1.0">Full</option>
+              <option id="qualityHigh" value="0.92">High</option>
+              <option id="qualityMedium" value="0.75">Medium</option>
+              <option id="qualityLow" value="0.5">Low</option>
+            </select>
+          </label>
+        </section>
+      </section>
+      <section class="checkbox desktop">
+        <label>
           <span id="downloadTranscript">Make Transcript downloadable</span>
           <input type="checkbox" name="downloadTranscript">
           <span class="toggle"></span>
@@ -349,6 +411,13 @@
           <span class="toggle"></span>
         </label>
       </section>
+      <section class="checkbox">
+        <label>
+          <span id="hideChannelBanner">Hide channel banner images</span>
+          <input type="checkbox" name="hideChannelBanner">
+          <span class="toggle"></span>
+        </label>
+      </section>
       <section class="checkbox mobile">
         <label>
           <span id="hideOpenApp">Hide Open App links</span>
@@ -403,7 +472,7 @@
         <p id="debugManualHidingNote">Highlights elements instead of hiding them</p>
       </section>
     </section>
-    <div id="version">v1.6.0<span id="debugCountdown"></span></div>
+    <div id="version">v1.8.2<span id="debugCountdown"></span></div>
   </form>
   <script src="options.js"></script>
 </body>

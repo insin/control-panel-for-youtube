@@ -1,4 +1,10 @@
 {
+  "addTakeSnapshot": {
+    "message": "将截图功能添加到视频菜单"
+  },
+  "alwaysUseOriginalAudio": {
+    "message": "始终使用原始音频"
+  },
   "alwaysUseTheaterMode": {
     "message": "始终剧院模式"
   },
@@ -45,6 +51,12 @@
   "fullSizeTheaterMode": {
     "message": "全屏影院模式"
   },
+  "fullSizeTheaterModeHideHeader": {
+    "message": "隐藏标题栏"
+  },
+  "fullSizeTheaterModeHideScrollbar": {
+    "message": "隐藏滚动条"
+  },
   "hiddenChannelsSummary": {
     "message": "隐藏频道 ($COUNT$)",
     "placeholders": {
@@ -56,6 +68,9 @@
   },
   "hideAI": {
     "message": "隐藏AI摘要"
+  },
+  "hideChannelBanner": {
+    "message": "隐藏频道横幅图片"
   },
   "hideChannels": {
     "message": "隐藏频道"
@@ -99,6 +114,9 @@
   "hideLive": {
     "message": "隐藏视频直播"
   },
+  "hideMembersOnly": {
+    "message": "隐藏会员专属视频"
+  },
   "hideMerchEtc": {
     "message": "隐藏商品、优惠等."
   },
@@ -122,6 +140,9 @@
   },
   "hideOpenApp": {
     "message": "隐藏打开应用程序链接"
+  },
+  "hidePlaylists": {
+    "message": "隐藏播放列表"
   },
   "hideRelated": {
     "message": "隐藏相关视频"
@@ -180,6 +201,18 @@
   "pauseChannelTrailers": {
     "message": "自动暂停频道预告片"
   },
+  "qualityFull": {
+    "message": "最高"
+  },
+  "qualityHigh": {
+    "message": "高"
+  },
+  "qualityLow": {
+    "message": "低"
+  },
+  "qualityMedium": {
+    "message": "中"
+  },
   "redirectShorts": {
     "message": "将短视频重定向至普通播放器"
   },
@@ -197,6 +230,12 @@
   },
   "small": {
     "message": "小号"
+  },
+  "snapshotFormat": {
+    "message": "截图格式"
+  },
+  "snapshotQuality": {
+    "message": "质量"
   },
   "tidyGuideSidebar": {
     "message": "整理侧边栏订阅"

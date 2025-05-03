@@ -25,8 +25,8 @@ export type Locale = {
 export type LocaleKey =
   | 'CLIP'
   | 'DOWNLOAD'
-  | 'FOR_YOU'
   | 'HIDE_CHANNEL'
+  | 'HOME'
   | 'MIXES'
   | 'MUTE'
   | 'NEXT_VIDEO'
@@ -34,10 +34,20 @@ export type LocaleKey =
   | 'PREVIOUS_VIDEO'
   | 'SHARE'
   | 'SHORTS'
-  | 'STREAMED_TITLE'
+  // This needs to match both innerText and textContent
+  | 'STREAMED_METADATA_INNERTEXT_RE'
+  | 'STREAMED_TITLE_ARIA_LABEL'
+  | 'TAKE_SNAPSHOT'
   | 'TELL_US_WHY'
   | 'THANKS'
   | 'UNHIDE_CHANNEL'
+
+export type PageLocale = {
+  [key in PageLocaleKey]?: string
+}
+
+export type PageLocaleKey =
+  | 'ORIGINAL'
 
 export type OptionsConfig = EmbedConfig & SiteConfig
 
@@ -48,18 +58,21 @@ export type SiteConfig = {
   version?: Version
   disableAutoplay: boolean
   disableHomeFeed: boolean
-  hideAI: boolean
   hiddenChannels: Channel[]
+  hideAI: boolean
+  hideChannelBanner: boolean
   hideChannels: boolean
   hideComments: boolean
   hideHiddenVideos: boolean
   hideHomeCategories: boolean
   hideInfoPanels: boolean
   hideLive: boolean
+  hideMembersOnly: boolean
   hideMetadata: boolean
   hideMixes: boolean
   hideMoviesAndTV: boolean
   hideNextButton: boolean
+  hidePlaylists: boolean
   hideRelated: boolean
   hideShareThanksClip: boolean
   hideShorts: boolean
@@ -74,9 +87,13 @@ export type SiteConfig = {
   removePink: boolean
   skipAds: boolean
   // Desktop only
+  addTakeSnapshot: boolean
+  alwaysUseOriginalAudio: boolean
   alwaysUseTheaterMode: boolean
   downloadTranscript: boolean
   fullSizeTheaterMode: boolean
+  fullSizeTheaterModeHideHeader: boolean
+  fullSizeTheaterModeHideScrollbar: boolean
   hideChat: boolean
   hideEndCards: boolean
   hideEndVideos: boolean
@@ -86,6 +103,8 @@ export type SiteConfig = {
   minimumGridItemsPerRow: 'auto' | '3' | '4' | '5' | '6'
   pauseChannelTrailers: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small'
+  snapshotFormat: 'jpeg' | 'png'
+  snapshotQuality: string
   tidyGuideSidebar: boolean
   // Mobile only
   hideExploreButton: boolean

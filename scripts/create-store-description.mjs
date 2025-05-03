@@ -45,6 +45,11 @@ let extraTranslations = {
     "en": " (mobile version)",
     "ja": "（モバイル版）",
     "zh_CN": "（手机版）",
+  },
+  "takeSnapshot": {
+    "en": 'Take snapshot',
+    "ja": 'スナップショットを撮る',
+    "zh_CN": '截取快照',
   }
 }
 
@@ -70,6 +75,7 @@ ${messages.features}
 
 • ${messages.hideAI}
 • ${messages.removePink}
+• ${messages.pauseChannelTrailers}${messages.desktopVersion}
 
 ${messages.videoLists}:
 
@@ -79,8 +85,10 @@ ${messages.videoLists}:
 • ${messages.hideLive}
 • ${messages.hideStreamed}
 • ${messages.hideMixes}
+• ${messages.hidePlaylists}
 • ${messages.hideMoviesAndTV}
 • ${messages.hideUpcoming}
+• ${messages.hideMembersOnly}
 • ${messages.hideWatched}
 • ${messages.hideHiddenVideos}
   • ${messages.hideHiddenVideosNote}
@@ -103,16 +111,20 @@ ${messages.videoPages}:
 • ${messages.redirectShorts}
 • ${messages.alwaysUseTheaterMode}${messages.desktopVersion}
 • ${messages.fullSizeTheaterMode}${messages.desktopVersion}
+  • ${messages.fullSizeTheaterModeHideHeader} / ${messages.fullSizeTheaterModeHideScrollbar}
+• ${messages.alwaysUseOriginalAudio}${messages.desktopVersion}
 • ${messages.hideMiniplayerButton}${messages.desktopVersion}
 • ${messages.hideEndCards}${messages.desktopVersion}
 • ${messages.hideEndVideos}${messages.desktopVersion}
 • ${messages.hideMerchEtc}${messages.desktopVersion}
 • ${messages.hideChat}${messages.desktopVersion}
+• ${messages.takeSnapshot} (JPEG / PNG) ${messages.desktopVersion}
 • ${messages.downloadTranscript}${messages.desktopVersion}
 
 ${messages.uiTweaks}:
 
 • ${messages.hideInfoPanels}
+• ${messages.hideChannelBanner}
 • ${messages.hideHomeCategories}
 • ${messages.hideVoiceSearch}
 • ${messages.tidyGuideSidebar}${messages.desktopVersion}
@@ -128,27 +140,10 @@ ${messages.embeddedVideos}:
 • ${messages.hideEmbedPauseOverlay}
 `.trim()
 
-if (process.argv[3] == 'html') {
-  // XXX This depends _very specifically_ on the way dashes, spaces and newlines
-  //     are used in the template string above.
-  storeDescription = storeDescription
-    // 2 nested items
-    .replace(/^• ([^\n]+)\n  • ([^\n]+)\n  • ([^\n]+)/gm, '<li>$1<ul>\n<li>$2</li>\n<li>$3</li></ul></li>')
-    // 1 nested item
-    .replace(/^• ([^\n]+)\n  • ([^\n]+)/gm, '<li>$1<ul>\n<li>$2</li></ul></li>')
-    // No nested items
-    .replace(/^• ([^\n]+)/gm, '<li>$1</li>')
-    // Section titles
-    .replace(/^([^\n<][^\n]+)\n\n/gm, '<strong>$1</strong>\n<ul>\n')
-    // Remaining empty lines
-    .replace(/^$/gm, '</ul>\n')
-    .replace(/$/, '\n</ul>')
-}
-
 if (process.argv[3] == 'md') {
   storeDescription = storeDescription
     // Section titles
-    .replace(/^([^:\n]+):$/gm, '### $1')
+    .replace(/^([^:\n]+):$/gm, '**$1:**')
     // List tiems
     .replace(/•/g, '-')
 }

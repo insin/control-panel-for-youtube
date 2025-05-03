@@ -25,8 +25,11 @@ body.macOS.browserAction {
 body.desktop .mobile,
 body.mobile .desktop,
 body:not(.debug) .debug,
+body:not(.fullSizeTheaterMode) .fullSizeTheaterMode,
 body:not(.hiddenChannels) #hiddenChannelsDetails,
-body:not(.hidingWatched) .hidingWatched {
+body:not(.hidingWatched) .hidingWatched,
+body:not(.jpegSnapshot) .jpegSnapshot,
+body:not(.snapshot) .snapshot {
   display: none;
 }
 
@@ -120,6 +123,7 @@ body.disabled:not(.safari) form > section {
   text-align: center;
   font-size: 75%;
   margin-top: 12px;
+  margin-bottom: 8px;
 }
 body.disabled #version {
   display: none;

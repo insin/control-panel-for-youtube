@@ -6,7 +6,7 @@
 // @match       https://www.youtube.com/*
 // @match       https://m.youtube.com/*
 // @exclude     https://www.youtube.com/embed/*
-// @version     17
+// @version     23
 // ==/UserScript==
 let debug = false
 let debugManualHiding = false
@@ -17,6 +17,31 @@ let desktop = !mobile
 let version = mobile ? 'mobile' : 'desktop'
 let lang = mobile ? document.body.lang : document.documentElement.lang
 let loggedIn = /(^|; )SID=/.test(document.cookie)
+
+let pendingMessages = []
+let pageScriptLoaded = false
+let $pageScript = document.createElement('script')
+$pageScript.src = chrome.runtime.getURL('page.js')
+$pageScript.onload = function() {
+  pageScriptLoaded = true
+  if (pendingMessages.length > 0) {
+    pendingMessages.map(messagePageScript)
+    pendingMessages = []
+  }
+}
+document.documentElement.appendChild($pageScript)
+
+/**
+ * Features which need to access DOM expandos run in the page script, as they're
+ * not accessible in content scripts.
+ */
+function messagePageScript(message) {
+  if (!pageScriptLoaded) {
+    pendingMessages.push(message)
+  } else {
+    window.postMessage(message, location.origin)
+  }
+}
 
 function log(...args) {
   if (debug) {
@@ -38,18 +63,21 @@ let config = {
   version,
   disableAutoplay: true,
   disableHomeFeed: false,
-  hideAI: true,
   hiddenChannels: [],
+  hideAI: true,
+  hideChannelBanner: false,
   hideChannels: true,
   hideComments: false,
   hideHiddenVideos: true,
   hideHomeCategories: false,
   hideInfoPanels: false,
   hideLive: false,
+  hideMembersOnly: false,
   hideMetadata: false,
   hideMixes: false,
   hideMoviesAndTV: false,
   hideNextButton: true,
+  hidePlaylists: false,
   hideRelated: false,
   hideShareThanksClip: false,
   hideShorts: true,
@@ -64,9 +92,13 @@ let config = {
   removePink: false,
   skipAds: true,
   // Desktop only
+  addTakeSnapshot: true,
+  alwaysUseOriginalAudio: false,
   alwaysUseTheaterMode: false,
   downloadTranscript: true,
   fullSizeTheaterMode: false,
+  fullSizeTheaterModeHideHeader: true,
+  fullSizeTheaterModeHideScrollbar: false,
   hideChat: false,
   hideEndCards: false,
   hideEndVideos: true,
@@ -76,6 +108,8 @@ let config = {
   minimumGridItemsPerRow: 'auto',
   pauseChannelTrailers: true,
   searchThumbnailSize: 'medium',
+  snapshotFormat: 'jpeg',
+  snapshotQuality: '0.92',
   tidyGuideSidebar: false,
   // Mobile only
   hideExploreButton: true,
@@ -93,8 +127,8 @@ const locales = {
   'en': {
     CLIP: 'Clip',
     DOWNLOAD: 'Download',
-    FOR_YOU: 'For you',
     HIDE_CHANNEL: 'Hide channel',
+    HOME: 'Home',
     MIXES: 'Mixes',
     MUTE: 'Mute',
     NEXT_VIDEO: 'Next video',
@@ -102,7 +136,9 @@ const locales = {
     PREVIOUS_VIDEO: 'Previous video',
     SHARE: 'Share',
     SHORTS: 'Shorts',
-    STREAMED_TITLE: 'views Streamed',
+    STREAMED_METADATA_INNERTEXT_RE: '\\n\\s*Streamed',
+    STREAMED_TITLE_ARIA_LABEL: 'views Streamed',
+    TAKE_SNAPSHOT: 'Take snapshot',
     TELL_US_WHY: 'Tell us why',
     THANKS: 'Thanks',
     UNHIDE_CHANNEL: 'Unhide channel',
@@ -110,8 +146,8 @@ const locales = {
   'ja-JP': {
     CLIP: 'クリップ',
     DOWNLOAD: 'オフライン',
-    FOR_YOU: 'あなたへのおすすめ',
     HIDE_CHANNEL: 'チャンネルを隠す',
+    HOME: 'ホーム',
     MIXES: 'ミックス',
     MUTE: 'ミュート（消音）',
     NEXT_VIDEO: '次の動画',
@@ -119,9 +155,29 @@ const locales = {
     PREVIOUS_VIDEO: '前の動画',
     SHARE: '共有',
     SHORTS: 'ショート',
-    STREAMED_TITLE: '前 に配信済み',
+    STREAMED_METADATA_INNERTEXT_RE: 'に配信済み\\s*$',
+    STREAMED_TITLE_ARIA_LABEL: '前 に配信済み',
+    TAKE_SNAPSHOT: 'スナップショットを撮る',
     TELL_US_WHY: '理由を教えてください',
     UNHIDE_CHANNEL: 'チャンネルの再表示',
+  },
+  'zh-Hans-CN': {
+    CLIP: '剪辑',
+    DOWNLOAD: '下载',
+    HIDE_CHANNEL: '隐藏频道',
+    HOME: '首页',
+    MIXES: '合辑',
+    MUTE: '静音',
+    NEXT_VIDEO: '下一个视频',
+    OPEN_APP: '打开应用',
+    PREVIOUS_VIDEO: '上一个视频',
+    SHARE: '分享',
+    STREAMED_METADATA_INNERTEXT_RE: '直播时间：',
+    STREAMED_TITLE_ARIA_LABEL: '直播时间：',
+    TAKE_SNAPSHOT: '截取快照',
+    TELL_US_WHY: '告诉我们原因',
+    THANKS: '感谢',
+    UNHIDE_CHANNEL: '取消隐藏频道',
   }
 }
 
@@ -463,6 +519,7 @@ const configureCss = (() => {
     }
 
     if (config.hideAI) {
+      // e.g. https://www.youtube.com/results?search_query=howtobasic+wedges
       if (desktop) {
         const geminiSvgPath = 'M480-80q0-83-31.5-156T363-363q-54-54-127-85.5T80-480q83 0 156-31.5T363-597q54-54 85.5-127T480-880q0 83 31.5 156T597-597q54 54 127 85.5T880-480q-83 0-156 31.5T597-363q-54 54-85.5 127T480-80Z'
         hideCssSelectors.push(`#expandable-metadata:has(path[d="${geminiSvgPath}"])`)
@@ -473,9 +530,24 @@ const configureCss = (() => {
       }
     }
 
+    if (config.hideChannelBanner) {
+      if (desktop) {
+        hideCssSelectors.push('ytd-browse[page-subtype="channels"] #page-header-banner')
+      }
+      if (mobile) {
+        hideCssSelectors.push('html[cpfyt-page="channel"] .page-header-view-model-wiz__page-header-banner-container')
+      }
+    }
+
     if (config.hideHomeCategories) {
       if (desktop) {
         hideCssSelectors.push('ytd-browse[page-subtype="home"] #header')
+        // Remove the hidden header's height from the frosted glass element
+        cssRules.push(`
+          #frosted-glass.with-chipbar {
+            height: 56px !important;
+          }
+        `)
       }
       if (mobile) {
         hideCssSelectors.push('.tab-content[tab-identifier="FEwhat_to_watch"] .rich-grid-sticky-header')
@@ -573,6 +645,10 @@ const configureCss = (() => {
           border-radius: 50%;
           margin: 0.5em;
           display: inline-block;
+          cursor: pointer;
+        }
+        .cpfyt-pie:hover {
+          --cpfyt-pie-color: #f03;
         }
         .cpfyt-pie::before,
         .cpfyt-pie::after {
@@ -663,6 +739,35 @@ const configureCss = (() => {
       }
     }
 
+    if (config.hideMembersOnly) {
+      if (desktop) {
+        hideCssSelectors.push(
+          // Grid item (Home, Subscriptions, Channel videos tab)
+          'ytd-rich-item-renderer:has(.badge-style-type-members-only)',
+          // List item (Search)
+          'ytd-video-renderer:has(.badge-style-type-members-only)',
+          // Related video
+          'ytd-compact-video-renderer:has(.badge-style-type-members-only)',
+          // Playlist in channel Home tab
+          'ytd-item-section-renderer[page-subtype="channels"]:has(.badge-style-type-members-only)',
+          // Video endscreen
+          // TODO Hide by href based on any of the first 12 items in #related being members only videos
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(
+          // Home
+          'ytm-rich-item-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])',
+          // Subscriptions
+          '.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])',
+          // Search
+          'ytm-search ytm-video-with-context-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])',
+          // Playlist in channel Home tab
+          `ytm-browse .tab-content[tab-title="${getString('HOME')}"] ytm-shelf-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])`,
+        )
+      }
+    }
+
     if (config.hideMetadata) {
       if (desktop) {
         hideCssSelectors.push(
@@ -689,15 +794,17 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // Chip in Home
-          `yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="${getString('MIXES')}"])`,
+          `yt-chip-cloud-chip-renderer:has(> #chip-container > yt-formatted-string[title="${getString('MIXES')}"])`,
           // Grid item
-          'ytd-rich-item-renderer:has(a[href$="start_radio=1"])',
+          'ytd-rich-item-renderer:has(a[href*="start_radio=1"])',
           // List item
           'ytd-radio-renderer',
           // Related video
           'ytd-compact-radio-renderer',
           // Search result and related video
           'yt-lockup-view-model:has(a[href*="start_radio=1"])',
+          // Video endscreen item
+          '.ytp-videowall-still[data-is-mix="true"]',
         )
       }
       if (mobile) {
@@ -716,22 +823,22 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // In Home
-          'ytd-rich-item-renderer.ytd-rich-grid-renderer:has(a[href$="pp=sAQB"])',
+          'ytd-rich-item-renderer.ytd-rich-grid-renderer:has(a[href*="&pp=sAQB"])',
           // In Search
           'ytd-movie-renderer',
           // In Related videos
           'ytd-compact-movie-renderer',
-          'ytd-compact-video-renderer:has(a[href$="pp=sAQB"])',
+          'ytd-compact-video-renderer:has(a[href*="&pp=sAQB"])',
         )
       }
       if (mobile) {
         hideCssSelectors.push(
           // In Home
-          '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-item-renderer:has(a[href$="pp=sAQB"])',
+          '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-item-renderer:has(a[href*="&pp=sAQB"])',
           // In Search
           'ytm-search ytm-video-with-context-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_YPC"])',
           // In Related videos
-          'ytm-item-section-renderer[data-content-type="related"] ytm-video-with-context-renderer:has(a[href$="pp=sAQB"])'
+          'ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(a[href*="&pp=sAQB"])',
         )
       }
     }
@@ -739,7 +846,7 @@ const configureCss = (() => {
     if (config.hideNextButton) {
       if (desktop) {
         // Hide the Next by default so it doesn't flash in and out of visibility
-        // Show Next is Previous is enabled (e.g. when viewing a playlist video)
+        // Show Next if Previous is enabled (e.g. when viewing a playlist video)
         cssRules.push(`
           .ytp-chrome-controls .ytp-next-button {
             display: none !important;
@@ -752,9 +859,32 @@ const configureCss = (() => {
       if (mobile) {
         hideCssSelectors.push(
           // Hide the Previous button when it's disabled, as it otherwise takes you to the previously-watched video
-          `.player-controls-middle-core-buttons > button[aria-label="${getString('PREVIOUS_VIDEO')}"][aria-disabled="true"]`,
+          `.player-controls-middle-core-buttons button[aria-label="${getString('PREVIOUS_VIDEO')}"][aria-disabled="true"]`,
           // Always hide the Next button as it takes you to a random video, even if you just used Previous
-          `.player-controls-middle-core-buttons > button[aria-label="${getString('NEXT_VIDEO')}"]`,
+          `.player-controls-middle-core-buttons button[aria-label="${getString('NEXT_VIDEO')}"]`,
+        )
+      }
+    }
+
+    if (config.hidePlaylists) {
+      if (desktop) {
+        hideCssSelectors.push(
+          // Home
+          'ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(.yt-lockup-view-model-wiz)',
+          // Search and Related
+          ':is(#related, ytd-search) yt-lockup-view-model:has(> .yt-lockup-view-model-wiz)',
+          // Video endscreen
+          '.ytp-videowall-still[data-is-list="true"][data-is-mix="false"]',
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(
+          // Home
+          '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-item-renderer:has(> yt-lockup-view-model > .yt-lockup-view-model-wiz)',
+          // Search
+          'ytm-search ytm-compact-playlist-renderer',
+          // Related
+          'ytm-item-section-renderer[section-identifier="related-items"] ytm-compact-playlist-renderer',
         )
       }
     }
@@ -798,7 +928,7 @@ const configureCss = (() => {
           // Group of 3 Shorts in Home grid
           'ytd-browse[page-subtype="home"] ytd-rich-grid-group',
           // Chips
-          `yt-chip-cloud-chip-renderer:has(> yt-formatted-string[title="${getString('SHORTS')}"])`,
+          `yt-chip-cloud-chip-renderer:has(> #chip-container > yt-formatted-string[title="${getString('SHORTS')}"])`,
           // List shelf (except History, so watched Shorts can be removed)
           'ytd-browse:not([page-subtype="history"]) ytd-reel-shelf-renderer',
           'ytd-search ytd-reel-shelf-renderer',
@@ -827,7 +957,7 @@ const configureCss = (() => {
           // Under video
           'ytm-structured-description-content-renderer ytm-reel-shelf-renderer',
           // In related
-          'ytm-item-section-renderer[data-content-type="related"] ytm-video-with-context-renderer:has(a[href^="/shorts"])',
+          'ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(a[href^="/shorts"])',
         )
       }
     }
@@ -880,6 +1010,7 @@ const configureCss = (() => {
           'ytm-companion-slot:has(> ytm-companion-ad-renderer)',
           // Directly under comments entry point (narrow)
           'ytm-item-section-renderer[section-identifier="comments-entry-point"] + ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
+          '.related-chips-slot-wrapper ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
           // In Related videos (narrow)
           'ytm-watch ytm-item-section-renderer[data-content-type="result"]:has(> lazy-list > ad-slot-renderer)',
           // In Related videos (wide)
@@ -918,6 +1049,8 @@ const configureCss = (() => {
           hideCssSelectors.push(
             // Shelves in Home
             '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer',
+            // Looking for something different? tile in Home
+            'ytm-rich-item-renderer:has(> .feed-nudge-wrapper)',
           )
         } else {
           // Logged-out users can get "Try searching to get started" Home page
@@ -976,11 +1109,11 @@ const configureCss = (() => {
       // Fix spaces & gaps caused by left gutter margin on first column items
       cssRules.push(`
         /* Remove left gutter margin from first column items */
-        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
+        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="channels"]) ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
           margin-left: calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
         }
         /* Apply the left gutter as padding in the grid contents instead */
-        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) #contents.ytd-rich-grid-renderer {
+        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="channels"]) #contents.ytd-rich-grid-renderer {
           padding-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * 2) !important;
         }
         /* Adjust non-grid items so they don't double the gutter */
@@ -988,13 +1121,47 @@ const configureCss = (() => {
           margin-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * -1) !important;
         }
       `)
+      if (!config.addTakeSnapshot) {
+        hideCssSelectors.push('#cpfyt-snaphot-menu-item')
+      }
       if (config.fullSizeTheaterMode) {
-        // 56px is the height of #container.ytd-masthead
-        cssRules.push(`
-          ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container {
-            max-height: calc(100vh - 56px);
-          }
-        `)
+        // TODO Observe current theater mode state to get rid of these :has()
+        if (config.fullSizeTheaterModeHideHeader) {
+          cssRules.push(`
+            /* Hide header until you hover */
+            #content.ytd-app:has(> #page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) #masthead-container #masthead {
+              transform: translateY(-100%);
+              transition: transform .15s ease-in !important;
+            }
+            #content.ytd-app:has(> #page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) #masthead-container:hover #masthead {
+              transform: translateY(0);
+              transition: transform .3s ease-out !important;
+            }
+            /* Reclaim header space */
+            #content.ytd-app:has(> #page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) #page-manager {
+              margin-top: 0 !important;
+            }
+            /* Make theater mode full view height */
+            ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container {
+              max-height: 100vh;
+              height: 100vh;
+            }
+          `)
+        } else {
+          // 56px is the height of #container.ytd-masthead
+          cssRules.push(`
+            ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container {
+              max-height: calc(100vh - 56px);
+            }
+          `)
+        }
+        if (config.fullSizeTheaterModeHideScrollbar) {
+          cssRules.push(`
+            html:has(#page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) {
+              scrollbar-width: none;
+            }
+          `)
+        }
       }
       if (config.hideChat) {
         hideCssSelectors.push(
@@ -1262,6 +1429,16 @@ function isVideoPage() {
 }
 
 //#region Tweak functions
+async function alwaysUseOriginalAudio() {
+  let $player = await getElement('#movie_player', {
+    name: 'player (alwaysUseOriginalAudio)',
+    stopIf: currentUrlChanges(),
+  })
+  if (!$player) return
+
+  messagePageScript({feature: 'alwaysUseOriginalAudio', debug})
+}
+
 async function alwaysUseTheaterMode() {
   let $player = await getElement('#movie_player', {
     name: 'player (alwaysUseTheaterMode)',
@@ -1374,6 +1551,7 @@ function handleCurrentUrl() {
   log('handling', getCurrentUrl())
   disconnectObservers(pageObservers, 'page')
 
+  let page = ''
   if (isHomePage()) {
     tweakHomePage()
   }
@@ -1387,9 +1565,15 @@ function handleCurrentUrl() {
     tweakSearchPage()
   }
   else if (isChannelPage()) {
+    page = 'channel'
     tweakChannelPage()
   }
-  else if (location.pathname.startsWith('/shorts/')) {
+  // Add a current page indicator to html[cpfyt-page] when we need a CSS hook
+  if (mobile && document.documentElement.getAttribute('cpfyt-page') != page) {
+    document.documentElement.setAttribute('cpfyt-page', page)
+  }
+
+  if (location.pathname.startsWith('/shorts/')) {
     if (config.redirectShorts) {
       redirectShort()
     }
@@ -1407,11 +1591,11 @@ function addDownloadTranscriptToDesktopMenu($menu) {
 
   let $menuItems = $menu.querySelector('#items')
   $menuItems.insertAdjacentHTML('beforeend', `
-    <div class="cpfyt-menu-item" tabindex="0" style="display: none">
-      <div class="cpfyt-menu-text">
-        ${getString('DOWNLOAD')}
-      </div>
-    </div>
+<div class="cpfyt-menu-item" tabindex="0" style="display: none">
+  <div class="cpfyt-menu-text">
+    ${getString('DOWNLOAD')}
+  </div>
+</div>
   `.trim())
   let $item = $menuItems.lastElementChild
   function download() {
@@ -1501,14 +1685,14 @@ function handleDesktopWatchChannelMenu($menu) {
 
       let $menuItems = $menu.querySelector('#items')
       $menuItems.insertAdjacentHTML('beforeend', `
-        <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
-          <div class="cpfyt-menu-icon">
-            ${hidden ? Svgs.RESTORE : Svgs.DELETE}
-          </div>
-          <div class="cpfyt-menu-text">
-            ${getString(hidden ? 'UNHIDE_CHANNEL' : 'HIDE_CHANNEL')}
-          </div>
-        </div>
+<div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
+  <div class="cpfyt-menu-icon">
+    ${hidden ? Svgs.RESTORE : Svgs.DELETE}
+  </div>
+  <div class="cpfyt-menu-text">
+    ${getString(hidden ? 'UNHIDE_CHANNEL' : 'HIDE_CHANNEL')}
+  </div>
+</div>
       `.trim())
       $item = $menuItems.lastElementChild
       $item.addEventListener('click', toggleHideChannel)
@@ -1551,14 +1735,14 @@ function addHideChannelToDesktopVideoMenu($menu) {
 
   let $menuItems = $menu.querySelector('#items')
   $menuItems.insertAdjacentHTML('beforeend', `
-    <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
-      <div class="cpfyt-menu-icon">
-        ${Svgs.DELETE}
-      </div>
-      <div class="cpfyt-menu-text">
-        ${getString('HIDE_CHANNEL')}
-      </div>
-    </div>
+<div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
+  <div class="cpfyt-menu-icon">
+    ${Svgs.DELETE}
+  </div>
+  <div class="cpfyt-menu-text">
+    ${getString('HIDE_CHANNEL')}
+  </div>
+</div>
   `.trim())
   let $item = $menuItems.lastElementChild
   function hideChannel() {
@@ -1674,6 +1858,48 @@ function getChannelDetailsFromVideo($video) {
     }
   }
   // warn('unable to get channel details from video container', $video)
+}
+
+async function observeDesktopEndscreenVideos() {
+  let $endscreenContent = await getElement('.ytp-endscreen-content', {
+    name: 'endscreen content',
+    stopIf: currentUrlChanges(),
+  })
+  if (!$endscreenContent) return
+
+  /** @type {import("./types").Disconnectable} */
+  let firstItemObserver
+
+  function processItems() {
+    for (let $item of $endscreenContent.children) {
+      let $channelInfo = /** @type {HTMLElement} */ ($item.querySelector('.ytp-videowall-still-info-author'))
+      let name = $channelInfo?.innerText?.split('•')?.[0]?.trim()
+      $item.classList.toggle(Classes.HIDE_CHANNEL, isChannelHidden({name}))
+    }
+  }
+
+  observeElement($endscreenContent, () => {
+    processItems()
+    if (!firstItemObserver && $endscreenContent.firstElementChild) {
+      firstItemObserver = observeElement($endscreenContent.firstElementChild, () => {
+        processItems()
+      }, {
+        name: 'endscreen item changes',
+        observers: pageObservers,
+      }, {
+        attributes: true,
+        attributeFilter: ['href'],
+      })
+    }
+    else if (firstItemObserver && $endscreenContent.childElementCount == 0) {
+      firstItemObserver?.disconnect()
+      firstItemObserver = null
+    }
+  }, {
+    name: 'endscreen content',
+    observers: pageObservers,
+    leading: true,
+  })
 }
 
 /**
@@ -1958,6 +2184,55 @@ async function observePopups() {
         name: '<ytd-popup-container> (for initial <tp-yt-iron-dropdown> and <tp-yt-paper-dialog> being added)',
         observers: globalObservers,
       })
+    }
+
+    if (config.addTakeSnapshot) {
+      let $contextMenu = /** @type {HTMLElement} */ ($popupContainer.querySelector('.ytp-popup.ytp-contextmenu'))
+
+      function addTakeShapshotMenuItem() {
+        let $insertAfter = $contextMenu.querySelector('.ytp-menuitem:last-child')
+        $insertAfter.insertAdjacentHTML('afterend', `
+<div id="cpfyt-snaphot-menu-item" class="ytp-menuitem" role="menuitem" tabindex="0">
+  <div class="ytp-menuitem-icon">
+    <svg fill="#fff" height="24px" viewBox="0 -960 960 960" width="24px">
+      <path d="M480-400q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0 80q66 0 113-47t47-113q0-66-47-113t-113-47q-66 0-113 47t-47 113q0 66 47 113t113 47ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/>
+    </svg>
+  </div>
+  <div class="ytp-menuitem-label">${getString('TAKE_SNAPSHOT')}</div>
+  <div class="ytp-menuitem-content"></div>
+</div>
+        `.trim())
+        $contextMenu.querySelector('#cpfyt-snaphot-menu-item').addEventListener('click', takeSnapshot)
+        // Adjust context menu height for new item
+        let height = `${parseInt($contextMenu.style.height) + 40}px`
+        $contextMenu.style.height = height
+        if ($contextMenu.children[0]) {
+          /** @type {HTMLElement} */ ($contextMenu.children[0]).style.height = height
+          if ($contextMenu.children[0].children[0]) {
+            /** @type {HTMLElement} */ ($contextMenu.children[0].children[0]).style.height = height
+          }
+        }
+      }
+
+      if ($contextMenu) {
+        addTakeShapshotMenuItem()
+      } else {
+        observeElement(document.body, (mutations, observer) => {
+          for (let mutation of mutations) {
+            for (let $el of mutation.addedNodes) {
+              if ($el instanceof HTMLElement && $el.classList.contains('ytp-contextmenu')) {
+                $contextMenu = $el
+                observer.disconnect()
+                addTakeShapshotMenuItem()
+                return
+              }
+            }
+          }
+        }, {
+          name: '<body> (for player context menu being added)',
+          observers: globalObservers,
+        })
+      }
     }
   }
 
@@ -2321,10 +2596,8 @@ function observeVideoHiddenState() {
     let $video = $lastClickedElement?.closest('ytd-rich-grid-media')
     if (!$video) return
 
-    observeElement($video, (_, observer) => {
+    observeElement($video, () => {
       if (!$video.hasAttribute('is-dismissed')) return
-
-      observer.disconnect()
 
       log('video hidden, showing timer')
       let $actions = $video.querySelector('ytd-notification-multi-action-renderer')
@@ -2342,6 +2615,10 @@ function observeVideoHiddenState() {
         if (delay) $pie.style.setProperty('--cpfyt-pie-delay', `${delay}ms`)
         if (direction) $pie.style.setProperty('--cpfyt-pie-direction', direction)
         if (duration) $pie.style.setProperty('--cpfyt-pie-duration', `${duration}ms`)
+        $pie.addEventListener('click', () => {
+          stopTimer()
+          cleanup()
+        })
         $actions.appendChild($pie)
       }
 
@@ -2359,6 +2636,10 @@ function observeVideoHiddenState() {
         }, undoHideDelayMs)
       }
 
+      function stopTimer() {
+        clearTimeout(timeout)
+      }
+
       function cleanup() {
         $undoButton.removeEventListener('click', onUndoClick)
         if ($tellUsWhyButton) {
@@ -2368,13 +2649,13 @@ function observeVideoHiddenState() {
       }
 
       function onUndoClick() {
-        clearTimeout(timeout)
+        stopTimer()
         cleanup()
       }
 
       function onTellUsWhyClick() {
         let elapsedTime = Date.now() - startTime
-        clearTimeout(timeout)
+        stopTimer()
         displayPie({
           direction: 'reverse',
           delay: Math.round((elapsedTime - undoHideDelayMs) / 4),
@@ -2561,6 +2842,7 @@ function manuallyHideVideo($video) {
 
   // Streamed videos are identified using the video title's aria-label
   if (config.hideStreamed) {
+    /** @type {HTMLElement} */
     let $videoTitle
     if (desktop) {
       // Subscriptions <ytd-rich-item-renderer> has a different structure
@@ -2571,7 +2853,12 @@ function manuallyHideVideo($video) {
     }
     let hide = false
     if ($videoTitle) {
-      hide = Boolean($videoTitle.getAttribute('aria-label')?.includes(getString('STREAMED_TITLE')))
+      hide = Boolean($videoTitle.getAttribute('aria-label')?.includes(getString('STREAMED_TITLE_ARIA_LABEL')))
+      // Fall back to the metadata line on desktop
+      if (!hide && desktop) {
+        let $metadataLine = /** @type {HTMLElement} */ ($video.querySelector('#metadata-line'))
+        hide = Boolean($metadataLine?.innerText.match(getString('STREAMED_METADATA_INNERTEXT_RE')))
+      }
     }
     $video.classList.toggle(Classes.HIDE_STREAMED, hide)
   }
@@ -2602,6 +2889,36 @@ function redirectShort() {
   let search = location.search ? location.search.replace('?', '&') : ''
   log('redirecting Short to normal player')
   location.replace(`/watch?v=${videoId}${search}`)
+}
+
+function takeSnapshot() {
+  let $video = /** @type {HTMLVideoElement} */ (document.querySelector('#movie_player video'))
+  if (!$video) {
+    warn('takeSnapshot: video not found')
+    return
+  }
+
+  let $canvas = document.createElement('canvas')
+  $canvas.width = $video.videoWidth
+  $canvas.height = $video.videoHeight
+
+  try {
+    let context = $canvas.getContext('2d')
+    context.drawImage($video, 0, 0, $canvas.width, $canvas.height)
+    let $a = document.createElement('a')
+    $a.href = $canvas.toDataURL(`image/${config.snapshotFormat}`, Number(config.snapshotQuality))
+    $a.download = [
+      document.querySelector('ytd-watch-flexy #text.ytd-channel-name')?.getAttribute('title'),
+      document.querySelector('ytd-watch-flexy #title.ytd-watch-metadata yt-formatted-string')?.getAttribute('title'),
+      $video.currentTime
+    ].filter(Boolean).join(' - ') + {jpeg: '.jpg', png: '.png'}[config.snapshotFormat]
+    log('takeSnapshot:', $a.download)
+    document.body.appendChild($a)
+    $a.click()
+    document.body.removeChild($a)
+  } catch (e) {
+    warn('error taking screenshot', e)
+  }
 }
 
 /**
@@ -2745,12 +3062,12 @@ async function tweakChannelPage() {
       })
     )
     if ($channelTrailer) {
-      $channelTrailer.pause()
       function pauseTrailer() {
-        log(`pauseChannelTrailers: pausing channel trailer`)
+        log(`pauseChannelTrailers: pausing channel trailer`, {readyState: $channelTrailer.readyState})
         $channelTrailer.pause()
       }
-      if ($channelTrailer.paused) {
+      // Prevent the next play attempt if the trailer hasn't started yet
+      if ($channelTrailer.paused && $channelTrailer.readyState == 0) {
         $channelTrailer.addEventListener('play', pauseTrailer, {once: true})
       } else {
         pauseTrailer()
@@ -2809,6 +3126,12 @@ async function tweakVideoPage() {
   }
   if (desktop && config.alwaysUseTheaterMode) {
     alwaysUseTheaterMode()
+  }
+  if (desktop && config.alwaysUseOriginalAudio) {
+    alwaysUseOriginalAudio()
+  }
+  if (desktop && config.hideChannels && !config.hideEndVideos && config.hiddenChannels.length > 0) {
+    observeDesktopEndscreenVideos()
   }
 
   if (config.hideRelated || (!config.hideWatched && !config.hideStreamed && !config.hideChannels)) return
@@ -2876,7 +3199,7 @@ async function tweakVideoPage() {
     // If the video changes on mobile, related videos are rendered from scratch
     observeVideoList({
       name: 'related <lazy-list>',
-      selector: 'ytm-item-section-renderer[data-content-type="related"] > lazy-list',
+      selector: 'ytm-item-section-renderer[section-identifier="related-items"] > lazy-list',
       page: 'related',
       // <ytm-compact-autoplay-renderer> displays as a large item on bigger mobile screens
       videoElements: new Set(['ytm-video-with-context-renderer', 'ytm-compact-autoplay-renderer']),
@@ -3038,10 +3361,6 @@ if (!isUserscript) {
     // Let the options page know which version is being used
     chrome.storage.local.set({version})
     chrome.storage.local.onChanged.addListener(onConfigChange)
-
-    window.addEventListener('unload', () => {
-      chrome.storage.local.onChanged.removeListener(onConfigChange)
-    }, {once: true})
 
     main()
   })

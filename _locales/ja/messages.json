@@ -1,12 +1,18 @@
 {
+  "addTakeSnapshot": {
+    "message": "ビデオメニューにスナップショットを追加"
+  },
+  "alwaysUseOriginalAudio": {
+    "message": "常にオリジナル音声を使用する"
+  },
   "alwaysUseTheaterMode": {
     "message": "常にシアターモードを使用する"
   },
   "anyPercent": {
-    "message": "どれでも ％"
+    "message": "割合によらず"
   },
   "auto": {
-    "message": "オート"
+    "message": "自動"
   },
   "desktopOnly": {
     "message": "デスクトップのみ"
@@ -18,13 +24,13 @@
     "message": "ホームフィードを無効にする"
   },
   "disableHomeFeedNote": {
-    "message": "ログインしている場合のみ - サブスクリプションにリダイレクト"
+    "message": "ログイン時に登録チャンネルへリダイレクト"
   },
   "downloadTranscript": {
     "message": "文字起こしをダウンロード可能にする"
   },
   "embeddedVideos": {
-    "message": "埋め込まれた動画"
+    "message": "埋め込み動画"
   },
   "enabled": {
     "message": "有効"
@@ -33,16 +39,22 @@
     "message": "実験的な機能"
   },
   "extensionDescription": {
-    "message": "不足しているオプションとUIの改善を追加して、YouTubeをより制御できるようにします"
+    "message": "YouTubeに不足しているオプションやUIの改善を追加し、より自由にカスタマイズできるようにします"
   },
   "extensionName": {
     "message": "Control Panel for YouTube"
   },
   "features": {
-    "message": "特徴"
+    "message": "機能"
   },
   "fullSizeTheaterMode": {
     "message": "フルサイズシアターモード"
+  },
+  "fullSizeTheaterModeHideHeader": {
+    "message": "ヘッダーを非表示にする"
+  },
+  "fullSizeTheaterModeHideScrollbar": {
+    "message": "スクロールバーを非表示にする"
   },
   "hiddenChannelsSummary": {
     "message": "隠しチャンネル ($COUNT$)",
@@ -54,13 +66,16 @@
     }
   },
   "hideAI": {
-    "message": "AI概要を非表示"
+    "message": "AIによる概要を非表示"
+  },
+  "hideChannelBanner": {
+    "message": "チャンネルバナー画像を非表示にする"
   },
   "hideChannels": {
     "message": "チャンネルを非表示"
   },
   "hideChannelsNote": {
-    "message": "ビデオメニューに「チャンネルを隠す」を追加します"
+    "message": "動画メニューに「チャンネルを非表示」オプションを追加"
   },
   "hideChat": {
     "message": "チャットを非表示"
@@ -75,43 +90,46 @@
     "message": "共有ボタンを非表示"
   },
   "hideEndCards": {
-    "message": "ビデオのエンドカードを非表示"
+    "message": "動画のエンドカードを非表示"
   },
   "hideEndVideos": {
-    "message": "ビデオのエンドスクリーンのコンテンツを非表示"
+    "message": "動画の終了画面を非表示"
   },
   "hideExploreButton": {
-    "message": "ホームで探索ボタンを非表示"
+    "message": "ホームで検索ボタンを非表示"
   },
   "hideHiddenVideos": {
     "message": "非表示にされた動画を非表示"
   },
   "hideHiddenVideosNote": {
-    "message": "5秒後に「元に戻す」ボタンを非表示にします"
+    "message": "「元に戻す」ボタンを5秒後に非表示"
   },
   "hideHomeCategories": {
     "message": "ホームのカテゴリを非表示"
   },
   "hideInfoPanels": {
-    "message": "情報パネルを非表示にする"
+    "message": "情報パネルを非表示"
   },
   "hideLive": {
     "message": "ライブ動画を非表示"
+  },
+  "hideMembersOnly": {
+    "message": "メンバー限定動画を非表示にする"
   },
   "hideMerchEtc": {
     "message": "商品、オファーなどを非表示"
   },
   "hideMetadata": {
-    "message": "ビデオのメタデータを非表示"
+    "message": "動画のメタデータを非表示"
   },
   "hideMiniplayerButton": {
-    "message": "ミニプレイヤー非表示ボタン"
+    "message": "ミニプレイヤーボタンを非表示"
   },
   "hideMixes": {
     "message": "ミックスを非表示"
   },
   "hideMoviesAndTV": {
-    "message": "の映画とテレビ番組非表示"
+    "message": "映画とテレビを非表示"
   },
   "hideNextButton": {
     "message": "次へボタンを非表示"
@@ -121,6 +139,9 @@
   },
   "hideOpenApp": {
     "message": "アプリを開くリンクを非表示"
+  },
+  "hidePlaylists": {
+    "message": "再生リストを非表示にする"
   },
   "hideRelated": {
     "message": "関連動画を非表示"
@@ -132,19 +153,19 @@
     "message": "ショート動画を非表示"
   },
   "hideSponsored": {
-    "message": "スポンサード動画とプロモーションを非表示"
+    "message": "スポンサー動画とプロモーションを非表示"
   },
   "hideStreamed": {
     "message": "配信済みの動画を非表示"
   },
   "hideSubscriptionsChannelList": {
-    "message": "登録チャンネルのチャンネルリストを非表示にする"
+    "message": "登録チャンネルのチャンネルリストを非表示"
   },
   "hideSubscriptionsLatestBar": {
-    "message": "サブスクリプション内の「新しい順」バーを非表示"
+    "message": "登録チャンネルの「新しい順」バーを非表示"
   },
   "hideSuggestedSections": {
-    "message": "提案されたセクションを非表示"
+    "message": "おすすめセクションを非表示"
   },
   "hideUpcoming": {
     "message": "公開予定の動画を非表示"
@@ -165,28 +186,40 @@
     "message": "中"
   },
   "minimumGridItemsPerRow": {
-    "message": "行あたりの最小グリッド項目数"
+    "message": "1行あたりの最小表示数"
   },
   "minimumGridItemsPerRowNote": {
-    "message": "ホームとサブスクリプション内で"
+    "message": "ホームと登録チャンネルで適用"
   },
   "mobileGridView": {
-    "message": "購読と検索にグリッド ビューを使用する（縦画面のみ）"
+    "message": "購読と検索にグリッドビューを使用する（縦画面のみ）"
   },
   "mobileOnly": {
     "message": "モバイルのみ"
   },
   "pauseChannelTrailers": {
-    "message": "チャンネルのトレーラーを自動的に一時停止する"
+    "message": "チャンネルのトレーラーを自動的に一時停止"
+  },
+  "qualityFull": {
+    "message": "最高"
+  },
+  "qualityHigh": {
+    "message": "高"
+  },
+  "qualityLow": {
+    "message": "低"
+  },
+  "qualityMedium": {
+    "message": "中"
   },
   "redirectShorts": {
     "message": "ショート動画を通常のプレイヤーにリダイレクト"
   },
   "removePink": {
-    "message": "進捗バーからピンク色を削除する"
+    "message": "進捗バーからピンク色を削除"
   },
   "searchThumbnailSize": {
-    "message": "検索サムネイルサイズ"
+    "message": "検索サムネイルのサイズ"
   },
   "shorts": {
     "message": "ショート動画"
@@ -197,16 +230,22 @@
   "small": {
     "message": "小"
   },
+  "snapshotFormat": {
+    "message": "スナップショット形式"
+  },
+  "snapshotQuality": {
+    "message": "品質"
+  },
   "tidyGuideSidebar": {
-    "message": "整頓されたガイドサイドバー"
+    "message": "サイドバーを整理する"
   },
   "uiTweaks": {
     "message": "UIの微調整"
   },
   "videoLists": {
-    "message": "ビデオリスト"
+    "message": "動画リスト"
   },
   "videoPages": {
-    "message": "ビデオページ"
+    "message": "動画ページ"
   }
 }

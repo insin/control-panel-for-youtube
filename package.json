@@ -38,7 +38,8 @@
       "safari/",
       "screenshots/",
       "scripts/",
-      "types.d.ts"
+      "types.d.ts",
+      "wip/"
     ]
   },
   "devDependencies": {

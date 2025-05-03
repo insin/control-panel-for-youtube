@@ -1,4 +1,10 @@
 {
+  "addTakeSnapshot": {
+    "message": "Add Take snapshot to video menu"
+  },
+  "alwaysUseOriginalAudio": {
+    "message": "Always use original audio"
+  },
   "alwaysUseTheaterMode": {
     "message": "Always use theater mode"
   },
@@ -45,6 +51,12 @@
   "fullSizeTheaterMode": {
     "message": "Full size theater mode"
   },
+  "fullSizeTheaterModeHideHeader": {
+    "message": "Hide header"
+  },
+  "fullSizeTheaterModeHideScrollbar": {
+    "message": "Hide scrollbar"
+  },
   "hiddenChannelsSummary": {
     "message": "Hidden channels ($COUNT$)",
     "placeholders": {
@@ -56,6 +68,9 @@
   },
   "hideAI": {
     "message": "Hide AI summaries"
+  },
+  "hideChannelBanner": {
+    "message": "Hide channel banner images"
   },
   "hideChannels": {
     "message": "Hide channels"
@@ -99,6 +114,9 @@
   "hideLive": {
     "message": "Hide Live videos"
   },
+  "hideMembersOnly": {
+    "message": "Hide Members only videos"
+  },
   "hideMerchEtc": {
     "message": "Hide Merch, Offers etc."
   },
@@ -122,6 +140,9 @@
   },
   "hideOpenApp": {
     "message": "Hide Open App links"
+  },
+  "hidePlaylists": {
+    "message": "Hide Playlists"
   },
   "hideRelated": {
     "message": "Hide Related videos"
@@ -180,6 +201,18 @@
   "pauseChannelTrailers": {
     "message": "Automatically pause channel trailers"
   },
+  "qualityFull": {
+    "message": "Full"
+  },
+  "qualityHigh": {
+    "message": "High"
+  },
+  "qualityLow": {
+    "message": "Low"
+  },
+  "qualityMedium": {
+    "message": "Medium"
+  },
   "redirectShorts": {
     "message": "Redirect Shorts to the normal player"
   },
@@ -197,6 +230,12 @@
   },
   "small": {
     "message": "Small"
+  },
+  "snapshotFormat": {
+    "message": "Snapshot format"
+  },
+  "snapshotQuality": {
+    "message": "Quality"
   },
   "tidyGuideSidebar": {
     "message": "Tidy Guide sidebar"

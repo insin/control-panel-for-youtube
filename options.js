@@ -13,6 +13,8 @@ for (let optionValue of [
 }
 
 for (let translationId of [
+  'addTakeSnapshot',
+  'alwaysUseOriginalAudio',
   'alwaysUseTheaterMode',
   'anyPercent',
   'disableAutoplay',
@@ -22,7 +24,10 @@ for (let translationId of [
   'embeddedVideos',
   'enabled',
   'fullSizeTheaterMode',
+  'fullSizeTheaterModeHideHeader',
+  'fullSizeTheaterModeHideScrollbar',
   'hideAI',
+  'hideChannelBanner',
   'hideChannels',
   'hideChannelsNote',
   'hideChat',
@@ -37,6 +42,7 @@ for (let translationId of [
   'hideHomeCategories',
   'hideInfoPanels',
   'hideLive',
+  'hideMembersOnly',
   'hideMerchEtc',
   'hideMetadata',
   'hideMiniplayerButton',
@@ -45,6 +51,7 @@ for (let translationId of [
   'hideNextButton',
   'hideNextButtonNote',
   'hideOpenApp',
+  'hidePlaylists',
   'hideRelated',
   'hideShareThanksClip',
   'hideShorts',
@@ -61,10 +68,16 @@ for (let translationId of [
   'minimumGridItemsPerRowNote',
   'mobileGridView',
   'pauseChannelTrailers',
+  'qualityFull',
+  'qualityHigh',
+  'qualityLow',
+  'qualityMedium',
   'redirectShorts',
   'removePink',
   'searchThumbnailSize',
   'skipAds',
+  'snapshotFormat',
+  'snapshotQuality',
   'tidyGuideSidebar',
   'uiTweaks',
   'videoLists',
@@ -90,35 +103,42 @@ let defaultConfig = {
   version: /(Android|iP(ad|hone))/.test(navigator.userAgent) ? 'mobile' : 'desktop',
   disableAutoplay: true,
   disableHomeFeed: false,
-  hideAI: true,
   hiddenChannels: [],
+  hideAI: true,
+  hideChannelBanner: false,
   hideChannels: true,
   hideComments: false,
   hideHiddenVideos: true,
   hideHomeCategories: false,
   hideInfoPanels: false,
   hideLive: false,
+  hideMembersOnly: false,
   hideMetadata: false,
   hideMixes: false,
   hideMoviesAndTV: false,
   hideNextButton: true,
+  hidePlaylists: false,
   hideRelated: false,
   hideShareThanksClip: false,
   hideShorts: true,
   hideSponsored: true,
   hideStreamed: false,
   hideSuggestedSections: true,
-  hideVoiceSearch: false,
   hideUpcoming: false,
+  hideVoiceSearch: false,
   hideWatched: true,
   hideWatchedThreshold: '80',
   redirectShorts: true,
   removePink: false,
   skipAds: true,
   // Desktop only
+  addTakeSnapshot: true,
+  alwaysUseOriginalAudio: false,
   alwaysUseTheaterMode: false,
   downloadTranscript: true,
   fullSizeTheaterMode: false,
+  fullSizeTheaterModeHideHeader: true,
+  fullSizeTheaterModeHideScrollbar: false,
   hideChat: false,
   hideEndCards: false,
   hideEndVideos: true,
@@ -128,6 +148,8 @@ let defaultConfig = {
   minimumGridItemsPerRow: 'auto',
   pauseChannelTrailers: true,
   searchThumbnailSize: 'medium',
+  snapshotFormat: 'jpeg',
+  snapshotQuality: '0.92',
   tidyGuideSidebar: false,
   // Mobile only
   hideExploreButton: true,
@@ -230,9 +252,12 @@ function shouldDisplayHiddenChannels() {
 function updateDisplay() {
   $body.classList.toggle('desktop', optionsConfig.version == 'desktop')
   $body.classList.toggle('disabled', !optionsConfig.enabled)
+  $body.classList.toggle('fullSizeTheaterMode', optionsConfig.fullSizeTheaterMode)
   $body.classList.toggle('hiddenChannels', shouldDisplayHiddenChannels())
   $body.classList.toggle('hidingWatched', optionsConfig.hideWatched)
+  $body.classList.toggle('jpegSnapshot', optionsConfig.snapshotFormat == 'jpeg')
   $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
+  $body.classList.toggle('snapshot', optionsConfig.addTakeSnapshot)
   updateHiddenChannelsDisplay()
 }
 
