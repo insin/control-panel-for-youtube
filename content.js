@@ -1135,7 +1135,7 @@ const configureCss = (() => {
             }
             #content.ytd-app:has(> #page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) #masthead-container:hover #masthead {
               transform: translateY(0);
-              transition: transform .3s ease-out !important;
+              transition: transform .3s ease-out .5s !important;
             }
             /* Reclaim header space */
             #content.ytd-app:has(> #page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) #page-manager {
