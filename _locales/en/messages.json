@@ -248,5 +248,8 @@
   },
   "videoPages": {
     "message": "Video pages"
+  },
+  "disableHdr": {
+    "message": "Disable HDR"
   }
 }

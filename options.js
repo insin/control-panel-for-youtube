@@ -82,6 +82,7 @@ for (let translationId of [
   'uiTweaks',
   'videoLists',
   'videoPages',
+  'disableHdr',
 ]) {
   document.getElementById(translationId).textContent = chrome.i18n.getMessage(translationId)
 }
@@ -159,6 +160,7 @@ let defaultConfig = {
   // Embedded videos
   hideEmbedPauseOverlay: true,
   hideEmbedShareButton: false,
+  disableHdr: false,
 }
 //#endregion
 

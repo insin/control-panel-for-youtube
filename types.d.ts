@@ -16,6 +16,7 @@ export type EmbedConfig = {
   hideEndVideos: boolean
   hideInfoPanels: boolean
   removePink: boolean
+  disableHdr: boolean
 }
 
 export type Locale = {
@@ -111,6 +112,7 @@ export type SiteConfig = {
   hideOpenApp: boolean
   hideSubscriptionsChannelList: boolean
   mobileGridView: boolean
+  disableHdr: boolean
 }
 
 export type Version = 'mobile' | 'desktop'
