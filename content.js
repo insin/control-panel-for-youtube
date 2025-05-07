@@ -116,6 +116,7 @@ let config = {
   hideOpenApp: true,
   hideSubscriptionsChannelList: false,
   mobileGridView: true,
+  disableHdr: false,
 }
 //#endregion
 
@@ -3333,6 +3334,11 @@ function onConfigChange(storageChanges) {
     return
   }
 
+  if ('disableHdr' in configChanges) {
+    config.disableHdr = configChanges.disableHdr.newValue;
+    applyHdrBrightness();
+  }
+
   Object.assign(config, configChanges)
   configChanged(configChanges)
 }
@@ -3369,3 +3375,42 @@ else {
   main()
 }
 //#endregion
+
+function applyHdrBrightness() {
+  try {
+    const hdrBadge = document.querySelector('.ytp-hdr-quality-badge');
+    const video = document.querySelector('.html5-video-container video');
+    if (video) {
+      if (hdrBadge && config.disableHdr) {
+        // @ts-ignore
+        video.style.filter = 'brightness(0.5)';
+      } else {
+        // @ts-ignore
+        video.style.filter = 'brightness(1)';
+      }
+    }
+  } catch (e) {
+    warn('Error applying HDR brightness:', e);
+  }
+}
+
+// Run on page load
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  applyHdrBrightness();
+} else {
+  window.addEventListener('DOMContentLoaded', applyHdrBrightness);
+}
+
+// Also run when config changes
+function onConfigChange(storageChanges) {
+  // ... existing code ...
+  if ('disableHdr' in storageChanges) {
+    config.disableHdr = storageChanges.disableHdr.newValue;
+    applyHdrBrightness();
+  }
+  // ... existing code ...
+}
+
+// Optionally, observe for changes in the DOM that might add/remove the HDR badge or video
+const observer = new MutationObserver(applyHdrBrightness);
+observer.observe(document.body, { childList: true, subtree: true });

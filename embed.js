@@ -17,6 +17,7 @@ let config = {
   hideEndVideos: true,
   hideInfoPanels: false,
   removePink: false,
+  disableHdr: false,
 }
 //#endregion
 
