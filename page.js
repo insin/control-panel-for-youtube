@@ -25,6 +25,9 @@ const locales = {
   'en': {
     ORIGINAL: 'original',
   },
+  'fr': {
+    ORIGINAL: 'original',
+  },
   'ja-JP': {
     ORIGINAL: 'オリジナル',
   },
