@@ -104,6 +104,7 @@ let config = {
   hideEndVideos: true,
   hideMerchEtc: true,
   hideMiniplayerButton: false,
+  hideShortsMetadataUntilHover: true,
   hideSubscriptionsLatestBar: false,
   minimumGridItemsPerRow: 'auto',
   pauseChannelTrailers: true,
@@ -1195,6 +1196,18 @@ const configureCss = (() => {
       }
       if (config.hideMiniplayerButton) {
         hideCssSelectors.push('#movie_player .ytp-miniplayer-button')
+      }
+      if (config.hideShortsMetadataUntilHover) {
+        hideCssSelectors.push(`
+          ytd-reel-player-overlay-renderer > .metadata-container {
+            opacity: 0;
+            transition: opacity .25s cubic-bezier(0,0,.2,1);
+          }
+          #reel-video-renderer:hover ytd-reel-player-overlay-renderer > .metadata-container {
+            opacity: 100;
+            transition: opacity .1s cubic-bezier(.4,0,1,1);
+          }
+        `)
       }
       if (config.hideSubscriptionsLatestBar) {
         hideCssSelectors.push(

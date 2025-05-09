@@ -152,6 +152,9 @@
   "hideShorts": {
     "message": "ショート動画を非表示"
   },
+  "hideShortsMetadataUntilHover": {
+    "message": "ホバーするまでショートのメタデータを隠す"
+  },
   "hideSponsored": {
     "message": "スポンサー動画とプロモーションを非表示"
   },
@@ -222,7 +225,7 @@
     "message": "検索サムネイルのサイズ"
   },
   "shorts": {
-    "message": "ショート動画"
+    "message": "ショート"
   },
   "skipAds": {
     "message": "広告をスキップ"

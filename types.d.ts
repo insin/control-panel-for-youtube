@@ -103,6 +103,7 @@ export type SiteConfig = {
   minimumGridItemsPerRow: 'auto' | '3' | '4' | '5' | '6'
   pauseChannelTrailers: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small'
+  hideShortsMetadataUntilHover: boolean
   snapshotFormat: 'jpeg' | 'png'
   snapshotQuality: string
   tidyGuideSidebar: boolean

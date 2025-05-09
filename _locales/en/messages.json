@@ -153,6 +153,9 @@
   "hideShorts": {
     "message": "Hide Shorts"
   },
+  "hideShortsMetadataUntilHover": {
+    "message": "Hide Shorts metadata until hover"
+  },
   "hideSponsored": {
     "message": "Hide Sponsored videos & promos"
   },

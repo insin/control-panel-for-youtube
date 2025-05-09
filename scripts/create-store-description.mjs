@@ -79,7 +79,6 @@ ${messages.features}
 
 ${messages.videoLists}:
 
-• ${messages.hideShorts}
 • ${messages.hideSponsored}
 • ${messages.hideSuggestedSections}
 • ${messages.hideLive}
@@ -108,7 +107,6 @@ ${messages.videoPages}:
 • ${messages.hideShareThanksClip}
 • ${messages.hideMetadata}
 • ${messages.hideComments}
-• ${messages.redirectShorts}
 • ${messages.alwaysUseTheaterMode}${messages.desktopVersion}
 • ${messages.fullSizeTheaterMode}${messages.desktopVersion}
   • ${messages.fullSizeTheaterModeHideHeader} / ${messages.fullSizeTheaterModeHideScrollbar}
@@ -120,6 +118,12 @@ ${messages.videoPages}:
 • ${messages.hideChat}${messages.desktopVersion}
 • ${messages.takeSnapshot} (JPEG / PNG) ${messages.desktopVersion}
 • ${messages.downloadTranscript}${messages.desktopVersion}
+
+${messages.shorts}:
+
+• ${messages.hideShorts}
+• ${messages.redirectShorts}
+• ${messages.hideShortsMetadataUntilHover}${messages.desktopVersion}
 
 ${messages.uiTweaks}:
 

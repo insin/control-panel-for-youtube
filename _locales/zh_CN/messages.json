@@ -153,6 +153,9 @@
   "hideShorts": {
     "message": "隐藏短视频"
   },
+  "hideShortsMetadataUntilHover": {
+    "message": "隐藏Shorts元数据直至悬停"
+  },
   "hideSponsored": {
     "message": "隐藏赞助视频和宣传片"
   },
@@ -221,9 +224,6 @@
   },
   "searchThumbnailSize": {
     "message": "搜索缩略图大小"
-  },
-  "shorts": {
-    "message": "短视频"
   },
   "skipAds": {
     "message": "跳过广告"
