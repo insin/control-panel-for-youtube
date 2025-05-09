@@ -220,7 +220,7 @@
     "message": "Redirect Shorts to the normal player"
   },
   "removePink": {
-    "message": "Remove pink from progress bars"
+    "message": "Remove pink gradient from progress bars"
   },
   "searchThumbnailSize": {
     "message": "Search thumbnail size"

@@ -3,7 +3,7 @@
     "message": "Ajouter Capture d'écran au menu de la vidéo"
   },
   "alwaysUseOriginalAudio": {
-    "message": "Toujours utiliser l'audio de base"
+    "message": "Toujours utiliser l'audio d'origine"
   },
   "alwaysUseTheaterMode": {
     "message": "Toujours utiliser le mode cinéma"
@@ -24,7 +24,7 @@
     "message": "Désactiver la page d'accueil"
   },
   "disableHomeFeedNote": {
-    "message": "Seulement lorsque connectée - redirige vers les abonnements" 
+    "message": "Seulement si connecté(e) - redirige vers les Abonnements"
   },
   "downloadTranscript": {
     "message": "Rendre la transcription téléchargeable"
@@ -36,7 +36,7 @@
     "message": "Activé"
   },
   "experimentalFeatures": {
-    "message": "Fonctionnalitées expérimentales"
+    "message": "Fonctionnalités expérimentales"
   },
   "extensionDescription": {
     "message": "Améliore l'interface et rend le contrôle à l'utilisateur sur YouTube en ajoutant des fonctionnalités manquantes",
@@ -52,13 +52,13 @@
     "message": "Mode cinéma grand écran"
   },
   "fullSizeTheaterModeHideHeader": {
-    "message": "Cacher l'en-tête"
+    "message": "Masquer l'en-tête"
   },
   "fullSizeTheaterModeHideScrollbar": {
-    "message": "Cacher la barre de défilement"
+    "message": "Masquer la barre de défilement"
   },
   "hiddenChannelsSummary": {
-    "message": "($COUNT$) chaîne(s) cachée(s)",
+    "message": "Chaîne(s) masquée(s) ($COUNT$)",
     "placeholders": {
       "count": {
         "content": "$1",
@@ -67,118 +67,121 @@
     }
   },
   "hideAI": {
-    "message": "Cacher les résumés IA"
+    "message": "Masquer les résumés IA"
   },
   "hideChannelBanner": {
-    "message": "Cacher la bannière de la chaîne"
+    "message": "Masquer la bannière de la chaîne"
   },
   "hideChannels": {
-    "message": "Cacher la chaîne"
+    "message": "Masquer les chaînes"
   },
   "hideChannelsNote": {
-    "message": "Ajoute \"Cacher la chaîne\" au menu de la vidéo"
+    "message": "Ajoute « Masquer la chaîne » au menu de la vidéo"
   },
   "hideChat": {
-    "message": "Cacher le chat"
+    "message": "Masquer le chat"
   },
   "hideComments": {
-    "message": "Cacher les commentaires"
+    "message": "Masquer les commentaires"
   },
   "hideEmbedPauseOverlay": {
-    "message": "Cacher l'overlay de pause"
+    "message": "Masquer la superposition de paus"
   },
   "hideEmbedShareButton": {
-    "message": "Cacher le bouton partager"
+    "message": "Masquer le bouton Partager"
   },
   "hideEndCards": {
-    "message": "Cacher les vidéos"
+    "message": "Masquer les cartes de fin de vidéo"
   },
   "hideEndVideos": {
-    "message": "Cacher le contenu des écrans de fin"
+    "message": "Masquer le contenu des écrans de fin"
   },
   "hideExploreButton": {
-    "message": "Cacher le bouton Explorer de la page d'accueil"
+    "message": "Masquer le bouton « Explorer » sur la page d'accueil"
   },
   "hideHiddenVideos": {
-    "message": "Cacher les vidéos cachées"
+    "message": "Masquer les vidéos cachées"
   },
   "hideHiddenVideosNote": {
-    "message": "Cache le bouton \"Annuler\" après 5 secondes"
+    "message": "Masque he le bouton « Annuler » après 5 secondes"
   },
   "hideHomeCategories": {
-    "message": "Cacher les catégories de la page d'accueil"
+    "message": "Masquer les catégories de la page d'accueil"
   },
   "hideInfoPanels": {
-    "message": "Cacher les panneaux d'informations"
+    "message": "Masquer les panneaux d'information"
   },
   "hideLive": {
-    "message": "Cacher les vidéos en direct"
+    "message": "Masquer les vidéos en direct"
   },
   "hideMembersOnly": {
-    "message": "Cacher les vidéos réservées aux membres"
+    "message": "Masquer les vidéos réservées aux membres"
   },
   "hideMerchEtc": {
-    "message": "Cacher merch, offres..."
+    "message": "Masquer Produits dérivés, Offres, etc."
   },
   "hideMetadata": {
-    "message": "Cacher les informations de la vidéo"
+    "message": "Masquer les métadonnées de la vidéo"
   },
   "hideMiniplayerButton": {
-    "message": "Cacher le bouton lecteur réduit"
+    "message": "Masquer le bouton lecteur réduit"
   },
   "hideMixes": {
-    "message": "Cacher les Mix"
+    "message": "Masquer les Mix"
   },
   "hideMoviesAndTV": {
-    "message": "Cacher Films et séries TV"
+    "message": "Masquer Films et TV"
   },
   "hideNextButton": {
-    "message": "Cacher le bouton suivant"
+    "message": "Masquer le bouton suivant"
   },
   "hideNextButtonNote": {
     "message": "Quand une vidéo n'est pas dans une playlist"
   },
   "hideOpenApp": {
-    "message": "Cacher les liens ouvert dans l'application"
+    "message": "Masquer les liens « Ouvrir app »"
   },
   "hidePlaylists": {
-    "message": "Cacher les playlists"
+    "message": "Masquer les playlists"
   },
   "hideRelated": {
-    "message": "Cacher les vidéos similaires"
+    "message": "Masquer les vidéos associées"
   },
   "hideShareThanksClip": {
-    "message": "Cacher les boutons Partager/Merci/Clip"
+    "message": "Masquer les boutons Partager/Merci/Clip"
   },
   "hideShorts": {
-    "message": "Cacher les Shorts"
+    "message": "Masquer les Shorts"
+  },
+  "hideShortsMetadataUntilHover": {
+    "message": "Masquer les métadonnées des Shorts jusqu'au survol"
   },
   "hideSponsored": {
-    "message": "Cacher les vidéos sponsoriées et promotions"
+    "message": "Masquer les vidéos sponsorisées et promotions"
   },
   "hideStreamed": {
-    "message": "Cacher les replay de direct"
+    "message": "Masquer les rediffusions de directs"
   },
   "hideSubscriptionsChannelList": {
-    "message": "Cacher la liste des chaînes dans les abonnements"
+    "message": "Masquer la liste des chaînes dans les abonnements"
   },
   "hideSubscriptionsLatestBar": {
-    "message": "Cacher \"Dernièrement\" dans les abonnements"
+    "message": "Masquer la barre « Les plus récentes » dans Abonnements"
   },
   "hideSuggestedSections": {
-    "message": "Cacher les section sugérées"
+    "message": "Masquer les sections suggérées"
   },
   "hideUpcoming": {
-    "message": "Cacher les vidéos à venir"
+    "message": "Masquer les vidéos à venir"
   },
   "hideVoiceSearch": {
-    "message": "Cacher Rechercher avec la voix"
+    "message": "Masquer la recherche vocale"
   },
   "hideWatched": {
-    "message": "Cacher les vidéos vues"
+    "message": "Masquer les vidéos vues"
   },
   "hideWatchedThreshold": {
-    "message": "Pourcentage vues"
+    "message": "Pourcentage visionné"
   },
   "large": {
     "message": "Grand"
@@ -187,16 +190,16 @@
     "message": "Moyen"
   },
   "minimumGridItemsPerRow": {
-    "message": "Nombre d'items sur chaque ligne de la grille"
+    "message": "Nombre minimum d'éléments par ligne de la grille"
   },
   "minimumGridItemsPerRowNote": {
     "message": "Dans Accueil et Abonnements"
   },
   "mobileGridView": {
-    "message": "Utiliser la vie en grille pour Abonnements et Recherche (mode portrait uniquement)"
+    "message": "Utiliser la vue en grille pour Abonnements et Recherche (mode portrait uniquement)"
   },
   "mobileOnly": {
-    "message": "Mobile seulement"
+    "message": "Mobile uniquement"
   },
   "pauseChannelTrailers": {
     "message": "Mettre en pause automatiquement les bandes-annonces de chaîne"
@@ -214,19 +217,19 @@
     "message": "Moyenne"
   },
   "redirectShorts": {
-    "message": "Lire les Shorts dans le lecteur par défaut"
+    "message": "Rediriger les Shorts vers le lecteur normal"
   },
   "removePink": {
     "message": "Supprimer la couleur rose de la barre de progression"
   },
   "searchThumbnailSize": {
-    "message": "Taille de la miniature lors de la recherche"
+    "message": "Taille des miniatures dans les résultats de recherche"
   },
   "shorts": {
     "message": "Shorts"
   },
   "skipAds": {
-    "message": "Passer les annonces publicitaires"
+    "message": "Ignorer les publicités"
   },
   "small": {
     "message": "Petit"
@@ -238,15 +241,15 @@
     "message": "Qualité"
   },
   "tidyGuideSidebar": {
-    "message": "Organisation de la barre latérale"
+    "message": "Nettoyer la barre latérale du guide"
   },
   "uiTweaks": {
     "message": "Amélioration de l'interface utilisateur"
   },
   "videoLists": {
-    "message": "Liste vidéo"
+    "message": "Listes de vidéos"
   },
   "videoPages": {
-    "message": "Page vidéo"
+    "message": "Pages de vidéo"
   }
 }

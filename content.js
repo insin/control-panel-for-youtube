@@ -145,23 +145,21 @@ const locales = {
     UNHIDE_CHANNEL: 'Unhide channel',
   },
   'fr': {
-    CLIP: 'Clip',
     DOWNLOAD: 'Télécharger',
-    HIDE_CHANNEL: 'Cacher la chaîne',
+    HIDE_CHANNEL: 'Masquer la chaîne',
     HOME: 'Accueil',
     MIXES: 'Mix',
-    MUTE: 'Mettre en sourdine',
+    MUTE: 'Désactiver le son',
     NEXT_VIDEO: 'Vidéo suivante',
-    OPEN_APP: 'Ouvrir l\'application',
+    OPEN_APP: 'Ouvrir app',
     PREVIOUS_VIDEO: 'Vidéo précédente',
     SHARE: 'Partager',
-    SHORTS: 'Shorts',
-    STREAMED_METADATA_INNERTEXT_RE: '\\n\\s*En Direct',
-    STREAMED_TITLE_ARIA_LABEL: 'vues en Direct',
+    STREAMED_METADATA_INNERTEXT_RE: '\\n\\s*Diffusé',
+    STREAMED_TITLE_ARIA_LABEL: 'vues Diffusé',
     TAKE_SNAPSHOT: 'Prendre une capture',
-    TELL_US_WHY: 'Nous dire pourquoi',
+    TELL_US_WHY: 'Dites-nous pourquoi',
     THANKS: 'Merci',
-    UNHIDE_CHANNEL: 'Rendre visible la chaîne',
+    UNHIDE_CHANNEL: 'Afficher la chaîne',
   },
   'ja-JP': {
     CLIP: 'クリップ',
@@ -201,12 +199,21 @@ const locales = {
   }
 }
 
+const langCodes = lang.split('-')
+  .map((_, index, parts) => parts.slice(0, parts.length - index).join('-'))
+  .filter(langCode => Object.hasOwn(locales, langCode))
+  .concat('en')
+
 /**
  * @param {import("./types").LocaleKey} code
  * @returns {string}
  */
 function getString(code) {
-  return (locales[lang] || locales['en'])[code] || locales['en'][code];
+  for (let langCode of langCodes) {
+    if (Object.hasOwn(locales[langCode], code)) {
+      return locales[langCode][code]
+    }
+  }
 }
 //#endregion
 
