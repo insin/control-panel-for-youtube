@@ -92,14 +92,11 @@ ${messages.videoLists}:
 • ${messages.hideUpcoming}
 • ${messages.hideMembersOnly}
 • ${messages.hideWatched}
-• ${messages.hideHiddenVideos}
-  • ${messages.hideHiddenVideosNote}
-• ${messages.hideChannels}
-  • ${messages.hideChannelsNote}
+• ${messages.hideHiddenVideos} - ${messages.hideHiddenVideosNote}
+• ${messages.hideChannels} - ${messages.hideChannelsNote}
 • ${messages.disableHomeFeed}
 • ${messages.searchThumbnailSize}${messages.desktopVersion}
-• ${messages.minimumGridItemsPerRow}${messages.desktopVersion}
-  • ${messages.minimumGridItemsPerRowNote}
+• ${messages.minimumGridItemsPerRow}${messages.desktopVersion} - ${messages.minimumGridItemsPerRowNote}
 
 ${messages.videoPages}:
 
@@ -111,8 +108,7 @@ ${messages.videoPages}:
 • ${messages.hideMetadata}
 • ${messages.hideComments}
 • ${messages.alwaysUseTheaterMode}${messages.desktopVersion}
-• ${messages.fullSizeTheaterMode}${messages.desktopVersion}
-  • ${messages.fullSizeTheaterModeHideHeader} / ${messages.fullSizeTheaterModeHideScrollbar}
+• ${messages.fullSizeTheaterMode}${messages.desktopVersion} - ${messages.fullSizeTheaterModeHideHeader} / ${messages.fullSizeTheaterModeHideScrollbar}
 • ${messages.alwaysUseOriginalAudio}${messages.desktopVersion}
 • ${messages.hideMiniplayerButton}${messages.desktopVersion}
 • ${messages.hideEndCards}${messages.desktopVersion}
@@ -152,7 +148,7 @@ if (process.argv[3] == 'md') {
     // Section titles
     .replace(/^([^:\n]+):$/gm, '**$1:**')
     // List tiems
-    .replace(/•/g, '-')
+    // .replace(/•/g, '-')
 }
 
 clipboard.writeSync(storeDescription)
