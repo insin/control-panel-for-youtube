@@ -183,6 +183,9 @@
   "hideWatchedThreshold": {
     "message": "Watched %"
   },
+  "inHomeAndSubscriptionsNote": {
+    "message": "In Home and Subscriptions"
+  },
   "large": {
     "message": "Large"
   },
@@ -192,8 +195,8 @@
   "minimumGridItemsPerRow": {
     "message": "Minimum grid items per row"
   },
-  "minimumGridItemsPerRowNote": {
-    "message": "In Home and Subscriptions"
+  "minimumShortsPerRow": {
+    "message": "Minimum Shorts per row"
   },
   "mobileGridView": {
     "message": "Use grid view for Subscriptions & Search (portrait only)"

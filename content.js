@@ -108,6 +108,7 @@ let config = {
   hideShortsMetadataUntilHover: true,
   hideSubscriptionsLatestBar: false,
   minimumGridItemsPerRow: 'auto',
+  minimumShortsPerRow: 'auto',
   pauseChannelTrailers: true,
   searchThumbnailSize: 'medium',
   snapshotFormat: 'jpeg',
@@ -1250,6 +1251,17 @@ const configureCss = (() => {
         cssRules.push(`
           ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-renderer${exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''} {
             --ytd-rich-grid-items-per-row: ${gridItemsPerRow} !important;
+          }
+        `)
+      }
+      if (config.minimumShortsPerRow != 'auto') {
+        let shortsPerRow = Number(config.minimumShortsPerRow)
+        cssRules.push(`
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-renderer {
+            --ytd-rich-grid-slim-items-per-row: ${shortsPerRow} !important;
+          }
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-item-renderer[is-slim-media]:nth-child(-n+${shortsPerRow}) {
+            display: block !important;
           }
         `)
       }

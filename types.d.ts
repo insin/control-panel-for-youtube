@@ -101,6 +101,7 @@ export type SiteConfig = {
   hideMiniplayerButton: boolean
   hideSubscriptionsLatestBar: boolean
   minimumGridItemsPerRow: 'auto' | '3' | '4' | '5' | '6'
+  minimumShortsPerRow: 'auto' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12'
   pauseChannelTrailers: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small'
   hideShortsMetadataUntilHover: boolean

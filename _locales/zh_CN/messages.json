@@ -183,6 +183,9 @@
   "hideWatchedThreshold": {
     "message": "观看 %"
   },
+  "inHomeAndSubscriptionsNote": {
+    "message": "在主页和订阅中"
+  },
   "large": {
     "message": "大号"
   },
@@ -192,8 +195,8 @@
   "minimumGridItemsPerRow": {
     "message": "每行最小缩略图个数"
   },
-  "minimumGridItemsPerRowNote": {
-    "message": "在主页和订阅中"
+  "minimumShortsPerRow": {
+    "message": "每行最少 Shorts 数量"
   },
   "mobileGridView": {
     "message": "使用缩视图进行订阅和搜索（仅限纵向）"

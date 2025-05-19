@@ -182,6 +182,9 @@
   "hideWatchedThreshold": {
     "message": "視聴済みの割合"
   },
+  "inHomeAndSubscriptionsNote": {
+    "message": "ホームと登録チャンネルで適用"
+  },
   "large": {
     "message": "大"
   },
@@ -191,8 +194,8 @@
   "minimumGridItemsPerRow": {
     "message": "1行あたりの最小表示数"
   },
-  "minimumGridItemsPerRowNote": {
-    "message": "ホームと登録チャンネルで適用"
+  "minimumShortsPerRow": {
+    "message": "1行あたりの最小ショート数"
   },
   "mobileGridView": {
     "message": "購読と検索にグリッドビューを使用する（縦画面のみ）"

@@ -123,6 +123,7 @@ ${messages.shorts}:
 • ${messages.hideShorts}
 • ${messages.redirectShorts}
 • ${messages.hideShortsMetadataUntilHover}${messages.desktopVersion}
+• ${messages.minimumShortsPerRow}${messages.desktopVersion}
 
 ${messages.uiTweaks}:
 

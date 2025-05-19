@@ -12,6 +12,15 @@ for (let optionValue of [
   }
 }
 
+for (let translationClass of [
+  'inHomeAndSubscriptionsNote',
+]) {
+  let translation = chrome.i18n.getMessage(translationClass)
+  for (let $el of document.querySelectorAll(`.${translationClass}`)) {
+    $el.textContent = translation
+  }
+}
+
 for (let translationId of [
   'addTakeSnapshot',
   'alwaysUseOriginalAudio',
@@ -66,7 +75,6 @@ for (let translationId of [
   'hideWatched',
   'hideWatchedThreshold',
   'minimumGridItemsPerRow',
-  'minimumGridItemsPerRowNote',
   'mobileGridView',
   'pauseChannelTrailers',
   'qualityFull',
@@ -149,6 +157,7 @@ let defaultConfig = {
   hideShortsMetadataUntilHover: true,
   hideSubscriptionsLatestBar: false,
   minimumGridItemsPerRow: 'auto',
+  minimumShortsPerRow: 'auto',
   pauseChannelTrailers: true,
   searchThumbnailSize: 'medium',
   snapshotFormat: 'jpeg',

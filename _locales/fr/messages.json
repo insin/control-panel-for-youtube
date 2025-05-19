@@ -183,6 +183,9 @@
   "hideWatchedThreshold": {
     "message": "Pourcentage visionné"
   },
+  "inHomeAndSubscriptionsNote": {
+    "message": "Dans Accueil et Abonnements"
+  },
   "large": {
     "message": "Grand"
   },
@@ -192,8 +195,8 @@
   "minimumGridItemsPerRow": {
     "message": "Nombre minimum d'éléments par ligne de la grille"
   },
-  "minimumGridItemsPerRowNote": {
-    "message": "Dans Accueil et Abonnements"
+  "minimumShortsPerRow": {
+    "message": "Nombre minimum de Shorts par rangée"
   },
   "mobileGridView": {
     "message": "Utiliser la vue en grille pour Abonnements et Recherche (mode portrait uniquement)"
