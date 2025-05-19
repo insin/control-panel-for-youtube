@@ -1273,6 +1273,10 @@ const configureCss = (() => {
             display: block !important;
           }
         `)
+        if (config.minimumShortsPerRow == '12') {
+          // Hide the Show more/Show less button if we're showing everything
+          hideCssSelectors.push('ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer[is-shorts] .expand-collapse-button')
+        }
       }
       if (config.removePink) {
         cssRules.push(`
