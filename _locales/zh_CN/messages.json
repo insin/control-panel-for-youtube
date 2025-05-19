@@ -183,6 +183,9 @@
   "hideWatchedThreshold": {
     "message": "观看 %"
   },
+  "homeMaxOption": {
+    "message": "9 (首页最大)"
+  },
   "inHomeAndSubscriptionsNote": {
     "message": "在主页和订阅中"
   },

@@ -74,6 +74,7 @@ for (let translationId of [
   'hideVoiceSearch',
   'hideWatched',
   'hideWatchedThreshold',
+  'homeMaxOption',
   'minimumGridItemsPerRow',
   'mobileGridView',
   'pauseChannelTrailers',

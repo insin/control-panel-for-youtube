@@ -183,6 +183,9 @@
   "hideWatchedThreshold": {
     "message": "Pourcentage visionné"
   },
+  "homeMaxOption": {
+    "message": "9 (Accueil max)"
+  },
   "inHomeAndSubscriptionsNote": {
     "message": "Dans Accueil et Abonnements"
   },
