@@ -1261,7 +1261,11 @@ const configureCss = (() => {
           exclude.push(`[style*="--ytd-rich-grid-slim-items-per-row: ${i}"]`)
         }
         cssRules.push(`
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-renderer${exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''},
+          /* Home only has 9 Shorts per shelf */
+          ytd-browse[page-subtype="home"] ytd-rich-grid-renderer${exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''} {
+            --ytd-rich-grid-slim-items-per-row: ${Math.min(9, shortsPerRow)} !important;
+          }
+          ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer${exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''},
           ytd-browse[page-subtype="filteredsubscriptions"] ytd-rich-grid-renderer[is-shorts-grid]${exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''} {
             --ytd-rich-grid-slim-items-per-row: ${shortsPerRow} !important;
           }
