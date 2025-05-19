@@ -964,6 +964,12 @@ const configureCss = (() => {
           // List item (except History, so watched Shorts can be removed)
           'ytd-browse:not([page-subtype="history"]) ytd-video-renderer:has(a[href^="/shorts"])',
           'ytd-search ytd-video-renderer:has(a[href^="/shorts"])',
+          // Additional selectors to catch more shorts in search results
+          'ytd-search ytd-reel-item-renderer',
+          'ytd-search ytd-grid-video-renderer:has(a[href^="/shorts"])',
+          'ytd-search ytd-rich-item-renderer:has(a[href^="/shorts"])',
+          'ytd-search ytd-video-renderer:has(.ytd-thumbnail[href^="/shorts"])',
+          'ytd-search ytd-grid-video-renderer:has(.ytd-thumbnail[href^="/shorts"])',
           // Under video
           '#structured-description ytd-reel-shelf-renderer',
           // In related
@@ -983,6 +989,10 @@ const configureCss = (() => {
           'ytm-search lazy-list > ytm-reel-shelf-renderer',
           // Search
           'ytm-search ytm-video-with-context-renderer:has(a[href^="/shorts"])',
+          // Additional selectors for mobile shorts in search
+          'ytm-search ytm-reel-item-renderer',
+          'ytm-search ytm-slim-video-renderer:has(a[href^="/shorts"])',
+          'ytm-search ytm-compact-video-renderer:has(a[href^="/shorts"])',
           // Under video
           'ytm-structured-description-content-renderer ytm-reel-shelf-renderer',
           // In related
