@@ -28,6 +28,7 @@ $pageScript.onload = function() {
     pendingMessages.map(messagePageScript)
     pendingMessages = []
   }
+  this.remove()
 }
 document.documentElement.appendChild($pageScript)
 
@@ -1224,7 +1225,7 @@ const configureCss = (() => {
         hideCssSelectors.push('#movie_player .ytp-miniplayer-button')
       }
       if (config.hideShortsMetadataUntilHover) {
-        hideCssSelectors.push(`
+        cssRules.push(`
           ytd-reel-player-overlay-renderer > .metadata-container {
             opacity: 0;
             transition: opacity .25s cubic-bezier(0,0,.2,1);
