@@ -226,7 +226,7 @@
     "message": "Rediriger les Shorts vers le lecteur normal"
   },
   "removePink": {
-    "message": "Supprimer la couleur rose de la barre de progression"
+    "message": "Supprimer le dégradé rose des barres de progression"
   },
   "searchThumbnailSize": {
     "message": "Taille des miniatures dans les résultats de recherche"

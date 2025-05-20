@@ -225,7 +225,7 @@
     "message": "ショート動画を通常のプレイヤーにリダイレクト"
   },
   "removePink": {
-    "message": "進捗バーからピンク色を削除"
+    "message": "進捗バーからピンクのグラデーションを削除"
   },
   "searchThumbnailSize": {
     "message": "検索サムネイルのサイズ"

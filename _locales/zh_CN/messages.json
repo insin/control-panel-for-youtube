@@ -226,7 +226,7 @@
     "message": "将短视频重定向至普通播放器"
   },
   "removePink": {
-    "message": "从进度条中删除粉红色"
+    "message": "从进度条中移除粉色渐变"
   },
   "searchThumbnailSize": {
     "message": "搜索缩略图大小"
