@@ -82,6 +82,7 @@ let config = {
   hideRelated: false,
   hideShareThanksClip: false,
   hideShorts: true,
+  hideShortsSuggestedActions: true,
   hideSponsored: true,
   hideStreamed: false,
   hideSuggestedSections: true,
@@ -993,6 +994,10 @@ const configureCss = (() => {
           'ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(a[href^="/shorts"])',
         )
       }
+    }
+
+    if (config.hideShortsSuggestedActions) {
+      hideCssSelectors.push('yt-shorts-suggested-action-view-model')
     }
 
     if (config.hideSponsored) {

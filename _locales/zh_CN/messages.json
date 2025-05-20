@@ -156,6 +156,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "隐藏Shorts元数据直至悬停"
   },
+  "hideShortsSuggestedActions": {
+    "message": "隐藏建议操作"
+  },
   "hideSponsored": {
     "message": "隐藏赞助视频和宣传片"
   },

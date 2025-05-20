@@ -155,6 +155,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "ホバーするまでショートのメタデータを隠す"
   },
+  "hideShortsSuggestedActions": {
+    "message": "提案アクションを非表示"
+  },
   "hideSponsored": {
     "message": "スポンサー動画とプロモーションを非表示"
   },

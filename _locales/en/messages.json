@@ -156,6 +156,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "Hide Shorts metadata until hover"
   },
+  "hideShortsSuggestedActions": {
+    "message": "Hide suggested actions"
+  },
   "hideSponsored": {
     "message": "Hide Sponsored videos & promos"
   },

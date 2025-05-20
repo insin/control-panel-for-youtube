@@ -156,6 +156,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "Masquer les métadonnées des Shorts jusqu'au survol"
   },
+  "hideShortsSuggestedActions": {
+    "message": "Masquer les actions suggérées"
+  },
   "hideSponsored": {
     "message": "Masquer les vidéos sponsorisées et promotions"
   },
