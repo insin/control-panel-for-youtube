@@ -955,17 +955,22 @@ const configureCss = (() => {
     if (config.hideShareThanksClip) {
       if (desktop) {
         hideCssSelectors.push(
-          // Buttons
+          // Video buttons
           `ytd-menu-renderer yt-button-view-model:has(> button-view-model > button[aria-label="${getString('SHARE')}"])`,
           `ytd-menu-renderer yt-button-view-model:has(> button-view-model > button[aria-label="${getString('THANKS')}"])`,
           `ytd-menu-renderer yt-button-view-model:has(> button-view-model > button[aria-label="${getString('CLIP')}"])`,
           // Menu items
           `.${Classes.HIDE_SHARE_THANKS_CLIP}`,
+          // Shorts button
+          '#share-button.ytd-reel-player-overlay-renderer',
         )
       }
       if (mobile) {
         hideCssSelectors.push(
+          // Video button
           `ytm-slim-video-action-bar-renderer button-view-model:has(button[aria-label="${getString('SHARE')}"])`,
+          // Shorts button
+          '.reel-player-overlay-actions .icon-shorts_share',
         )
       }
     }
