@@ -136,6 +136,7 @@ const locales = {
     MUTE: 'Mute',
     NEXT_VIDEO: 'Next video',
     OPEN_APP: 'Open App',
+    OPEN_IN_APP: 'Open in app',
     PREVIOUS_VIDEO: 'Previous video',
     SHARE: 'Share',
     SHORTS: 'Shorts',
@@ -154,6 +155,7 @@ const locales = {
     MUTE: 'Désactiver le son',
     NEXT_VIDEO: 'Vidéo suivante',
     OPEN_APP: 'Ouvrir app',
+    OPEN_IN_APP: "Ouvrir dans l'application",
     PREVIOUS_VIDEO: 'Vidéo précédente',
     SHARE: 'Partager',
     STREAMED_METADATA_INNERTEXT_RE: '\\n\\s*Diffusé',
@@ -172,6 +174,7 @@ const locales = {
     MUTE: 'ミュート（消音）',
     NEXT_VIDEO: '次の動画',
     OPEN_APP: 'アプリを開く',
+    OPEN_IN_APP: 'アプリで開く',
     PREVIOUS_VIDEO: '前の動画',
     SHARE: '共有',
     SHORTS: 'ショート',
@@ -190,6 +193,7 @@ const locales = {
     MUTE: '静音',
     NEXT_VIDEO: '下一个视频',
     OPEN_APP: '打开应用',
+    OPEN_IN_APP: '在应用中打开',
     PREVIOUS_VIDEO: '上一个视频',
     SHARE: '分享',
     STREAMED_METADATA_INNERTEXT_RE: '直播时间：',
@@ -2868,7 +2872,8 @@ function onMobileMenuAppeared($menu) {
   if (config.hideOpenApp) {
     let menuItems = $menu.querySelectorAll('ytm-menu-item')
     for (let $menuItem of menuItems) {
-      if ($menuItem.textContent == getString('OPEN_APP')) {
+      let itemText = $menuItem.textContent
+      if (itemText == getString('OPEN_APP') || itemText == getString('OPEN_IN_APP')) {
         log('tagging Open App menu item')
         $menuItem.classList.add(Classes.HIDE_OPEN_APP)
         break
