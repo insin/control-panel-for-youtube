@@ -78,6 +78,7 @@ ${messages.features}
 
 • ${messages.hideAI}
 • ${messages.removePink}
+• ${messages.hidePremiumUpsells}
 • ${messages.pauseChannelTrailers}${messages.desktopVersion}
 
 ${messages.videoLists}:
@@ -122,6 +123,7 @@ ${messages.shorts}:
 
 • ${messages.hideShorts}
 • ${messages.redirectShorts}
+• ${messages.hideShortsSuggestedActions}
 • ${messages.hideShortsMetadataUntilHover}${messages.desktopVersion}
 • ${messages.minimumShortsPerRow}${messages.desktopVersion}
 

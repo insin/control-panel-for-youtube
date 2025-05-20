@@ -144,6 +144,9 @@
   "hidePlaylists": {
     "message": "Masquer les playlists"
   },
+  "hidePremiumUpsells": {
+    "message": "Masquer les promotions Premium"
+  },
   "hideRelated": {
     "message": "Masquer les vidéos associées"
   },

@@ -79,6 +79,7 @@ let config = {
   hideMoviesAndTV: false,
   hideNextButton: true,
   hidePlaylists: false,
+  hidePremiumUpsells: false,
   hideRelated: false,
   hideShareThanksClip: false,
   hideShorts: true,
@@ -919,6 +920,25 @@ const configureCss = (() => {
           'ytm-search ytm-compact-playlist-renderer',
           // Related
           'ytm-item-section-renderer[section-identifier="related-items"] ytm-compact-playlist-renderer',
+        )
+      }
+    }
+
+    if (config.hidePremiumUpsells) {
+      if (desktop) {
+        hideCssSelectors.push(
+          // Sidebar item
+          '#endpoint.ytd-guide-entry-renderer[href="/premium"]',
+          // Download menu item
+          'ytd-menu-service-item-download-renderer',
+          // 1080p Premium quality menu item
+          '.ytp-quality-menu .ytp-menuitem:has(.ytp-premium-label)',
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(
+          // Item in You page
+          '.tab-content[tab-identifier="FElibrary"] ytm-compact-link-renderer:has(> a[href="/premium"])',
         )
       }
     }
