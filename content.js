@@ -1725,91 +1725,78 @@ function handleDesktopWatchChannelMenu($menu) {
   let $channelMenuRenderer = $lastClickedElement.closest('ytd-menu-renderer.ytd-watch-metadata')
   if (!$channelMenuRenderer) return
 
-  if (config.hideShareThanksClip) {
-    let $menuItems = /** @type {NodeListOf<HTMLElement>} */ ($menu.querySelectorAll('ytd-menu-service-item-renderer'))
-    let testLabels = new Set([getString('SHARE'), getString('THANKS'), getString('CLIP')])
-    for (let $menuItem of $menuItems) {
-      if (testLabels.has($menuItem.querySelector('yt-formatted-string')?.textContent)) {
-        log('tagging Share/Thanks/Clip menu item')
-        $menuItem.classList.add(Classes.HIDE_SHARE_THANKS_CLIP)
-      }
-    }
+  let $channelLink = /** @type {HTMLAnchorElement} */ (document.querySelector('#channel-name a'))
+  if (!$channelLink) {
+    warn('channel link not found in video page')
+    return
   }
 
-  if (config.hideChannels) {
-    let $channelLink = /** @type {HTMLAnchorElement} */ (document.querySelector('#channel-name a'))
-    if (!$channelLink) {
-      warn('channel link not found in video page')
-      return
-    }
+  let channel = {
+    name: $channelLink.textContent,
+    url: $channelLink.pathname,
+  }
+  lastClickedChannel = channel
 
-    let channel = {
-      name: $channelLink.textContent,
-      url: $channelLink.pathname,
-    }
-    lastClickedChannel = channel
+  let $item = $menu.querySelector('#cpfyt-hide-channel-menu-item')
 
-    let $item = $menu.querySelector('#cpfyt-hide-channel-menu-item')
+  function configureMenuItem(channel) {
+    let hidden = isChannelHidden(channel)
+    $item.querySelector('.cpfyt-menu-icon').innerHTML = hidden ? Svgs.RESTORE : Svgs.DELETE
+    $item.querySelector('.cpfyt-menu-text').textContent = getString(hidden ? 'UNHIDE_CHANNEL' : 'HIDE_CHANNEL')
+  }
 
-    function configureMenuItem(channel) {
-      let hidden = isChannelHidden(channel)
-      $item.querySelector('.cpfyt-menu-icon').innerHTML = hidden ? Svgs.RESTORE : Svgs.DELETE
-      $item.querySelector('.cpfyt-menu-text').textContent = getString(hidden ? 'UNHIDE_CHANNEL' : 'HIDE_CHANNEL')
-    }
+  // The same menu can be reused, so we reconfigure it if it exists. If the
+  // menu item is reused, we're just changing [lastClickedChannel], which is
+  // why [toggleHideChannel] uses it.
+  if (!$item) {
+    let hidden = isChannelHidden(channel)
 
-    // The same menu can be reused, so we reconfigure it if it exists. If the
-    // menu item is reused, we're just changing [lastClickedChannel], which is
-    // why [toggleHideChannel] uses it.
-    if (!$item) {
-      let hidden = isChannelHidden(channel)
-
-      function toggleHideChannel() {
-        let hidden = isChannelHidden(lastClickedChannel)
-        if (hidden) {
-          log('unhiding channel', lastClickedChannel)
-          config.hiddenChannels = config.hiddenChannels.filter((hiddenChannel) =>
-            hiddenChannel.url ? lastClickedChannel.url != hiddenChannel.url : hiddenChannel.name != lastClickedChannel.name
-          )
-        } else {
-          log('hiding channel', lastClickedChannel)
-          config.hiddenChannels.unshift(lastClickedChannel)
-        }
-        configureMenuItem(lastClickedChannel)
-        storeConfigChanges({hiddenChannels: config.hiddenChannels})
-        configureCss()
-        handleCurrentUrl()
-        // Dismiss the menu
-        let $popupContainer = /** @type {HTMLElement} */ ($menu.closest('ytd-popup-container'))
-        $popupContainer.click()
-        // XXX Menu isn't dismissing on iPad Safari
-        if ($menu.style.display != 'none') {
-          $menu.style.display = 'none'
-          $menu.setAttribute('aria-hidden', 'true')
-        }
+    function toggleHideChannel() {
+      let hidden = isChannelHidden(lastClickedChannel)
+      if (hidden) {
+        log('unhiding channel', lastClickedChannel)
+        config.hiddenChannels = config.hiddenChannels.filter((hiddenChannel) =>
+          hiddenChannel.url ? lastClickedChannel.url != hiddenChannel.url : hiddenChannel.name != lastClickedChannel.name
+        )
+      } else {
+        log('hiding channel', lastClickedChannel)
+        config.hiddenChannels.unshift(lastClickedChannel)
       }
-
-      let $menuItems = $menu.querySelector('#items')
-      $menuItems.insertAdjacentHTML('beforeend', `
-<div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
-  <div class="cpfyt-menu-icon">
-    ${hidden ? Svgs.RESTORE : Svgs.DELETE}
-  </div>
-  <div class="cpfyt-menu-text">
-    ${getString(hidden ? 'UNHIDE_CHANNEL' : 'HIDE_CHANNEL')}
-  </div>
-</div>
-      `.trim())
-      $item = $menuItems.lastElementChild
-      $item.addEventListener('click', toggleHideChannel)
-      $item.addEventListener('keydown', /** @param {KeyboardEvent} e */ (e) => {
-        if (e.key == ' ' || e.key == 'Enter') {
-          e.preventDefault()
-          toggleHideChannel()
-        }
-      })
-    } else {
-      configureMenuItem(channel)
+      configureMenuItem(lastClickedChannel)
+      storeConfigChanges({hiddenChannels: config.hiddenChannels})
+      configureCss()
+      handleCurrentUrl()
+      // Dismiss the menu
+      let $popupContainer = /** @type {HTMLElement} */ ($menu.closest('ytd-popup-container'))
+      $popupContainer.click()
+      // XXX Menu isn't dismissing on iPad Safari
+      if ($menu.style.display != 'none') {
+        $menu.style.display = 'none'
+        $menu.setAttribute('aria-hidden', 'true')
+      }
     }
+
+    let $menuItems = $menu.querySelector('#items')
+    $menuItems.insertAdjacentHTML('beforeend', `
+<div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
+<div class="cpfyt-menu-icon">
+  ${hidden ? Svgs.RESTORE : Svgs.DELETE}
+</div>
+<div class="cpfyt-menu-text">
+  ${getString(hidden ? 'UNHIDE_CHANNEL' : 'HIDE_CHANNEL')}
+</div>
+</div>
+    `.trim())
+    $item = $menuItems.lastElementChild
+    $item.addEventListener('click', toggleHideChannel)
+    $item.addEventListener('keydown', /** @param {KeyboardEvent} e */ (e) => {
+      if (e.key == ' ' || e.key == 'Enter') {
+        e.preventDefault()
+        toggleHideChannel()
+      }
+    })
+  } else {
+    configureMenuItem(channel)
   }
 }
 
@@ -2208,17 +2195,25 @@ async function observeDesktopRichGridItems(options) {
 function onDesktopMenuAppeared($menu) {
   log('menu appeared')
 
+  if (config.hideShareThanksClip) {
+    let $menuItems = /** @type {NodeListOf<HTMLElement>} */ ($menu.querySelectorAll('ytd-menu-service-item-renderer'))
+    let testLabels = new Set([getString('SHARE'), getString('THANKS'), getString('CLIP')])
+    for (let $menuItem of $menuItems) {
+      if (testLabels.has($menuItem.querySelector('yt-formatted-string')?.textContent)) {
+        log('tagging Share/Thanks/Clip menu item')
+        $menuItem.classList.add(Classes.HIDE_SHARE_THANKS_CLIP)
+      }
+    }
+  }
   if (config.downloadTranscript) {
     addDownloadTranscriptToDesktopMenu($menu)
   }
   if (config.hideChannels) {
     addHideChannelToDesktopVideoMenu($menu)
+    handleDesktopWatchChannelMenu($menu)
   }
   if (config.hideHiddenVideos) {
     observeVideoHiddenState()
-  }
-  if (config.hideChannels || config.hideShareThanksClip) {
-    handleDesktopWatchChannelMenu($menu)
   }
 }
 
