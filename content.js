@@ -2865,7 +2865,7 @@ function onDocumentClick(e) {
 function onMobileMenuAppeared($menu) {
   log('menu appeared')
 
-  if (config.hideOpenApp && (isSearchPage() || isVideoPage())) {
+  if (config.hideOpenApp) {
     let menuItems = $menu.querySelectorAll('ytm-menu-item')
     for (let $menuItem of menuItems) {
       if ($menuItem.textContent == getString('OPEN_APP')) {
