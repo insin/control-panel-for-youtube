@@ -1783,12 +1783,12 @@ function handleDesktopWatchChannelMenu($menu) {
     let $menuItems = $menu.querySelector('#items')
     $menuItems.insertAdjacentHTML('beforeend', `
 <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
-<div class="cpfyt-menu-icon">
-  ${hidden ? Svgs.RESTORE : Svgs.DELETE}
-</div>
-<div class="cpfyt-menu-text">
-  ${getString(hidden ? 'UNHIDE_CHANNEL' : 'HIDE_CHANNEL')}
-</div>
+  <div class="cpfyt-menu-icon">
+    ${hidden ? Svgs.RESTORE : Svgs.DELETE}
+  </div>
+  <div class="cpfyt-menu-text">
+    ${getString(hidden ? 'UNHIDE_CHANNEL' : 'HIDE_CHANNEL')}
+  </div>
 </div>
     `.trim())
     $item = $menuItems.lastElementChild
@@ -1830,7 +1830,7 @@ function addHideChannelToDesktopVideoMenu($menu) {
   if ($menu.querySelector('#cpfyt-hide-channel-menu-item')) return
 
   let $menuItems = $menu.querySelector('#items')
-  $menuItems.insertAdjacentHTML('beforeend', `
+  $menuItems.lastElementChild.insertAdjacentHTML('beforebegin', `
 <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
   <div class="cpfyt-menu-icon">
     ${Svgs.DELETE}
@@ -1840,7 +1840,7 @@ function addHideChannelToDesktopVideoMenu($menu) {
   </div>
 </div>
   `.trim())
-  let $item = $menuItems.lastElementChild
+  let $item = $menuItems.querySelector('#cpfyt-hide-channel-menu-item')
   function hideChannel() {
     log('hiding channel', lastClickedChannel)
     config.hiddenChannels.unshift(lastClickedChannel)
@@ -2227,6 +2227,7 @@ function onDesktopMenuAppeared($menu) {
   }
   if (config.hideChannels) {
     addHideChannelToDesktopVideoMenu($menu)
+    // XXX This menu re-renders async if another menu was previously displayed
     handleDesktopWatchChannelMenu($menu)
   }
   if (config.hideHiddenVideos) {
@@ -2334,6 +2335,7 @@ async function observePopups() {
       if ($contextMenu) {
         addTakeShapshotMenuItem()
       } else {
+        // Context menu not added yet - wait for it to appear
         observeElement(document.body, (mutations, observer) => {
           for (let mutation of mutations) {
             for (let $el of mutation.addedNodes) {
