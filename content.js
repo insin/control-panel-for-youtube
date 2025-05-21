@@ -2203,9 +2203,22 @@ function onDesktopMenuAppeared($menu) {
     let $menuItems = /** @type {NodeListOf<HTMLElement>} */ ($menu.querySelectorAll('ytd-menu-service-item-renderer'))
     let testLabels = new Set([getString('SHARE'), getString('THANKS'), getString('CLIP')])
     for (let $menuItem of $menuItems) {
-      if (testLabels.has($menuItem.querySelector('yt-formatted-string')?.textContent)) {
-        log('tagging Share/Thanks/Clip menu item')
+      let menuItemText = $menuItem.querySelector('yt-formatted-string')?.textContent
+      if (testLabels.has(menuItemText)) {
+        log('hideShareThanksClip: tagging', menuItemText, 'menu item')
         $menuItem.classList.add(Classes.HIDE_SHARE_THANKS_CLIP)
+        if ($menuItem.hasAttribute('has-separator')) {
+          let $newSeparatorItem = $menuItem.previousElementSibling
+          if (config.hidePremiumUpsells && $newSeparatorItem.tagName == 'YTD-MENU-SERVICE-ITEM-DOWNLOAD-RENDERER') {
+            $newSeparatorItem = $newSeparatorItem.previousElementSibling
+          }
+          log('hideShareThanksClip: moving has-separator to', $newSeparatorItem)
+          $newSeparatorItem.setAttribute('has-separator', '')
+        }
+      }
+      else if ($menuItem.classList.contains(Classes.HIDE_SHARE_THANKS_CLIP)) {
+        log('hideShareThanksClip: un-tagging', menuItemText, 'menu item')
+        $menuItem.classList.remove(Classes.HIDE_SHARE_THANKS_CLIP)
       }
     }
   }
