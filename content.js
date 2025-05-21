@@ -1525,6 +1525,10 @@ function isSearchPage() {
   return location.pathname == '/results'
 }
 
+function isShortsPage() {
+  return location.pathname.startsWith('/shorts/')
+}
+
 function isSubscriptionsPage() {
   return location.pathname == '/feed/subscriptions'
 }
@@ -2993,7 +2997,26 @@ function redirectShort() {
 }
 
 function takeSnapshot() {
-  let $video = /** @type {HTMLVideoElement} */ (document.querySelector('#movie_player video'))
+  /** @type {HTMLVideoElement} */
+  let $video
+  /** @type {string} */
+  let channel
+  /** @type {string} */
+  let title
+  if (isVideoPage()) {
+    $video = /** @type {HTMLVideoElement} */ (document.querySelector('#movie_player video'))
+    channel = document.querySelector('ytd-watch-flexy #text.ytd-channel-name')?.getAttribute('title')
+    title = document.querySelector('ytd-watch-flexy #title.ytd-watch-metadata yt-formatted-string')?.getAttribute('title')
+  }
+  else if (isShortsPage()) {
+    $video = /** @type {HTMLVideoElement} */ (document.querySelector('ytd-reel-video-renderer video'))
+    channel = /** @type {HTMLElement} */ (document.querySelector('ytd-reel-video-renderer .ytReelChannelBarViewModelChannelName'))?.innerText
+    title = /** @type {HTMLElement} */ (document.querySelector('ytd-reel-video-renderer .ytShortsVideoTitleViewModelShortsVideoTitle'))?.innerText
+  } else {
+    warn('takeSnapshot: called on unexpected page', location.pathname)
+    return
+  }
+
   if (!$video) {
     warn('takeSnapshot: video not found')
     return
@@ -3008,17 +3031,15 @@ function takeSnapshot() {
     context.drawImage($video, 0, 0, $canvas.width, $canvas.height)
     let $a = document.createElement('a')
     $a.href = $canvas.toDataURL(`image/${config.snapshotFormat}`, Number(config.snapshotQuality))
-    $a.download = [
-      document.querySelector('ytd-watch-flexy #text.ytd-channel-name')?.getAttribute('title'),
-      document.querySelector('ytd-watch-flexy #title.ytd-watch-metadata yt-formatted-string')?.getAttribute('title'),
-      $video.currentTime
-    ].filter(Boolean).join(' - ') + {jpeg: '.jpg', png: '.png'}[config.snapshotFormat]
+    $a.download = [channel, title, $video.currentTime]
+      .filter(Boolean)
+      .join(' - ') + {jpeg: '.jpg', png: '.png'}[config.snapshotFormat]
     log('takeSnapshot:', $a.download)
     document.body.appendChild($a)
     $a.click()
     document.body.removeChild($a)
   } catch (e) {
-    warn('error taking screenshot', e)
+    warn('error taking snapshot', e)
   }
 }
 
