@@ -1,67 +1,9 @@
-// ==UserScript==
-// @name        Control Panel for YouTube
-// @description Gives you more control over YouTube by adding missing options and UI improvements
-// @icon        https://raw.githubusercontent.com/insin/control-panel-for-youtube/master/icons/icon32.png
-// @namespace   https://jbscript.dev/control-panel-for-youtube
-// @match       https://www.youtube.com/*
-// @match       https://m.youtube.com/*
-// @exclude     https://www.youtube.com/embed/*
-// @version     26
-// ==/UserScript==
-let debug = false
-let debugManualHiding = false
-
-let mobile = location.hostname == 'm.youtube.com'
-let desktop = !mobile
-/** @type {import("./types").Version} */
-let version = mobile ? 'mobile' : 'desktop'
-let lang = mobile ? document.body.lang : document.documentElement.lang
-let loggedIn = /(^|; )SID=/.test(document.cookie)
-
-let pendingMessages = []
-let pageScriptLoaded = false
-let $pageScript = document.createElement('script')
-$pageScript.src = chrome.runtime.getURL('page.js')
-$pageScript.onload = function() {
-  pageScriptLoaded = true
-  if (pendingMessages.length > 0) {
-    pendingMessages.map(messagePageScript)
-    pendingMessages = []
-  }
-  this.remove()
-}
-document.documentElement.appendChild($pageScript)
-
-/**
- * Features which need to access DOM expandos run in the page script, as they're
- * not accessible in content scripts.
- */
-function messagePageScript(message) {
-  if (!pageScriptLoaded) {
-    pendingMessages.push(message)
-  } else {
-    window.postMessage(message, location.origin)
-  }
-}
-
-function log(...args) {
-  if (debug) {
-    console.log('🙋', ...args)
-  }
-}
-
-function warn(...args) {
-  if (debug) {
-    console.log('❗️', ...args)
-  }
-}
-
 //#region Default config
 /** @type {import("./types").SiteConfig} */
-let config = {
+let defaultConfig = {
   debug: false,
   enabled: true,
-  version,
+  alwaysShowShortsProgressBar: false,
   disableAutoplay: true,
   disableHomeFeed: false,
   hiddenChannels: [],
@@ -94,6 +36,7 @@ let config = {
   redirectShorts: true,
   removePink: false,
   skipAds: true,
+  stopShortsLooping: false,
   // Desktop only
   addTakeSnapshot: true,
   alwaysUseOriginalAudio: false,
@@ -124,11 +67,87 @@ let config = {
 }
 //#endregion
 
+//#region Page script
+/**
+ * @param {string} channelName
+ * @param {import("./types").SiteConfig} defaultConfig
+ */
+let pageScript = function(channelName, defaultConfig) {
+
+let channel = new BroadcastChannel(channelName)
+
+let debug = false
+let debugManualHiding = false
+
+let mobile = location.hostname == 'm.youtube.com'
+let desktop = !mobile
+/** @type {import("./types").Version} */
+let version = mobile ? 'mobile' : 'desktop'
+let lang = mobile ? document.body.lang : document.documentElement.lang
+let loggedIn = /(^|; )SID=/.test(document.cookie)
+
+function log(...args) {
+  if (debug) {
+    console.log('🙋', ...args)
+  }
+}
+
+function warn(...args) {
+  if (debug) {
+    console.log('❗️', ...args)
+  }
+}
+
+/** @type {import("./types").SiteConfig} */
+let config
+
 //#region Locales
 /**
  * @type {Record<string, import("./types").Locale>}
  */
 const locales = {
+  'af-ZA': {
+    ORIGINAL: 'oorspronklike',
+  },
+  'am-ET': {
+    ORIGINAL: 'የመጀመሪያ',
+  },
+  'ar': {
+    ORIGINAL: 'أصلي',
+  },
+  'as-IN': {
+    ORIGINAL: 'মূল',
+  },
+  'az-Latn-AZ': {
+    ORIGINAL: 'orijinal',
+  },
+  'be-BY': {
+    ORIGINAL: 'арыгінальны',
+  },
+  'bg-BG': {
+    ORIGINAL: 'оригинален',
+  },
+  'bn-BD': {
+    ORIGINAL: 'মূল',
+  },
+  'bs-Latn-BA': {
+    ORIGINAL: 'original',
+  },
+  'ca-ES': {
+    ORIGINAL: 'original',
+  },
+  'cs-CZ': {
+    ORIGINAL: 'původní',
+  },
+  'da-DK': {
+    ORIGINAL: 'originalt',
+  },
+  'de-DE': {
+    ORIGINAL: 'Original',
+  },
+  'el-GR': {
+    ORIGINAL: 'πρωτότυπο',
+  },
   'en': {
     CLIP: 'Clip',
     DOWNLOAD: 'Download',
@@ -139,6 +158,7 @@ const locales = {
     NEXT_VIDEO: 'Next video',
     OPEN_APP: 'Open App',
     OPEN_IN_APP: 'Open in app',
+    ORIGINAL: 'original',
     PREVIOUS_VIDEO: 'Previous video',
     SHARE: 'Share',
     SHORTS: 'Shorts',
@@ -148,6 +168,27 @@ const locales = {
     TELL_US_WHY: 'Tell us why',
     THANKS: 'Thanks',
     UNHIDE_CHANNEL: 'Unhide channel',
+  },
+  'es-419': {
+    ORIGINAL: 'original',
+  },
+  'es-ES': {
+    ORIGINAL: 'original',
+  },
+  'es-US': {
+    ORIGINAL: 'original',
+  },
+  'et-EE': {
+    ORIGINAL: 'algne',
+  },
+  'eu-ES': {
+    ORIGINAL: 'jatorrizkoa',
+  },
+  'fa-IR': {
+    ORIGINAL: 'اصلی',
+  },
+  'fil-PH': {
+    ORIGINAL: 'orihinal',
   },
   'fr': {
     DOWNLOAD: 'Télécharger',
@@ -167,6 +208,42 @@ const locales = {
     THANKS: 'Merci',
     UNHIDE_CHANNEL: 'Afficher la chaîne',
   },
+  'fr-CA': {
+    ORIGINAL: 'originale',
+  },
+  'fr-FR': {
+    ORIGINAL: 'original',
+  },
+  'gl-ES': {
+    ORIGINAL: 'orixinal',
+  },
+  'gu-IN': {
+    ORIGINAL: 'ઑરિજિનલ',
+  },
+  'he-IL': {
+    ORIGINAL: 'מקור',
+  },
+  'hi-IN': {
+    ORIGINAL: 'मूल',
+  },
+  'hr-HR': {
+    ORIGINAL: 'izvorno',
+  },
+  'hu-HU': {
+    ORIGINAL: 'eredeti',
+  },
+  'hy-AM': {
+    ORIGINAL: 'բնօրինակ',
+  },
+  'id-ID': {
+    ORIGINAL: 'asli',
+  },
+  'is-IS': {
+    ORIGINAL: 'upprunalegt',
+  },
+  'it-IT': {
+    ORIGINAL: 'originale',
+  },
   'ja-JP': {
     CLIP: 'クリップ',
     DOWNLOAD: 'オフライン',
@@ -177,6 +254,7 @@ const locales = {
     NEXT_VIDEO: '次の動画',
     OPEN_APP: 'アプリを開く',
     OPEN_IN_APP: 'アプリで開く',
+    ORIGINAL: 'オリジナル',
     PREVIOUS_VIDEO: '前の動画',
     SHARE: '共有',
     SHORTS: 'ショート',
@@ -185,6 +263,126 @@ const locales = {
     TAKE_SNAPSHOT: 'スナップショットを撮る',
     TELL_US_WHY: '理由を教えてください',
     UNHIDE_CHANNEL: 'チャンネルの再表示',
+  },
+  'ka-GE': {
+    ORIGINAL: 'ორიგინალია',
+  },
+  'kk-KZ': {
+    ORIGINAL: 'түпнұсқа',
+  },
+  'km-KH': {
+    ORIGINAL: 'ដើម',
+  },
+  'kn-IN': {
+    ORIGINAL: 'ಮೂಲ',
+  },
+  'ko-KR': {
+    ORIGINAL: '원본',
+  },
+  'ky-KG': {
+    ORIGINAL: 'түпнуска',
+  },
+  'lo-LA': {
+    ORIGINAL: 'ຕົ້ນສະບັບ',
+  },
+  'lt-LT': {
+    ORIGINAL: 'pradinis',
+  },
+  'lv-LV': {
+    ORIGINAL: 'oriģināls',
+  },
+  'mk-MK': {
+    ORIGINAL: 'оригинален',
+  },
+  'ml-IN': {
+    ORIGINAL: 'ഒറിജിനൽ',
+  },
+  'mn-MN': {
+    ORIGINAL: 'эх хувь',
+  },
+  'mr-IN': {
+    ORIGINAL: 'मूळ',
+  },
+  'ms-MY': {
+    ORIGINAL: 'asal',
+  },
+  'my-MM': {
+    ORIGINAL: 'မူရင်း',
+  },
+  'nb-NO': {
+    ORIGINAL: 'original',
+  },
+  'ne-NP': {
+    ORIGINAL: 'मूल',
+  },
+  'nl-NL': {
+    ORIGINAL: 'Originele',
+  },
+  'or-IN': {
+    ORIGINAL: 'ମୂଳ',
+  },
+  'pa-Guru-IN': {
+    ORIGINAL: 'ਮੂਲ',
+  },
+  'pl-PL': {
+    ORIGINAL: 'oryginalny',
+  },
+  'pt-BR': {
+    ORIGINAL: 'original',
+  },
+  'pt-PT': {
+    ORIGINAL: 'original',
+  },
+  'ro-RO': {
+    ORIGINAL: 'original',
+  },
+  'ru-RU': {
+    ORIGINAL: 'оригинальная',
+  },
+  'si-LK': {
+    ORIGINAL: 'මුල්',
+  },
+  'sk-SK': {
+    ORIGINAL: 'pôvodná',
+  },
+  'sl-SI': {
+    ORIGINAL: 'Izvirnik',
+  },
+  'sq-AL': {
+    ORIGINAL: 'origjinale',
+  },
+  'sr-Cyrl-RS': {
+    ORIGINAL: 'оригинална',
+  },
+  'sr-Latn-RS': {
+    ORIGINAL: 'originalna',
+  },
+  'sw-TZ': {
+    ORIGINAL: 'halisi',
+  },
+  'ta-IN': {
+    ORIGINAL: 'அசல்',
+  },
+  'te-IN': {
+    ORIGINAL: 'అసలైనది',
+  },
+  'th-TH': {
+    ORIGINAL: 'เสียงต้นฉบับ',
+  },
+  'tr-TR': {
+    ORIGINAL: 'orijinal',
+  },
+  'uk-UA': {
+    ORIGINAL: 'оригінал',
+  },
+  'ur-PK': {
+    ORIGINAL: 'اصل',
+  },
+  'uz-Latn-UZ': {
+    ORIGINAL: 'original',
+  },
+  'vi-VN': {
+    ORIGINAL: 'gốc',
   },
   'zh-Hans-CN': {
     CLIP: '剪辑',
@@ -196,6 +394,7 @@ const locales = {
     NEXT_VIDEO: '下一个视频',
     OPEN_APP: '打开应用',
     OPEN_IN_APP: '在应用中打开',
+    ORIGINAL: '原始',
     PREVIOUS_VIDEO: '上一个视频',
     SHARE: '分享',
     STREAMED_METADATA_INNERTEXT_RE: '直播时间：',
@@ -204,7 +403,16 @@ const locales = {
     TELL_US_WHY: '告诉我们原因',
     THANKS: '感谢',
     UNHIDE_CHANNEL: '取消隐藏频道',
-  }
+  },
+  'zh-Hant-HK': {
+    ORIGINAL: '原聲',
+  },
+  'zh-Hant-TW': {
+    ORIGINAL: '原文',
+  },
+  'zu-ZA': {
+    ORIGINAL: 'yokuqala',
+  },
 }
 
 const langCodes = lang.split('-')
@@ -522,6 +730,15 @@ const configureCss = (() => {
         // Ad time display
         '#movie_player.ad-showing .ytp-time-display',
       )
+    }
+
+    if (config.alwaysShowShortsProgressBar) {
+      if (desktop) {
+        cssRules.push('.ytPlayerProgressBarHostHidden { opacity: 100 !important; }')
+      }
+      if (mobile) {
+        cssRules.push('.ytMwebShortsPlayerControlsHostHideProgressBar { visibility: visible !important; }')
+      }
     }
 
     if (config.disableAutoplay) {
@@ -1545,7 +1762,55 @@ async function alwaysUseOriginalAudio() {
   })
   if (!$player) return
 
-  messagePageScript({feature: 'alwaysUseOriginalAudio', debug})
+  // @ts-ignore
+  let playerState = $player.getPlayerState?.()
+  if (playerState != null && playerState != 1) {
+    log('alwaysUseOriginalAudio: waiting for video to start playing')
+    await new Promise((resolve) => {
+      function onStateChange(playerState) {
+        if (playerState == 1) {
+          log('alwaysUseOriginalAudio: video started playing')
+          $player.removeEventListener('onStateChange', onStateChange)
+          resolve()
+        }
+      }
+      $player.addEventListener('onStateChange', onStateChange)
+    })
+  }
+  // @ts-ignore
+  let tracks = $player?.getAvailableAudioTracks?.()
+  if (!tracks || tracks.length <= 1) {
+    log('alwaysUseOriginalAudio: no alternative tracks available')
+    return
+  }
+
+  let originalTrackName
+  let originalTrack = tracks.find((track) => {
+    for (let prop in track) {
+      if (Object.prototype.toString.call(track[prop]) == '[object Object]' &&
+          track[prop].id &&
+          track[prop].name &&
+          track[prop].name.includes(getString('ORIGINAL'))) {
+        originalTrackName = track[prop].name
+        return true
+      }
+    }
+  })
+  if (!originalTrack) {
+    warn('alwaysUseOriginalAudio: could not find original track', tracks)
+    return
+  }
+
+  // @ts-ignore
+  let activeTrack = $player.getAudioTrack?.()
+  if (activeTrack && activeTrack.id == originalTrack.id) {
+    log('alwaysUseOriginalAudio: already using original track')
+    return
+  }
+
+  log('alwaysUseOriginalAudio: switching to original audio track', originalTrackName)
+  // @ts-ignore
+  $player.setAudioTrack?.(originalTrack)
 }
 
 async function alwaysUseTheaterMode() {
@@ -1672,6 +1937,9 @@ function handleCurrentUrl() {
   }
   else if (isSearchPage()) {
     tweakSearchPage()
+  }
+  else if (isShortsPage()) {
+    tweakShortsPage()
   }
   else if (isChannelPage()) {
     page = 'channel'
@@ -3239,6 +3507,37 @@ function tweakSearchPage() {
   }
 }
 
+async function tweakShortsPage() {
+  if (config.stopShortsLooping) {
+    let $player = await getElement(desktop ? '#shorts-player' : '#movie_player', {
+      name: 'shorts player',
+      stopIf: currentUrlChanges(),
+    })
+    if (!$player) return
+
+    setTimeout(() => {
+      log('stopShortsLooping: turning looping off')
+      // @ts-ignore
+      $player.setLoopVideo?.(false)
+    }, 500)
+    function onStateChange(playerState) {
+      if (playerState == 1) {
+        setTimeout(() => {
+          log('stopShortsLooping: turning looping off')
+          // @ts-ignore
+          $player.setLoopVideo?.(false)
+        }, 500)
+      }
+    }
+    $player.addEventListener('onStateChange', onStateChange)
+    pageObservers.set('#shorts-player onStateChange', {
+      disconnect() {
+        $player.removeEventListener('onStateChange', onStateChange)
+      }
+    })
+  }
+}
+
 async function tweakSubscriptionsPage() {
   if (!config.hideWatched && !config.hideStreamed) return
   if (desktop) {
@@ -3404,12 +3703,6 @@ function waitForVideoOverlay($video, uniqueId, observers) {
 //#endregion
 
 //#region Main
-let isUserscript =  !(
-  typeof GM == 'undefined' &&
-  typeof chrome != 'undefined' &&
-  typeof chrome.storage != 'undefined'
-)
-
 function main() {
   if (config.enabled) {
     configureCss()
@@ -3446,47 +3739,15 @@ function configChanged(changes) {
   }
 }
 
-/** @param {{[key: string]: chrome.storage.StorageChange}} storageChanges */
-function onConfigChange(storageChanges) {
-  let configChanges = Object.fromEntries(
-    Object.entries(storageChanges)
-      // Don't change the version based on other pages
-      .filter(([key]) => config.hasOwnProperty(key) && key != 'version')
-      .map(([key, {newValue}]) => [key, newValue])
-  )
-  if (Object.keys(configChanges).length == 0) return
+channel.addEventListener('message', receiveConfigChangesFromContentScript)
 
-  if ('debug' in configChanges) {
-    log('disabling debug mode')
-    debug = configChanges.debug
-    log('enabled debug mode')
-    return
-  }
-
-  if ('debugManualHiding' in configChanges) {
-    debugManualHiding = configChanges.debugManualHiding
-    log(`${debugManualHiding ? 'en' : 'dis'}abled debugging manual hiding`)
-    configureCss()
-    return
-  }
-
-  Object.assign(config, configChanges)
-  configChanged(configChanges)
-}
-
-/** @param {Partial<import("./types").SiteConfig>} configChanges */
-function storeConfigChanges(configChanges) {
-  if (isUserscript) return
-  chrome.storage.local.onChanged.removeListener(onConfigChange)
-  chrome.storage.local.set(configChanges, () => {
-    chrome.storage.local.onChanged.addListener(onConfigChange)
-  })
-}
-
-if (!isUserscript) {
-  chrome.storage.local.get((storedConfig) => {
-    Object.assign(config, storedConfig)
-    log('initial config', {...config, version}, {lang, loggedIn})
+/**
+ * @param {MessageEvent<import("./types").SiteConfigMessage>} message
+ */
+function receiveConfigChangesFromContentScript({data: {type, siteConfig}}) {
+  if (type == 'initial' && config == null) {
+    config = {...defaultConfig, ...siteConfig}
+    log('initial config', config, {version, lang, loggedIn})
 
     if (config.debug) {
       debug = true
@@ -3496,13 +3757,77 @@ if (!isUserscript) {
     }
 
     // Let the options page know which version is being used
-    chrome.storage.local.set({version})
-    chrome.storage.local.onChanged.addListener(onConfigChange)
+    storeConfigChanges({version})
 
     main()
+    return
+  }
+
+  if ('debug' in siteConfig) {
+    log('disabling debug mode')
+    debug = siteConfig.debug
+    log('enabled debug mode')
+    return
+  }
+
+  if ('debugManualHiding' in siteConfig) {
+    debugManualHiding = siteConfig.debugManualHiding
+    log(`${debugManualHiding ? 'en' : 'dis'}abled debugging manual hiding`)
+    configureCss()
+    return
+  }
+
+  Object.assign(config, siteConfig)
+  configChanged(siteConfig)
+}
+
+/** @param {Partial<import("./types").OptionsConfig>} configChanges */
+function storeConfigChanges(configChanges) {
+  channel.postMessage(configChanges)
+}
+//#endregion
+
+}
+//#endregion
+
+//#region Content script
+let channelName = crypto.randomUUID()
+let channel = new BroadcastChannel(channelName)
+
+/** @param {{[key: string]: chrome.storage.StorageChange}} storageChanges */
+function onStorageChanged(storageChanges) {
+  /** @type {Partial<import("./types").SiteConfig>} */
+  let siteConfig = Object.fromEntries(
+    Object.entries(storageChanges)
+      .filter(([key]) => defaultConfig.hasOwnProperty(key))
+      .map(([key, {newValue}]) => [key, newValue])
+  )
+
+  // Ignore storage changes which aren't relevant to the page script
+  if (Object.keys(siteConfig).length == 0) return
+
+  channel.postMessage({type: 'change', siteConfig})
+}
+
+/** @param {MessageEvent<Partial<import("./types").OptionsConfig>>} message */
+function storeConfigChangesFromPageScript({data: changes}) {
+  chrome.storage.local.onChanged.removeListener(onStorageChanged)
+  chrome.storage.local.set(changes, () => {
+    chrome.storage.local.onChanged.addListener(onStorageChanged)
   })
 }
-else {
-  main()
-}
+
+let $script = document.createElement('script')
+$script.textContent = `void ${pageScript}(${JSON.stringify(channelName)}, ${JSON.stringify(defaultConfig)})`
+document.documentElement.append($script)
+$script.remove()
+
+channel.addEventListener('message', storeConfigChangesFromPageScript)
+chrome.storage.local.get((storedConfig) => {
+  let siteConfig = Object.fromEntries(
+    Object.entries(storedConfig).filter(([key]) => defaultConfig.hasOwnProperty(key))
+  )
+  channel.postMessage({type: 'initial', siteConfig})
+  chrome.storage.local.onChanged.addListener(onStorageChanged)
+})
 //#endregion

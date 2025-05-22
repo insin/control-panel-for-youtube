@@ -2,6 +2,9 @@
   "addTakeSnapshot": {
     "message": "Add Take snapshot to video menu"
   },
+  "alwaysShowShortsProgressBar": {
+    "message": "Always show progress bar"
+  },
   "alwaysUseOriginalAudio": {
     "message": "Always use original audio"
   },
@@ -251,6 +254,9 @@
   },
   "snapshotQuality": {
     "message": "Quality"
+  },
+  "stopShortsLooping": {
+    "message": "Stop Shorts looping"
   },
   "tidyGuideSidebar": {
     "message": "Tidy Guide sidebar"

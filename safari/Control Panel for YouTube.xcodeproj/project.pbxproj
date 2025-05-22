@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FB585F0B2DB478BA00C0B57F /* page.js in Resources */ = {isa = PBXBuildFile; fileRef = FB585F0A2DB478BA00C0B57F /* page.js */; };
-		FB585F0C2DB478BA00C0B57F /* page.js in Resources */ = {isa = PBXBuildFile; fileRef = FB585F0A2DB478BA00C0B57F /* page.js */; };
 		FBE734F72B64C91D0084B277 /* embed.js in Resources */ = {isa = PBXBuildFile; fileRef = FBE734F62B64C91D0084B277 /* embed.js */; };
 		FBE734F82B64C91D0084B277 /* embed.js in Resources */ = {isa = PBXBuildFile; fileRef = FBE734F62B64C91D0084B277 /* embed.js */; };
 		FBE8607B2B42F1E40053AD2F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE8607A2B42F1E40053AD2F /* AppDelegate.swift */; };
@@ -118,7 +116,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		FB585F0A2DB478BA00C0B57F /* page.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = page.js; path = ../../../page.js; sourceTree = "<group>"; };
 		FBE734F62B64C91D0084B277 /* embed.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = embed.js; path = ../../../embed.js; sourceTree = "<group>"; };
 		FBE860622B42F1E30053AD2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = ../Base.lproj/Main.html; sourceTree = "<group>"; };
 		FBE860632B42F1E30053AD2F /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
@@ -247,7 +244,6 @@
 				FBE860D52B438ACE0053AD2F /* browser_action.html */,
 				FBE860D42B438ACE0053AD2F /* content.js */,
 				FBE734F62B64C91D0084B277 /* embed.js */,
-				FB585F0A2DB478BA00C0B57F /* page.js */,
 				FBE861CB2B43A6F80053AD2F /* icon48.png */,
 				FBE861C82B43A6F80053AD2F /* icon96.png */,
 				FBE861C72B43A6F80053AD2F /* icon128.png */,
@@ -472,7 +468,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB585F0C2DB478BA00C0B57F /* page.js in Resources */,
 				FBE734F72B64C91D0084B277 /* embed.js in Resources */,
 				FBE861052B438C950053AD2F /* _locales in Resources */,
 				FBE860D92B438ACE0053AD2F /* content.js in Resources */,
@@ -500,7 +495,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB585F0B2DB478BA00C0B57F /* page.js in Resources */,
 				FBE734F82B64C91D0084B277 /* embed.js in Resources */,
 				FBE861062B438C950053AD2F /* _locales in Resources */,
 				FBE860DA2B438ACE0053AD2F /* content.js in Resources */,

@@ -23,6 +23,7 @@ for (let translationClass of [
 
 for (let translationId of [
   'addTakeSnapshot',
+  'alwaysShowShortsProgressBar',
   'alwaysUseOriginalAudio',
   'alwaysUseTheaterMode',
   'anyPercent',
@@ -91,6 +92,7 @@ for (let translationId of [
   'skipAds',
   'snapshotFormat',
   'snapshotQuality',
+  'stopShortsLooping',
   'tidyGuideSidebar',
   'uiTweaks',
   'videoLists',
@@ -114,6 +116,7 @@ let defaultConfig = {
   enabled: true,
   // Default based on platform until the content script runs
   version: /(Android|iP(ad|hone))/.test(navigator.userAgent) ? 'mobile' : 'desktop',
+  alwaysShowShortsProgressBar: false,
   disableAutoplay: true,
   disableHomeFeed: false,
   hiddenChannels: [],
@@ -146,6 +149,7 @@ let defaultConfig = {
   redirectShorts: true,
   removePink: false,
   skipAds: true,
+  stopShortsLooping: false,
   // Desktop only
   addTakeSnapshot: true,
   alwaysUseOriginalAudio: false,

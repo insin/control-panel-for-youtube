@@ -124,6 +124,8 @@ ${messages.shorts}:
 • ${messages.hideShorts}
 • ${messages.redirectShorts}
 • ${messages.hideShortsSuggestedActions}
+• ${messages.alwaysShowShortsProgressBar}
+• ${messages.stopShortsLooping}
 • ${messages.hideShortsMetadataUntilHover}${messages.desktopVersion}
 • ${messages.minimumShortsPerRow}${messages.desktopVersion}
 

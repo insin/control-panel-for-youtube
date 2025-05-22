@@ -2,6 +2,9 @@
   "addTakeSnapshot": {
     "message": "ビデオメニューにスナップショットを追加"
   },
+  "alwaysShowShortsProgressBar": {
+    "message": "常に進行状況バーを表示"
+  },
   "alwaysUseOriginalAudio": {
     "message": "常にオリジナル音声を使用する"
   },
@@ -250,6 +253,9 @@
   },
   "snapshotQuality": {
     "message": "品質"
+  },
+  "stopShortsLooping": {
+    "message": "ショートのループ再生を停止"
   },
   "tidyGuideSidebar": {
     "message": "サイドバーを整理する"

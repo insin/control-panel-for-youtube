@@ -2,6 +2,9 @@
   "addTakeSnapshot": {
     "message": "Ajouter Capture d'écran au menu de la vidéo"
   },
+  "alwaysShowShortsProgressBar": {
+    "message": "Toujours afficher la barre de progression"
+  },
   "alwaysUseOriginalAudio": {
     "message": "Toujours utiliser l'audio d'origine"
   },
@@ -251,6 +254,9 @@
   },
   "snapshotQuality": {
     "message": "Qualité"
+  },
+  "stopShortsLooping": {
+    "message": "Arrêter la lecture en boucle des Shorts"
   },
   "tidyGuideSidebar": {
     "message": "Nettoyer la barre latérale du guide"

@@ -2,6 +2,9 @@
   "addTakeSnapshot": {
     "message": "将截图功能添加到视频菜单"
   },
+  "alwaysShowShortsProgressBar": {
+    "message": "始终显示进度条"
+  },
   "alwaysUseOriginalAudio": {
     "message": "始终使用原始音频"
   },
@@ -248,6 +251,9 @@
   },
   "snapshotQuality": {
     "message": "质量"
+  },
+  "stopShortsLooping": {
+    "message": "停止 Shorts 循环播放"
   },
   "tidyGuideSidebar": {
     "message": "整理侧边栏订阅"

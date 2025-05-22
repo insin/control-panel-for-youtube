@@ -8,8 +8,8 @@ export type CustomMutationObserver = MutationObserver & {name: string, onDisconn
 export type Disconnectable = {disconnect: () => void}
 
 export type EmbedConfig = {
-  debug?: boolean;
   enabled: boolean
+  debug?: boolean;
   hideEmbedPauseOverlay: boolean
   hideEmbedShareButton: boolean
   hideEndCards: boolean
@@ -32,6 +32,7 @@ export type LocaleKey =
   | 'NEXT_VIDEO'
   | 'OPEN_APP'
   | 'OPEN_IN_APP'
+  | 'ORIGINAL'
   | 'PREVIOUS_VIDEO'
   | 'SHARE'
   | 'SHORTS'
@@ -43,20 +44,15 @@ export type LocaleKey =
   | 'THANKS'
   | 'UNHIDE_CHANNEL'
 
-export type PageLocale = {
-  [key in PageLocaleKey]?: string
+export type OptionsConfig = EmbedConfig & SiteConfig & {
+  version?: Version
 }
 
-export type PageLocaleKey =
-  | 'ORIGINAL'
-
-export type OptionsConfig = EmbedConfig & SiteConfig
-
 export type SiteConfig = {
+  enabled: boolean
   debug?: boolean,
   debugManualHiding?: boolean,
-  enabled: boolean
-  version?: Version
+  alwaysShowShortsProgressBar: boolean,
   disableAutoplay: boolean
   disableHomeFeed: boolean
   hiddenChannels: Channel[]
@@ -89,6 +85,7 @@ export type SiteConfig = {
   redirectShorts: boolean
   removePink: boolean
   skipAds: boolean
+  stopShortsLooping: boolean
   // Desktop only
   addTakeSnapshot: boolean
   alwaysUseOriginalAudio: boolean
@@ -116,6 +113,11 @@ export type SiteConfig = {
   hideOpenApp: boolean
   hideSubscriptionsChannelList: boolean
   mobileGridView: boolean
+}
+
+export type SiteConfigMessage = {
+  type: 'initial' | 'change'
+  siteConfig: Partial<SiteConfig>
 }
 
 export type Version = 'mobile' | 'desktop'
