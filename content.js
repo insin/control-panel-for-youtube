@@ -3739,22 +3739,17 @@ function configChanged(changes) {
   }
 }
 
-channel.addEventListener('message', receiveConfigChangesFromContentScript)
+channel.addEventListener('message', receiveConfigFromContentScript)
 
 /**
  * @param {MessageEvent<import("./types").SiteConfigMessage>} message
  */
-function receiveConfigChangesFromContentScript({data: {type, siteConfig}}) {
-  if (type == 'initial' && config == null) {
+function receiveConfigFromContentScript({data: {type, siteConfig}}) {
+  if (type == 'initial') {
     config = {...defaultConfig, ...siteConfig}
+    debug = config.debug
+    debugManualHiding = config.debugManualHiding
     log('initial config', config, {version, lang, loggedIn})
-
-    if (config.debug) {
-      debug = true
-    }
-    if (config.debugManualHiding) {
-      debugManualHiding = true
-    }
 
     // Let the options page know which version is being used
     storeConfigChanges({version})
