@@ -3532,7 +3532,7 @@ async function tweakShortsPage() {
     $player.addEventListener('onStateChange', onStateChange)
     pageObservers.set('#shorts-player onStateChange', {
       disconnect() {
-        $player.removeEventListener('onStateChange', onStateChange)
+        $player.removeEventListener?.('onStateChange', onStateChange)
       }
     })
   }
