@@ -31,7 +31,6 @@ export type LocaleKey =
   | 'MUTE'
   | 'NEXT_VIDEO'
   | 'OPEN_APP'
-  | 'OPEN_IN_APP'
   | 'ORIGINAL'
   | 'PREVIOUS_VIDEO'
   | 'SHARE'
