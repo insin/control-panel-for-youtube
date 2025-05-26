@@ -1,8 +1,9 @@
 //#region Default config
 /** @type {import("./types").SiteConfig} */
 let defaultConfig = {
-  debug: false,
   enabled: true,
+  debug: false,
+  debugManualHiding: false,
   alwaysShowShortsProgressBar: false,
   disableAutoplay: true,
   disableHomeFeed: false,
