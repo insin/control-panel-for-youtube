@@ -108,57 +108,65 @@ let config
 const locales = {
   'af-ZA': {
     ORIGINAL: 'oorspronklike',
+    SHORTS: "Kortvideo's",
   },
   'am-ET': {
     ORIGINAL: 'የመጀመሪያ',
+    SHORTS: 'ቁምጣ',
   },
-  'ar': {
+  ar: {
     ORIGINAL: 'أصلي',
+    SHORTS: 'Shorts',
   },
   'as-IN': {
     ORIGINAL: 'মূল',
+    SHORTS: 'Shorts',
   },
   'az-Latn-AZ': {
     ORIGINAL: 'orijinal',
+    SHORTS: 'Shorts',
   },
   'be-BY': {
     ORIGINAL: 'арыгінальны',
+    SHORTS: 'Кароткія відэа',
   },
   'bg-BG': {
     ORIGINAL: 'оригинален',
+    SHORTS: 'Кратки видеоклипове',
   },
   'bn-BD': {
     ORIGINAL: 'মূল',
+    SHORTS: 'Shorts',
   },
   'bs-Latn-BA': {
     ORIGINAL: 'original',
+    SHORTS: 'Shorts',
   },
   'ca-ES': {
     ORIGINAL: 'original',
+    SHORTS: 'Curts',
   },
   'cs-CZ': {
     ORIGINAL: 'původní',
+    SHORTS: 'Shorts',
   },
   'da-DK': {
     ORIGINAL: 'originalt',
+    SHORTS: 'Shorts',
   },
   'de-DE': {
     ORIGINAL: 'Original',
+    SHORTS: 'Shorts',
   },
   'el-GR': {
     ORIGINAL: 'πρωτότυπο',
+    SHORTS: 'Shorts',
   },
-  'en': {
+  en: {
     CLIP: 'Clip',
-    DOWNLOAD: 'Download',
     HIDE_CHANNEL: 'Hide channel',
-    HOME: 'Home',
     MIXES: 'Mixes',
-    MUTE: 'Mute',
-    NEXT_VIDEO: 'Next video',
-    OPEN_APP: 'Open App',
     ORIGINAL: 'original',
-    PREVIOUS_VIDEO: 'Previous video',
     SHARE: 'Share',
     SHORTS: 'Shorts',
     STREAMED_METADATA_INNERTEXT_RE: '\\n\\s*Streamed',
@@ -170,35 +178,42 @@ const locales = {
   },
   'es-419': {
     ORIGINAL: 'original',
+    SHORTS: 'Shorts',
   },
   'es-ES': {
     ORIGINAL: 'original',
+    SHORTS: 'Shorts',
   },
   'es-US': {
     ORIGINAL: 'original',
+    SHORTS: 'Shorts',
   },
   'et-EE': {
     ORIGINAL: 'algne',
+    SHORTS: 'Lühivideod',
   },
   'eu-ES': {
     ORIGINAL: 'jatorrizkoa',
+    SHORTS: 'Film laburrak',
   },
   'fa-IR': {
     ORIGINAL: 'اصلی',
+    SHORTS: 'کوته‌ویدیوهای YouTube',
   },
   'fil-PH': {
     ORIGINAL: 'orihinal',
+    SHORTS: 'Shorts',
   },
-  'fr': {
-    DOWNLOAD: 'Télécharger',
+  'fr-CA': {
+    ORIGINAL: 'originale',
+    SHORTS: 'Shorts',
+  },
+  'fr-FR': {
     HIDE_CHANNEL: 'Masquer la chaîne',
-    HOME: 'Accueil',
     MIXES: 'Mix',
-    MUTE: 'Désactiver le son',
-    NEXT_VIDEO: 'Vidéo suivante',
-    OPEN_APP: 'Ouvrir app',
-    PREVIOUS_VIDEO: 'Vidéo précédente',
+    ORIGINAL: 'original',
     SHARE: 'Partager',
+    SHORTS: 'Shorts',
     STREAMED_METADATA_INNERTEXT_RE: '\\n\\s*Diffusé',
     STREAMED_TITLE_ARIA_LABEL: 'vues Diffusé',
     TAKE_SNAPSHOT: 'Prendre une capture',
@@ -206,53 +221,51 @@ const locales = {
     THANKS: 'Merci',
     UNHIDE_CHANNEL: 'Afficher la chaîne',
   },
-  'fr-CA': {
-    ORIGINAL: 'originale',
-  },
-  'fr-FR': {
-    ORIGINAL: 'original',
-  },
   'gl-ES': {
     ORIGINAL: 'orixinal',
+    SHORTS: 'Curtas',
   },
   'gu-IN': {
     ORIGINAL: 'ઑરિજિનલ',
+    SHORTS: 'Shorts',
   },
   'he-IL': {
     ORIGINAL: 'מקור',
+    SHORTS: 'סרטוני Shorts',
   },
   'hi-IN': {
     ORIGINAL: 'मूल',
+    SHORTS: 'Shorts',
   },
   'hr-HR': {
     ORIGINAL: 'izvorno',
+    SHORTS: 'Shorts',
   },
   'hu-HU': {
     ORIGINAL: 'eredeti',
+    SHORTS: 'Rövid videók',
   },
   'hy-AM': {
     ORIGINAL: 'բնօրինակ',
+    SHORTS: 'Կարճ հոլովակներ',
   },
   'id-ID': {
     ORIGINAL: 'asli',
+    SHORTS: 'Shorts',
   },
   'is-IS': {
     ORIGINAL: 'upprunalegt',
+    SHORTS: 'Shorts',
   },
   'it-IT': {
     ORIGINAL: 'originale',
+    SHORTS: 'Short',
   },
   'ja-JP': {
     CLIP: 'クリップ',
-    DOWNLOAD: 'オフライン',
     HIDE_CHANNEL: 'チャンネルを隠す',
-    HOME: 'ホーム',
     MIXES: 'ミックス',
-    MUTE: 'ミュート（消音）',
-    NEXT_VIDEO: '次の動画',
-    OPEN_APP: 'アプリを開く',
     ORIGINAL: 'オリジナル',
-    PREVIOUS_VIDEO: '前の動画',
     SHARE: '共有',
     SHORTS: 'ショート',
     STREAMED_METADATA_INNERTEXT_RE: 'に配信済み\\s*$',
@@ -263,136 +276,171 @@ const locales = {
   },
   'ka-GE': {
     ORIGINAL: 'ორიგინალია',
+    SHORTS: 'Shorts',
   },
   'kk-KZ': {
     ORIGINAL: 'түпнұсқа',
+    SHORTS: 'Shorts',
   },
   'km-KH': {
     ORIGINAL: 'ដើម',
+    SHORTS: 'Shorts',
   },
   'kn-IN': {
     ORIGINAL: 'ಮೂಲ',
+    SHORTS: 'Shorts',
   },
   'ko-KR': {
     ORIGINAL: '원본',
+    SHORTS: 'Shorts',
   },
   'ky-KG': {
     ORIGINAL: 'түпнуска',
+    SHORTS: 'Кыска видеолор',
   },
   'lo-LA': {
     ORIGINAL: 'ຕົ້ນສະບັບ',
+    SHORTS: 'Shorts',
   },
   'lt-LT': {
     ORIGINAL: 'pradinis',
+    SHORTS: 'Klipukai',
   },
   'lv-LV': {
     ORIGINAL: 'oriģināls',
+    SHORTS: 'Īsie videoklipi',
   },
   'mk-MK': {
     ORIGINAL: 'оригинален',
+    SHORTS: 'Shorts',
   },
   'ml-IN': {
     ORIGINAL: 'ഒറിജിനൽ',
+    SHORTS: 'Shorts',
   },
   'mn-MN': {
     ORIGINAL: 'эх хувь',
+    SHORTS: 'Shorts',
   },
   'mr-IN': {
     ORIGINAL: 'मूळ',
+    SHORTS: 'शॉर्ट',
   },
   'ms-MY': {
     ORIGINAL: 'asal',
+    SHORTS: 'Shorts',
   },
   'my-MM': {
     ORIGINAL: 'မူရင်း',
+    SHORTS: 'Shorts',
   },
   'nb-NO': {
     ORIGINAL: 'original',
+    SHORTS: 'Shorts',
   },
   'ne-NP': {
     ORIGINAL: 'मूल',
+    SHORTS: 'Shorts',
   },
   'nl-NL': {
     ORIGINAL: 'Originele',
+    SHORTS: 'Shorts',
   },
   'or-IN': {
     ORIGINAL: 'ମୂଳ',
+    SHORTS: 'Shorts',
   },
   'pa-Guru-IN': {
     ORIGINAL: 'ਮੂਲ',
+    SHORTS: 'Shorts',
   },
   'pl-PL': {
     ORIGINAL: 'oryginalny',
+    SHORTS: 'Shorts',
   },
   'pt-BR': {
     ORIGINAL: 'original',
+    SHORTS: 'Shorts',
   },
   'pt-PT': {
     ORIGINAL: 'original',
+    SHORTS: 'Shorts',
   },
   'ro-RO': {
     ORIGINAL: 'original',
+    SHORTS: 'Shorts',
   },
   'ru-RU': {
     ORIGINAL: 'оригинальная',
+    SHORTS: 'Shorts',
   },
   'si-LK': {
     ORIGINAL: 'මුල්',
+    SHORTS: 'Shorts',
   },
   'sk-SK': {
     ORIGINAL: 'pôvodná',
+    SHORTS: 'Shorts',
   },
   'sl-SI': {
     ORIGINAL: 'Izvirnik',
+    SHORTS: 'Kratki videoposnetki',
   },
   'sq-AL': {
     ORIGINAL: 'origjinale',
+    SHORTS: 'Shorts',
   },
   'sr-Cyrl-RS': {
     ORIGINAL: 'оригинална',
+    SHORTS: 'Шортси',
   },
   'sr-Latn-RS': {
     ORIGINAL: 'originalna',
+    SHORTS: 'Šortsi',
   },
   'sw-TZ': {
     ORIGINAL: 'halisi',
+    SHORTS: 'Video Fupi',
   },
   'ta-IN': {
     ORIGINAL: 'அசல்',
+    SHORTS: 'Shorts வீடியோக்கள்',
   },
   'te-IN': {
     ORIGINAL: 'అసలైనది',
+    SHORTS: 'షార్ట్‌లు',
   },
   'th-TH': {
     ORIGINAL: 'เสียงต้นฉบับ',
+    SHORTS: 'วิดีโอสั้น',
   },
   'tr-TR': {
     ORIGINAL: 'orijinal',
+    SHORTS: 'Shorts',
   },
   'uk-UA': {
     ORIGINAL: 'оригінал',
+    SHORTS: 'Відео Shorts',
   },
   'ur-PK': {
     ORIGINAL: 'اصل',
+    SHORTS: 'Shorts',
   },
   'uz-Latn-UZ': {
     ORIGINAL: 'original',
+    SHORTS: 'Shorts',
   },
   'vi-VN': {
     ORIGINAL: 'gốc',
+    SHORTS: 'Shorts',
   },
   'zh-Hans-CN': {
     CLIP: '剪辑',
-    DOWNLOAD: '下载',
     HIDE_CHANNEL: '隐藏频道',
-    HOME: '首页',
     MIXES: '合辑',
-    MUTE: '静音',
-    NEXT_VIDEO: '下一个视频',
-    OPEN_APP: '打开应用',
     ORIGINAL: '原始',
-    PREVIOUS_VIDEO: '上一个视频',
     SHARE: '分享',
+    SHORTS: '短视频',
     STREAMED_METADATA_INNERTEXT_RE: '直播时间：',
     STREAMED_TITLE_ARIA_LABEL: '直播时间：',
     TAKE_SNAPSHOT: '截取快照',
@@ -402,12 +450,15 @@ const locales = {
   },
   'zh-Hant-HK': {
     ORIGINAL: '原聲',
+    SHORTS: 'Shorts',
   },
   'zh-Hant-TW': {
     ORIGINAL: '原文',
+    SHORTS: 'Shorts',
   },
   'zu-ZA': {
     ORIGINAL: 'yokuqala',
+    SHORTS: 'Okufushane',
   },
 }
 
@@ -426,6 +477,15 @@ function getString(code) {
       return locales[langCode][code]
     }
   }
+}
+
+function getYtString(key) {
+  // @ts-ignore
+  let string = window.ytcfg?.msgs?.[key]
+  if (!string) {
+    warn(`ytcfg.msgs.${key} not found`)
+  }
+  return string
 }
 //#endregion
 
@@ -1011,7 +1071,7 @@ const configureCss = (() => {
           // Search
           'ytm-search ytm-video-with-context-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])',
           // Playlist in channel Home tab
-          `ytm-browse .tab-content[tab-title="${getString('HOME')}"] ytm-shelf-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])`,
+          `ytm-browse .tab-content[tab-title="${getYtString('HOME')}"] ytm-shelf-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])`,
         )
       }
     }
@@ -1107,9 +1167,9 @@ const configureCss = (() => {
       if (mobile) {
         hideCssSelectors.push(
           // Hide the Previous button when it's disabled, as it otherwise takes you to the previously-watched video
-          `.player-controls-middle-core-buttons button[aria-label="${getString('PREVIOUS_VIDEO')}"][aria-disabled="true"]`,
+          `.player-controls-middle-core-buttons button[aria-label="${getYtString('PREVIOUS_VIDEO')}"][aria-disabled="true"]`,
           // Always hide the Next button as it takes you to a random video, even if you just used Previous
-          `.player-controls-middle-core-buttons button[aria-label="${getString('NEXT_VIDEO')}"]`,
+          `.player-controls-middle-core-buttons button[aria-label="${getYtString('NEXT_VIDEO')}"]`,
         )
       }
     }
@@ -1972,7 +2032,7 @@ function addDownloadTranscriptToDesktopMenu($menu) {
   $menuItems.insertAdjacentHTML('beforeend', `
 <div class="cpfyt-menu-item" tabindex="0" style="display: none">
   <div class="cpfyt-menu-text">
-    ${getString('DOWNLOAD')}
+    ${getYtString('DOWNLOAD')}
   </div>
 </div>
   `.trim())
@@ -2950,7 +3010,7 @@ async function observeVideoAds() {
       if (desktop) {
         let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
         if ($muteButton &&
-            $muteButton.dataset.titleNoTooltip != getString('MUTE') &&
+            $muteButton.dataset.titleNoTooltip != getYtString('MUTE') &&
             $muteButton.dataset.cpfytWasMuted == 'false') {
           log('unmuting audio after ads')
           delete $muteButton.dataset.cpfytWasMuted
@@ -3187,7 +3247,7 @@ function onMobileMenuAppeared($menu) {
     let menuItems = $menu.querySelectorAll('ytm-menu-item')
     for (let $menuItem of menuItems) {
       let itemText = $menuItem.textContent
-      if (itemText == getString('OPEN_APP')) {
+      if (itemText == getYtString('OPEN_APP')) {
         log('tagging Open App menu item')
         $menuItem.classList.add(Classes.HIDE_OPEN_APP)
         break
@@ -3371,7 +3431,7 @@ function tweakAdPlayerOverlay($player) {
   if (desktop) {
     let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
     if ($muteButton) {
-      if ($muteButton.dataset.titleNoTooltip == getString('MUTE')) {
+      if ($muteButton.dataset.titleNoTooltip == getYtString('MUTE')) {
         log('muting ad audio')
         $muteButton.click()
         $muteButton.dataset.cpfytWasMuted = 'false'

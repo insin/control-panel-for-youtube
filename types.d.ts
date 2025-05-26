@@ -24,15 +24,9 @@ export type Locale = {
 
 export type LocaleKey =
   | 'CLIP'
-  | 'DOWNLOAD'
   | 'HIDE_CHANNEL'
-  | 'HOME'
   | 'MIXES'
-  | 'MUTE'
-  | 'NEXT_VIDEO'
-  | 'OPEN_APP'
   | 'ORIGINAL'
-  | 'PREVIOUS_VIDEO'
   | 'SHARE'
   | 'SHORTS'
   // This needs to match both innerText and textContent

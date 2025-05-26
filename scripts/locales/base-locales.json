@@ -1,0 +1,277 @@
+{
+  "af-ZA": {
+    "ORIGINAL": "oorspronklike"
+  },
+  "am-ET": {
+    "ORIGINAL": "የመጀመሪያ"
+  },
+  "ar": {
+    "ORIGINAL": "أصلي"
+  },
+  "as-IN": {
+    "ORIGINAL": "মূল"
+  },
+  "az-Latn-AZ": {
+    "ORIGINAL": "orijinal"
+  },
+  "be-BY": {
+    "ORIGINAL": "арыгінальны"
+  },
+  "bg-BG": {
+    "ORIGINAL": "оригинален"
+  },
+  "bn-BD": {
+    "ORIGINAL": "মূল"
+  },
+  "bs-Latn-BA": {
+    "ORIGINAL": "original"
+  },
+  "ca-ES": {
+    "ORIGINAL": "original"
+  },
+  "cs-CZ": {
+    "ORIGINAL": "původní"
+  },
+  "da-DK": {
+    "ORIGINAL": "originalt"
+  },
+  "de-DE": {
+    "ORIGINAL": "Original"
+  },
+  "el-GR": {
+    "ORIGINAL": "πρωτότυπο"
+  },
+  "en": {
+    "CLIP": "Clip",
+    "HIDE_CHANNEL": "Hide channel",
+    "MIXES": "Mixes",
+    "ORIGINAL": "original",
+    "SHARE": "Share",
+    "STREAMED_METADATA_INNERTEXT_RE": "\\n\\s*Streamed",
+    "STREAMED_TITLE_ARIA_LABEL": "views Streamed",
+    "TAKE_SNAPSHOT": "Take snapshot",
+    "TELL_US_WHY": "Tell us why",
+    "THANKS": "Thanks",
+    "UNHIDE_CHANNEL": "Unhide channel"
+  },
+  "es-419": {
+    "ORIGINAL": "original"
+  },
+  "es-ES": {
+    "ORIGINAL": "original"
+  },
+  "es-US": {
+    "ORIGINAL": "original"
+  },
+  "et-EE": {
+    "ORIGINAL": "algne"
+  },
+  "eu-ES": {
+    "ORIGINAL": "jatorrizkoa"
+  },
+  "fa-IR": {
+    "ORIGINAL": "اصلی"
+  },
+  "fil-PH": {
+    "ORIGINAL": "orihinal"
+  },
+  "fr-CA": {
+    "ORIGINAL": "originale"
+  },
+  "fr-FR": {
+    "HIDE_CHANNEL": "Masquer la chaîne",
+    "MIXES": "Mix",
+    "ORIGINAL": "original",
+    "SHARE": "Partager",
+    "STREAMED_METADATA_INNERTEXT_RE": "\\n\\s*Diffusé",
+    "STREAMED_TITLE_ARIA_LABEL": "vues Diffusé",
+    "TAKE_SNAPSHOT": "Prendre une capture",
+    "TELL_US_WHY": "Dites-nous pourquoi",
+    "THANKS": "Merci",
+    "UNHIDE_CHANNEL": "Afficher la chaîne"
+  },
+  "gl-ES": {
+    "ORIGINAL": "orixinal"
+  },
+  "gu-IN": {
+    "ORIGINAL": "ઑરિજિનલ"
+  },
+  "he-IL": {
+    "ORIGINAL": "מקור"
+  },
+  "hi-IN": {
+    "ORIGINAL": "मूल"
+  },
+  "hr-HR": {
+    "ORIGINAL": "izvorno"
+  },
+  "hu-HU": {
+    "ORIGINAL": "eredeti"
+  },
+  "hy-AM": {
+    "ORIGINAL": "բնօրինակ"
+  },
+  "id-ID": {
+    "ORIGINAL": "asli"
+  },
+  "is-IS": {
+    "ORIGINAL": "upprunalegt"
+  },
+  "it-IT": {
+    "ORIGINAL": "originale"
+  },
+  "ja-JP": {
+    "CLIP": "クリップ",
+    "HIDE_CHANNEL": "チャンネルを隠す",
+    "MIXES": "ミックス",
+    "ORIGINAL": "オリジナル",
+    "SHARE": "共有",
+    "STREAMED_METADATA_INNERTEXT_RE": "に配信済み\\s*$",
+    "STREAMED_TITLE_ARIA_LABEL": "前 に配信済み",
+    "TAKE_SNAPSHOT": "スナップショットを撮る",
+    "TELL_US_WHY": "理由を教えてください",
+    "UNHIDE_CHANNEL": "チャンネルの再表示"
+  },
+  "ka-GE": {
+    "ORIGINAL": "ორიგინალია"
+  },
+  "kk-KZ": {
+    "ORIGINAL": "түпнұсқа"
+  },
+  "km-KH": {
+    "ORIGINAL": "ដើម"
+  },
+  "kn-IN": {
+    "ORIGINAL": "ಮೂಲ"
+  },
+  "ko-KR": {
+    "ORIGINAL": "원본"
+  },
+  "ky-KG": {
+    "ORIGINAL": "түпнуска"
+  },
+  "lo-LA": {
+    "ORIGINAL": "ຕົ້ນສະບັບ"
+  },
+  "lt-LT": {
+    "ORIGINAL": "pradinis"
+  },
+  "lv-LV": {
+    "ORIGINAL": "oriģināls"
+  },
+  "mk-MK": {
+    "ORIGINAL": "оригинален"
+  },
+  "ml-IN": {
+    "ORIGINAL": "ഒറിജിനൽ"
+  },
+  "mn-MN": {
+    "ORIGINAL": "эх хувь"
+  },
+  "mr-IN": {
+    "ORIGINAL": "मूळ"
+  },
+  "ms-MY": {
+    "ORIGINAL": "asal"
+  },
+  "my-MM": {
+    "ORIGINAL": "မူရင်း"
+  },
+  "nb-NO": {
+    "ORIGINAL": "original"
+  },
+  "ne-NP": {
+    "ORIGINAL": "मूल"
+  },
+  "nl-NL": {
+    "ORIGINAL": "Originele"
+  },
+  "or-IN": {
+    "ORIGINAL": "ମୂଳ"
+  },
+  "pa-Guru-IN": {
+    "ORIGINAL": "ਮੂਲ"
+  },
+  "pl-PL": {
+    "ORIGINAL": "oryginalny"
+  },
+  "pt-BR": {
+    "ORIGINAL": "original"
+  },
+  "pt-PT": {
+    "ORIGINAL": "original"
+  },
+  "ro-RO": {
+    "ORIGINAL": "original"
+  },
+  "ru-RU": {
+    "ORIGINAL": "оригинальная"
+  },
+  "si-LK": {
+    "ORIGINAL": "මුල්"
+  },
+  "sk-SK": {
+    "ORIGINAL": "pôvodná"
+  },
+  "sl-SI": {
+    "ORIGINAL": "Izvirnik"
+  },
+  "sq-AL": {
+    "ORIGINAL": "origjinale"
+  },
+  "sr-Cyrl-RS": {
+    "ORIGINAL": "оригинална"
+  },
+  "sr-Latn-RS": {
+    "ORIGINAL": "originalna"
+  },
+  "sw-TZ": {
+    "ORIGINAL": "halisi"
+  },
+  "ta-IN": {
+    "ORIGINAL": "அசல்"
+  },
+  "te-IN": {
+    "ORIGINAL": "అసలైనది"
+  },
+  "th-TH": {
+    "ORIGINAL": "เสียงต้นฉบับ"
+  },
+  "tr-TR": {
+    "ORIGINAL": "orijinal"
+  },
+  "uk-UA": {
+    "ORIGINAL": "оригінал"
+  },
+  "ur-PK": {
+    "ORIGINAL": "اصل"
+  },
+  "uz-Latn-UZ": {
+    "ORIGINAL": "original"
+  },
+  "vi-VN": {
+    "ORIGINAL": "gốc"
+  },
+  "zh-Hans-CN": {
+    "CLIP": "剪辑",
+    "HIDE_CHANNEL": "隐藏频道",
+    "MIXES": "合辑",
+    "ORIGINAL": "原始",
+    "SHARE": "分享",
+    "STREAMED_METADATA_INNERTEXT_RE": "直播时间：",
+    "STREAMED_TITLE_ARIA_LABEL": "直播时间：",
+    "TAKE_SNAPSHOT": "截取快照",
+    "TELL_US_WHY": "告诉我们原因",
+    "THANKS": "感谢",
+    "UNHIDE_CHANNEL": "取消隐藏频道"
+  },
+  "zh-Hant-HK": {
+    "ORIGINAL": "原聲"
+  },
+  "zh-Hant-TW": {
+    "ORIGINAL": "原文"
+  },
+  "zu-ZA": {
+    "ORIGINAL": "yokuqala"
+  }
+}
