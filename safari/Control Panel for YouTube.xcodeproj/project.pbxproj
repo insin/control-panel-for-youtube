@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FBB23FE02DE55CAE007886FC /* page.js in Resources */ = {isa = PBXBuildFile; fileRef = FBB23FDF2DE55CAE007886FC /* page.js */; };
+		FBB23FE12DE55CAE007886FC /* page.js in Resources */ = {isa = PBXBuildFile; fileRef = FBB23FDF2DE55CAE007886FC /* page.js */; };
 		FBE734F72B64C91D0084B277 /* embed.js in Resources */ = {isa = PBXBuildFile; fileRef = FBE734F62B64C91D0084B277 /* embed.js */; };
 		FBE734F82B64C91D0084B277 /* embed.js in Resources */ = {isa = PBXBuildFile; fileRef = FBE734F62B64C91D0084B277 /* embed.js */; };
 		FBE8607B2B42F1E40053AD2F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE8607A2B42F1E40053AD2F /* AppDelegate.swift */; };
@@ -116,6 +118,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FBB23FDF2DE55CAE007886FC /* page.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = page.js; path = ../../../page.js; sourceTree = "<group>"; };
 		FBE734F62B64C91D0084B277 /* embed.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = embed.js; path = ../../../embed.js; sourceTree = "<group>"; };
 		FBE860622B42F1E30053AD2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = ../Base.lproj/Main.html; sourceTree = "<group>"; };
 		FBE860632B42F1E30053AD2F /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
@@ -250,10 +253,11 @@
 				FBE861C92B43A6F80053AD2F /* icon256.png */,
 				FBE861C42B43A6F80053AD2F /* icon512.png */,
 				FBE8606D2B42F1E40053AD2F /* manifest.json */,
-				FBE861E42B43A7610053AD2F /* options-icon.png */,
 				FBE860D82B438ACE0053AD2F /* options.css */,
 				FBE860D62B438ACE0053AD2F /* options.html */,
 				FBE860D72B438ACE0053AD2F /* options.js */,
+				FBE861E42B43A7610053AD2F /* options-icon.png */,
+				FBB23FDF2DE55CAE007886FC /* page.js */,
 				FBE861CC2B43A6F80053AD2F /* toolbar-icon16.png */,
 				FBE861C52B43A6F80053AD2F /* toolbar-icon19.png */,
 				FBE861CA2B43A6F80053AD2F /* toolbar-icon32.png */,
@@ -468,6 +472,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBB23FE02DE55CAE007886FC /* page.js in Resources */,
 				FBE734F72B64C91D0084B277 /* embed.js in Resources */,
 				FBE861052B438C950053AD2F /* _locales in Resources */,
 				FBE860D92B438ACE0053AD2F /* content.js in Resources */,
@@ -495,6 +500,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBB23FE12DE55CAE007886FC /* page.js in Resources */,
 				FBE734F82B64C91D0084B277 /* embed.js in Resources */,
 				FBE861062B438C950053AD2F /* _locales in Resources */,
 				FBE860DA2B438ACE0053AD2F /* content.js in Resources */,

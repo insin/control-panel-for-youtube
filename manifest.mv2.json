@@ -27,6 +27,19 @@
       ]
     },
     {
+      "world": "MAIN",
+      "matches": [
+        "https://www.youtube.com/*",
+        "https://m.youtube.com/*"
+      ],
+      "exclude_matches": [
+        "https://www.youtube.com/embed/*"
+      ],
+      "js": [
+        "page.js"
+      ]
+    },
+    {
       "matches": [
         "https://www.youtube.com/embed/*",
         "https://www.youtube-nocookie.com/embed/*"
