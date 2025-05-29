@@ -12,8 +12,18 @@ for (let optionValue of [
   }
 }
 
+for (let translationClass of [
+  'inHomeAndSubscriptionsNote',
+]) {
+  let translation = chrome.i18n.getMessage(translationClass)
+  for (let $el of document.querySelectorAll(`.${translationClass}`)) {
+    $el.textContent = translation
+  }
+}
+
 for (let translationId of [
   'addTakeSnapshot',
+  'alwaysShowShortsProgressBar',
   'alwaysUseOriginalAudio',
   'alwaysUseTheaterMode',
   'anyPercent',
@@ -52,9 +62,12 @@ for (let translationId of [
   'hideNextButtonNote',
   'hideOpenApp',
   'hidePlaylists',
+  'hidePremiumUpsells',
   'hideRelated',
   'hideShareThanksClip',
   'hideShorts',
+  'hideShortsMetadataUntilHover',
+  'hideShortsSuggestedActions',
   'hideSponsored',
   'hideStreamed',
   'hideSubscriptionsChannelList',
@@ -64,8 +77,8 @@ for (let translationId of [
   'hideVoiceSearch',
   'hideWatched',
   'hideWatchedThreshold',
+  'homeMaxOption',
   'minimumGridItemsPerRow',
-  'minimumGridItemsPerRowNote',
   'mobileGridView',
   'pauseChannelTrailers',
   'qualityFull',
@@ -75,9 +88,11 @@ for (let translationId of [
   'redirectShorts',
   'removePink',
   'searchThumbnailSize',
+  'shorts',
   'skipAds',
   'snapshotFormat',
   'snapshotQuality',
+  'stopShortsLooping',
   'tidyGuideSidebar',
   'uiTweaks',
   'videoLists',
@@ -101,6 +116,7 @@ let defaultConfig = {
   enabled: true,
   // Default based on platform until the content script runs
   version: /(Android|iP(ad|hone))/.test(navigator.userAgent) ? 'mobile' : 'desktop',
+  alwaysShowShortsProgressBar: false,
   disableAutoplay: true,
   disableHomeFeed: false,
   hiddenChannels: [],
@@ -118,9 +134,11 @@ let defaultConfig = {
   hideMoviesAndTV: false,
   hideNextButton: true,
   hidePlaylists: false,
+  hidePremiumUpsells: false,
   hideRelated: false,
   hideShareThanksClip: false,
   hideShorts: true,
+  hideShortsSuggestedActions: true,
   hideSponsored: true,
   hideStreamed: false,
   hideSuggestedSections: true,
@@ -131,6 +149,7 @@ let defaultConfig = {
   redirectShorts: true,
   removePink: false,
   skipAds: true,
+  stopShortsLooping: false,
   // Desktop only
   addTakeSnapshot: true,
   alwaysUseOriginalAudio: false,
@@ -144,8 +163,10 @@ let defaultConfig = {
   hideEndVideos: true,
   hideMerchEtc: true,
   hideMiniplayerButton: false,
+  hideShortsMetadataUntilHover: true,
   hideSubscriptionsLatestBar: false,
   minimumGridItemsPerRow: 'auto',
+  minimumShortsPerRow: 'auto',
   pauseChannelTrailers: true,
   searchThumbnailSize: 'medium',
   snapshotFormat: 'jpeg',

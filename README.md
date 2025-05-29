@@ -26,15 +26,16 @@ If you don't have a GitHub account, you can use the [Browser Extension Feedback 
 
 ## New translations
 
-If you would like to translate Control Panel for YouTube's options into your language, please create a copy of the English [messages.json](./_locales/en/messages.json) file, translate the `"message"` strings into your language, then create a new Issue and include the translated JSON.
+If you would like to translate Control Panel for YouTube's options into your language, please create a copy of the English [messages.json](./_locales/en/messages.json) file, translate the `"message"` strings into your language, then create a new Issue or Pull Request with the translated JSON.
 
-Certain features also depend on translations in the `locales` objects in [content.js](./content.js#L118) and [page.js](./page.js#L24), which use the language code you can find in YouTube's `<html lang="…">` attribute.
+Certain features also depend on translations in the `locales` object in [content.js](./content.js#L104), which uses the language code you can find in YouTube's `<html lang="…">` attribute - these _must_ match the text used in the relevant parts of YouTube's UI.
 
 ## Thanks
 
 - [@Catastravia](https://github.com/Catastravia) for [improving the Japanese translation](https://github.com/insin/control-panel-for-youtube/issues/22)
 - [@movcoa](https://github.com/movcoa) for [providing a Chinese translation](https://github.com/insin/control-panel-for-youtube/issues/67)
 - [@tohu-sand](https://github.com/tohu-sand) for [improving the Japanese translation](https://github.com/insin/control-panel-for-youtube/pull/68)
+- [@maxchrr](https://github.com/maxchrr) for [providing a French translation](https://github.com/insin/control-panel-for-youtube/pull/86)
 
 ## Attribution
 

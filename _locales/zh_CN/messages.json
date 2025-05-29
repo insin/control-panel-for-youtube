@@ -2,6 +2,9 @@
   "addTakeSnapshot": {
     "message": "将截图功能添加到视频菜单"
   },
+  "alwaysShowShortsProgressBar": {
+    "message": "始终显示进度条"
+  },
   "alwaysUseOriginalAudio": {
     "message": "始终使用原始音频"
   },
@@ -144,14 +147,23 @@
   "hidePlaylists": {
     "message": "隐藏播放列表"
   },
+  "hidePremiumUpsells": {
+    "message": "隐藏Premium升级提示"
+  },
   "hideRelated": {
     "message": "隐藏相关视频"
   },
   "hideShareThanksClip": {
-    "message": "隐藏分享/点赞/剪辑按钮"
+    "message": "隐藏分享/点赞/剪辑等"
   },
   "hideShorts": {
     "message": "隐藏短视频"
+  },
+  "hideShortsMetadataUntilHover": {
+    "message": "隐藏Shorts元数据直至悬停"
+  },
+  "hideShortsSuggestedActions": {
+    "message": "隐藏建议操作"
   },
   "hideSponsored": {
     "message": "隐藏赞助视频和宣传片"
@@ -180,6 +192,12 @@
   "hideWatchedThreshold": {
     "message": "观看 %"
   },
+  "homeMaxOption": {
+    "message": "9 (首页最大)"
+  },
+  "inHomeAndSubscriptionsNote": {
+    "message": "在主页和订阅中"
+  },
   "large": {
     "message": "大号"
   },
@@ -189,8 +207,8 @@
   "minimumGridItemsPerRow": {
     "message": "每行最小缩略图个数"
   },
-  "minimumGridItemsPerRowNote": {
-    "message": "在主页和订阅中"
+  "minimumShortsPerRow": {
+    "message": "每行最少 Shorts 数量"
   },
   "mobileGridView": {
     "message": "使用缩视图进行订阅和搜索（仅限纵向）"
@@ -217,13 +235,10 @@
     "message": "将短视频重定向至普通播放器"
   },
   "removePink": {
-    "message": "从进度条中删除粉红色"
+    "message": "从进度条中移除粉色渐变"
   },
   "searchThumbnailSize": {
     "message": "搜索缩略图大小"
-  },
-  "shorts": {
-    "message": "短视频"
   },
   "skipAds": {
     "message": "跳过广告"
@@ -236,6 +251,9 @@
   },
   "snapshotQuality": {
     "message": "质量"
+  },
+  "stopShortsLooping": {
+    "message": "停止 Shorts 循环播放"
   },
   "tidyGuideSidebar": {
     "message": "整理侧边栏订阅"

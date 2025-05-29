@@ -8,8 +8,8 @@ export type CustomMutationObserver = MutationObserver & {name: string, onDisconn
 export type Disconnectable = {disconnect: () => void}
 
 export type EmbedConfig = {
-  debug?: boolean;
   enabled: boolean
+  debug?: boolean;
   hideEmbedPauseOverlay: boolean
   hideEmbedShareButton: boolean
   hideEndCards: boolean
@@ -24,14 +24,9 @@ export type Locale = {
 
 export type LocaleKey =
   | 'CLIP'
-  | 'DOWNLOAD'
   | 'HIDE_CHANNEL'
-  | 'HOME'
   | 'MIXES'
-  | 'MUTE'
-  | 'NEXT_VIDEO'
-  | 'OPEN_APP'
-  | 'PREVIOUS_VIDEO'
+  | 'ORIGINAL'
   | 'SHARE'
   | 'SHORTS'
   // This needs to match both innerText and textContent
@@ -42,20 +37,15 @@ export type LocaleKey =
   | 'THANKS'
   | 'UNHIDE_CHANNEL'
 
-export type PageLocale = {
-  [key in PageLocaleKey]?: string
+export type OptionsConfig = EmbedConfig & SiteConfig & {
+  version?: Version
 }
 
-export type PageLocaleKey =
-  | 'ORIGINAL'
-
-export type OptionsConfig = EmbedConfig & SiteConfig
-
 export type SiteConfig = {
+  enabled: boolean
   debug?: boolean,
   debugManualHiding?: boolean,
-  enabled: boolean
-  version?: Version
+  alwaysShowShortsProgressBar: boolean,
   disableAutoplay: boolean
   disableHomeFeed: boolean
   hiddenChannels: Channel[]
@@ -73,9 +63,11 @@ export type SiteConfig = {
   hideMoviesAndTV: boolean
   hideNextButton: boolean
   hidePlaylists: boolean
+  hidePremiumUpsells: boolean
   hideRelated: boolean
   hideShareThanksClip: boolean
   hideShorts: boolean
+  hideShortsSuggestedActions: boolean
   hideSponsored: boolean
   hideStreamed: boolean
   hideSuggestedSections: boolean
@@ -86,6 +78,7 @@ export type SiteConfig = {
   redirectShorts: boolean
   removePink: boolean
   skipAds: boolean
+  stopShortsLooping: boolean
   // Desktop only
   addTakeSnapshot: boolean
   alwaysUseOriginalAudio: boolean
@@ -101,8 +94,10 @@ export type SiteConfig = {
   hideMiniplayerButton: boolean
   hideSubscriptionsLatestBar: boolean
   minimumGridItemsPerRow: 'auto' | '3' | '4' | '5' | '6'
+  minimumShortsPerRow: 'auto' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12'
   pauseChannelTrailers: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small'
+  hideShortsMetadataUntilHover: boolean
   snapshotFormat: 'jpeg' | 'png'
   snapshotQuality: string
   tidyGuideSidebar: boolean
@@ -111,6 +106,11 @@ export type SiteConfig = {
   hideOpenApp: boolean
   hideSubscriptionsChannelList: boolean
   mobileGridView: boolean
+}
+
+export type SiteConfigMessage = {
+  type: 'initial' | 'change'
+  siteConfig: Partial<SiteConfig>
 }
 
 export type Version = 'mobile' | 'desktop'

@@ -4,7 +4,7 @@
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
   "homepage_url": "https://soitis.dev/control-panel-for-youtube",
-  "version": "1.8.2",
+  "version": "1.11.2",
   "icons": {
     "48": "icon48.png",
     "96": "icon96.png",
@@ -26,6 +26,19 @@
       ]
     },
     {
+      "world": "MAIN",
+      "matches": [
+        "https://www.youtube.com/*",
+        "https://m.youtube.com/*"
+      ],
+      "exclude_matches": [
+        "https://www.youtube.com/embed/*"
+      ],
+      "js": [
+        "page.js"
+      ]
+    },
+    {
       "matches": [
         "https://www.youtube.com/embed/*",
         "https://www.youtube-nocookie.com/embed/*"
@@ -34,20 +47,6 @@
         "embed.js"
       ],
       "all_frames": true
-    }
-  ],
-  "web_accessible_resources": [
-    {
-      "matches": [
-        "https://www.youtube.com/*",
-        "https://m.youtube.com/*"
-      ],
-      "exclude_matches": [
-        "https://www.youtube.com/embed/*"
-      ],
-      "resources": [
-        "page.js"
-      ]
     }
   ],
   "options_ui": {

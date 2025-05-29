@@ -2,6 +2,9 @@
   "addTakeSnapshot": {
     "message": "Add Take snapshot to video menu"
   },
+  "alwaysShowShortsProgressBar": {
+    "message": "Always show progress bar"
+  },
   "alwaysUseOriginalAudio": {
     "message": "Always use original audio"
   },
@@ -144,14 +147,23 @@
   "hidePlaylists": {
     "message": "Hide Playlists"
   },
+  "hidePremiumUpsells": {
+    "message": "Hide Premium upsells"
+  },
   "hideRelated": {
     "message": "Hide Related videos"
   },
   "hideShareThanksClip": {
-    "message": "Hide Share/Thanks/Clip buttons"
+    "message": "Hide Share/Thanks/Clip etc."
   },
   "hideShorts": {
     "message": "Hide Shorts"
+  },
+  "hideShortsMetadataUntilHover": {
+    "message": "Hide Shorts metadata until hover"
+  },
+  "hideShortsSuggestedActions": {
+    "message": "Hide suggested actions"
   },
   "hideSponsored": {
     "message": "Hide Sponsored videos & promos"
@@ -180,6 +192,12 @@
   "hideWatchedThreshold": {
     "message": "Watched %"
   },
+  "homeMaxOption": {
+    "message": "9 (Home max)"
+  },
+  "inHomeAndSubscriptionsNote": {
+    "message": "In Home and Subscriptions"
+  },
   "large": {
     "message": "Large"
   },
@@ -189,8 +207,8 @@
   "minimumGridItemsPerRow": {
     "message": "Minimum grid items per row"
   },
-  "minimumGridItemsPerRowNote": {
-    "message": "In Home and Subscriptions"
+  "minimumShortsPerRow": {
+    "message": "Minimum Shorts per row"
   },
   "mobileGridView": {
     "message": "Use grid view for Subscriptions & Search (portrait only)"
@@ -217,7 +235,7 @@
     "message": "Redirect Shorts to the normal player"
   },
   "removePink": {
-    "message": "Remove pink from progress bars"
+    "message": "Remove pink gradient from progress bars"
   },
   "searchThumbnailSize": {
     "message": "Search thumbnail size"
@@ -236,6 +254,9 @@
   },
   "snapshotQuality": {
     "message": "Quality"
+  },
+  "stopShortsLooping": {
+    "message": "Stop Shorts looping"
   },
   "tidyGuideSidebar": {
     "message": "Tidy Guide sidebar"

@@ -2,30 +2,30 @@ const fs = require('fs')
 
 const semver = require('semver')
 
-const contentPath = './content.js'
 const manifestPaths = ['./manifest.mv2.json', './manifest.mv3.json', './Safari/Shared (Extension)/Resources/manifest.json']
 const optionsPath = './options.html'
 const safariProjectPath = './safari/Control Panel for YouTube.xcodeproj/project.pbxproj'
 
-let releaseType = process.argv[2]
+let currentVersion = JSON.parse(fs.readFileSync(manifestPaths[0], {encoding: 'utf8'})).version
+let nextVersion = process.argv[2]
 
-if (releaseType != 'patch' && releaseType != 'minor' && releaseType != 'major') {
+if (semver.valid(nextVersion)) {
+  if (!semver.satisfies(nextVersion, `>${currentVersion}`)) {
+    console.log(`next version must be >${currentVersion}`)
+    process.exit(1)
+  }
+}
+else if (nextVersion == 'patch' || nextVersion == 'minor' || nextVersion == 'major') {
+  nextVersion = semver.inc(currentVersion, nextVersion)
+}
+else {
   console.log(`
 Usage:
   npm run release (patch|minor|major)
+  npm run release 1.2.3
 `.trim())
   process.exit(1)
 }
-
-let currentVersion = JSON.parse(fs.readFileSync(manifestPaths[0], {encoding: 'utf8'})).version
-let nextVersion = semver.inc(currentVersion, releaseType)
-
-fs.writeFileSync(
-  contentPath,
-  fs.readFileSync(contentPath, {encoding: 'utf8'})
-    .replace(/@version     (\d+)/g, (_, current) => `@version     ${Number(current) + 1}`),
-  {encoding: 'utf8'}
-)
 
 for (let manifestPath of manifestPaths) {
   fs.writeFileSync(

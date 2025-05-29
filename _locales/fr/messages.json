@@ -1,0 +1,273 @@
+{
+  "addTakeSnapshot": {
+    "message": "Ajouter Capture d'écran au menu de la vidéo"
+  },
+  "alwaysShowShortsProgressBar": {
+    "message": "Toujours afficher la barre de progression"
+  },
+  "alwaysUseOriginalAudio": {
+    "message": "Toujours utiliser l'audio d'origine"
+  },
+  "alwaysUseTheaterMode": {
+    "message": "Toujours utiliser le mode cinéma"
+  },
+  "anyPercent": {
+    "message": "Quel que soit le pourcentage"
+  },
+  "auto": {
+    "message": "Automatique"
+  },
+  "desktopOnly": {
+    "message": "Bureau uniquement"
+  },
+  "disableAutoplay": {
+    "message": "Désactiver la lecture automatique"
+  },
+  "disableHomeFeed": {
+    "message": "Désactiver la page d'accueil"
+  },
+  "disableHomeFeedNote": {
+    "message": "Seulement si connecté(e) - redirige vers les Abonnements"
+  },
+  "downloadTranscript": {
+    "message": "Rendre la transcription téléchargeable"
+  },
+  "embeddedVideos": {
+    "message": "Vidéos intégrées"
+  },
+  "enabled": {
+    "message": "Activé"
+  },
+  "experimentalFeatures": {
+    "message": "Fonctionnalités expérimentales"
+  },
+  "extensionDescription": {
+    "message": "Améliore l'interface et rend le contrôle à l'utilisateur sur YouTube en ajoutant des fonctionnalités manquantes",
+    "description": "<= 112 characters"
+  },
+  "extensionName": {
+    "message": "Panneau de contrôle pour YouTube"
+  },
+  "features": {
+    "message": "Fonctionnalités"
+  },
+  "fullSizeTheaterMode": {
+    "message": "Mode cinéma grand écran"
+  },
+  "fullSizeTheaterModeHideHeader": {
+    "message": "Masquer l'en-tête"
+  },
+  "fullSizeTheaterModeHideScrollbar": {
+    "message": "Masquer la barre de défilement"
+  },
+  "hiddenChannelsSummary": {
+    "message": "Chaîne(s) masquée(s) ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
+  },
+  "hideAI": {
+    "message": "Masquer les résumés IA"
+  },
+  "hideChannelBanner": {
+    "message": "Masquer la bannière de la chaîne"
+  },
+  "hideChannels": {
+    "message": "Masquer les chaînes"
+  },
+  "hideChannelsNote": {
+    "message": "Ajoute « Masquer la chaîne » au menu de la vidéo"
+  },
+  "hideChat": {
+    "message": "Masquer le chat"
+  },
+  "hideComments": {
+    "message": "Masquer les commentaires"
+  },
+  "hideEmbedPauseOverlay": {
+    "message": "Masquer la superposition de paus"
+  },
+  "hideEmbedShareButton": {
+    "message": "Masquer le bouton Partager"
+  },
+  "hideEndCards": {
+    "message": "Masquer les cartes de fin de vidéo"
+  },
+  "hideEndVideos": {
+    "message": "Masquer le contenu des écrans de fin"
+  },
+  "hideExploreButton": {
+    "message": "Masquer le bouton « Explorer » sur la page d'accueil"
+  },
+  "hideHiddenVideos": {
+    "message": "Masquer les vidéos cachées"
+  },
+  "hideHiddenVideosNote": {
+    "message": "Masque he le bouton « Annuler » après 5 secondes"
+  },
+  "hideHomeCategories": {
+    "message": "Masquer les catégories de la page d'accueil"
+  },
+  "hideInfoPanels": {
+    "message": "Masquer les panneaux d'information"
+  },
+  "hideLive": {
+    "message": "Masquer les vidéos en direct"
+  },
+  "hideMembersOnly": {
+    "message": "Masquer les vidéos réservées aux membres"
+  },
+  "hideMerchEtc": {
+    "message": "Masquer Produits dérivés, Offres, etc."
+  },
+  "hideMetadata": {
+    "message": "Masquer les métadonnées de la vidéo"
+  },
+  "hideMiniplayerButton": {
+    "message": "Masquer le bouton lecteur réduit"
+  },
+  "hideMixes": {
+    "message": "Masquer les Mix"
+  },
+  "hideMoviesAndTV": {
+    "message": "Masquer Films et TV"
+  },
+  "hideNextButton": {
+    "message": "Masquer le bouton suivant"
+  },
+  "hideNextButtonNote": {
+    "message": "Quand une vidéo n'est pas dans une playlist"
+  },
+  "hideOpenApp": {
+    "message": "Masquer les liens « Ouvrir app »"
+  },
+  "hidePlaylists": {
+    "message": "Masquer les playlists"
+  },
+  "hidePremiumUpsells": {
+    "message": "Masquer les promotions Premium"
+  },
+  "hideRelated": {
+    "message": "Masquer les vidéos associées"
+  },
+  "hideShareThanksClip": {
+    "message": "Masquer Partager/Merci/Clip etc."
+  },
+  "hideShorts": {
+    "message": "Masquer les Shorts"
+  },
+  "hideShortsMetadataUntilHover": {
+    "message": "Masquer les métadonnées des Shorts jusqu'au survol"
+  },
+  "hideShortsSuggestedActions": {
+    "message": "Masquer les actions suggérées"
+  },
+  "hideSponsored": {
+    "message": "Masquer les vidéos sponsorisées et promotions"
+  },
+  "hideStreamed": {
+    "message": "Masquer les rediffusions de directs"
+  },
+  "hideSubscriptionsChannelList": {
+    "message": "Masquer la liste des chaînes dans les abonnements"
+  },
+  "hideSubscriptionsLatestBar": {
+    "message": "Masquer la barre « Les plus récentes » dans Abonnements"
+  },
+  "hideSuggestedSections": {
+    "message": "Masquer les sections suggérées"
+  },
+  "hideUpcoming": {
+    "message": "Masquer les vidéos à venir"
+  },
+  "hideVoiceSearch": {
+    "message": "Masquer la recherche vocale"
+  },
+  "hideWatched": {
+    "message": "Masquer les vidéos vues"
+  },
+  "hideWatchedThreshold": {
+    "message": "Pourcentage visionné"
+  },
+  "homeMaxOption": {
+    "message": "9 (Accueil max)"
+  },
+  "inHomeAndSubscriptionsNote": {
+    "message": "Dans Accueil et Abonnements"
+  },
+  "large": {
+    "message": "Grand"
+  },
+  "medium": {
+    "message": "Moyen"
+  },
+  "minimumGridItemsPerRow": {
+    "message": "Nombre minimum d'éléments par ligne de la grille"
+  },
+  "minimumShortsPerRow": {
+    "message": "Nombre minimum de Shorts par rangée"
+  },
+  "mobileGridView": {
+    "message": "Utiliser la vue en grille pour Abonnements et Recherche (mode portrait uniquement)"
+  },
+  "mobileOnly": {
+    "message": "Mobile uniquement"
+  },
+  "pauseChannelTrailers": {
+    "message": "Mettre en pause automatiquement les bandes-annonces de chaîne"
+  },
+  "qualityFull": {
+    "message": "Maximum"
+  },
+  "qualityHigh": {
+    "message": "Haute"
+  },
+  "qualityLow": {
+    "message": "Basse"
+  },
+  "qualityMedium": {
+    "message": "Moyenne"
+  },
+  "redirectShorts": {
+    "message": "Rediriger les Shorts vers le lecteur normal"
+  },
+  "removePink": {
+    "message": "Supprimer le dégradé rose des barres de progression"
+  },
+  "searchThumbnailSize": {
+    "message": "Taille des miniatures dans les résultats de recherche"
+  },
+  "shorts": {
+    "message": "Shorts"
+  },
+  "skipAds": {
+    "message": "Ignorer les publicités"
+  },
+  "small": {
+    "message": "Petit"
+  },
+  "snapshotFormat": {
+    "message": "Format de capture"
+  },
+  "snapshotQuality": {
+    "message": "Qualité"
+  },
+  "stopShortsLooping": {
+    "message": "Arrêter la lecture en boucle des Shorts"
+  },
+  "tidyGuideSidebar": {
+    "message": "Nettoyer la barre latérale du guide"
+  },
+  "uiTweaks": {
+    "message": "Amélioration de l'interface utilisateur"
+  },
+  "videoLists": {
+    "message": "Listes de vidéos"
+  },
+  "videoPages": {
+    "message": "Pages de vidéo"
+  }
+}

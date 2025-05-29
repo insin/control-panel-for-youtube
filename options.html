@@ -28,7 +28,7 @@
       </section>
       <section class="checkbox">
         <label>
-          <span id="removePink">Remove pink from progress bars</span>
+          <span id="removePink">Remove pink gradient from progress bars</span>
           <input type="checkbox" name="removePink">
           <span class="toggle"></span>
         </label>
@@ -40,18 +40,18 @@
           <span class="toggle"></span>
         </label>
       </section>
+      <section class="checkbox">
+        <label>
+          <span id="hidePremiumUpsells">Hide Premium upsells</span>
+          <input type="checkbox" name="hidePremiumUpsells">
+          <span class="toggle"></span>
+        </label>
+      </section>
     </section>
     <section class="group labelled">
       <label id="videoLists">
         Video lists
       </label>
-      <section class="checkbox">
-        <label>
-          <span id="hideShorts">Hide Shorts</span>
-          <input type="checkbox" name="hideShorts">
-          <span class="toggle"></span>
-        </label>
-      </section>
       <section class="checkbox">
         <label>
           <span id="hideSponsored">Hide Sponsored videos & Promos</span>
@@ -87,7 +87,7 @@
             <option value="6">6</option>
           </select>
         </label>
-        <p id="minimumGridItemsPerRowNote">In Home and Subscriptions</p>
+        <p class="inHomeAndSubscriptionsNote">In Home and Subscriptions</p>
       </section>
       <section class="checkbox">
         <label>
@@ -357,10 +357,68 @@
           <span class="toggle"></span>
         </label>
       </section>
+    </section>
+    <section class="group labelled">
+      <label id="shorts">
+        Shorts
+      </label>
+      <section class="checkbox">
+        <label>
+          <span id="hideShorts">Hide Shorts</span>
+          <input type="checkbox" name="hideShorts">
+          <span class="toggle"></span>
+        </label>
+      </section>
       <section class="checkbox">
         <label>
           <span id="redirectShorts">Redirect Shorts to the normal player</span>
           <input type="checkbox" name="redirectShorts">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="select desktop">
+        <label>
+          <span id="minimumShortsPerRow">Minimum Shorts per row</span>
+          <select name="minimumShortsPerRow">
+            <option value="auto">Auto</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option id="homeMaxOption" value="9">9 (Home max)</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
+        </label>
+        <p class="inHomeAndSubscriptionsNote">In Home and Subscriptions</p>
+      </section>
+      <section class="checkbox desktop">
+        <label>
+          <span id="hideShortsMetadataUntilHover">Hide Shorts metadata until hover</span>
+          <input type="checkbox" name="hideShortsMetadataUntilHover">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox">
+        <label>
+          <span id="hideShortsSuggestedActions">Hide suggested actions</span>
+          <input type="checkbox" name="hideShortsSuggestedActions">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox">
+        <label>
+          <span id="alwaysShowShortsProgressBar">Always show progress bar</span>
+          <input type="checkbox" name="alwaysShowShortsProgressBar">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox">
+        <label>
+          <span id="stopShortsLooping">Stop Shorts looping</span>
+          <input type="checkbox" name="stopShortsLooping">
           <span class="toggle"></span>
         </label>
       </section>
@@ -472,7 +530,7 @@
         <p id="debugManualHidingNote">Highlights elements instead of hiding them</p>
       </section>
     </section>
-    <div id="version">v1.8.2<span id="debugCountdown"></span></div>
+    <div id="version">v1.11.2<span id="debugCountdown"></span></div>
   </form>
   <script src="options.js"></script>
 </body>

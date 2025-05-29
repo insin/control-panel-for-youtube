@@ -2,6 +2,9 @@
   "addTakeSnapshot": {
     "message": "ビデオメニューにスナップショットを追加"
   },
+  "alwaysShowShortsProgressBar": {
+    "message": "常に進行状況バーを表示"
+  },
   "alwaysUseOriginalAudio": {
     "message": "常にオリジナル音声を使用する"
   },
@@ -143,14 +146,23 @@
   "hidePlaylists": {
     "message": "再生リストを非表示にする"
   },
+  "hidePremiumUpsells": {
+    "message": "プレミアムのアップセルを非表示にする"
+  },
   "hideRelated": {
     "message": "関連動画を非表示"
   },
   "hideShareThanksClip": {
-    "message": "共有/Thanks/クリップボタンを非表示"
+    "message": "共有/Thanks/クリップなどを非表示"
   },
   "hideShorts": {
     "message": "ショート動画を非表示"
+  },
+  "hideShortsMetadataUntilHover": {
+    "message": "ホバーするまでショートのメタデータを隠す"
+  },
+  "hideShortsSuggestedActions": {
+    "message": "提案アクションを非表示"
   },
   "hideSponsored": {
     "message": "スポンサー動画とプロモーションを非表示"
@@ -179,6 +191,12 @@
   "hideWatchedThreshold": {
     "message": "視聴済みの割合"
   },
+  "homeMaxOption": {
+    "message": "9 (ホーム最大)"
+  },
+  "inHomeAndSubscriptionsNote": {
+    "message": "ホームと登録チャンネルで適用"
+  },
   "large": {
     "message": "大"
   },
@@ -188,8 +206,8 @@
   "minimumGridItemsPerRow": {
     "message": "1行あたりの最小表示数"
   },
-  "minimumGridItemsPerRowNote": {
-    "message": "ホームと登録チャンネルで適用"
+  "minimumShortsPerRow": {
+    "message": "1行あたりの最小ショート数"
   },
   "mobileGridView": {
     "message": "購読と検索にグリッドビューを使用する（縦画面のみ）"
@@ -216,13 +234,13 @@
     "message": "ショート動画を通常のプレイヤーにリダイレクト"
   },
   "removePink": {
-    "message": "進捗バーからピンク色を削除"
+    "message": "進捗バーからピンクのグラデーションを削除"
   },
   "searchThumbnailSize": {
     "message": "検索サムネイルのサイズ"
   },
   "shorts": {
-    "message": "ショート動画"
+    "message": "ショート"
   },
   "skipAds": {
     "message": "広告をスキップ"
@@ -235,6 +253,9 @@
   },
   "snapshotQuality": {
     "message": "品質"
+  },
+  "stopShortsLooping": {
+    "message": "ショートのループ再生を停止"
   },
   "tidyGuideSidebar": {
     "message": "サイドバーを整理する"
