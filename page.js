@@ -925,7 +925,7 @@ const configureCss = (() => {
         hideCssSelectors.push('#comments')
       }
       if (mobile) {
-        hideCssSelectors.push('ytm-item-section-renderer[section-identifier="comments-entry-point"]')
+        hideCssSelectors.push('ytm-slim-video-metadata-section-renderer + ytm-item-section-renderer')
       }
     }
 
