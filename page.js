@@ -1959,7 +1959,7 @@ function downloadTranscript() {
         sections.push(parts.join(' '))
         parts = []
       }
-      sections.push(/** @type {HTMLElement} */ ($el.querySelector('#title')).innerText.trim())
+      sections.push(/** @type {HTMLElement} */ ($el).innerText.trim())
     } else {
       parts.push(/** @type {HTMLElement} */ ($el.querySelector('.segment-text')).innerText.trim())
     }
