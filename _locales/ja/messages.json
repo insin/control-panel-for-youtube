@@ -161,6 +161,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "ホバーするまでショートのメタデータを隠す"
   },
+  "hideShortsRemixButton": {
+    "message": "リミックスボタンを隠す"
+  },
   "hideShortsSuggestedActions": {
     "message": "提案アクションを非表示"
   },

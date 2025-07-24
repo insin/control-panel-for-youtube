@@ -162,6 +162,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "隐藏Shorts元数据直至悬停"
   },
+  "hideShortsRemixButton": {
+    "message": "隐藏混剪按钮"
+  },
   "hideShortsSuggestedActions": {
     "message": "隐藏建议操作"
   },

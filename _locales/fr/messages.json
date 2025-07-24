@@ -162,6 +162,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "Masquer les métadonnées des Shorts jusqu'au survol"
   },
+  "hideShortsRemixButton": {
+    "message": "Masquer le bouton Remix"
+  },
   "hideShortsSuggestedActions": {
     "message": "Masquer les actions suggérées"
   },

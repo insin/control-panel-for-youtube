@@ -97,6 +97,7 @@ export type SiteConfig = {
   minimumShortsPerRow: 'auto' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12'
   pauseChannelTrailers: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small'
+  hideShortsRemixButton: boolean
   hideShortsMetadataUntilHover: boolean
   snapshotFormat: 'jpeg' | 'png'
   snapshotQuality: string

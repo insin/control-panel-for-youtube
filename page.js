@@ -39,7 +39,7 @@ let defaultConfig = {
   redirectShorts: true,
   removePink: false,
   skipAds: true,
-  stopShortsLooping: false,
+  stopShortsLooping: true,
   // Desktop only
   addTakeSnapshot: true,
   alwaysUseOriginalAudio: false,
@@ -54,6 +54,7 @@ let defaultConfig = {
   hideMerchEtc: true,
   hideMiniplayerButton: false,
   hideShortsMetadataUntilHover: true,
+  hideShortsRemixButton: true,
   hideSubscriptionsLatestBar: false,
   minimumGridItemsPerRow: 'auto',
   minimumShortsPerRow: 'auto',
@@ -1543,6 +1544,9 @@ const configureCss = (() => {
             transition: opacity .1s cubic-bezier(.4,0,1,1);
           }
         `)
+      }
+      if (config.hideShortsRemixButton) {
+        hideCssSelectors.push('#remix-button.ytd-reel-player-overlay-renderer')
       }
       if (config.hideSubscriptionsLatestBar) {
         hideCssSelectors.push(
