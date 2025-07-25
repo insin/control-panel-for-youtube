@@ -732,6 +732,14 @@ function observeForElement($target, getter, options, mutationObserverOptions) {
 }
 
 /**
+ * @template T
+ * @param {() => T} fn
+ */
+function run(fn) {
+  return fn()
+}
+
+/**
  * @param {number} n
  * @returns {string}
  */
@@ -1244,6 +1252,7 @@ const configureCss = (() => {
     }
 
     if (config.hideShorts) {
+      hideCssSelectors.push('.HideShorts')
       if (desktop) {
         hideCssSelectors.push(
           // Side nav item
@@ -3551,6 +3560,23 @@ async function tweakChannelPage() {
 
 // TODO Hide ytd-channel-renderer if a channel is hidden
 function tweakSearchPage() {
+  if (desktop && config.hideShorts) {
+    run(async function() {
+      let $chips = await getElement('ytd-search #chip-bar #chips', {
+        name: 'search chip bar (hideShorts)',
+        stopIf: currentUrlChanges(),
+        timeout: 500,
+      })
+      if (!$chips) return
+      for (let $chip of $chips.children) {
+        if (/** @type {HTMLElement} */ ($chip).innerText == getString('SHORTS')) {
+          $chip.classList.add('HideShorts')
+          break
+        }
+      }
+    })
+  }
+
   if (!config.hideStreamed && !config.hideChannels) return
 
   if (desktop) {
