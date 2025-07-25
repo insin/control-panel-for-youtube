@@ -1259,6 +1259,7 @@ const configureCss = (() => {
           // List shelf (except History, so watched Shorts can be removed)
           'ytd-browse:not([page-subtype="history"]) ytd-reel-shelf-renderer',
           'ytd-search ytd-reel-shelf-renderer',
+          'ytd-search grid-shelf-view-model',
           // List item (except History, so watched Shorts can be removed)
           'ytd-browse:not([page-subtype="history"]) ytd-video-renderer:has(a[href^="/shorts"])',
           'ytd-search ytd-video-renderer:has(a[href^="/shorts"])',
