@@ -195,9 +195,6 @@
   "hideWatchedThreshold": {
     "message": "Watched %"
   },
-  "homeMaxOption": {
-    "message": "9 (Home max)"
-  },
   "inHomeAndSubscriptionsNote": {
     "message": "In Home and Subscriptions"
   },

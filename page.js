@@ -1555,6 +1555,7 @@ const configureCss = (() => {
       }
       if (config.minimumGridItemsPerRow != 'auto') {
         let gridItemsPerRow = Number(config.minimumGridItemsPerRow)
+        // Don't override the number of items if YouTube wants to show more
         let exclude = []
         for (let i = 6; i > gridItemsPerRow; i--) {
           exclude.push(`[elements-per-row="${i}"]`)
@@ -1567,24 +1568,30 @@ const configureCss = (() => {
       }
       if (!config.hideShorts && config.minimumShortsPerRow != 'auto') {
         let shortsPerRow = Number(config.minimumShortsPerRow)
+        let subscriptionsShortsPerRow = Math.min(6, shortsPerRow)
+        // Don't override the number of items if YouTube wants to show more
         let exclude = []
-        for (let i = 8; i > shortsPerRow; i--) {
-          exclude.push(`[style*="--ytd-rich-grid-slim-items-per-row: ${i}"]`)
+        for (let i = 6; i > shortsPerRow; i--) {
+          exclude.push(`[style*="--ytd-rich-grid-items-per-row: ${i}"]`)
         }
+        let excludeSelector = exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''
         cssRules.push(`
-          /* Home only has 9 Shorts per shelf */
-          ytd-browse[page-subtype="home"] ytd-rich-grid-renderer${exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''} {
-            --ytd-rich-grid-slim-items-per-row: ${Math.min(9, shortsPerRow)} !important;
-          }
-          ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer${exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''},
-          ytd-browse[page-subtype="filteredsubscriptions"] ytd-rich-grid-renderer[is-shorts-grid]${exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''} {
+          ytd-browse[page-subtype="home"] ytd-rich-shelf-renderer[is-shorts]${excludeSelector},
+          ytd-browse[page-subtype="filteredsubscriptions"] ytd-rich-grid-renderer[is-shorts-grid]${excludeSelector} {
             --ytd-rich-grid-slim-items-per-row: ${shortsPerRow} !important;
+            --ytd-rich-grid-items-per-row: ${shortsPerRow} !important;
           }
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-item-renderer[is-slim-media]:nth-child(-n+${shortsPerRow}) {
+          ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer[is-shorts]${excludeSelector} {
+            --ytd-rich-grid-slim-items-per-row: ${subscriptionsShortsPerRow} !important;
+            --ytd-rich-grid-items-per-row: ${subscriptionsShortsPerRow} !important;
+          }
+          /* Show Shorts beyond the ones YouTube thinks should be visible */
+          ytd-browse[page-subtype="home"] ytd-rich-item-renderer[is-slim-media]:nth-child(-n+${shortsPerRow}),
+          ytd-browse[page-subtype="subscriptions"] ytd-rich-item-renderer[is-slim-media]:nth-child(-n+${subscriptionsShortsPerRow}) {
             display: block !important;
           }
         `)
-        if (config.minimumShortsPerRow == '12') {
+        if (shortsPerRow >= 6) {
           // Hide the Show more/Show less button if we're showing everything
           hideCssSelectors.push('ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer[is-shorts] .expand-collapse-button')
         }

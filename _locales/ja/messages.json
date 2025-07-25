@@ -194,9 +194,6 @@
   "hideWatchedThreshold": {
     "message": "視聴済みの割合"
   },
-  "homeMaxOption": {
-    "message": "9 (ホーム最大)"
-  },
   "inHomeAndSubscriptionsNote": {
     "message": "ホームと登録チャンネルで適用"
   },

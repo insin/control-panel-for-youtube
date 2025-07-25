@@ -12,15 +12,6 @@ for (let optionValue of [
   }
 }
 
-for (let translationClass of [
-  'inHomeAndSubscriptionsNote',
-]) {
-  let translation = chrome.i18n.getMessage(translationClass)
-  for (let $el of document.querySelectorAll(`.${translationClass}`)) {
-    $el.textContent = translation
-  }
-}
-
 for (let translationId of [
   'addTakeSnapshot',
   'alwaysShowShortsProgressBar',
@@ -78,7 +69,7 @@ for (let translationId of [
   'hideVoiceSearch',
   'hideWatched',
   'hideWatchedThreshold',
-  'homeMaxOption',
+  'inHomeAndSubscriptionsNote',
   'minimumGridItemsPerRow',
   'mobileGridView',
   'pauseChannelTrailers',
