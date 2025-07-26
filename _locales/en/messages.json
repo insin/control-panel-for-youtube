@@ -8,6 +8,9 @@
   "adsNote": {
     "message": "These options may trigger YouTube's adblock detection"
   },
+  "allowBackgroundPlay": {
+    "message": "Allow background playback"
+  },
   "alwaysShowShortsProgressBar": {
     "message": "Always show progress bar"
   },

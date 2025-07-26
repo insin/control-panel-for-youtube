@@ -8,6 +8,9 @@
   "adsNote": {
     "message": "これらのオプションは、YouTubeの広告ブロック検出をトリガーする可能性があります"
   },
+  "allowBackgroundPlay": {
+    "message": "バックグラウンド再生を許可する"
+  },
   "alwaysShowShortsProgressBar": {
     "message": "常に進行状況バーを表示"
   },

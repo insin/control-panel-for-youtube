@@ -16,6 +16,7 @@ for (let translationId of [
   'addTakeSnapshot',
   'ads',
   'adsNote',
+  'allowBackgroundPlay',
   'alwaysShowShortsProgressBar',
   'alwaysUseOriginalAudio',
   'alwaysUseTheaterMode',
@@ -172,6 +173,7 @@ let defaultConfig = {
   snapshotQuality: '0.92',
   tidyGuideSidebar: false,
   // Mobile only
+  allowBackgroundPlay: true,
   hideExploreButton: true,
   hideOpenApp: true,
   hideSubscriptionsChannelList: false,

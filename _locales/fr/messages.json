@@ -8,6 +8,9 @@
   "adsNote": {
     "message": "Ces options peuvent déclencher la détection de bloqueur de publicités de YouTube"
   },
+  "allowBackgroundPlay": {
+    "message": "Autoriser la lecture en arrière-plan"
+  },
   "alwaysShowShortsProgressBar": {
     "message": "Toujours afficher la barre de progression"
   },

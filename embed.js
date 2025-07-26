@@ -23,7 +23,6 @@ let config = {
 //#region Utility functions
 function addStyle(css = '') {
   let $style = document.createElement('style')
-  $style.dataset.insertedBy = 'control-panel-for-youtube'
   if (css) {
     $style.textContent = css
   }

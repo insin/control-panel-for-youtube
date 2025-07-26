@@ -64,6 +64,7 @@ let defaultConfig = {
   snapshotQuality: '0.92',
   tidyGuideSidebar: false,
   // Mobile only
+  allowBackgroundPlay: true,
   hideExploreButton: true,
   hideOpenApp: true,
   hideSubscriptionsChannelList: false,
@@ -504,6 +505,8 @@ const Svgs = {
 const URL_CHANNEL_RE = /\/(?:@[^\/]+|(?:c|channel|user)\/[^\/]+)(?:\/(featured|videos|shorts|playlists|community))?\/?$/
 
 //#region State
+/** @type {boolean} */
+let realDocumentHidden
 /** @type {() => void} */
 let onAdRemoved
 /** @type {Map<string, import("./types").Disconnectable>} */
@@ -521,7 +524,6 @@ let pageObservers = new Map()
 //#region Utility functions
 function addStyle(css = '') {
   let $style = document.createElement('style')
-  $style.dataset.insertedBy = 'control-panel-for-youtube'
   if (css) {
     $style.textContent = css
   }
@@ -1832,6 +1834,48 @@ function isVideoPage() {
 }
 
 //#region Tweak functions
+function allowBackgroundPlay() {
+  realDocumentHidden = document.hidden
+  Object.defineProperties(document, {
+    hidden: {value: false},
+    visibilityState: {value: 'visible'},
+  })
+  let activityTimeout = null
+  document.addEventListener('visibilitychange', async (e) => {
+    e.stopImmediatePropagation()
+    realDocumentHidden = !realDocumentHidden
+    if (!realDocumentHidden) {
+      if (activityTimeout) {
+        log('allowBackgroundPlay: stopping activity simulation')
+        clearTimeout(activityTimeout)
+        activityTimeout = null
+      }
+      return
+    }
+    if (!isVideoPage()) return
+    let $player = document.querySelector('#movie_player')
+    if (!$player) return
+    // @ts-ignore
+    let playerState = $player.getPlayerState?.()
+    if (!playerState || playerState < 1 || playerState == 2) return
+    function activity() {
+      if (!realDocumentHidden) return
+      let keyCode = [16, 17, 18][Math.floor(Math.random() * 3)]
+      for (let type of ['keydown', 'keyup']) {
+        document.dispatchEvent(new KeyboardEvent(type, {
+          bubbles: true,
+          cancelable: true,
+          keyCode,
+          which: keyCode,
+        }))
+      }
+      activityTimeout = setTimeout(activity, 45_000 + Math.random() * 25_000)
+    }
+    log('allowBackgroundPlay: starting activity simulation')
+    activity()
+  }, true)
+}
+
 async function alwaysUseOriginalAudio() {
   let $player = await getElement('#movie_player', {
     name: 'player (alwaysUseOriginalAudio)',
@@ -3802,6 +3846,9 @@ let channel = new BroadcastChannel(channelName)
 
 function main() {
   if (config.enabled) {
+    if (mobile && config.allowBackgroundPlay) {
+      allowBackgroundPlay()
+    }
     configureCss()
     triggerVideoPageResize()
     observeTitle()

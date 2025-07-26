@@ -8,6 +8,9 @@
   "adsNote": {
     "message": "这些选项可能会触发YouTube的广告拦截检测"
   },
+  "allowBackgroundPlay": {
+    "message": "允许视频在后台播放"
+  },
   "alwaysShowShortsProgressBar": {
     "message": "始终显示进度条"
   },

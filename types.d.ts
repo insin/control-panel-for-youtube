@@ -104,6 +104,7 @@ export type SiteConfig = {
   snapshotQuality: string
   tidyGuideSidebar: boolean
   // Mobile only
+  allowBackgroundPlay: boolean
   hideExploreButton: boolean
   hideOpenApp: boolean
   hideSubscriptionsChannelList: boolean
