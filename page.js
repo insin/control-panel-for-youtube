@@ -1183,7 +1183,7 @@ const configureCss = (() => {
           // Home
           'ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(.yt-lockup-view-model-wiz)',
           // Search and Related
-          ':is(#related, ytd-search) yt-lockup-view-model:has(> .yt-lockup-view-model-wiz)',
+          ':is(#related, ytd-search) yt-lockup-view-model:has(a[href^="/playlist?"])',
           // Video endscreen
           '.ytp-videowall-still[data-is-list="true"][data-is-mix="false"]',
         )
@@ -1191,7 +1191,7 @@ const configureCss = (() => {
       if (mobile) {
         hideCssSelectors.push(
           // Home
-          '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-item-renderer:has(> yt-lockup-view-model > .yt-lockup-view-model-wiz)',
+          '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-item-renderer:has(a[href^="/playlist?"])',
           // Search
           'ytm-search ytm-compact-playlist-renderer',
           // Related
