@@ -2,6 +2,12 @@
   "addTakeSnapshot": {
     "message": "将截图功能添加到视频菜单"
   },
+  "ads": {
+    "message": "广告"
+  },
+  "adsNote": {
+    "message": "这些选项可能会触发YouTube的广告拦截检测"
+  },
   "alwaysShowShortsProgressBar": {
     "message": "始终显示进度条"
   },
@@ -10,6 +16,9 @@
   },
   "alwaysUseTheaterMode": {
     "message": "始终剧院模式"
+  },
+  "annoyances": {
+    "message": "干扰项"
   },
   "anyPercent": {
     "message": "任何 %"

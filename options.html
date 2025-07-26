@@ -18,7 +18,43 @@
         <span class="toggle"></span>
       </label>
     </section>
-    <section class="group">
+    <section class="group labelled collapsible">
+      <label data-collapse-id="ads">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
+          <path d="m6.24 8.999 3.614-3.613a.498.498 0 0 0 0-.707.5.5 0 0 0-.707 0L5.999 7.826 2.854 4.68a.5.5 0 0 0-.707.707L5.759 9l.481-.001z"/>
+        </svg>
+        <span id="ads">Ads</span>
+      </label>
+      <section class="checkbox">
+        <label>
+          <span id="hideSponsored">Hide Sponsored videos & Promos</span>
+          <input type="checkbox" name="hideSponsored">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox">
+        <label>
+          <span id="skipAds">Skip ads</span>
+          <input type="checkbox" name="skipAds">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox desktop">
+        <label>
+          <span id="hideMerchEtc">Hide Merch, Offers etc.</span>
+          <input type="checkbox" name="hideMerchEtc">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <p id="adsNote" class="warning footnote">These options may trigger YouTube's adblock detection</p>
+    </section>
+    <section class="group labelled collapsible">
+      <label data-collapse-id="annoyances">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
+          <path d="m6.24 8.999 3.614-3.613a.498.498 0 0 0 0-.707.5.5 0 0 0-.707 0L5.999 7.826 2.854 4.68a.5.5 0 0 0-.707.707L5.759 9l.481-.001z"/>
+        </svg>
+        <span id="annoyances">Annoyances</span>
+      </label>
       <section class="checkbox">
         <label>
           <span id="hideAI">Hide AI summaries</span>
@@ -47,18 +83,28 @@
           <span class="toggle"></span>
         </label>
       </section>
-    </section>
-    <section class="group labelled">
-      <label id="videoLists">
-        Video lists
-      </label>
-      <section class="checkbox">
+      <section class="checkbox mobile">
         <label>
-          <span id="hideSponsored">Hide Sponsored videos & Promos</span>
-          <input type="checkbox" name="hideSponsored">
+          <span id="hideOpenApp">Hide Open App links</span>
+          <input type="checkbox" name="hideOpenApp">
           <span class="toggle"></span>
         </label>
       </section>
+      <section class="checkbox">
+        <label>
+          <span id="hideInfoPanels">Hide information panels</span>
+          <input type="checkbox" name="hideInfoPanels">
+          <span class="toggle"></span>
+        </label>
+      </section>
+    </section>
+    <section class="group labelled collapsible">
+      <label data-collapse-id="videoLists">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
+          <path d="m6.24 8.999 3.614-3.613a.498.498 0 0 0 0-.707.5.5 0 0 0-.707 0L5.999 7.826 2.854 4.68a.5.5 0 0 0-.707.707L5.759 9l.481-.001z"/>
+        </svg>
+        <span id="videoLists">Video lists</span>
+      </label>
       <section class="checkbox">
         <label>
           <span id="hideSuggestedSections">Hide suggested sections</span>
@@ -197,17 +243,13 @@
         <p id="disableHomeFeedNote">Only when logged in - redirects to Subscriptions</p>
       </section>
     </section>
-    <section class="group labelled">
-      <label id="videoPages">
-        Video pages
+    <section class="group labelled collapsible">
+      <label data-collapse-id="videoPages">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
+          <path d="m6.24 8.999 3.614-3.613a.498.498 0 0 0 0-.707.5.5 0 0 0-.707 0L5.999 7.826 2.854 4.68a.5.5 0 0 0-.707.707L5.759 9l.481-.001z"/>
+        </svg>
+        <span id="videoPages">Video pages</span>
       </label>
-      <section class="checkbox">
-        <label>
-          <span id="skipAds">Skip ads</span>
-          <input type="checkbox" name="skipAds">
-          <span class="toggle"></span>
-        </label>
-      </section>
       <section class="checkbox">
         <label>
           <span id="disableAutoplay">Disable Autoplay</span>
@@ -288,13 +330,6 @@
           <span class="toggle"></span>
         </label>
       </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="hideMerchEtc">Hide Merch, Offers etc.</span>
-          <input type="checkbox" name="hideMerchEtc">
-          <span class="toggle"></span>
-        </label>
-      </section>
       <section class="checkbox">
         <label>
           <span id="hideShareThanksClip">Hide Share/Thanks/Clip buttons</span>
@@ -358,9 +393,12 @@
         </label>
       </section>
     </section>
-    <section class="group labelled">
-      <label id="shorts">
-        Shorts
+    <section class="group labelled collapsible">
+      <label data-collapse-id="shorts">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
+          <path d="m6.24 8.999 3.614-3.613a.498.498 0 0 0 0-.707.5.5 0 0 0-.707 0L5.999 7.826 2.854 4.68a.5.5 0 0 0-.707.707L5.759 9l.481-.001z"/>
+        </svg>
+        <span id="shorts">Shorts</span>
       </label>
       <section class="checkbox">
         <label>
@@ -426,21 +464,17 @@
         </label>
       </section>
     </section>
-    <section class="group labelled">
-      <label id="uiTweaks">
-        UI tweaks
+    <section class="group labelled collapsible">
+      <label data-collapse-id="uiTweaks">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
+          <path d="m6.24 8.999 3.614-3.613a.498.498 0 0 0 0-.707.5.5 0 0 0-.707 0L5.999 7.826 2.854 4.68a.5.5 0 0 0-.707.707L5.759 9l.481-.001z"/>
+        </svg>
+        <span id="uiTweaks">UI tweaks</span>
       </label>
       <section class="checkbox desktop">
         <label>
           <span id="tidyGuideSidebar">Tidy Guide sidebar</span>
           <input type="checkbox" name="tidyGuideSidebar">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideInfoPanels">Hide information panels</span>
-          <input type="checkbox" name="hideInfoPanels">
           <span class="toggle"></span>
         </label>
       </section>
@@ -479,13 +513,6 @@
           <span class="toggle"></span>
         </label>
       </section>
-      <section class="checkbox mobile">
-        <label>
-          <span id="hideOpenApp">Hide Open App links</span>
-          <input type="checkbox" name="hideOpenApp">
-          <span class="toggle"></span>
-        </label>
-      </section>
       <section class="checkbox">
         <label>
           <span id="hideVoiceSearch">Hide Search with your voice</span>
@@ -494,9 +521,12 @@
         </label>
       </section>
     </section>
-    <section class="group labelled">
-      <label id="embeddedVideos">
-        Embedded videos
+    <section class="group labelled collapsible">
+      <label data-collapse-id="embeddedVideos">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
+          <path d="m6.24 8.999 3.614-3.613a.498.498 0 0 0 0-.707.5.5 0 0 0-.707 0L5.999 7.826 2.854 4.68a.5.5 0 0 0-.707.707L5.759 9l.481-.001z"/>
+        </svg>
+        <span id="embeddedVideos">Embedded videos</span>
       </label>
       <section class="checkbox">
         <label>
@@ -536,5 +566,6 @@
     <div id="version">v1.12.0<span id="debugCountdown"></span></div>
   </form>
   <script src="options.js"></script>
+  <div class="firefoxSizer">Big long string to force Firefox to use the maximum available width</div>
 </body>
 </html>

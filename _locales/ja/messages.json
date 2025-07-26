@@ -2,6 +2,12 @@
   "addTakeSnapshot": {
     "message": "ビデオメニューにスナップショットを追加"
   },
+  "ads": {
+    "message": "広告"
+  },
+  "adsNote": {
+    "message": "これらのオプションは、YouTubeの広告ブロック検出をトリガーする可能性があります"
+  },
   "alwaysShowShortsProgressBar": {
     "message": "常に進行状況バーを表示"
   },
@@ -10,6 +16,9 @@
   },
   "alwaysUseTheaterMode": {
     "message": "常にシアターモードを使用する"
+  },
+  "annoyances": {
+    "message": "煩わしい項目"
   },
   "anyPercent": {
     "message": "割合によらず"

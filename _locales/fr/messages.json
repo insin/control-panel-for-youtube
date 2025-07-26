@@ -2,6 +2,12 @@
   "addTakeSnapshot": {
     "message": "Ajouter Capture d'écran au menu de la vidéo"
   },
+  "ads": {
+    "message": "Publicités"
+  },
+  "adsNote": {
+    "message": "Ces options peuvent déclencher la détection de bloqueur de publicités de YouTube"
+  },
   "alwaysShowShortsProgressBar": {
     "message": "Toujours afficher la barre de progression"
   },
@@ -10,6 +16,9 @@
   },
   "alwaysUseTheaterMode": {
     "message": "Toujours utiliser le mode cinéma"
+  },
+  "annoyances": {
+    "message": "Nuisances"
   },
   "anyPercent": {
     "message": "Quel que soit le pourcentage"

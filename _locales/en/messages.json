@@ -2,6 +2,12 @@
   "addTakeSnapshot": {
     "message": "Add Take snapshot to video menu"
   },
+  "ads": {
+    "message": "Ads"
+  },
+  "adsNote": {
+    "message": "These options may trigger YouTube's adblock detection"
+  },
   "alwaysShowShortsProgressBar": {
     "message": "Always show progress bar"
   },
@@ -10,6 +16,9 @@
   },
   "alwaysUseTheaterMode": {
     "message": "Always use theater mode"
+  },
+  "annoyances": {
+    "message": "Annoyances"
   },
   "anyPercent": {
     "message": "any %"
