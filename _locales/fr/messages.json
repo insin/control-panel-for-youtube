@@ -243,6 +243,9 @@
   "qualityMedium": {
     "message": "Moyenne"
   },
+  "redirectLogoToSubscriptions": {
+    "message": "Rediriger le logo YouTube vers les Abonnements"
+  },
   "redirectShorts": {
     "message": "Rediriger les Shorts vers le lecteur normal"
   },

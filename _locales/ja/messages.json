@@ -242,6 +242,9 @@
   "qualityMedium": {
     "message": "中"
   },
+  "redirectLogoToSubscriptions": {
+    "message": "ロゴのリンク先を登録チャンネルにする"
+  },
   "redirectShorts": {
     "message": "ショート動画を通常のプレイヤーにリダイレクト"
   },

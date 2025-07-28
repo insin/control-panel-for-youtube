@@ -243,6 +243,9 @@
   "qualityMedium": {
     "message": "中"
   },
+  "redirectLogoToSubscriptions": {
+    "message": "点击Logo跳转至订阅"
+  },
   "redirectShorts": {
     "message": "将短视频重定向至普通播放器"
   },

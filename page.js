@@ -59,6 +59,7 @@ let defaultConfig = {
   minimumGridItemsPerRow: 'auto',
   minimumShortsPerRow: 'auto',
   pauseChannelTrailers: true,
+  redirectLogoToSubscriptions: false,
   searchThumbnailSize: 'medium',
   snapshotFormat: 'jpeg',
   snapshotQuality: '0.92',
@@ -3296,6 +3297,32 @@ async function observeVideoList(options) {
 /** @param {MouseEvent} e */
 function onDocumentClick(e) {
   $lastClickedElement = /** @type {HTMLElement} */ (e.target)
+  if (desktop && loggedIn && (config.disableHomeFeed || config.redirectLogoToSubscriptions)) {
+    let $logoLink = $lastClickedElement.closest('a#logo')
+    if ($logoLink) {
+      // @ts-ignore
+      let browseEndpoint = $logoLink.data?.browseEndpoint
+      // @ts-ignore
+      let webCommandMetadata = $logoLink.data?.commandMetadata?.webCommandMetadata
+      if (browseEndpoint && webCommandMetadata) {
+        log('redirecting YouTube logo click to Subscriptions')
+        browseEndpoint.browseId = 'FEsubscriptions'
+        webCommandMetadata.url = '/feed/subscriptions'
+      }
+    }
+  }
+  if (desktop && config.redirectShorts) {
+    let $shortsLink = /** @type {HTMLAnchorElement} */ ($lastClickedElement.closest('a[href^="/shorts/'))
+    if ($shortsLink) {
+      // @ts-ignore
+      let webCommandMetadata = $shortsLink._data?.commandMetadata?.webCommandMetadata
+      if (webCommandMetadata) {
+        log('redirecting Shorts video click to normal player')
+        webCommandMetadata.url = `/watch?v=${$shortsLink.pathname.split('/').at(-1)}`
+        webCommandMetadata.webPageType = 'WEB_PAGE_TYPE_WATCH'
+      }
+    }
+  }
 }
 
 /** @param {HTMLElement} $menu */
