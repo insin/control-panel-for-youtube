@@ -1222,7 +1222,7 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // Home
-          'ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(.yt-lockup-view-model-wiz)',
+          'ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(a[href^="/playlist?"])',
           // Search and Related
           ':is(#related, ytd-search) yt-lockup-view-model:has(a[href^="/playlist?"])',
           // Video endscreen
