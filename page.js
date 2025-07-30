@@ -166,7 +166,7 @@ const locales = {
     ORIGINAL: 'original',
     SHARE: 'Share',
     SHORTS: 'Shorts',
-    STREAMED_METADATA_INNERTEXT_RE: '\\n\\s*Streamed',
+    STREAMED_METADATA_INNERTEXT_RE: '(?:^|\\n)\\s*Streamed',
     STREAMED_TITLE_ARIA_LABEL: 'views Streamed',
     TAKE_SNAPSHOT: 'Take snapshot',
     TELL_US_WHY: 'Tell us why',
@@ -211,7 +211,7 @@ const locales = {
     ORIGINAL: 'original',
     SHARE: 'Partager',
     SHORTS: 'Shorts',
-    STREAMED_METADATA_INNERTEXT_RE: '\\n\\s*Diffusé',
+    STREAMED_METADATA_INNERTEXT_RE: '(?:^|\\n)\\s*Diffusé',
     STREAMED_TITLE_ARIA_LABEL: 'vues Diffusé',
     TAKE_SNAPSHOT: 'Prendre une capture',
     TELL_US_WHY: 'Dites-nous pourquoi',
@@ -476,16 +476,17 @@ function getString(code) {
   }
 }
 
-function getYtString(key) {
-  // @ts-ignore
-  let string = window.ytcfg?.msgs?.[key]
-  if (!string) {
-    warn(`ytcfg.msgs.${key} not found`)
+function getYtString(...keys) {
+  for (let key of keys) {
+    // @ts-ignore
+    let string = window.ytcfg?.msgs?.[key]
+    if (string) return string
   }
-  return string
+  warn(`ytcfg.msgs key not found:`, keys)
 }
 //#endregion
 
+//#region Constants
 const undoHideDelayMs = 5000
 
 const Classes = {
@@ -497,6 +498,23 @@ const Classes = {
   HIDE_SHARE_THANKS_CLIP: 'cpfyt-hide-share-thanks-clip',
 }
 
+/**
+ * @type {Record<string, {
+ *   itemSelector: string
+ *   itemTextSelector: string
+ * }>} menu tag name to config
+ */
+const MenuConfigs = {
+  'TP-YT-PAPER-LISTBOX': {
+    itemSelector: 'ytd-menu-service-item-renderer',
+    itemTextSelector: 'yt-formatted-string',
+  },
+  'YT-LIST-ITEM-VIEW-MODEL': {
+    itemSelector: 'yt-list-item-view-model',
+    itemTextSelector: '.yt-list-item-view-model-wiz__title',
+  },
+}
+
 const Svgs = {
   DELETE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M11 17H9V8h2v9zm4-9h-2v9h2V8zm4-4v1h-1v16H6V5H5V4h4V3h6v1h4zm-2 1H7v15h10V5z"></path></svg>',
   RESTORE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M460-347.692h40V-535.23l84 83.538L612.308-480 480-612.308 347.692-480 376-451.692l84-83.538v187.538ZM304.615-160Q277-160 258.5-178.5 240-197 240-224.615V-720h-40v-40h160v-30.77h240V-760h160v40h-40v495.385Q720-197 701.5-178.5 683-160 655.385-160h-350.77ZM680-720H280v495.385q0 9.23 7.692 16.923Q295.385-200 304.615-200h350.77q9.23 0 16.923-7.692Q680-215.385 680-224.615V-720Zm-400 0v520-520Z"/></svg>',
@@ -504,6 +522,7 @@ const Svgs = {
 
 // YouTube channel URLs: https://support.google.com/youtube/answer/6180214
 const URL_CHANNEL_RE = /\/(?:@[^\/]+|(?:c|channel|user)\/[^\/]+)(?:\/(featured|videos|shorts|playlists|community))?\/?$/
+//#endregion
 
 //#region State
 /** @type {boolean} */
@@ -522,7 +541,7 @@ let onDialogClosed
 let pageObservers = new Map()
 //#endregion
 
-//#region Utility functions
+//#region Utilities
 function addStyle(css = '') {
   let $style = document.createElement('style')
   if (css) {
@@ -886,13 +905,17 @@ const configureCss = (() => {
             display: flex !important;
             min-height: 36px;
             padding: 0 12px 0 16px;
+            color: var(--yt-spec-text-primary);
           }
-          .cpfyt-menu-item:focus {
+          tp-yt-paper-listbox .cpfyt-menu-item {
+            -webkit-font-smoothing: antialiased;
+          }
+          tp-yt-paper-listbox .cpfyt-menu-item:focus {
             position: relative;
             background-color: var(--paper-item-focused-background-color);
             outline: 0;
           }
-          .cpfyt-menu-item:focus::before {
+          tp-yt-paper-listbox .cpfyt-menu-item:focus::before {
             position: absolute;
             top: 0;
             right: 0;
@@ -904,8 +927,19 @@ const configureCss = (() => {
             content: var(--paper-item-focused-before-content, "");
             opacity: var(--paper-item-focused-before-opacity, var(--dark-divider-opacity, 0.12));
           }
-          .cpfyt-menu-item:hover {
+          tp-yt-paper-listbox .cpfyt-menu-item:hover {
             background-color: var(--yt-spec-10-percent-layer);
+          }
+          yt-list-view-model .cpfyt-menu-item:focus {
+            outline: 2px solid currentColor;
+            outline-offset: -2px;
+            border-radius: 8px;
+          }
+          yt-list-view-model .cpfyt-menu-item:is(:hover, :focus) {
+            background-color: rgba(0, 0, 0, .05);
+          }
+          html[dark] yt-list-view-model .cpfyt-menu-item:is(:hover, :focus) {
+            background-color: rgba(255, 255, 255, .1);
           }
           .cpfyt-menu-icon {
             color: var(--yt-spec-text-primary);
@@ -913,6 +947,9 @@ const configureCss = (() => {
             height: 24px;
             margin-right: 16px;
             width: 24px;
+          }
+          yt-list-view-model .cpfyt-menu-icon {
+            margin-right: 12px;
           }
           .cpfyt-menu-text {
             color: var(--yt-spec-text-primary);
@@ -1035,6 +1072,7 @@ const configureCss = (() => {
           'ytd-video-renderer:has(ytd-thumbnail[is-live-video])',
           // Related video
           'ytd-compact-video-renderer:has(> .ytd-compact-video-renderer > ytd-thumbnail[is-live-video])',
+          'yt-lockup-view-model:has(.badge-shape-wiz--thumbnail-live)',
         )
       }
       if (mobile) {
@@ -1210,6 +1248,7 @@ const configureCss = (() => {
           '#endpoint.ytd-guide-entry-renderer[href="/premium"]',
           // Download menu item
           'ytd-menu-service-item-download-renderer',
+          'yt-download-list-item-view-model',
           // 1080p Premium quality menu item
           '.ytp-quality-menu .ytp-menuitem:has(.ytp-premium-label)',
         )
@@ -2196,30 +2235,38 @@ function handleDesktopWatchChannelMenu($menu) {
 
 /** @param {HTMLElement} $menu */
 function addHideChannelToDesktopVideoMenu($menu) {
-  let videoContainerElement
+  let videoContainerElementSelector
   if (isSearchPage()) {
-    videoContainerElement = 'ytd-video-renderer'
+    videoContainerElementSelector = 'ytd-video-renderer'
   }
   else if (isVideoPage()) {
-    videoContainerElement = 'ytd-compact-video-renderer'
+    videoContainerElementSelector = [
+      'ytd-compact-video-renderer',
+      'yt-lockup-view-model',
+    ].join(', ')
   }
   else if (isHomePage()) {
-    videoContainerElement = 'ytd-rich-item-renderer'
+    videoContainerElementSelector = 'ytd-rich-item-renderer'
   }
 
-  if (!videoContainerElement) return
+  if (!videoContainerElementSelector) return
 
-  let $video = /** @type {HTMLElement} */ ($lastClickedElement.closest(videoContainerElement))
+  let $video = /** @type {HTMLElement} */ ($lastClickedElement.closest(videoContainerElementSelector))
   if (!$video) return
 
   log('found clicked video')
   let channel = getChannelDetailsFromVideo($video)
   if (!channel) return
   lastClickedChannel = channel
+  log('channel for clicked video', lastClickedChannel)
 
-  if ($menu.querySelector('#cpfyt-hide-channel-menu-item')) return
+  $menu.querySelector('#cpfyt-hide-channel-menu-item')?.remove()
 
-  let $menuItems = $menu.querySelector('#items')
+  let $menuItems = $menu.querySelector([
+    'tp-yt-paper-listbox',
+    'yt-list-view-model',
+  ].join(', '))
+  // Insert before last menu item, which should be Report
   $menuItems.lastElementChild.insertAdjacentHTML('beforebegin', `
 <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
   <div class="cpfyt-menu-icon">
@@ -2312,6 +2359,15 @@ function getChannelDetailsFromVideo($video) {
         return {
           name: $link.textContent,
           url: $link.pathname,
+        }
+      }
+    }
+    else if ($video.tagName == 'YT-LOCKUP-VIEW-MODEL') {
+      // Assumption: channel name is always the first text in this element
+      let $name = $video.querySelector('yt-content-metadata-view-model [role="text"]')
+      if ($name) {
+        return {
+          name: $name.textContent,
         }
       }
     }
@@ -2585,18 +2641,23 @@ async function observeDesktopRichGridItems(options) {
   processAllVideos()
 }
 
-/** @param {HTMLElement} $menu */
-function onDesktopMenuAppeared($menu) {
-  log('menu appeared')
+/** @param {HTMLElement} $dropdown */
+function onDesktopMenuAppeared($dropdown) {
+  log('menu appeared', $dropdown)
+
+  // YouTube currently has 2 menu components: <tp-yt-paper-listbox> and <yt-list-item-view-model>
+  let $menu = $dropdown.querySelector('tp-yt-paper-listbox, yt-list-item-view-model')
+  let menuConfig = MenuConfigs[$menu.tagName]
 
   if (config.hideShareThanksClip) {
-    let $menuItems = /** @type {NodeListOf<HTMLElement>} */ ($menu.querySelectorAll('ytd-menu-service-item-renderer'))
+    let $menuItems = /** @type {NodeListOf<HTMLElement>} */ ($dropdown.querySelectorAll(menuConfig.itemSelector))
     let testLabels = new Set([getString('SHARE'), getString('THANKS'), getString('CLIP')])
     for (let $menuItem of $menuItems) {
-      let menuItemText = $menuItem.querySelector('yt-formatted-string')?.textContent
+      let menuItemText = $menuItem.querySelector(menuConfig.itemTextSelector)?.textContent
       if (testLabels.has(menuItemText)) {
         log('hideShareThanksClip: tagging', menuItemText, 'menu item')
         $menuItem.classList.add(Classes.HIDE_SHARE_THANKS_CLIP)
+        // Separator on the Download item is <tp-yt-paper-listbox> menu-specific
         if ($menuItem.hasAttribute('has-separator')) {
           let $newSeparatorItem = $menuItem.previousElementSibling
           if (config.hidePremiumUpsells && $newSeparatorItem.tagName == 'YTD-MENU-SERVICE-ITEM-DOWNLOAD-RENDERER') {
@@ -2613,12 +2674,12 @@ function onDesktopMenuAppeared($menu) {
     }
   }
   if (config.downloadTranscript) {
-    addDownloadTranscriptToDesktopMenu($menu)
+    addDownloadTranscriptToDesktopMenu($dropdown)
   }
   if (config.hideChannels) {
-    addHideChannelToDesktopVideoMenu($menu)
+    addHideChannelToDesktopVideoMenu($dropdown)
     // XXX This menu re-renders async if another menu was previously displayed
-    handleDesktopWatchChannelMenu($menu)
+    handleDesktopWatchChannelMenu($dropdown)
   }
   if (config.hideHiddenVideos) {
     observeVideoHiddenState()
@@ -3070,7 +3131,7 @@ async function observeVideoAds() {
       if (desktop) {
         let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
         if ($muteButton &&
-            $muteButton.dataset.titleNoTooltip != getYtString('MUTE') &&
+            $muteButton.dataset.titleNoTooltip != getYtString('MUTE', 'MUTE_VOLUME') &&
             $muteButton.dataset.cpfytWasMuted == 'false') {
           log('unmuting audio after ads')
           delete $muteButton.dataset.cpfytWasMuted
@@ -3355,7 +3416,13 @@ function hideWatched($video) {
   // Watch % is obtained from progress bar width when a video has one
   let $progressBar
   if (desktop) {
-    $progressBar = $video.querySelector('#progress')
+    $progressBar = $video.querySelector(
+      $video.tagName == 'YT-LOCKUP-VIEW-MODEL' ? (
+        '.ytThumbnailOverlayProgressBarHostWatchedProgressBarSegment'
+      ) : (
+        '#progress'
+      )
+    )
   }
   if (mobile) {
     $progressBar = $video.querySelector('.thumbnail-overlay-resume-playback-progress')
@@ -3378,22 +3445,23 @@ function manuallyHideVideo($video) {
 
   // Streamed videos are identified using the video title's aria-label
   if (config.hideStreamed) {
-    /** @type {HTMLElement} */
-    let $videoTitle
+    let hide = false
     if (desktop) {
-      // Subscriptions <ytd-rich-item-renderer> has a different structure
-      $videoTitle = $video.querySelector($video.tagName == 'YTD-RICH-ITEM-RENDERER' ? '#video-title-link' : '#video-title')
+      let $metadata = /** @type {HTMLElement} */ ($video.querySelector(
+        $video.tagName == 'YT-LOCKUP-VIEW-MODEL' ? (
+          'yt-content-metadata-view-model .yt-content-metadata-view-model-wiz__delimiter + .yt-content-metadata-view-model-wiz__metadata-text'
+        ) : (
+          '#metadata-line'
+        )
+      ))
+      if ($metadata) {
+        hide = Boolean($metadata.innerText.match(getString('STREAMED_METADATA_INNERTEXT_RE')))
+      }
     }
     if (mobile) {
-      $videoTitle = $video.querySelector('.media-item-headline .yt-core-attributed-string')
-    }
-    let hide = false
-    if ($videoTitle) {
-      hide = Boolean($videoTitle.getAttribute('aria-label')?.includes(getString('STREAMED_TITLE_ARIA_LABEL')))
-      // Fall back to the metadata line on desktop
-      if (!hide && desktop) {
-        let $metadataLine = /** @type {HTMLElement} */ ($video.querySelector('#metadata-line'))
-        hide = Boolean($metadataLine?.innerText.match(getString('STREAMED_METADATA_INNERTEXT_RE')))
+      let $videoTitleWithLabel = $video.querySelector('.media-item-headline .yt-core-attributed-string[aria-label]')
+      if ($videoTitleWithLabel) {
+        hide = $videoTitleWithLabel.getAttribute('aria-label').includes(getString('STREAMED_TITLE_ARIA_LABEL'))
       }
     }
     $video.classList.toggle(Classes.HIDE_STREAMED, hide)
@@ -3517,7 +3585,7 @@ function tweakAdPlayerOverlay($player) {
   if (desktop) {
     let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
     if ($muteButton) {
-      if ($muteButton.dataset.titleNoTooltip == getYtString('MUTE')) {
+      if ($muteButton.dataset.titleNoTooltip == getYtString('MUTE', 'MUTE_VOLUME')) {
         log('muting ad audio')
         $muteButton.click()
         $muteButton.dataset.cpfytWasMuted = 'false'
@@ -3750,7 +3818,7 @@ async function tweakVideoPage() {
     function processCurrentItems() {
       itemCount = 0
       for (let $item of $contents.children) {
-        if ($item.nodeName == 'YTD-COMPACT-VIDEO-RENDERER') {
+        if ($item.nodeName == 'YTD-COMPACT-VIDEO-RENDERER' || $item.nodeName == 'YT-LOCKUP-VIEW-MODEL') {
           manuallyHideVideo($item)
           waitForVideoOverlay($item, `related item ${++itemCount}`)
         }
@@ -3808,6 +3876,7 @@ async function tweakVideoPage() {
   }
 }
 
+// TODO Check if we need to update this for <yt-lockup-view-model> videos
 /**
  * Wait for video overlays with watch progress when they're loazed lazily.
  * @param {Element} $video
