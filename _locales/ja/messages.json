@@ -2,6 +2,15 @@
   "addTakeSnapshot": {
     "message": "ビデオメニューにスナップショットを追加"
   },
+  "ads": {
+    "message": "広告"
+  },
+  "adsNote": {
+    "message": "これらのオプションは、YouTubeの広告ブロック検出をトリガーする可能性があります"
+  },
+  "allowBackgroundPlay": {
+    "message": "バックグラウンド再生を許可する"
+  },
   "alwaysShowShortsProgressBar": {
     "message": "常に進行状況バーを表示"
   },
@@ -10,6 +19,9 @@
   },
   "alwaysUseTheaterMode": {
     "message": "常にシアターモードを使用する"
+  },
+  "annoyances": {
+    "message": "煩わしい項目"
   },
   "anyPercent": {
     "message": "割合によらず"
@@ -161,6 +173,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "ホバーするまでショートのメタデータを隠す"
   },
+  "hideShortsRemixButton": {
+    "message": "リミックスボタンを隠す"
+  },
   "hideShortsSuggestedActions": {
     "message": "提案アクションを非表示"
   },
@@ -190,9 +205,6 @@
   },
   "hideWatchedThreshold": {
     "message": "視聴済みの割合"
-  },
-  "homeMaxOption": {
-    "message": "9 (ホーム最大)"
   },
   "inHomeAndSubscriptionsNote": {
     "message": "ホームと登録チャンネルで適用"
@@ -229,6 +241,9 @@
   },
   "qualityMedium": {
     "message": "中"
+  },
+  "redirectLogoToSubscriptions": {
+    "message": "ロゴのリンク先を登録チャンネルにする"
   },
   "redirectShorts": {
     "message": "ショート動画を通常のプレイヤーにリダイレクト"

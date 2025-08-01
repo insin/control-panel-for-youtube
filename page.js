@@ -29,7 +29,7 @@ let defaultConfig = {
   hideShareThanksClip: false,
   hideShorts: true,
   hideShortsSuggestedActions: true,
-  hideSponsored: true,
+  hideSponsored: false,
   hideStreamed: false,
   hideSuggestedSections: true,
   hideUpcoming: false,
@@ -38,8 +38,8 @@ let defaultConfig = {
   hideWatchedThreshold: '80',
   redirectShorts: true,
   removePink: false,
-  skipAds: true,
-  stopShortsLooping: false,
+  skipAds: false,
+  stopShortsLooping: true,
   // Desktop only
   addTakeSnapshot: true,
   alwaysUseOriginalAudio: false,
@@ -51,18 +51,21 @@ let defaultConfig = {
   hideChat: false,
   hideEndCards: false,
   hideEndVideos: true,
-  hideMerchEtc: true,
+  hideMerchEtc: false,
   hideMiniplayerButton: false,
   hideShortsMetadataUntilHover: true,
+  hideShortsRemixButton: true,
   hideSubscriptionsLatestBar: false,
   minimumGridItemsPerRow: 'auto',
   minimumShortsPerRow: 'auto',
   pauseChannelTrailers: true,
+  redirectLogoToSubscriptions: false,
   searchThumbnailSize: 'medium',
   snapshotFormat: 'jpeg',
   snapshotQuality: '0.92',
   tidyGuideSidebar: false,
   // Mobile only
+  allowBackgroundPlay: true,
   hideExploreButton: true,
   hideOpenApp: true,
   hideSubscriptionsChannelList: false,
@@ -163,7 +166,7 @@ const locales = {
     ORIGINAL: 'original',
     SHARE: 'Share',
     SHORTS: 'Shorts',
-    STREAMED_METADATA_INNERTEXT_RE: '\\n\\s*Streamed',
+    STREAMED_METADATA_INNERTEXT_RE: '(?:^|\\n)\\s*Streamed',
     STREAMED_TITLE_ARIA_LABEL: 'views Streamed',
     TAKE_SNAPSHOT: 'Take snapshot',
     TELL_US_WHY: 'Tell us why',
@@ -208,7 +211,7 @@ const locales = {
     ORIGINAL: 'original',
     SHARE: 'Partager',
     SHORTS: 'Shorts',
-    STREAMED_METADATA_INNERTEXT_RE: '\\n\\s*Diffusé',
+    STREAMED_METADATA_INNERTEXT_RE: '(?:^|\\n)\\s*Diffusé',
     STREAMED_TITLE_ARIA_LABEL: 'vues Diffusé',
     TAKE_SNAPSHOT: 'Prendre une capture',
     TELL_US_WHY: 'Dites-nous pourquoi',
@@ -473,16 +476,17 @@ function getString(code) {
   }
 }
 
-function getYtString(key) {
-  // @ts-ignore
-  let string = window.ytcfg?.msgs?.[key]
-  if (!string) {
-    warn(`ytcfg.msgs.${key} not found`)
+function getYtString(...keys) {
+  for (let key of keys) {
+    // @ts-ignore
+    let string = window.ytcfg?.msgs?.[key]
+    if (string) return string
   }
-  return string
+  warn(`ytcfg.msgs key not found:`, keys)
 }
 //#endregion
 
+//#region Constants
 const undoHideDelayMs = 5000
 
 const Classes = {
@@ -494,6 +498,23 @@ const Classes = {
   HIDE_SHARE_THANKS_CLIP: 'cpfyt-hide-share-thanks-clip',
 }
 
+/**
+ * @type {Record<string, {
+ *   itemSelector: string
+ *   itemTextSelector: string
+ * }>} menu tag name to config
+ */
+const MenuConfigs = {
+  'TP-YT-PAPER-LISTBOX': {
+    itemSelector: 'ytd-menu-service-item-renderer',
+    itemTextSelector: 'yt-formatted-string',
+  },
+  'YT-LIST-ITEM-VIEW-MODEL': {
+    itemSelector: 'yt-list-item-view-model',
+    itemTextSelector: '.yt-list-item-view-model-wiz__title',
+  },
+}
+
 const Svgs = {
   DELETE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M11 17H9V8h2v9zm4-9h-2v9h2V8zm4-4v1h-1v16H6V5H5V4h4V3h6v1h4zm-2 1H7v15h10V5z"></path></svg>',
   RESTORE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M460-347.692h40V-535.23l84 83.538L612.308-480 480-612.308 347.692-480 376-451.692l84-83.538v187.538ZM304.615-160Q277-160 258.5-178.5 240-197 240-224.615V-720h-40v-40h160v-30.77h240V-760h160v40h-40v495.385Q720-197 701.5-178.5 683-160 655.385-160h-350.77ZM680-720H280v495.385q0 9.23 7.692 16.923Q295.385-200 304.615-200h350.77q9.23 0 16.923-7.692Q680-215.385 680-224.615V-720Zm-400 0v520-520Z"/></svg>',
@@ -501,8 +522,11 @@ const Svgs = {
 
 // YouTube channel URLs: https://support.google.com/youtube/answer/6180214
 const URL_CHANNEL_RE = /\/(?:@[^\/]+|(?:c|channel|user)\/[^\/]+)(?:\/(featured|videos|shorts|playlists|community))?\/?$/
+//#endregion
 
 //#region State
+/** @type {boolean} */
+let realDocumentHidden
 /** @type {() => void} */
 let onAdRemoved
 /** @type {Map<string, import("./types").Disconnectable>} */
@@ -517,10 +541,9 @@ let onDialogClosed
 let pageObservers = new Map()
 //#endregion
 
-//#region Utility functions
+//#region Utilities
 function addStyle(css = '') {
   let $style = document.createElement('style')
-  $style.dataset.insertedBy = 'control-panel-for-youtube'
   if (css) {
     $style.textContent = css
   }
@@ -731,6 +754,14 @@ function observeForElement($target, getter, options, mutationObserverOptions) {
 }
 
 /**
+ * @template T
+ * @param {() => T} fn
+ */
+function run(fn) {
+  return fn()
+}
+
+/**
  * @param {number} n
  * @returns {string}
  */
@@ -874,13 +905,17 @@ const configureCss = (() => {
             display: flex !important;
             min-height: 36px;
             padding: 0 12px 0 16px;
+            color: var(--yt-spec-text-primary);
           }
-          .cpfyt-menu-item:focus {
+          tp-yt-paper-listbox .cpfyt-menu-item {
+            -webkit-font-smoothing: antialiased;
+          }
+          tp-yt-paper-listbox .cpfyt-menu-item:focus {
             position: relative;
             background-color: var(--paper-item-focused-background-color);
             outline: 0;
           }
-          .cpfyt-menu-item:focus::before {
+          tp-yt-paper-listbox .cpfyt-menu-item:focus::before {
             position: absolute;
             top: 0;
             right: 0;
@@ -892,8 +927,19 @@ const configureCss = (() => {
             content: var(--paper-item-focused-before-content, "");
             opacity: var(--paper-item-focused-before-opacity, var(--dark-divider-opacity, 0.12));
           }
-          .cpfyt-menu-item:hover {
+          tp-yt-paper-listbox .cpfyt-menu-item:hover {
             background-color: var(--yt-spec-10-percent-layer);
+          }
+          yt-list-view-model .cpfyt-menu-item:focus {
+            outline: 2px solid currentColor;
+            outline-offset: -2px;
+            border-radius: 8px;
+          }
+          yt-list-view-model .cpfyt-menu-item:is(:hover, :focus) {
+            background-color: rgba(0, 0, 0, .05);
+          }
+          html[dark] yt-list-view-model .cpfyt-menu-item:is(:hover, :focus) {
+            background-color: rgba(255, 255, 255, .1);
           }
           .cpfyt-menu-icon {
             color: var(--yt-spec-text-primary);
@@ -901,6 +947,9 @@ const configureCss = (() => {
             height: 24px;
             margin-right: 16px;
             width: 24px;
+          }
+          yt-list-view-model .cpfyt-menu-icon {
+            margin-right: 12px;
           }
           .cpfyt-menu-text {
             color: var(--yt-spec-text-primary);
@@ -925,7 +974,7 @@ const configureCss = (() => {
         hideCssSelectors.push('#comments')
       }
       if (mobile) {
-        hideCssSelectors.push('ytm-item-section-renderer[section-identifier="comments-entry-point"]')
+        hideCssSelectors.push('ytm-slim-video-metadata-section-renderer + ytm-item-section-renderer')
       }
     }
 
@@ -996,7 +1045,7 @@ const configureCss = (() => {
     if (config.hideInfoPanels) {
       if (desktop) {
         hideCssSelectors.push(
-          // In Search
+          // Search
           'ytd-clarification-renderer',
           'ytd-info-panel-container-renderer',
           // Below video
@@ -1007,7 +1056,7 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push(
-          // In Search and below video
+          // Search and below video
           'ytm-clarification-renderer',
           'ytm-info-panel-container-renderer',
         )
@@ -1019,10 +1068,12 @@ const configureCss = (() => {
         hideCssSelectors.push(
           // Grid item (Home, Subscriptions)
           'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(ytd-thumbnail[is-live-video])',
+          'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(.badge-shape-wiz--thumbnail-live)',
           // List item (Search)
           'ytd-video-renderer:has(ytd-thumbnail[is-live-video])',
-          // Related video
+          // Related
           'ytd-compact-video-renderer:has(> .ytd-compact-video-renderer > ytd-thumbnail[is-live-video])',
+          '#related yt-lockup-view-model:has(.badge-shape-wiz--thumbnail-live)',
         )
       }
       if (mobile) {
@@ -1035,7 +1086,7 @@ const configureCss = (() => {
           'ytm-search ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
           // Large item in Related videos
           'ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-compact-autoplay-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
-          // Related videos
+          // Related
           'ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
         )
       }
@@ -1048,7 +1099,7 @@ const configureCss = (() => {
           'ytd-rich-item-renderer:has(.badge-style-type-members-only)',
           // List item (Search)
           'ytd-video-renderer:has(.badge-style-type-members-only)',
-          // Related video
+          // Related
           'ytd-compact-video-renderer:has(.badge-style-type-members-only)',
           // Playlist in channel Home tab
           'ytd-item-section-renderer[page-subtype="channels"]:has(.badge-style-type-members-only)',
@@ -1101,7 +1152,7 @@ const configureCss = (() => {
           'ytd-rich-item-renderer:has(a[href*="start_radio=1"])',
           // List item
           'ytd-radio-renderer',
-          // Related video
+          // Related
           'ytd-compact-radio-renderer',
           // Search result and related video
           'yt-lockup-view-model:has(a[href*="start_radio=1"])',
@@ -1124,22 +1175,22 @@ const configureCss = (() => {
     if (config.hideMoviesAndTV) {
       if (desktop) {
         hideCssSelectors.push(
-          // In Home
+          // Home
           'ytd-rich-item-renderer.ytd-rich-grid-renderer:has(a[href*="&pp=sAQB"])',
-          // In Search
+          // Search
           'ytd-movie-renderer',
-          // In Related videos
+          // Related
           'ytd-compact-movie-renderer',
           'ytd-compact-video-renderer:has(a[href*="&pp=sAQB"])',
         )
       }
       if (mobile) {
         hideCssSelectors.push(
-          // In Home
+          // Home
           '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-item-renderer:has(a[href*="&pp=sAQB"])',
-          // In Search
+          // Search
           'ytm-search ytm-video-with-context-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_YPC"])',
-          // In Related videos
+          // Related
           'ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(a[href*="&pp=sAQB"])',
         )
       }
@@ -1172,9 +1223,9 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // Home
-          'ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(.yt-lockup-view-model-wiz)',
+          'ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(a[href^="/playlist?"])',
           // Search and Related
-          ':is(#related, ytd-search) yt-lockup-view-model:has(> .yt-lockup-view-model-wiz)',
+          ':is(#related, ytd-search) yt-lockup-view-model:has(a[href^="/playlist?"])',
           // Video endscreen
           '.ytp-videowall-still[data-is-list="true"][data-is-mix="false"]',
         )
@@ -1182,7 +1233,7 @@ const configureCss = (() => {
       if (mobile) {
         hideCssSelectors.push(
           // Home
-          '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-item-renderer:has(> yt-lockup-view-model > .yt-lockup-view-model-wiz)',
+          '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-item-renderer:has(a[href^="/playlist?"])',
           // Search
           'ytm-search ytm-compact-playlist-renderer',
           // Related
@@ -1198,6 +1249,7 @@ const configureCss = (() => {
           '#endpoint.ytd-guide-entry-renderer[href="/premium"]',
           // Download menu item
           'ytd-menu-service-item-download-renderer',
+          'yt-download-list-item-view-model',
           // 1080p Premium quality menu item
           '.ytp-quality-menu .ytp-menuitem:has(.ytp-premium-label)',
         )
@@ -1243,6 +1295,7 @@ const configureCss = (() => {
     }
 
     if (config.hideShorts) {
+      hideCssSelectors.push('.HideShorts')
       if (desktop) {
         hideCssSelectors.push(
           // Side nav item
@@ -1258,13 +1311,15 @@ const configureCss = (() => {
           // List shelf (except History, so watched Shorts can be removed)
           'ytd-browse:not([page-subtype="history"]) ytd-reel-shelf-renderer',
           'ytd-search ytd-reel-shelf-renderer',
+          'ytd-search grid-shelf-view-model',
           // List item (except History, so watched Shorts can be removed)
           'ytd-browse:not([page-subtype="history"]) ytd-video-renderer:has(a[href^="/shorts"])',
           'ytd-search ytd-video-renderer:has(a[href^="/shorts"])',
           // Under video
           '#structured-description ytd-reel-shelf-renderer',
-          // In related
+          // Related
           '#related ytd-reel-shelf-renderer',
+          '#related ytd-compact-video-renderer:has(a[href^="/shorts"])',
         )
       }
       if (mobile) {
@@ -1282,7 +1337,7 @@ const configureCss = (() => {
           'ytm-search ytm-video-with-context-renderer:has(a[href^="/shorts"])',
           // Under video
           'ytm-structured-description-content-renderer ytm-reel-shelf-renderer',
-          // In related
+          // Related
           'ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(a[href^="/shorts"])',
         )
       }
@@ -1320,9 +1375,9 @@ const configureCss = (() => {
           '.ytp-ad-action-interstitial',
           // Paid content overlay
           '.ytp-paid-content-overlay',
-          // Above Related videos
+          // Above Related
           '#player-ads',
-          // In Related videos
+          // Related
           '#items > ytd-ad-slot-renderer',
         )
       }
@@ -1341,9 +1396,9 @@ const configureCss = (() => {
           // Directly under comments entry point (narrow)
           'ytm-item-section-renderer[section-identifier="comments-entry-point"] + ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
           '.related-chips-slot-wrapper ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
-          // In Related videos (narrow)
+          // Related (narrow)
           'ytm-watch ytm-item-section-renderer[data-content-type="result"]:has(> lazy-list > ad-slot-renderer)',
-          // In Related videos (wide)
+          // Related (wide)
           'ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ad-slot-renderer',
         )
       }
@@ -1418,7 +1473,7 @@ const configureCss = (() => {
         hideCssSelectors.push(
           // Outside of Search
           '.ytSearchboxComponentVoiceSearchWrapper',
-          // In Search
+          // Search
           '.mobile-topbar-header-voice-search-button',
           // Logged out home page
           '.search-bar-entry-point-voice-search-button',
@@ -1544,6 +1599,9 @@ const configureCss = (() => {
           }
         `)
       }
+      if (config.hideShortsRemixButton) {
+        hideCssSelectors.push('#remix-button.ytd-reel-player-overlay-renderer')
+      }
       if (config.hideSubscriptionsLatestBar) {
         hideCssSelectors.push(
           'ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child'
@@ -1551,6 +1609,7 @@ const configureCss = (() => {
       }
       if (config.minimumGridItemsPerRow != 'auto') {
         let gridItemsPerRow = Number(config.minimumGridItemsPerRow)
+        // Don't override the number of items if YouTube wants to show more
         let exclude = []
         for (let i = 6; i > gridItemsPerRow; i--) {
           exclude.push(`[elements-per-row="${i}"]`)
@@ -1563,24 +1622,30 @@ const configureCss = (() => {
       }
       if (!config.hideShorts && config.minimumShortsPerRow != 'auto') {
         let shortsPerRow = Number(config.minimumShortsPerRow)
+        let subscriptionsShortsPerRow = Math.min(6, shortsPerRow)
+        // Don't override the number of items if YouTube wants to show more
         let exclude = []
-        for (let i = 8; i > shortsPerRow; i--) {
-          exclude.push(`[style*="--ytd-rich-grid-slim-items-per-row: ${i}"]`)
+        for (let i = 6; i > shortsPerRow; i--) {
+          exclude.push(`[style*="--ytd-rich-grid-items-per-row: ${i}"]`)
         }
+        let excludeSelector = exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''
         cssRules.push(`
-          /* Home only has 9 Shorts per shelf */
-          ytd-browse[page-subtype="home"] ytd-rich-grid-renderer${exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''} {
-            --ytd-rich-grid-slim-items-per-row: ${Math.min(9, shortsPerRow)} !important;
-          }
-          ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer${exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''},
-          ytd-browse[page-subtype="filteredsubscriptions"] ytd-rich-grid-renderer[is-shorts-grid]${exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''} {
+          ytd-browse[page-subtype="home"] ytd-rich-shelf-renderer[is-shorts]${excludeSelector},
+          ytd-browse[page-subtype="filteredsubscriptions"] ytd-rich-grid-renderer[is-shorts-grid]${excludeSelector} {
             --ytd-rich-grid-slim-items-per-row: ${shortsPerRow} !important;
+            --ytd-rich-grid-items-per-row: ${shortsPerRow} !important;
           }
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-item-renderer[is-slim-media]:nth-child(-n+${shortsPerRow}) {
+          ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer[is-shorts]${excludeSelector} {
+            --ytd-rich-grid-slim-items-per-row: ${subscriptionsShortsPerRow} !important;
+            --ytd-rich-grid-items-per-row: ${subscriptionsShortsPerRow} !important;
+          }
+          /* Show Shorts beyond the ones YouTube thinks should be visible */
+          ytd-browse[page-subtype="home"] ytd-rich-item-renderer[is-slim-media]:nth-child(-n+${shortsPerRow}),
+          ytd-browse[page-subtype="subscriptions"] ytd-rich-item-renderer[is-slim-media]:nth-child(-n+${subscriptionsShortsPerRow}) {
             display: block !important;
           }
         `)
-        if (config.minimumShortsPerRow == '12') {
+        if (shortsPerRow >= 6) {
           // Hide the Show more/Show less button if we're showing everything
           hideCssSelectors.push('ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer[is-shorts] .expand-collapse-button')
         }
@@ -1811,6 +1876,48 @@ function isVideoPage() {
 }
 
 //#region Tweak functions
+function allowBackgroundPlay() {
+  realDocumentHidden = document.hidden
+  Object.defineProperties(document, {
+    hidden: {value: false},
+    visibilityState: {value: 'visible'},
+  })
+  let activityTimeout = null
+  document.addEventListener('visibilitychange', async (e) => {
+    e.stopImmediatePropagation()
+    realDocumentHidden = !realDocumentHidden
+    if (!realDocumentHidden) {
+      if (activityTimeout) {
+        log('allowBackgroundPlay: stopping activity simulation')
+        clearTimeout(activityTimeout)
+        activityTimeout = null
+      }
+      return
+    }
+    if (!isVideoPage()) return
+    let $player = document.querySelector('#movie_player')
+    if (!$player) return
+    // @ts-ignore
+    let playerState = $player.getPlayerState?.()
+    if (!playerState || playerState < 1 || playerState == 2) return
+    function activity() {
+      if (!realDocumentHidden) return
+      let keyCode = [16, 17, 18][Math.floor(Math.random() * 3)]
+      for (let type of ['keydown', 'keyup']) {
+        document.dispatchEvent(new KeyboardEvent(type, {
+          bubbles: true,
+          cancelable: true,
+          keyCode,
+          which: keyCode,
+        }))
+      }
+      activityTimeout = setTimeout(activity, 45_000 + Math.random() * 25_000)
+    }
+    log('allowBackgroundPlay: starting activity simulation')
+    activity()
+  }, true)
+}
+
 async function alwaysUseOriginalAudio() {
   let $player = await getElement('#movie_player', {
     name: 'player (alwaysUseOriginalAudio)',
@@ -1959,7 +2066,7 @@ function downloadTranscript() {
         sections.push(parts.join(' '))
         parts = []
       }
-      sections.push(/** @type {HTMLElement} */ ($el.querySelector('#title')).innerText.trim())
+      sections.push(/** @type {HTMLElement} */ ($el).innerText.trim())
     } else {
       parts.push(/** @type {HTMLElement} */ ($el.querySelector('.segment-text')).innerText.trim())
     }
@@ -2130,30 +2237,36 @@ function handleDesktopWatchChannelMenu($menu) {
 
 /** @param {HTMLElement} $menu */
 function addHideChannelToDesktopVideoMenu($menu) {
-  let videoContainerElement
+  let videoContainerElementSelector
   if (isSearchPage()) {
-    videoContainerElement = 'ytd-video-renderer'
+    videoContainerElementSelector = 'ytd-video-renderer'
   }
   else if (isVideoPage()) {
-    videoContainerElement = 'ytd-compact-video-renderer'
+    // TODO Remove ytd-compact-video-renderer after confirming all Related videos have moved to yt-lockup-view-model
+    videoContainerElementSelector = 'ytd-compact-video-renderer, yt-lockup-view-model'
   }
   else if (isHomePage()) {
-    videoContainerElement = 'ytd-rich-item-renderer'
+    videoContainerElementSelector = 'ytd-rich-item-renderer'
   }
 
-  if (!videoContainerElement) return
+  if (!videoContainerElementSelector) return
 
-  let $video = /** @type {HTMLElement} */ ($lastClickedElement.closest(videoContainerElement))
+  let $video = /** @type {HTMLElement} */ ($lastClickedElement.closest(videoContainerElementSelector))
   if (!$video) return
 
   log('found clicked video')
   let channel = getChannelDetailsFromVideo($video)
   if (!channel) return
   lastClickedChannel = channel
+  log('channel for clicked video', lastClickedChannel)
 
-  if ($menu.querySelector('#cpfyt-hide-channel-menu-item')) return
+  $menu.querySelector('#cpfyt-hide-channel-menu-item')?.remove()
 
-  let $menuItems = $menu.querySelector('#items')
+  let $menuItems = $menu.querySelector([
+    'tp-yt-paper-listbox',
+    'yt-list-view-model',
+  ].join(', '))
+  // Insert before last menu item, which should be Report
   $menuItems.lastElementChild.insertAdjacentHTML('beforebegin', `
 <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
   <div class="cpfyt-menu-icon">
@@ -2249,6 +2362,16 @@ function getChannelDetailsFromVideo($video) {
         }
       }
     }
+    else if ($video.tagName == 'YT-LOCKUP-VIEW-MODEL') {
+      // Assumption: channel name is always the first text in this element
+      let $name = $video.querySelector('yt-content-metadata-view-model [role="text"]')
+      if ($name) {
+        return {
+          name: $name.textContent,
+        }
+      }
+    }
+    // TODO Remove after confirming all Related videos have moved to yt-lockup-view-model
     else if ($video.tagName == 'YTD-COMPACT-VIDEO-RENDERER') {
       let $link = /** @type {HTMLElement} */ ($video.querySelector('#text.ytd-channel-name'))
       if ($link) {
@@ -2519,18 +2642,23 @@ async function observeDesktopRichGridItems(options) {
   processAllVideos()
 }
 
-/** @param {HTMLElement} $menu */
-function onDesktopMenuAppeared($menu) {
-  log('menu appeared')
+/** @param {HTMLElement} $dropdown */
+function onDesktopMenuAppeared($dropdown) {
+  log('menu appeared', $dropdown)
+
+  // YouTube currently has 2 menu components: <tp-yt-paper-listbox> and <yt-list-item-view-model>
+  let $menu = $dropdown.querySelector('tp-yt-paper-listbox, yt-list-item-view-model')
+  let menuConfig = MenuConfigs[$menu.tagName]
 
   if (config.hideShareThanksClip) {
-    let $menuItems = /** @type {NodeListOf<HTMLElement>} */ ($menu.querySelectorAll('ytd-menu-service-item-renderer'))
+    let $menuItems = /** @type {NodeListOf<HTMLElement>} */ ($dropdown.querySelectorAll(menuConfig.itemSelector))
     let testLabels = new Set([getString('SHARE'), getString('THANKS'), getString('CLIP')])
     for (let $menuItem of $menuItems) {
-      let menuItemText = $menuItem.querySelector('yt-formatted-string')?.textContent
+      let menuItemText = $menuItem.querySelector(menuConfig.itemTextSelector)?.textContent
       if (testLabels.has(menuItemText)) {
         log('hideShareThanksClip: tagging', menuItemText, 'menu item')
         $menuItem.classList.add(Classes.HIDE_SHARE_THANKS_CLIP)
+        // Separator on the Download item is <tp-yt-paper-listbox> menu-specific
         if ($menuItem.hasAttribute('has-separator')) {
           let $newSeparatorItem = $menuItem.previousElementSibling
           if (config.hidePremiumUpsells && $newSeparatorItem.tagName == 'YTD-MENU-SERVICE-ITEM-DOWNLOAD-RENDERER') {
@@ -2547,12 +2675,12 @@ function onDesktopMenuAppeared($menu) {
     }
   }
   if (config.downloadTranscript) {
-    addDownloadTranscriptToDesktopMenu($menu)
+    addDownloadTranscriptToDesktopMenu($dropdown)
   }
   if (config.hideChannels) {
-    addHideChannelToDesktopVideoMenu($menu)
+    addHideChannelToDesktopVideoMenu($dropdown)
     // XXX This menu re-renders async if another menu was previously displayed
-    handleDesktopWatchChannelMenu($menu)
+    handleDesktopWatchChannelMenu($dropdown)
   }
   if (config.hideHiddenVideos) {
     observeVideoHiddenState()
@@ -3004,7 +3132,7 @@ async function observeVideoAds() {
       if (desktop) {
         let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
         if ($muteButton &&
-            $muteButton.dataset.titleNoTooltip != getYtString('MUTE') &&
+            $muteButton.dataset.titleNoTooltip != getYtString('MUTE', 'MUTE_VOLUME') &&
             $muteButton.dataset.cpfytWasMuted == 'false') {
           log('unmuting audio after ads')
           delete $muteButton.dataset.cpfytWasMuted
@@ -3231,6 +3359,32 @@ async function observeVideoList(options) {
 /** @param {MouseEvent} e */
 function onDocumentClick(e) {
   $lastClickedElement = /** @type {HTMLElement} */ (e.target)
+  if (desktop && loggedIn && (config.disableHomeFeed || config.redirectLogoToSubscriptions)) {
+    let $logoLink = $lastClickedElement.closest('a#logo')
+    if ($logoLink) {
+      // @ts-ignore
+      let browseEndpoint = $logoLink.data?.browseEndpoint
+      // @ts-ignore
+      let webCommandMetadata = $logoLink.data?.commandMetadata?.webCommandMetadata
+      if (browseEndpoint && webCommandMetadata) {
+        log('redirecting YouTube logo click to Subscriptions')
+        browseEndpoint.browseId = 'FEsubscriptions'
+        webCommandMetadata.url = '/feed/subscriptions'
+      }
+    }
+  }
+  if (desktop && config.redirectShorts) {
+    let $shortsLink = /** @type {HTMLAnchorElement} */ ($lastClickedElement.closest('a[href^="/shorts/'))
+    if ($shortsLink) {
+      // @ts-ignore
+      let webCommandMetadata = $shortsLink._data?.commandMetadata?.webCommandMetadata
+      if (webCommandMetadata) {
+        log('redirecting Shorts video click to normal player')
+        webCommandMetadata.url = `/watch?v=${$shortsLink.pathname.split('/').at(-1)}`
+        webCommandMetadata.webPageType = 'WEB_PAGE_TYPE_WATCH'
+      }
+    }
+  }
 }
 
 /** @param {HTMLElement} $menu */
@@ -3263,7 +3417,8 @@ function hideWatched($video) {
   // Watch % is obtained from progress bar width when a video has one
   let $progressBar
   if (desktop) {
-    $progressBar = $video.querySelector('#progress')
+    // TODO Remove #progress after confirming all videos have moved to yt-lockup-view-model
+    $progressBar = $video.querySelector('#progress, .ytThumbnailOverlayProgressBarHostWatchedProgressBarSegment')
   }
   if (mobile) {
     $progressBar = $video.querySelector('.thumbnail-overlay-resume-playback-progress')
@@ -3286,22 +3441,20 @@ function manuallyHideVideo($video) {
 
   // Streamed videos are identified using the video title's aria-label
   if (config.hideStreamed) {
-    /** @type {HTMLElement} */
-    let $videoTitle
+    let hide = false
     if (desktop) {
-      // Subscriptions <ytd-rich-item-renderer> has a different structure
-      $videoTitle = $video.querySelector($video.tagName == 'YTD-RICH-ITEM-RENDERER' ? '#video-title-link' : '#video-title')
+      let $metadata = /** @type {HTMLElement} */ ($video.querySelector(
+        // TODO Remove #metadata-line after confirming all videos have moved to yt-lockup-view-model
+        '#metadata-line, yt-content-metadata-view-model .yt-content-metadata-view-model-wiz__delimiter + .yt-content-metadata-view-model-wiz__metadata-text'
+      ))
+      if ($metadata) {
+        hide = Boolean($metadata.innerText.match(getString('STREAMED_METADATA_INNERTEXT_RE')))
+      }
     }
     if (mobile) {
-      $videoTitle = $video.querySelector('.media-item-headline .yt-core-attributed-string')
-    }
-    let hide = false
-    if ($videoTitle) {
-      hide = Boolean($videoTitle.getAttribute('aria-label')?.includes(getString('STREAMED_TITLE_ARIA_LABEL')))
-      // Fall back to the metadata line on desktop
-      if (!hide && desktop) {
-        let $metadataLine = /** @type {HTMLElement} */ ($video.querySelector('#metadata-line'))
-        hide = Boolean($metadataLine?.innerText.match(getString('STREAMED_METADATA_INNERTEXT_RE')))
+      let $videoTitleWithLabel = $video.querySelector('.media-item-headline .yt-core-attributed-string[aria-label]')
+      if ($videoTitleWithLabel) {
+        hide = $videoTitleWithLabel.getAttribute('aria-label').includes(getString('STREAMED_TITLE_ARIA_LABEL'))
       }
     }
     $video.classList.toggle(Classes.HIDE_STREAMED, hide)
@@ -3425,7 +3578,7 @@ function tweakAdPlayerOverlay($player) {
   if (desktop) {
     let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
     if ($muteButton) {
-      if ($muteButton.dataset.titleNoTooltip == getYtString('MUTE')) {
+      if ($muteButton.dataset.titleNoTooltip == getYtString('MUTE', 'MUTE_VOLUME')) {
         log('muting ad audio')
         $muteButton.click()
         $muteButton.dataset.cpfytWasMuted = 'false'
@@ -3539,6 +3692,23 @@ async function tweakChannelPage() {
 
 // TODO Hide ytd-channel-renderer if a channel is hidden
 function tweakSearchPage() {
+  if (desktop && config.hideShorts) {
+    run(async function() {
+      let $chips = await getElement('ytd-search #chip-bar #chips', {
+        name: 'search chip bar (hideShorts)',
+        stopIf: currentUrlChanges(),
+        timeout: 500,
+      })
+      if (!$chips) return
+      for (let $chip of $chips.children) {
+        if (/** @type {HTMLElement} */ ($chip).innerText == getString('SHORTS')) {
+          $chip.classList.add('HideShorts')
+          break
+        }
+      }
+    })
+  }
+
   if (!config.hideStreamed && !config.hideChannels) return
 
   if (desktop) {
@@ -3641,7 +3811,8 @@ async function tweakVideoPage() {
     function processCurrentItems() {
       itemCount = 0
       for (let $item of $contents.children) {
-        if ($item.nodeName == 'YTD-COMPACT-VIDEO-RENDERER') {
+        // TODO Remove YTD-COMPACT-VIDEO-RENDERER after confirming all Related videos have moved to YT-LOCKUP-VIEW-MODEL
+        if ($item.nodeName == 'YTD-COMPACT-VIDEO-RENDERER' || $item.nodeName == 'YT-LOCKUP-VIEW-MODEL') {
           manuallyHideVideo($item)
           waitForVideoOverlay($item, `related item ${++itemCount}`)
         }
@@ -3669,7 +3840,8 @@ async function tweakVideoPage() {
       for (let mutation of mutations) {
         for (let $addedNode of mutation.addedNodes) {
           if (!($addedNode instanceof HTMLElement)) continue
-          if ($addedNode.nodeName == 'YTD-COMPACT-VIDEO-RENDERER') {
+          // TODO Remove YTD-COMPACT-VIDEO-RENDERER after confirming all Related videos have moved to YT-LOCKUP-VIEW-MODEL
+          if ($addedNode.nodeName == 'YTD-COMPACT-VIDEO-RENDERER' || $addedNode.nodeName == 'YT-LOCKUP-VIEW-MODEL') {
             manuallyHideVideo($addedNode)
             waitForVideoOverlay($addedNode, `related item ${++itemCount}`)
             newItemCount++
@@ -3699,6 +3871,7 @@ async function tweakVideoPage() {
   }
 }
 
+// TODO Check if we need to update this for <yt-lockup-view-model> videos
 /**
  * Wait for video overlays with watch progress when they're loazed lazily.
  * @param {Element} $video
@@ -3764,6 +3937,9 @@ let channel = new BroadcastChannel(channelName)
 
 function main() {
   if (config.enabled) {
+    if (mobile && config.allowBackgroundPlay) {
+      allowBackgroundPlay()
+    }
     configureCss()
     triggerVideoPageResize()
     observeTitle()

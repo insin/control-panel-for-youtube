@@ -2,6 +2,15 @@
   "addTakeSnapshot": {
     "message": "Add Take snapshot to video menu"
   },
+  "ads": {
+    "message": "Ads"
+  },
+  "adsNote": {
+    "message": "These options may trigger YouTube's adblock detection"
+  },
+  "allowBackgroundPlay": {
+    "message": "Allow background playback"
+  },
   "alwaysShowShortsProgressBar": {
     "message": "Always show progress bar"
   },
@@ -10,6 +19,9 @@
   },
   "alwaysUseTheaterMode": {
     "message": "Always use theater mode"
+  },
+  "annoyances": {
+    "message": "Annoyances"
   },
   "anyPercent": {
     "message": "any %"
@@ -162,6 +174,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "Hide Shorts metadata until hover"
   },
+  "hideShortsRemixButton": {
+    "message": "Hide Remix button"
+  },
   "hideShortsSuggestedActions": {
     "message": "Hide suggested actions"
   },
@@ -191,9 +206,6 @@
   },
   "hideWatchedThreshold": {
     "message": "Watched %"
-  },
-  "homeMaxOption": {
-    "message": "9 (Home max)"
   },
   "inHomeAndSubscriptionsNote": {
     "message": "In Home and Subscriptions"
@@ -230,6 +242,9 @@
   },
   "qualityMedium": {
     "message": "Medium"
+  },
+  "redirectLogoToSubscriptions": {
+    "message": "Link YouTube logo to Subscriptions"
   },
   "redirectShorts": {
     "message": "Redirect Shorts to the normal player"

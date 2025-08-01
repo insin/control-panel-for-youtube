@@ -2,6 +2,15 @@
   "addTakeSnapshot": {
     "message": "将截图功能添加到视频菜单"
   },
+  "ads": {
+    "message": "广告"
+  },
+  "adsNote": {
+    "message": "这些选项可能会触发YouTube的广告拦截检测"
+  },
+  "allowBackgroundPlay": {
+    "message": "允许视频在后台播放"
+  },
   "alwaysShowShortsProgressBar": {
     "message": "始终显示进度条"
   },
@@ -10,6 +19,9 @@
   },
   "alwaysUseTheaterMode": {
     "message": "始终剧院模式"
+  },
+  "annoyances": {
+    "message": "干扰项"
   },
   "anyPercent": {
     "message": "任何 %"
@@ -162,6 +174,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "隐藏Shorts元数据直至悬停"
   },
+  "hideShortsRemixButton": {
+    "message": "隐藏混剪按钮"
+  },
   "hideShortsSuggestedActions": {
     "message": "隐藏建议操作"
   },
@@ -191,9 +206,6 @@
   },
   "hideWatchedThreshold": {
     "message": "观看 %"
-  },
-  "homeMaxOption": {
-    "message": "9 (首页最大)"
   },
   "inHomeAndSubscriptionsNote": {
     "message": "在主页和订阅中"
@@ -230,6 +242,9 @@
   },
   "qualityMedium": {
     "message": "中"
+  },
+  "redirectLogoToSubscriptions": {
+    "message": "点击Logo跳转至订阅"
   },
   "redirectShorts": {
     "message": "将短视频重定向至普通播放器"

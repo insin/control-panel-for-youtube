@@ -2,6 +2,15 @@
   "addTakeSnapshot": {
     "message": "Ajouter Capture d'écran au menu de la vidéo"
   },
+  "ads": {
+    "message": "Publicités"
+  },
+  "adsNote": {
+    "message": "Ces options peuvent déclencher la détection de bloqueur de publicités de YouTube"
+  },
+  "allowBackgroundPlay": {
+    "message": "Autoriser la lecture en arrière-plan"
+  },
   "alwaysShowShortsProgressBar": {
     "message": "Toujours afficher la barre de progression"
   },
@@ -10,6 +19,9 @@
   },
   "alwaysUseTheaterMode": {
     "message": "Toujours utiliser le mode cinéma"
+  },
+  "annoyances": {
+    "message": "Nuisances"
   },
   "anyPercent": {
     "message": "Quel que soit le pourcentage"
@@ -162,6 +174,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "Masquer les métadonnées des Shorts jusqu'au survol"
   },
+  "hideShortsRemixButton": {
+    "message": "Masquer le bouton Remix"
+  },
   "hideShortsSuggestedActions": {
     "message": "Masquer les actions suggérées"
   },
@@ -191,9 +206,6 @@
   },
   "hideWatchedThreshold": {
     "message": "Pourcentage visionné"
-  },
-  "homeMaxOption": {
-    "message": "9 (Accueil max)"
   },
   "inHomeAndSubscriptionsNote": {
     "message": "Dans Accueil et Abonnements"
@@ -230,6 +242,9 @@
   },
   "qualityMedium": {
     "message": "Moyenne"
+  },
+  "redirectLogoToSubscriptions": {
+    "message": "Rediriger le logo YouTube vers les Abonnements"
   },
   "redirectShorts": {
     "message": "Rediriger les Shorts vers le lecteur normal"

@@ -12,20 +12,15 @@ for (let optionValue of [
   }
 }
 
-for (let translationClass of [
-  'inHomeAndSubscriptionsNote',
-]) {
-  let translation = chrome.i18n.getMessage(translationClass)
-  for (let $el of document.querySelectorAll(`.${translationClass}`)) {
-    $el.textContent = translation
-  }
-}
-
 for (let translationId of [
   'addTakeSnapshot',
+  'ads',
+  'adsNote',
+  'allowBackgroundPlay',
   'alwaysShowShortsProgressBar',
   'alwaysUseOriginalAudio',
   'alwaysUseTheaterMode',
+  'annoyances',
   'anyPercent',
   'disableAutoplay',
   'disableHomeFeed',
@@ -67,6 +62,7 @@ for (let translationId of [
   'hideShareThanksClip',
   'hideShorts',
   'hideShortsMetadataUntilHover',
+  'hideShortsRemixButton',
   'hideShortsSuggestedActions',
   'hideSponsored',
   'hideStreamed',
@@ -77,7 +73,7 @@ for (let translationId of [
   'hideVoiceSearch',
   'hideWatched',
   'hideWatchedThreshold',
-  'homeMaxOption',
+  'inHomeAndSubscriptionsNote',
   'minimumGridItemsPerRow',
   'mobileGridView',
   'pauseChannelTrailers',
@@ -85,6 +81,7 @@ for (let translationId of [
   'qualityHigh',
   'qualityLow',
   'qualityMedium',
+  'redirectLogoToSubscriptions',
   'redirectShorts',
   'removePink',
   'searchThumbnailSize',
@@ -104,8 +101,10 @@ for (let translationId of [
 let $body = document.body
 let $form = document.querySelector('form')
 
-if (navigator.userAgent.includes('Safari/') && !/Chrom(e|ium)\//.test(navigator.userAgent)) {
-  $body.classList.add('safari', /iP(ad|hone)/.test(navigator.userAgent) ? 'iOS' : 'macOS')
+let isSafari = navigator.userAgent.includes('Safari/') && !/Chrom(e|ium)\//.test(navigator.userAgent)
+let isIos = isSafari && /iP(ad|hone)/.test(navigator.userAgent)
+if (isSafari) {
+  $body.classList.add('safari', isIos ? 'iOS' : 'macOS')
 } else {
   $body.classList.toggle('edge', navigator.userAgent.includes('Edg/'))
 }
@@ -114,6 +113,7 @@ if (navigator.userAgent.includes('Safari/') && !/Chrom(e|ium)\//.test(navigator.
 /** @type {import("./types").OptionsConfig} */
 let defaultConfig = {
   enabled: true,
+  collapsedOptions: [],
   // Default based on platform until the content script runs
   version: /(Android|iP(ad|hone))/.test(navigator.userAgent) ? 'mobile' : 'desktop',
   alwaysShowShortsProgressBar: false,
@@ -139,7 +139,7 @@ let defaultConfig = {
   hideShareThanksClip: false,
   hideShorts: true,
   hideShortsSuggestedActions: true,
-  hideSponsored: true,
+  hideSponsored: false,
   hideStreamed: false,
   hideSuggestedSections: true,
   hideUpcoming: false,
@@ -148,8 +148,8 @@ let defaultConfig = {
   hideWatchedThreshold: '80',
   redirectShorts: true,
   removePink: false,
-  skipAds: true,
-  stopShortsLooping: false,
+  skipAds: false,
+  stopShortsLooping: true,
   // Desktop only
   addTakeSnapshot: true,
   alwaysUseOriginalAudio: false,
@@ -161,18 +161,21 @@ let defaultConfig = {
   hideChat: false,
   hideEndCards: false,
   hideEndVideos: true,
-  hideMerchEtc: true,
+  hideMerchEtc: false,
   hideMiniplayerButton: false,
   hideShortsMetadataUntilHover: true,
+  hideShortsRemixButton: true,
   hideSubscriptionsLatestBar: false,
   minimumGridItemsPerRow: 'auto',
   minimumShortsPerRow: 'auto',
   pauseChannelTrailers: true,
+  redirectLogoToSubscriptions: false,
   searchThumbnailSize: 'medium',
   snapshotFormat: 'jpeg',
   snapshotQuality: '0.92',
   tidyGuideSidebar: false,
   // Mobile only
+  allowBackgroundPlay: true,
   hideExploreButton: true,
   hideOpenApp: true,
   hideSubscriptionsChannelList: false,
@@ -186,6 +189,7 @@ let defaultConfig = {
 /** @type {import("./types").OptionsConfig} */
 let optionsConfig
 
+let $collapsibleLabels = document.querySelectorAll('section.labelled.collapsible > label[data-collapse-id]')
 let $hiddenChannels = /** @type {HTMLElement} */ (document.querySelector('#hiddenChannels'))
 let $hiddenChannelsDetails = /** @type {HTMLDetailsElement} */ (document.querySelector('#hiddenChannelsDetails'))
 let $hiddenChannelsSummary = /** @type {HTMLElement} */ (document.querySelector('#hiddenChannelsSummary'))
@@ -219,6 +223,20 @@ function h(tagName, attributes, ...children) {
   }
 
   return $el
+}
+
+function onToggleCollapse(e) {
+  let collapsedOptions = optionsConfig.collapsedOptions.slice()
+  let collapseId = e.currentTarget.getAttribute('data-collapse-id')
+  let index = collapsedOptions.indexOf(collapseId)
+  if (index == -1) {
+    collapsedOptions.push(collapseId)
+  } else {
+    collapsedOptions.splice(index, 1)
+  }
+  optionsConfig.collapsedOptions = collapsedOptions
+  storeConfigChanges({collapsedOptions})
+  updateDisplay()
 }
 
 /**
@@ -279,7 +297,14 @@ function updateDisplay() {
   $body.classList.toggle('jpegSnapshot', optionsConfig.snapshotFormat == 'jpeg')
   $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
   $body.classList.toggle('snapshot', optionsConfig.addTakeSnapshot)
+  updateCollapsedOptionsDisplay()
   updateHiddenChannelsDisplay()
+}
+
+function updateCollapsedOptionsDisplay() {
+  for (let $label of $collapsibleLabels) {
+    $label.parentElement.classList.toggle('collapsed', optionsConfig.collapsedOptions.includes($label.getAttribute('data-collapse-id')))
+  }
 }
 
 function updateHiddenChannelsDisplay() {
@@ -321,6 +346,12 @@ function main() {
     updateDisplay()
 
     $form.addEventListener('change', onFormChanged)
+    // TODO Add iOS section groups in the Preact + htm rewrite instead
+    if (!isIos) {
+      for (let $label of $collapsibleLabels) {
+        $label.addEventListener('click', onToggleCollapse)
+      }
+    }
     $hiddenChannelsDetails.addEventListener('toggle', updateHiddenChannelsDisplay)
     chrome.storage.local.onChanged.addListener(onStorageChanged)
 

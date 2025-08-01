@@ -76,14 +76,26 @@ Object.assign(messages, Object.fromEntries(Object.entries(extraTranslations).map
 let storeDescription = `
 ${messages.features}
 
+${messages.ads}:
+
+(⚠ ${messages.adsNote})
+
+• ${messages.hideSponsored}
+• ${messages.skipAds}
+• ${messages.hideMerchEtc}${messages.desktopVersion}
+
+${messages.annoyances}:
+
 • ${messages.hideAI}
 • ${messages.removePink}
+• ${messages.hideInfoPanels}
 • ${messages.hidePremiumUpsells}
 • ${messages.pauseChannelTrailers}${messages.desktopVersion}
+• ${messages.allowBackgroundPlay}${messages.mobileVersion}
+• ${messages.hideOpenApp}${messages.mobileVersion}
 
 ${messages.videoLists}:
 
-• ${messages.hideSponsored}
 • ${messages.hideSuggestedSections}
 • ${messages.hideLive}
 • ${messages.hideStreamed}
@@ -97,11 +109,10 @@ ${messages.videoLists}:
 • ${messages.hideChannels} - ${messages.hideChannelsNote}
 • ${messages.disableHomeFeed}
 • ${messages.searchThumbnailSize}${messages.desktopVersion}
-• ${messages.minimumGridItemsPerRow}${messages.desktopVersion} - ${messages.minimumGridItemsPerRowNote}
+• ${messages.minimumGridItemsPerRow}${messages.desktopVersion}
 
 ${messages.videoPages}:
 
-• ${messages.skipAds}
 • ${messages.disableAutoplay}
 • ${messages.hideRelated}
 • ${messages.hideNextButton}
@@ -114,7 +125,6 @@ ${messages.videoPages}:
 • ${messages.hideMiniplayerButton}${messages.desktopVersion}
 • ${messages.hideEndCards}${messages.desktopVersion}
 • ${messages.hideEndVideos}${messages.desktopVersion}
-• ${messages.hideMerchEtc}${messages.desktopVersion}
 • ${messages.hideChat}${messages.desktopVersion}
 • ${messages.addTakeSnapshot} (JPEG / PNG) ${messages.desktopVersion}
 • ${messages.downloadTranscript}${messages.desktopVersion}
@@ -126,21 +136,21 @@ ${messages.shorts}:
 • ${messages.hideShortsSuggestedActions}
 • ${messages.alwaysShowShortsProgressBar}
 • ${messages.stopShortsLooping}
+• ${messages.hideShortsRemixButton}${messages.desktopVersion}
 • ${messages.hideShortsMetadataUntilHover}${messages.desktopVersion}
 • ${messages.minimumShortsPerRow}${messages.desktopVersion}
 
 ${messages.uiTweaks}:
 
-• ${messages.hideInfoPanels}
-• ${messages.hideChannelBanner}
 • ${messages.hideHomeCategories}
+• ${messages.hideChannelBanner}
 • ${messages.hideVoiceSearch}
+• ${messages.redirectLogoToSubscriptions}${messages.desktopVersion}
 • ${messages.tidyGuideSidebar}${messages.desktopVersion}
 • ${messages.hideSubscriptionsLatestBar}${messages.desktopVersion}
 • ${messages.mobileGridView}${messages.mobileVersion}
 • ${messages.hideExploreButton}${messages.mobileVersion}
 • ${messages.hideSubscriptionsChannelList}${messages.mobileVersion}
-• ${messages.hideOpenApp}${messages.mobileVersion}
 
 ${messages.embeddedVideos}:
 
