@@ -1834,11 +1834,9 @@ const configureCss = (() => {
     //#endregion
 
     if (hideCssSelectors.length > 0) {
-      cssRules.push(`
-        ${hideCssSelectors.join(',\n')} {
-          display: none !important;
-        }
-      `)
+      let hideCssRule = `${hideCssSelectors.join(',\n')} { display: none !important; }`
+      if (desktop) hideCssRule = `ytd-app { ${hideCssRule} }`
+      cssRules.push(hideCssRule)
     }
 
     let css = cssRules.map(dedent).join('\n')
