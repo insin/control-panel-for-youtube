@@ -1375,6 +1375,8 @@ const configureCss = (() => {
           '.ytp-ad-action-interstitial',
           // Paid content overlay
           '.ytp-paid-content-overlay',
+          // Paid content overlay in video previews
+          'ytm-paid-content-overlay-renderer',
           // Above Related
           '#player-ads',
           // Related
