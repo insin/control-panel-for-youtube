@@ -1533,8 +1533,8 @@ const configureCss = (() => {
               margin-top: 0 !important;
             }
             /* Make theater mode full view height */
-            ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container {
-              max-height: 100vh;
+            ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container.ytd-watch-flexy {
+              max-height: none;
               height: 100vh;
             }
           `)
