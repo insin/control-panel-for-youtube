@@ -789,7 +789,10 @@ const configureCss = (() => {
     if (config.skipAds) {
       // Display a black overlay while ads are playing
       cssRules.push(`
-        .ytp-ad-player-overlay, .ytp-ad-player-overlay-layout, .ytp-ad-action-interstitial {
+        .ytp-ad-player-overlay,
+        .ytp-ad-player-overlay-layout,
+        .ytp-ad-action-interstitial,
+        .ytp-video-interstitial-buttoned-centered-layout {
           background: black;
           z-index: 10;
         }
@@ -806,6 +809,7 @@ const configureCss = (() => {
         '#movie_player.ad-showing .ytp-ad-player-overlay > div',
         '#movie_player.ad-showing .ytp-ad-player-overlay-layout > div',
         '#movie_player.ad-showing .ytp-ad-action-interstitial > div',
+        '#movie_player.ad-showing .ytp-video-interstitial-buttoned-centered-layout > div',
         // Yellow ad progress bar
         '#movie_player.ad-showing .ytp-play-progress',
         // Ad time display
@@ -3104,6 +3108,16 @@ async function observeVideoAds() {
     }
     else if ($adContent.classList.contains('ytp-ad-action-interstitial')) {
       tweakAdInterstitial($adContent)
+    }
+    else if ($adContent.classList.contains('ytp-video-interstitial-buttoned-centered-layout')) {
+      log('centred ad interstitial showing')
+      let $skipButton = /** @type {HTMLButtonElement} */ ($adContent.querySelector('button.ytp-skip-ad-button'))
+      if ($skipButton) {
+        log('clicking skip button')
+        $skipButton.click()
+      } else {
+        warn('skip button not found')
+      }
     }
     else {
       warn('unknown ad content', $adContent.className, $adContent.outerHTML)
