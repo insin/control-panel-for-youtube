@@ -23,7 +23,8 @@
       ],
       "js": [
         "content.js"
-      ]
+      ],
+      "run_at": "document_start"
     },
     {
       "world": "MAIN",
@@ -36,7 +37,8 @@
       ],
       "js": [
         "page.js"
-      ]
+      ],
+      "run_at": "document_start"
     },
     {
       "matches": [

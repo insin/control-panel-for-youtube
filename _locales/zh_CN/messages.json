@@ -26,8 +26,14 @@
   "auto": {
     "message": "自动"
   },
+  "blockAds": {
+    "message": "拦截广告"
+  },
   "desktopOnly": {
     "message": "仅限桌面"
+  },
+  "disableAmbientMode": {
+    "message": "停用环境光效"
   },
   "disableAutoplay": {
     "message": "禁用自动播放"

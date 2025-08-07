@@ -7,6 +7,8 @@ let defaultConfig = {
   debug: false,
   debugManualHiding: false,
   alwaysShowShortsProgressBar: false,
+  blockAds: true,
+  disableAmbientMode: true,
   disableAutoplay: true,
   disableHomeFeed: false,
   hiddenChannels: [],
@@ -79,7 +81,10 @@ let mobile = location.hostname == 'm.youtube.com'
 let desktop = !mobile
 /** @type {import("./types").Version} */
 let version = mobile ? 'mobile' : 'desktop'
-let lang = mobile ? document.body.lang : document.documentElement.lang
+/** @type {string} */
+let lang
+/** @type {string[]} */
+let langCodes = []
 let loggedIn = /(^|; )SID=/.test(document.cookie)
 
 function log(...args) {
@@ -458,11 +463,6 @@ const locales = {
   },
 }
 
-const langCodes = lang.split('-')
-  .map((_, index, parts) => parts.slice(0, parts.length - index).join('-'))
-  .filter(langCode => Object.hasOwn(locales, langCode))
-  .concat('en')
-
 /**
  * @param {import("./types").LocaleKey} code
  * @returns {string}
@@ -794,6 +794,15 @@ const configureCss = (() => {
       }
     }
 
+    if (config.disableAmbientMode) {
+      if (desktop) {
+        hideCssSelectors.push('#cinematics, #cinematic-container.ytd-reel-video-renderer')
+      }
+      if (mobile) {
+        hideCssSelectors.push('.below-the-player-cinematic-container')
+      }
+    }
+
     if (config.disableAutoplay) {
       if (desktop) {
         hideCssSelectors.push('button[data-tooltip-target-id="ytp-autonav-toggle-button"]')
@@ -943,10 +952,18 @@ const configureCss = (() => {
 
     if (config.hideComments) {
       if (desktop) {
-        hideCssSelectors.push('#comments')
+        hideCssSelectors.push(
+          '#comments',
+          // Shorts comments button
+          '#comments-button.ytd-reel-player-overlay-renderer',
+        )
       }
       if (mobile) {
-        hideCssSelectors.push('ytm-slim-video-metadata-section-renderer + ytm-item-section-renderer')
+        hideCssSelectors.push(
+          'ytm-slim-video-metadata-section-renderer + ytm-item-section-renderer',
+          // Shorts comments button
+          'ytm-button-renderer.icon-shorts_comment',
+        )
       }
     }
 
@@ -1359,6 +1376,8 @@ const configureCss = (() => {
         hideCssSelectors.push(
           // Big promo on Home screen
           'ytm-statement-banner-renderer',
+          // Home
+          'ytm-rich-item-renderer:has(> ad-slot-renderer)',
           // Bottom of screen promo
           '.mealbar-promo-renderer',
           // Search results
@@ -1367,11 +1386,8 @@ const configureCss = (() => {
           'ytm-paid-content-overlay-renderer',
           // Directly under video
           'ytm-companion-slot:has(> ytm-companion-ad-renderer)',
-          // Directly under comments entry point (narrow)
-          'ytm-item-section-renderer[section-identifier="comments-entry-point"] + ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
-          '.related-chips-slot-wrapper ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer)',
-          // Related (narrow)
-          'ytm-watch ytm-item-section-renderer[data-content-type="result"]:has(> lazy-list > ad-slot-renderer)',
+          // Item sections which contain nothing but an ad
+          'ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer:only-child)',
           // Related (wide)
           'ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ad-slot-renderer',
         )
@@ -3719,6 +3735,99 @@ function waitForVideoOverlay($video, uniqueId, observers) {
 }
 //#endregion
 
+//#region Global patching
+function filterShortsAd(entry) {
+  return entry.command?.reelWatchEndpoint?.adClientParams?.isAd != true
+}
+
+function processPlayerResponse(data) {
+  if (data.videoDetails) {
+    delete data.adPlacements
+    delete data.adSlots
+    delete data.playerAds
+  }
+}
+
+function processReelWatchSequenceResponse(data) {
+  if (Array.isArray(data.entries) && data.entries[0]?.command?.reelWatchEndpoint) {
+    data.entries = data.entries.filter(filterShortsAd)
+  }
+  if (Array.isArray(data.reelWatchSequenceResponse?.entries) &&
+      data.reelWatchSequenceResponse.entries[0]?.command?.reelWatchEndpoint) {
+    data.reelWatchSequenceResponse.entries = data.reelWatchSequenceResponse.entries.filter(filterShortsAd)
+  }
+}
+
+let ytInitialPlayerResponse
+let ytInitialReelWatchSequenceResponse
+
+try {
+  Object.defineProperty(window, 'ytInitialPlayerResponse', {
+    set(data) {
+      ytInitialPlayerResponse = data
+      if (ytInitialPlayerResponse != null && config.blockAds) {
+        processPlayerResponse(ytInitialPlayerResponse)
+      }
+    },
+    get() {
+      return ytInitialPlayerResponse
+    }
+  })
+} catch(error) {
+  warn('error defining ytInitialPlayerResponse', error)
+}
+
+try {
+  Object.defineProperty(window, 'ytInitialReelWatchSequenceResponse', {
+    set(data) {
+      ytInitialReelWatchSequenceResponse = data
+      if (ytInitialReelWatchSequenceResponse != null && config.blockAds) {
+        processReelWatchSequenceResponse(ytInitialReelWatchSequenceResponse)
+      }
+    },
+    get() {
+      return ytInitialReelWatchSequenceResponse
+    }
+  })
+} catch(error) {
+  warn('error defining ytInitialReelWatchSequenceResponse', error)
+}
+
+
+let Request_clone = Request.prototype.clone
+let Response_clone = Response.prototype.clone
+
+window.fetch = new Proxy(window.fetch, {
+  apply(target, thisArg, argArray) {
+    let url = argArray?.[0]?.url
+    if (
+      !config.blockAds || !url || !url.includes('/player') && !url.includes('/reel_watch_sequence') ||
+      // Ignore adblock detection requests with data: URL payloads
+      argArray[0] instanceof Request && !Request_clone.call(argArray[0]).url.startsWith('https://')
+    ) {
+      return Reflect.apply(target, thisArg, argArray)
+    }
+    return Reflect.apply(target, thisArg, argArray).then(response => {
+      return Response_clone.call(response).text().then(responseText => {
+        try {
+          let data = JSON.parse(responseText)
+          if (url.includes('/player')) {
+            processPlayerResponse(data)
+          }
+          else if (url.includes('/reel_watch_sequence')) {
+            processReelWatchSequenceResponse(data)
+          }
+          return new Response(JSON.stringify(data))
+        } catch (error) {
+          warn('blockAds: error parsing', new URL(url).pathname, 'response', error, responseText)
+        }
+        return response
+      })
+    })
+  }
+})
+//#endregion
+
 //#region Main
 let channelName = crypto.randomUUID()
 let channel = new BroadcastChannel(channelName)
@@ -3762,6 +3871,38 @@ function configChanged(changes) {
   }
 }
 
+async function initLang() {
+  /** @param {HTMLElement} $el */
+  async function waitForLang($el) {
+    if ($el.lang) return $el.lang
+    let startTime = Date.now()
+    return new Promise(resolve => {
+      let observer = new MutationObserver(() => {
+        if ($el.lang) {
+          let elapsed = Date.now() - startTime
+          if (elapsed > 0) {
+            log(version, 'lang became available after', elapsed, 'ms')
+          }
+          observer.disconnect()
+          resolve($el.lang)
+        }
+      })
+      observer.observe($el, {attributes: true, attributeFilter: ['lang']})
+    })
+  }
+  if (mobile) {
+    lang = await waitForLang(await getElement('body', {name: 'mobile <body> for lang'}))
+  } else {
+    lang = await waitForLang(document.documentElement)
+  }
+  log('lang is', lang)
+  langCodes = lang.split('-')
+    .map((_, index, parts) => parts.slice(0, parts.length - index).join('-'))
+    .filter(langCode => Object.hasOwn(locales, langCode))
+    .concat('en')
+  main()
+}
+
 /**
  * @param {MessageEvent<import("./types").SiteConfigMessage>} message
  */
@@ -3770,12 +3911,12 @@ function receiveConfigFromContentScript({data: {type, siteConfig}}) {
     config = {...defaultConfig, ...siteConfig}
     debug = config.debug
     debugManualHiding = config.debugManualHiding
-    log('initial config', config, {version, lang, loggedIn})
+    log('initial config', config, {version, loggedIn})
 
     // Let the options page know which version is being used
     storeConfigChanges({version})
 
-    main()
+    initLang()
     return
   }
 

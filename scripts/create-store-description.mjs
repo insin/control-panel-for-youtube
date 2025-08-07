@@ -78,6 +78,7 @@ ${messages.features}
 
 ${messages.ads}:
 
+• ${messages.blockAds}
 • ${messages.hideSponsored}
 • ${messages.hideMerchEtc}${messages.desktopVersion}
 
@@ -111,6 +112,7 @@ ${messages.videoLists}:
 ${messages.videoPages}:
 
 • ${messages.disableAutoplay}
+• ${messages.disableAmbientMode}
 • ${messages.hideRelated}
 • ${messages.hideNextButton}
 • ${messages.hideShareThanksClip}

@@ -21,6 +21,8 @@ for (let translationId of [
   'alwaysUseTheaterMode',
   'annoyances',
   'anyPercent',
+  'blockAds',
+  'disableAmbientMode',
   'disableAutoplay',
   'disableHomeFeed',
   'disableHomeFeedNote',
@@ -115,6 +117,8 @@ let defaultConfig = {
   // Default based on platform until the content script runs
   version: /(Android|iP(ad|hone))/.test(navigator.userAgent) ? 'mobile' : 'desktop',
   alwaysShowShortsProgressBar: false,
+  blockAds: true,
+  disableAmbientMode: true,
   disableAutoplay: true,
   disableHomeFeed: false,
   hiddenChannels: [],

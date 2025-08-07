@@ -43,10 +43,12 @@ export type OptionsConfig = EmbedConfig & SiteConfig & {
 
 export type SiteConfig = {
   enabled: boolean
-  collapsedOptions?: string[];
-  debug?: boolean,
-  debugManualHiding?: boolean,
-  alwaysShowShortsProgressBar: boolean,
+  collapsedOptions?: string[]
+  debug?: boolean
+  debugManualHiding?: boolean
+  alwaysShowShortsProgressBar: boolean
+  blockAds: boolean
+  disableAmbientMode: boolean
   disableAutoplay: boolean
   disableHomeFeed: boolean
   hiddenChannels: Channel[]

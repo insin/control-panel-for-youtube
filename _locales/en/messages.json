@@ -26,8 +26,14 @@
   "auto": {
     "message": "Auto"
   },
+  "blockAds": {
+    "message": "Block ads"
+  },
   "desktopOnly": {
     "message": "Desktop only"
+  },
+  "disableAmbientMode": {
+    "message": "Disable Ambient mode"
   },
   "disableAutoplay": {
     "message": "Disable Autoplay"
