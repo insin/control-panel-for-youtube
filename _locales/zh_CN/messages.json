@@ -5,9 +5,6 @@
   "ads": {
     "message": "广告"
   },
-  "adsNote": {
-    "message": "这些选项可能会触发YouTube的广告拦截检测"
-  },
   "allowBackgroundPlay": {
     "message": "允许视频在后台播放"
   },
@@ -254,9 +251,6 @@
   },
   "searchThumbnailSize": {
     "message": "搜索缩略图大小"
-  },
-  "skipAds": {
-    "message": "跳过广告"
   },
   "small": {
     "message": "小号"

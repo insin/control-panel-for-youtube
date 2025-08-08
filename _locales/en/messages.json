@@ -5,9 +5,6 @@
   "ads": {
     "message": "Ads"
   },
-  "adsNote": {
-    "message": "These options may trigger YouTube's adblock detection"
-  },
   "allowBackgroundPlay": {
     "message": "Allow background playback"
   },
@@ -257,9 +254,6 @@
   },
   "shorts": {
     "message": "Shorts"
-  },
-  "skipAds": {
-    "message": "Skip ads"
   },
   "small": {
     "message": "Small"

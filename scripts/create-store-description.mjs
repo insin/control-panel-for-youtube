@@ -78,10 +78,7 @@ ${messages.features}
 
 ${messages.ads}:
 
-(⚠ ${messages.adsNote})
-
 • ${messages.hideSponsored}
-• ${messages.skipAds}
 • ${messages.hideMerchEtc}${messages.desktopVersion}
 
 ${messages.annoyances}:

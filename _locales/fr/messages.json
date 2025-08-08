@@ -5,9 +5,6 @@
   "ads": {
     "message": "Publicités"
   },
-  "adsNote": {
-    "message": "Ces options peuvent déclencher la détection de bloqueur de publicités de YouTube"
-  },
   "allowBackgroundPlay": {
     "message": "Autoriser la lecture en arrière-plan"
   },
@@ -257,9 +254,6 @@
   },
   "shorts": {
     "message": "Shorts"
-  },
-  "skipAds": {
-    "message": "Ignorer les publicités"
   },
   "small": {
     "message": "Petit"

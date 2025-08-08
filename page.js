@@ -38,7 +38,6 @@ let defaultConfig = {
   hideWatchedThreshold: '80',
   redirectShorts: true,
   removePink: false,
-  skipAds: false,
   stopShortsLooping: true,
   // Desktop only
   addTakeSnapshot: true,
@@ -785,37 +784,6 @@ const configureCss = (() => {
 
     let cssRules = []
     let hideCssSelectors = []
-
-    if (config.skipAds) {
-      // Display a black overlay while ads are playing
-      cssRules.push(`
-        .ytp-ad-player-overlay,
-        .ytp-ad-player-overlay-layout,
-        .ytp-ad-action-interstitial,
-        .ytp-video-interstitial-buttoned-centered-layout {
-          background: black;
-          z-index: 10;
-        }
-      `)
-      // Hide elements while an ad is showing
-      hideCssSelectors.push(
-        // Thumbnail for cued ad when autoplay is disabled
-        '#movie_player.ad-showing .ytp-cued-thumbnail-overlay-image',
-        // Ad video
-        '#movie_player.ad-showing video',
-        // Ad title
-        '#movie_player.ad-showing .ytp-chrome-top',
-        // Ad overlay content
-        '#movie_player.ad-showing .ytp-ad-player-overlay > div',
-        '#movie_player.ad-showing .ytp-ad-player-overlay-layout > div',
-        '#movie_player.ad-showing .ytp-ad-action-interstitial > div',
-        '#movie_player.ad-showing .ytp-video-interstitial-buttoned-centered-layout > div',
-        // Yellow ad progress bar
-        '#movie_player.ad-showing .ytp-play-progress',
-        // Ad time display
-        '#movie_player.ad-showing .ytp-time-display',
-      )
-    }
 
     if (config.alwaysShowShortsProgressBar) {
       if (desktop) {
@@ -3074,103 +3042,6 @@ async function observeTitle() {
   })
 }
 
-async function observeVideoAds() {
-  let $player = await getElement('#movie_player', {
-    name: 'player (skipAds)',
-    stopIf: currentUrlChanges(),
-  })
-  if (!$player) return
-
-  let $videoAds = $player.querySelector('.video-ads')
-  if (!$videoAds) {
-    $videoAds = await observeForElement($player, (mutations) => {
-      for (let mutation of mutations) {
-        for (let $addedNode of mutation.addedNodes) {
-          if (!($addedNode instanceof HTMLElement)) continue
-          if ($addedNode.classList.contains('video-ads')) {
-            return $addedNode
-          }
-        }
-      }
-    }, {
-      logElement: true,
-      name: '#movie_player (for .video-ads being added)',
-      targetName: '.video-ads',
-      observers: pageObservers,
-    })
-    if (!$videoAds) return
-  }
-
-  function processAdContent() {
-    let $adContent = $videoAds.firstElementChild
-    if ($adContent.classList.contains('ytp-ad-player-overlay') || $adContent.classList.contains('ytp-ad-player-overlay-layout')) {
-      tweakAdPlayerOverlay($player)
-    }
-    else if ($adContent.classList.contains('ytp-ad-action-interstitial')) {
-      tweakAdInterstitial($adContent)
-    }
-    else if ($adContent.classList.contains('ytp-video-interstitial-buttoned-centered-layout')) {
-      log('centred ad interstitial showing')
-      let $skipButton = /** @type {HTMLButtonElement} */ ($adContent.querySelector('button.ytp-skip-ad-button'))
-      if ($skipButton) {
-        log('clicking skip button')
-        $skipButton.click()
-      } else {
-        warn('skip button not found')
-      }
-    }
-    else {
-      warn('unknown ad content', $adContent.className, $adContent.outerHTML)
-    }
-  }
-
-  if ($videoAds.childElementCount > 0) {
-    log('video ad content present')
-    processAdContent()
-  }
-
-  observeElement($videoAds, (mutations) => {
-    // Something added
-    if (mutations.some(mutation => mutation.addedNodes.length > 0)) {
-      log('video ad content appeared')
-      processAdContent()
-    }
-    // Something removed
-    else if (mutations.some(mutation => mutation.removedNodes.length > 0)) {
-      log('video ad content removed')
-      if (onAdRemoved) {
-        onAdRemoved()
-        onAdRemoved = null
-      }
-      // Only unmute if we know the volume wasn't initially muted
-      if (desktop) {
-        let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
-        if ($muteButton &&
-            $muteButton.dataset.titleNoTooltip != getYtString('MUTE', 'MUTE_VOLUME') &&
-            $muteButton.dataset.cpfytWasMuted == 'false') {
-          log('unmuting audio after ads')
-          delete $muteButton.dataset.cpfytWasMuted
-          $muteButton.click()
-        }
-      }
-      if (mobile) {
-        let $video = $player.querySelector('video')
-        if ($video &&
-            $video.muted &&
-            $video.dataset.cpfytWasMuted == 'false') {
-          log('unmuting audio after ads')
-          delete $video.dataset.cpfytWasMuted
-          $video.muted = false
-        }
-      }
-    }
-  }, {
-    logElement: true,
-    name: '#movie_player > .video-ads (for content being added or removed)',
-    observers: pageObservers,
-  })
-}
-
 /**
  * If a video's action menu was opened, watch for that video being dismissed.
  */
@@ -3558,100 +3429,6 @@ function triggerVideoPageResize() {
   }
 }
 
-function tweakAdInterstitial($adContent) {
-  log('ad interstitial showing')
-  let $skipButtonSlot = /** @type {HTMLElement} */ ($adContent.querySelector('.ytp-ad-skip-button-slot'))
-  if (!$skipButtonSlot) {
-    log('skip button slot not found')
-    return
-  }
-
-  observeElement($skipButtonSlot, (_, observer) => {
-    if ($skipButtonSlot.style.display != 'none') {
-      let $button = $skipButtonSlot.querySelector('button')
-      if ($button) {
-        log('clicking skip button')
-        // XXX Not working on mobile
-        $button.click()
-      } else {
-        warn('skip button not found')
-      }
-      observer.disconnect()
-    }
-  }, {
-    leading: true,
-    name: 'skip button slot (for skip button becoming visible)',
-    observers: pageObservers,
-  }, {attributes: true})
-}
-
-function tweakAdPlayerOverlay($player) {
-  log('ad overlay showing')
-
-  // Mute ad audio
-  if (desktop) {
-    let $muteButton = /** @type {HTMLElement} */ ($player.querySelector('button.ytp-mute-button'))
-    if ($muteButton) {
-      if ($muteButton.dataset.titleNoTooltip == getYtString('MUTE', 'MUTE_VOLUME')) {
-        log('muting ad audio')
-        $muteButton.click()
-        $muteButton.dataset.cpfytWasMuted = 'false'
-      }
-      else if ($muteButton.dataset.cpfytWasMuted == null) {
-        $muteButton.dataset.cpfytWasMuted = 'true'
-      }
-    } else {
-      warn('mute button not found')
-    }
-  }
-  if (mobile) {
-    // Mobile doesn't have a mute button, so we mute the video itself
-    let $video = /** @type {HTMLVideoElement} */ ($player.querySelector('video'))
-    if ($video) {
-      if (!$video.muted) {
-        $video.muted = true
-        $video.dataset.cpfytWasMuted = 'false'
-      }
-      else if ($video.dataset.cpfytWasMuted == null) {
-        $video.dataset.cpfytWasMuted = 'true'
-      }
-    } else {
-      warn('<video> not found')
-    }
-  }
-
-  // Try to skip to the end of the ad video
-  let $video = /** @type {HTMLVideoElement} */ ($player.querySelector('video'))
-  if (!$video) {
-    warn('<video> not found')
-    return
-  }
-
-  if (Number.isFinite($video.duration)) {
-    log(`skipping to end of ad (using initial video duration)`)
-    $video.currentTime = $video.duration
-  }
-  else if ($video.readyState == null || $video.readyState < 1) {
-    function onLoadedMetadata() {
-      if (Number.isFinite($video.duration)) {
-        log(`skipping to end of ad (using video duration after loadedmetadata)`)
-        $video.currentTime = $video.duration
-      } else {
-        log(`skipping to end of ad (duration still not available after loadedmetadata)`)
-        $video.currentTime = 10_000
-      }
-    }
-    $video.addEventListener('loadedmetadata', onLoadedMetadata, {once: true})
-    onAdRemoved = () => {
-      $video.removeEventListener('loadedmetadata', onLoadedMetadata)
-    }
-  }
-  else {
-    log(`skipping to end of ad (metadata should be available but isn't)`)
-    $video.currentTime = 10_000
-  }
-}
-
 async function tweakHomePage() {
   if (config.disableHomeFeed && loggedIn) {
     redirectFromHome()
@@ -3794,9 +3571,6 @@ async function tweakSubscriptionsPage() {
 }
 
 async function tweakVideoPage() {
-  if (config.skipAds) {
-    observeVideoAds()
-  }
   if (config.disableAutoplay) {
     disableAutoplay()
   }

@@ -78,7 +78,6 @@ export type SiteConfig = {
   hideWatchedThreshold: string
   redirectShorts: boolean
   removePink: boolean
-  skipAds: boolean
   stopShortsLooping: boolean
   // Desktop only
   addTakeSnapshot: boolean

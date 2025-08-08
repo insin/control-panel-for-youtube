@@ -15,7 +15,6 @@ for (let optionValue of [
 for (let translationId of [
   'addTakeSnapshot',
   'ads',
-  'adsNote',
   'allowBackgroundPlay',
   'alwaysShowShortsProgressBar',
   'alwaysUseOriginalAudio',
@@ -86,7 +85,6 @@ for (let translationId of [
   'removePink',
   'searchThumbnailSize',
   'shorts',
-  'skipAds',
   'snapshotFormat',
   'snapshotQuality',
   'stopShortsLooping',
@@ -148,7 +146,6 @@ let defaultConfig = {
   hideWatchedThreshold: '80',
   redirectShorts: true,
   removePink: false,
-  skipAds: false,
   stopShortsLooping: true,
   // Desktop only
   addTakeSnapshot: true,

@@ -5,9 +5,6 @@
   "ads": {
     "message": "広告"
   },
-  "adsNote": {
-    "message": "これらのオプションは、YouTubeの広告ブロック検出をトリガーする可能性があります"
-  },
   "allowBackgroundPlay": {
     "message": "バックグラウンド再生を許可する"
   },
@@ -256,9 +253,6 @@
   },
   "shorts": {
     "message": "ショート"
-  },
-  "skipAds": {
-    "message": "広告をスキップ"
   },
   "small": {
     "message": "小"
