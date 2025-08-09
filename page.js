@@ -982,6 +982,7 @@ const configureCss = (() => {
           margin: 0.5em;
           display: inline-block;
           cursor: pointer;
+          flex-shrink: 0;
         }
         .cpfyt-pie:hover {
           --cpfyt-pie-color: #f03 !important;
