@@ -2673,13 +2673,8 @@ function onDesktopMenuAppeared($dropdown) {
 
 async function observePopups() {
   if (desktop) {
-    // Desktop dialogs and menus appear in <ytd-popup-container>. Once created,
-    // the same elements are reused.
-    let $popupContainer = await getElement('ytd-popup-container', {name: 'popup container'})
-    let $dropdown = /** @type {HTMLElement} */ ($popupContainer.querySelector('tp-yt-iron-dropdown'))
-    let $dialog = /** @type {HTMLElement} */ ($popupContainer.querySelector('tp-yt-paper-dialog'))
-
-    function observeDialog() {
+    /** @param {HTMLElement} $dialog */
+    function observeDialog($dialog) {
       observeElement($dialog, () => {
         if ($dialog.getAttribute('aria-hidden') == 'true') {
           log('dialog closed')
@@ -2697,7 +2692,8 @@ async function observePopups() {
       })
     }
 
-    function observeDropdown() {
+    /** @param {HTMLElement} $dropdown */
+    function observeDropdown($dropdown) {
       observeElement($dropdown, () => {
         if ($dropdown.getAttribute('aria-hidden') != 'true') {
           onDesktopMenuAppeared($dropdown)
@@ -2712,33 +2708,37 @@ async function observePopups() {
       })
     }
 
-    if ($dialog) observeDialog()
-    if ($dropdown) observeDropdown()
+    // Desktop dialogs and menus appear in <ytd-popup-container>. Once created,
+    // the same elements are reused.
+    let $popupContainer = await getElement('ytd-popup-container', {name: 'popup container'})
+    let $dialog = /** @type {HTMLElement} */ ($popupContainer.querySelector('tp-yt-paper-dialog'))
+    // YouTube currently has multiple dropdown styles, with one element each
+    let $dropdowns = /** @type {NodeListOf<HTMLElement>} */ ($popupContainer.querySelectorAll('tp-yt-iron-dropdown'))
+    if ($dialog) observeDialog($dialog)
+    if ($dropdowns.length > 0) {
+      for (let $dropdown of $dropdowns) {
+        observeDropdown($dropdown)
+      }
+    }
 
-    if (!$dropdown || !$dialog) {
-      observeElement($popupContainer, (mutations, observer) => {
-        for (let mutation of mutations) {
-          for (let $el of mutation.addedNodes) {
-            switch($el.nodeName) {
-              case 'TP-YT-IRON-DROPDOWN':
-                $dropdown = /** @type {HTMLElement} */ ($el)
-                observeDropdown()
-                break
-              case 'TP-YT-PAPER-DIALOG':
-                $dialog = /** @type {HTMLElement} */ ($el)
-                observeDialog()
-                break
-            }
-            if ($dropdown && $dialog) {
-              observer.disconnect()
-            }
+    observeElement($popupContainer, (mutations) => {
+      for (let mutation of mutations) {
+        for (let $el of mutation.addedNodes) {
+          if (!($el instanceof HTMLElement)) continue
+          switch($el.nodeName) {
+            case 'TP-YT-IRON-DROPDOWN':
+              observeDropdown($el)
+              break
+            case 'TP-YT-PAPER-DIALOG':
+              observeDialog($el)
+              break
           }
         }
-      }, {
-        name: '<ytd-popup-container> (for initial <tp-yt-iron-dropdown> and <tp-yt-paper-dialog> being added)',
-        observers: globalObservers,
-      })
-    }
+      }
+    }, {
+      name: '<ytd-popup-container> (for <tp-yt-iron-dropdown> and <tp-yt-paper-dialog> being added)',
+      observers: globalObservers,
+    })
 
     if (config.addTakeSnapshot) {
       let $contextMenu = /** @type {HTMLElement} */ ($popupContainer.querySelector('.ytp-popup.ytp-contextmenu'))
