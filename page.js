@@ -968,19 +968,15 @@ const configureCss = (() => {
     }
 
     if (config.hideHiddenVideos) {
-      // The mobile version doesn't have any HTML hooks for appearance mode, so
-      // we'll just use the current backgroundColor.
-      let bgColor = getComputedStyle(document.documentElement).backgroundColor
       cssRules.push(`
         .cpfyt-pie {
-          --cpfyt-pie-background-color: ${bgColor};
-          --cpfyt-pie-color: ${bgColor == 'rgb(255, 255, 255)' ? '#065fd4' : '#3ea6ff'};
           --cpfyt-pie-delay: 0ms;
           --cpfyt-pie-direction: normal;
           --cpfyt-pie-duration: ${undoHideDelayMs}ms;
+          --cpfyt-pie-fontSize: 200%;
           width: 1em;
           height: 1em;
-          font-size: 200%;
+          font-size: var(--cpfyt-pie-fontSize);
           position: relative;
           border-radius: 50%;
           margin: 0.5em;
@@ -988,7 +984,7 @@ const configureCss = (() => {
           cursor: pointer;
         }
         .cpfyt-pie:hover {
-          --cpfyt-pie-color: #f03;
+          --cpfyt-pie-color: #f03 !important;
         }
         .cpfyt-pie::before,
         .cpfyt-pie::after {
@@ -3062,19 +3058,24 @@ async function observeTitle() {
  * If a video's action menu was opened, watch for that video being dismissed.
  */
 function observeVideoHiddenState() {
-  if (!isHomePage() && !isSubscriptionsPage()) return
-
   if (desktop) {
-    let $video = $lastClickedElement?.closest('ytd-rich-grid-media')
+    let $video = $lastClickedElement?.closest('ytd-rich-grid-media, yt-lockup-view-model')
     if (!$video) return
 
     observeElement($video, () => {
-      if (!$video.hasAttribute('is-dismissed')) return
+      // ytd-rich-grid-media
+      let isDismissed = $video.hasAttribute('is-dismissed')
+      // yt-lockup-view-model
+      let $ytLockupDismissedContent = $video.querySelector('.ytDismissibleItemReplacedContent')
+      if (!isDismissed && !$ytLockupDismissedContent) return
 
-      log('video hidden, showing timer')
-      let $actions = $video.querySelector('ytd-notification-multi-action-renderer')
+      log('hideHiddenVideos: video hidden, showing timer')
+      let $actions = $video.querySelector('ytd-notification-multi-action-renderer, notification-multi-action-renderer')
       let $undoButton = $actions.querySelector('button')
-      let $tellUsWhyButton = $actions.querySelector(`button[aria-label="${getString('TELL_US_WHY')}"]`)
+      // Not in Subscriptions
+      let $tellUsWhyButton = $actions.querySelectorAll('button')[1]
+      // Display after the "Video removed" text in yt-lockup-view-model
+      let $pieContainer = $actions.querySelector('.ytNotificationMultiActionRendererTextContainer') || $actions
       let $pie
       let timeout
       let startTime
@@ -3084,20 +3085,27 @@ function observeVideoHiddenState() {
         $pie?.remove()
         $pie = document.createElement('div')
         $pie.classList.add('cpfyt-pie')
+        // The mobile version doesn't have any HTML hooks for appearance mode,
+        // so use the current backgroundColor.
+        let bgColor = getComputedStyle(document.documentElement).backgroundColor
+        $pie.style.setProperty('--cpfyt-pie-background-color', bgColor)
+        $pie.style.setProperty('--cpfyt-pie-color', bgColor == 'rgb(255, 255, 255)' ? '#065fd4' : '#3ea6ff')
         if (delay) $pie.style.setProperty('--cpfyt-pie-delay', `${delay}ms`)
         if (direction) $pie.style.setProperty('--cpfyt-pie-direction', direction)
         if (duration) $pie.style.setProperty('--cpfyt-pie-duration', `${duration}ms`)
+        if ($ytLockupDismissedContent) $pie.style.setProperty('--cpfyt-pie-fontSize', '100%')
         $pie.addEventListener('click', () => {
           stopTimer()
           cleanup()
         })
-        $actions.appendChild($pie)
+        $pieContainer?.append($pie)
       }
 
       function startTimer() {
         startTime = Date.now()
         timeout = setTimeout(() => {
-          let $elementToHide = $video.closest('ytd-rich-item-renderer')
+          // Hide the video element itself when not in a grid item (Related)
+          let $elementToHide = $video.closest('ytd-rich-item-renderer') || $video
           $elementToHide?.classList.add(Classes.HIDE_HIDDEN)
           cleanup()
           // Remove the class if the Undo button is clicked later, e.g. if
@@ -3114,9 +3122,7 @@ function observeVideoHiddenState() {
 
       function cleanup() {
         $undoButton.removeEventListener('click', onUndoClick)
-        if ($tellUsWhyButton) {
-          $tellUsWhyButton.removeEventListener('click', onTellUsWhyClick)
-        }
+        $tellUsWhyButton?.removeEventListener('click', onTellUsWhyClick)
         $pie.remove()
       }
 
@@ -3140,17 +3146,18 @@ function observeVideoHiddenState() {
       }
 
       $undoButton.addEventListener('click', onUndoClick)
-      if ($tellUsWhyButton) {
-        $tellUsWhyButton.addEventListener('click', onTellUsWhyClick)
-      }
+      $tellUsWhyButton?.addEventListener('click', onTellUsWhyClick)
       startTimer()
       displayPie()
     }, {
-      name: '<ytd-rich-grid-media> (for [is-dismissed] being added)',
+      name: `hideHiddenVideos: <${$video.tagName.toLowerCase()}> (for video being hidden)`,
       observers: pageObservers,
     }, {
+      // ytd-rich-grid-media
       attributes: true,
       attributeFilter: ['is-dismissed'],
+      // yt-lockup-view-model
+      childList: true,
     })
   }
 
