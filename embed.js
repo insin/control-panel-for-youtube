@@ -153,9 +153,6 @@ chrome.storage.local.get((storedConfig) => {
   debug = config.debug
   log('initial config', config)
   chrome.storage.local.onChanged.addListener(onConfigChange)
-  window.addEventListener('unload', () => {
-    chrome.storage.local.onChanged.removeListener(onConfigChange)
-  }, {once: true})
   main()
 })
 
