@@ -2325,6 +2325,19 @@ async function addHideChannelToMobileVideoMenu($menu) {
  */
 function getChannelDetailsFromVideo($video) {
   if (desktop) {
+    if ($video.tagName == 'YTD-RICH-ITEM-RENDERER') {
+      let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('#text.ytd-channel-name a'))
+      if ($link) {
+        return {
+          name: $link.textContent,
+          url: $link.pathname,
+        }
+      }
+      // Home nests a yt-lockup-view-model inside - fall back to checking it
+      $video = $video.querySelector('yt-lockup-view-model')
+      if (!$video) return
+    }
+
     if ($video.tagName == 'YTD-VIDEO-RENDERER') {
       let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('#text.ytd-channel-name a'))
       if ($link) {
@@ -2357,15 +2370,6 @@ function getChannelDetailsFromVideo($video) {
       if ($link) {
         return {
           name: $link.getAttribute('title')
-        }
-      }
-    }
-    else if ($video.tagName == 'YTD-RICH-ITEM-RENDERER') {
-      let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('#text.ytd-channel-name a'))
-      if ($link) {
-        return {
-          name: $link.textContent,
-          url: $link.pathname,
         }
       }
     }
