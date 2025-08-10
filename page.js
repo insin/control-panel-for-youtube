@@ -2218,7 +2218,7 @@ function addHideChannelToDesktopVideoMenu($menu) {
     videoContainerElementSelector = 'ytd-compact-video-renderer, yt-lockup-view-model'
   }
   else if (isHomePage()) {
-    videoContainerElementSelector = 'ytd-rich-item-renderer'
+    videoContainerElementSelector = 'ytd-rich-item-renderer, yt-lockup-view-model'
   }
 
   if (!videoContainerElementSelector) return
@@ -2335,6 +2335,14 @@ function getChannelDetailsFromVideo($video) {
       }
     }
     else if ($video.tagName == 'YT-LOCKUP-VIEW-MODEL') {
+      // Home videos have a channel link
+      let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('yt-content-metadata-view-model a'))
+      if ($link) {
+        return {
+          name: $link.textContent,
+          url: $link.pathname,
+        }
+      }
       // Assumption: channel name is always the first text in this element
       let $name = $video.querySelector('yt-content-metadata-view-model [role="text"]')
       if ($name) {
