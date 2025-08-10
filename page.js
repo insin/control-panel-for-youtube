@@ -640,6 +640,11 @@ function getElement(selector, {
  })
 }
 
+let policy = window.trustedTypes?.createPolicy?.('tagged-html-policy', {createHTML: (s) => s}) || {createHTML: (s) => s}
+function html(strings, ...values) {
+  return /** @type {string} */ (policy.createHTML(strings.reduce((acc, str, i) => acc + str + (values[i] || ''), '')))
+}
+
 /** @param {import("./types").Channel} channel */
 function isChannelHidden(channel) {
   return config.hiddenChannels.some((hiddenChannel) =>
@@ -2095,13 +2100,13 @@ function addDownloadTranscriptToDesktopMenu($menu) {
   if ($menu.querySelector('.cpfyt-menu-item')) return
 
   let $menuItems = $menu.querySelector('#items')
-  $menuItems.insertAdjacentHTML('beforeend', `
+  $menuItems.insertAdjacentHTML('beforeend', html`
 <div class="cpfyt-menu-item" tabindex="0" style="display: none">
   <div class="cpfyt-menu-text">
     ${getYtString('DOWNLOAD')}
   </div>
 </div>
-  `.trim())
+  `)
   let $item = $menuItems.lastElementChild
   function download() {
     downloadTranscript()
@@ -2177,7 +2182,7 @@ function handleDesktopWatchChannelMenu($menu) {
     }
 
     let $menuItems = $menu.querySelector('#items')
-    $menuItems.insertAdjacentHTML('beforeend', `
+    $menuItems.insertAdjacentHTML('beforeend', html`
 <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
   <div class="cpfyt-menu-icon">
     ${hidden ? Svgs.RESTORE : Svgs.DELETE}
@@ -2186,7 +2191,7 @@ function handleDesktopWatchChannelMenu($menu) {
     ${getString(hidden ? 'UNHIDE_CHANNEL' : 'HIDE_CHANNEL')}
   </div>
 </div>
-    `.trim())
+    `)
     $item = $menuItems.lastElementChild
     $item.addEventListener('click', toggleHideChannel)
     $item.addEventListener('keydown', /** @param {KeyboardEvent} e */ (e) => {
@@ -2232,7 +2237,7 @@ function addHideChannelToDesktopVideoMenu($menu) {
     'yt-list-view-model',
   ].join(', '))
   // Insert before last menu item, which should be Report
-  $menuItems.lastElementChild.insertAdjacentHTML('beforebegin', `
+  $menuItems.lastElementChild.insertAdjacentHTML('beforebegin', html`
 <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
   <div class="cpfyt-menu-icon">
     ${Svgs.DELETE}
@@ -2241,7 +2246,7 @@ function addHideChannelToDesktopVideoMenu($menu) {
     ${getString('HIDE_CHANNEL')}
   </div>
 </div>
-  `.trim())
+  `)
   let $item = $menuItems.querySelector('#cpfyt-hide-channel-menu-item')
   function hideChannel() {
     log('hiding channel', lastClickedChannel)
@@ -2282,7 +2287,7 @@ async function addHideChannelToMobileVideoMenu($menu) {
 
   let $menuItems = $menu.querySelector($menu.id == 'menu' ? '.menu-content' : '.bottom-sheet-media-menu-item')
   let hasIcon = Boolean($menuItems.querySelector('c3-icon'))
-  let hideChannelMenuItemHTML = `
+  let hideChannelMenuItemHTML = html`
     <ytm-menu-item id="cpfyt-hide-channel-menu-item">
       <button class="menu-item-button">
         ${hasIcon ? `<c3-icon>
@@ -2295,7 +2300,7 @@ async function addHideChannelToMobileVideoMenu($menu) {
         </span>
       </button>
     </ytm-menu-item>
-  `.trim()
+  `
   let $cancelMenuItem = $menu.querySelector('ytm-menu-item:has(.menu-cancel-button')
   if ($cancelMenuItem) {
     $cancelMenuItem.insertAdjacentHTML('beforebegin', hideChannelMenuItemHTML)
@@ -2727,7 +2732,7 @@ async function observePopups() {
 
       function addTakeShapshotMenuItem() {
         let $insertAfter = $contextMenu.querySelector('.ytp-menuitem:last-child')
-        $insertAfter.insertAdjacentHTML('afterend', `
+        $insertAfter.insertAdjacentHTML('afterend', html`
 <div id="cpfyt-snaphot-menu-item" class="ytp-menuitem" role="menuitem" tabindex="0">
   <div class="ytp-menuitem-icon">
     <svg fill="#fff" height="24px" viewBox="0 -960 960 960" width="24px">
@@ -2737,7 +2742,7 @@ async function observePopups() {
   <div class="ytp-menuitem-label">${getString('TAKE_SNAPSHOT')}</div>
   <div class="ytp-menuitem-content"></div>
 </div>
-        `.trim())
+        `)
         $contextMenu.querySelector('#cpfyt-snaphot-menu-item').addEventListener('click', takeSnapshot)
         // Adjust context menu height for new item
         let height = `${parseInt($contextMenu.style.height) + 40}px`
