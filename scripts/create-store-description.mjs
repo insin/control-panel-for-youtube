@@ -10,10 +10,10 @@ let captions = {
     "fr": "Page d'abonnements améliorée, agissant comme une boîte de réception pour les vidéos",
   },
   "ads": {
-    "en": "Video ads can be automatically skipped and other promoted content is hidden",
-    "ja": "動画広告は自動的にスキップされ、他のプロモーションコンテンツは非表示になります",
-    "zh_CN": "视频广告可自动跳过，其他推广内容将被隐藏",
-    "fr": "Les publicités vidéo sont automatiquement ignorées et les autres contenus promus sont masqués",
+    "en": "Video ads are blocked and other promoted content is hidden",
+    "ja": "動画広告はブロックされ、他のプロモーションコンテンツは非表示になります",
+    "zh_CN": "视频广告将被拦截，其他推广内容将被隐藏",
+    "fr": "Les publicités vidéo sont bloquées et les autres contenus promus sont masqués"
   },
   "search": {
     "en": "Nothing but search results on the Search page, no suggested sections",
