@@ -1223,6 +1223,8 @@ const configureCss = (() => {
           'yt-download-list-item-view-model',
           // 1080p Premium quality menu item
           '.ytp-quality-menu .ytp-menuitem:has(.ytp-premium-label)',
+          // Download button
+          'ytd-download-button-renderer',
         )
       }
       if (mobile) {
