@@ -2148,7 +2148,7 @@ function handleDesktopWatchChannelMenu($menu) {
 
   function configureMenuItem(channel) {
     let hidden = isChannelHidden(channel)
-    $item.querySelector('.cpfyt-menu-icon').innerHTML = hidden ? Svgs.RESTORE : Svgs.DELETE
+    $item.querySelector('.cpfyt-menu-icon').innerHTML = /** @type {string} */ (policy.createHTML(hidden ? Svgs.RESTORE : Svgs.DELETE))
     $item.querySelector('.cpfyt-menu-text').textContent = getString(hidden ? 'UNHIDE_CHANNEL' : 'HIDE_CHANNEL')
   }
 
