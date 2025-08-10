@@ -31,7 +31,7 @@ let defaultConfig = {
   hideShareThanksClip: false,
   hideShorts: true,
   hideShortsSuggestedActions: true,
-  hideSponsored: false,
+  hideSponsored: true,
   hideStreamed: false,
   hideSuggestedSections: true,
   hideUpcoming: false,
