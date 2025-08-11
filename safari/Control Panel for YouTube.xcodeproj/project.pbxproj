@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FBAAF4372E49730700064115 /* background.js in Resources */ = {isa = PBXBuildFile; fileRef = FBAAF4362E49730700064115 /* background.js */; };
+		FBAAF4382E49730700064115 /* background.js in Resources */ = {isa = PBXBuildFile; fileRef = FBAAF4362E49730700064115 /* background.js */; };
 		FBB23FE02DE55CAE007886FC /* page.js in Resources */ = {isa = PBXBuildFile; fileRef = FBB23FDF2DE55CAE007886FC /* page.js */; };
 		FBB23FE12DE55CAE007886FC /* page.js in Resources */ = {isa = PBXBuildFile; fileRef = FBB23FDF2DE55CAE007886FC /* page.js */; };
 		FBE734F72B64C91D0084B277 /* embed.js in Resources */ = {isa = PBXBuildFile; fileRef = FBE734F62B64C91D0084B277 /* embed.js */; };
@@ -118,6 +120,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FBAAF4362E49730700064115 /* background.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = background.js; path = ../../../background.js; sourceTree = "<group>"; };
 		FBB23FDF2DE55CAE007886FC /* page.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = page.js; path = ../../../page.js; sourceTree = "<group>"; };
 		FBE734F62B64C91D0084B277 /* embed.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = embed.js; path = ../../../embed.js; sourceTree = "<group>"; };
 		FBE860622B42F1E30053AD2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = ../Base.lproj/Main.html; sourceTree = "<group>"; };
@@ -243,6 +246,7 @@
 		FBE8606A2B42F1E40053AD2F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FBAAF4362E49730700064115 /* background.js */,
 				FBE861042B438C950053AD2F /* _locales */,
 				FBE860D52B438ACE0053AD2F /* browser_action.html */,
 				FBE860D42B438ACE0053AD2F /* content.js */,
@@ -478,6 +482,7 @@
 				FBE860D92B438ACE0053AD2F /* content.js in Resources */,
 				FBE861DE2B43A6F80053AD2F /* icon48.png in Resources */,
 				FBE861D62B43A6F80053AD2F /* icon128.png in Resources */,
+				FBAAF4382E49730700064115 /* background.js in Resources */,
 				FBE861E52B43A7610053AD2F /* options-icon.png in Resources */,
 				FBE861D22B43A6F80053AD2F /* toolbar-icon19.png in Resources */,
 				FBE861CE2B43A6F80053AD2F /* toolbar-icon48.png in Resources */,
@@ -506,6 +511,7 @@
 				FBE860DA2B438ACE0053AD2F /* content.js in Resources */,
 				FBE861DF2B43A6F80053AD2F /* icon48.png in Resources */,
 				FBE861D72B43A6F80053AD2F /* icon128.png in Resources */,
+				FBAAF4372E49730700064115 /* background.js in Resources */,
 				FBE861E62B43A7610053AD2F /* options-icon.png in Resources */,
 				FBE861D32B43A6F80053AD2F /* toolbar-icon19.png in Resources */,
 				FBE861CF2B43A6F80053AD2F /* toolbar-icon48.png in Resources */,

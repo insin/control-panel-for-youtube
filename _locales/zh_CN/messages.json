@@ -63,6 +63,9 @@
   "extensionName": {
     "message": "YouTube 控制面板"
   },
+  "extensionNameDisabled": {
+    "message": "YouTube 控制面板 (已停用)"
+  },
   "features": {
     "message": "特点"
   },

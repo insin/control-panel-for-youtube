@@ -63,6 +63,9 @@
   "extensionName": {
     "message": "Panneau de contrôle pour YouTube"
   },
+  "extensionNameDisabled": {
+    "message": "Panneau de contrôle pour YouTube (désactivé)"
+  },
   "features": {
     "message": "Fonctionnalités"
   },

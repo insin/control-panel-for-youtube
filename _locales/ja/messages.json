@@ -60,7 +60,10 @@
     "message": "YouTubeに不足しているオプションやUIの改善を追加し、より自由にカスタマイズできるようにします"
   },
   "extensionName": {
-    "message": "Control Panel for YouTube"
+    "message": "コントロールパネル for YouTube"
+  },
+  "extensionNameDisabled": {
+    "message": "コントロールパネル for YouTube (無効)"
   },
   "features": {
     "message": "機能"

@@ -63,6 +63,9 @@
   "extensionName": {
     "message": "Control Panel for YouTube"
   },
+  "extensionNameDisabled": {
+    "message": "Control Panel for YouTube (disabled)"
+  },
   "features": {
     "message": "Features"
   },
