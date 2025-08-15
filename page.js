@@ -544,7 +544,7 @@ function addStyle(css = '') {
   if (css) {
     $style.textContent = css
   }
-  document.head.appendChild($style)
+  document.documentElement.appendChild($style)
   return $style
 }
 
