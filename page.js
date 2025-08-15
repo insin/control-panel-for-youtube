@@ -1429,6 +1429,8 @@ const configureCss = (() => {
         hideCssSelectors.push(
           // Grid item
           'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(ytd-thumbnail-overlay-time-status-renderer[overlay-style="UPCOMING"])',
+          // Grid item in Home with "Notify Me" button
+          'ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(lockup-attachments-view-model)',
           // List item
           'ytd-video-renderer:has(ytd-thumbnail-overlay-time-status-renderer[overlay-style="UPCOMING"])',
         )
