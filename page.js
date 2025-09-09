@@ -2437,34 +2437,34 @@ async function observeDesktopEndscreenVideos() {
 }
 
 /**
- * If you navigate back to Home or Subscriptions (or click their own nav item
- * again) after a period of time, their contents will be refreshed, reusing
- * elements. We need to detect this and re-apply manual hiding preferences for
- * the updated video in each element.
+ * If you navigate back to Subscriptions after a period of time, its contents
+ * will be refreshed, reusing elements. We need to detect this and re-apply
+ * manual hiding preferences for the updated video in each element.
  * @param {Element} $gridItem
  * @param {string} uniqueId
  */
-function observeDesktopRichGridItemContent($gridItem, uniqueId) {
-  observeDesktopRichGridVideoProgress($gridItem, uniqueId)
+function observeDesktopRichGridMediaItemContent($gridItem, uniqueId) {
+  observeDesktopRichGridMediaProgress($gridItem, uniqueId)
 
   // For videos, observe the thumbnail link for the videoId being changed
-  let $thumbnailLink = /** @type {HTMLAnchorElement} */ ($gridItem.querySelector('ytd-rich-grid-media a#thumbnail'))
+  let thumbnailSelector = 'ytd-rich-grid-media a#thumbnail'
+  let $thumbnailLink = /** @type {HTMLAnchorElement} */ ($gridItem.querySelector(thumbnailSelector))
   /** @type {import("./types").CustomMutationObserver} */
   let thumbnailObserver
 
   function observeThumbnail() {
     if (!$thumbnailLink) {
-      log(`${uniqueId} has no video #thumbnail`)
+      log(`${uniqueId} has no video thumbnail link`)
       return
     }
     thumbnailObserver = observeElement($thumbnailLink, (mutations) => {
       let searchParams = new URLSearchParams($thumbnailLink.search)
       if (searchParams.has('v') && !mutations[0].oldValue.includes(searchParams.get('v'))) {
-        log(`${uniqueId} #thumbnail href changed`, mutations[0].oldValue, '→', $thumbnailLink.href)
+        log(`${uniqueId} thumbnail link href changed`, mutations[0].oldValue, '→', $thumbnailLink.href)
         manuallyHideVideo($gridItem)
       }
     }, {
-      name: `${uniqueId} #thumbnail href`,
+      name: `${uniqueId} thumbnail link href`,
       observers: pageObservers,
     }, {
       attributes: true,
@@ -2485,19 +2485,19 @@ function observeDesktopRichGridItemContent($gridItem, uniqueId) {
       for (let $addedNode of mutation.addedNodes) {
         if (!($addedNode instanceof HTMLElement)) continue
         if ($addedNode.nodeName == 'YTD-RICH-GRID-MEDIA') {
-          log(uniqueId, 'video added', $addedNode)
-          $thumbnailLink = /** @type {HTMLAnchorElement} */ ($gridItem.querySelector('ytd-rich-grid-media a#thumbnail'))
+          log('ytd-rich-grid-media added to', uniqueId, $addedNode)
+          $thumbnailLink = /** @type {HTMLAnchorElement} */ ($gridItem.querySelector(thumbnailSelector))
           observeThumbnail()
           manuallyHideVideo($gridItem)
           if (config.hideWatched) {
-            observeDesktopRichGridVideoProgress($gridItem, uniqueId)
+            observeDesktopRichGridMediaProgress($gridItem, uniqueId)
           }
         }
       }
       for (let $removedNode of mutation.removedNodes) {
         if (!($removedNode instanceof HTMLElement)) continue
         if ($removedNode.nodeName == 'YTD-RICH-GRID-MEDIA') {
-          log(uniqueId, 'video removed', $removedNode)
+          log(uniqueId, 'ytd-rich-grid-media removed from grid item')
           $thumbnailLink = null
           thumbnailObserver?.disconnect()
           manuallyHideVideo($gridItem)
@@ -2511,13 +2511,42 @@ function observeDesktopRichGridItemContent($gridItem, uniqueId) {
 }
 
 /**
- * If you watch a video then navigate back to Home or Subscriptions without
- * causing their contents to be refreshed, its watch progress will be updated
- * in-place.
+ * If you navigate back to Home after a period of time or use the categories
+ * pills, grid item contents are re-rendered. We need to re-apply manual hiding
+ * when this happens.
+ *
+ * yt-lockup-view-model seems to be re-rendered from scratch, even if the same
+ * video will end up in the same grid item. The element also seems to be empty
+ * on initial render.
+ * @param {Element} $gridItem
+ * @param {string} uniqueId
+ */
+function observeDesktopYtLockupViewModelItemContent($gridItem, uniqueId) {
+  let $content = $gridItem.querySelector(':scope > #content')
+  observeElement($content, (mutations) => {
+    for (let mutation of mutations) {
+      for (let $addedNode of mutation.addedNodes) {
+        if (!($addedNode instanceof HTMLElement)) continue
+        if ($addedNode.nodeName == 'YT-LOCKUP-VIEW-MODEL') {
+          log('yt-lockup-view-model added to', uniqueId, $addedNode)
+          // Let the new thumbnail finish rendering
+          requestAnimationFrame(() => manuallyHideVideo($gridItem, {hideDismissed: true}))
+        }
+      }
+    }
+  }, {
+    name: `${uniqueId} #content`,
+    observers: pageObservers,
+  })
+}
+
+/**
+ * If you watch a video then navigate back to Subscriptions without causing its
+ * contents to be refreshed, its watch progress will be updated in-place.
  * @param {Element} $video
  * @param {string} uniqueId
  */
-function observeDesktopRichGridVideoProgress($video, uniqueId) {
+function observeDesktopRichGridMediaProgress($video, uniqueId) {
   let $overlays = $video.querySelector('ytd-rich-grid-media #overlays')
   if (!$overlays) {
     log(uniqueId, 'has no video #overlay')
@@ -2596,8 +2625,9 @@ async function observeDesktopRichGridItems(options) {
    * @param {string} $gridItem
    */
   function processGridItem($gridItem, uniqueId) {
-    manuallyHideVideo($gridItem)
-    observeDesktopRichGridItemContent($gridItem, uniqueId)
+    manuallyHideVideo($gridItem, {hideDismissed: page === 'home'})
+    if (page == 'home') observeDesktopYtLockupViewModelItemContent($gridItem, uniqueId)
+    if (page == 'subscriptions') observeDesktopRichGridMediaItemContent($gridItem, uniqueId)
   }
 
   function processAllVideos() {
@@ -3198,7 +3228,7 @@ function observeVideoHiddenState() {
     else if (isSubscriptionsPage()) {
       $video = $lastClickedElement?.closest('lazy-list')
     }
-    // TODO ytm-notification-multi-action-renderer replaces hidden Relate videos
+    // TODO ytm-notification-multi-action-renderer replaces hidden Related videos
     // else if (isVideoPage()) {
     //   $video = $lastClickedElement?.closest('ytm-video-with-context-renderer')
     // }
@@ -3346,15 +3376,31 @@ function hideWatched($video) {
     hide = progress >= Number(config.hideWatchedThreshold)
   }
   $video.classList.toggle(Classes.HIDE_WATCHED, hide)
+  return hide
 }
 
 /**
  * Tag individual video elements to be hidden by options which would need too
  * complex or broad CSS :has() relative selectors.
  * @param {Element} $video video container element
+ * @param {{hideDismissed?: boolean}} [options]
  */
-function manuallyHideVideo($video) {
-  hideWatched($video)
+function manuallyHideVideo($video, {hideDismissed = false} = {}) {
+  // This option is only used for yt-lockup-view-model videos
+  if (hideDismissed) {
+    let $dismissedContent = $video.querySelector('.ytDismissibleItemReplacedContent')
+    let isDismissed = Boolean($dismissedContent)
+    $video?.classList.toggle(Classes.HIDE_HIDDEN, isDismissed)
+    if (isDismissed) {
+      let $undoButton = $dismissedContent.querySelector('button')
+      $undoButton?.addEventListener('click', () => {
+        $video?.classList.remove(Classes.HIDE_HIDDEN)
+      })
+      return
+    }
+  }
+
+  if (hideWatched($video)) return
 
   // Streamed videos are identified using the video title's aria-label
   if (config.hideStreamed) {
@@ -3466,7 +3512,12 @@ async function tweakHomePage() {
     redirectFromHome()
     return
   }
-  if (!config.hideWatched && !config.hideStreamed && !config.hideChannels) return
+  if (
+    // Videos need to be manually hidden
+    !config.hideWatched && !config.hideStreamed && !config.hideChannels &&
+    // Dismissed videos need to be manually hidden when switching categories
+    (mobile || !config.hideHiddenVideos)
+  ) return
   if (desktop) {
     observeDesktopRichGridItems({page: 'home'})
   }
@@ -3628,13 +3679,20 @@ async function tweakVideoPage() {
     let $contents = $section.querySelector('#contents')
     let itemCount = 0
 
+    /** @param {Element} $item  */
+    function processItem($item) {
+      manuallyHideVideo($item, {hideDismissed: $item.nodeName == 'YT-LOCKUP-VIEW-MODEL'})
+      if ($item.nodeName == 'YTD-COMPACT-VIDEO-RENDERER') {
+        waitForVideoOverlay($item, `related item ${++itemCount}`)
+      }
+    }
+
     function processCurrentItems() {
       itemCount = 0
       for (let $item of $contents.children) {
         // TODO Remove YTD-COMPACT-VIDEO-RENDERER after confirming all Related videos have moved to YT-LOCKUP-VIEW-MODEL
         if ($item.nodeName == 'YTD-COMPACT-VIDEO-RENDERER' || $item.nodeName == 'YT-LOCKUP-VIEW-MODEL') {
-          manuallyHideVideo($item)
-          waitForVideoOverlay($item, `related item ${++itemCount}`)
+          processItem($item)
         }
       }
     }
@@ -3662,8 +3720,7 @@ async function tweakVideoPage() {
           if (!($addedNode instanceof HTMLElement)) continue
           // TODO Remove YTD-COMPACT-VIDEO-RENDERER after confirming all Related videos have moved to YT-LOCKUP-VIEW-MODEL
           if ($addedNode.nodeName == 'YTD-COMPACT-VIDEO-RENDERER' || $addedNode.nodeName == 'YT-LOCKUP-VIEW-MODEL') {
-            manuallyHideVideo($addedNode)
-            waitForVideoOverlay($addedNode, `related item ${++itemCount}`)
+            processItem($addedNode)
             newItemCount++
           }
         }

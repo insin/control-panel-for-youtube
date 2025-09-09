@@ -3,7 +3,10 @@ export type Channel = {
   url?: string
 }
 
-export type CustomMutationObserver = MutationObserver & {name: string, onDisconnect?: () => void}
+export interface CustomMutationObserver extends MutationObserver {
+  name: string
+  onDisconnect?: () => void
+}
 
 export type Disconnectable = {disconnect: () => void}
 
