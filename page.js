@@ -510,7 +510,7 @@ const MenuConfigs = {
   },
   'YT-LIST-ITEM-VIEW-MODEL': {
     itemSelector: 'yt-list-item-view-model',
-    itemTextSelector: '.yt-list-item-view-model-wiz__title',
+    itemTextSelector: '.yt-list-item-view-model__title',
   },
 }
 
@@ -834,7 +834,7 @@ const configureCss = (() => {
         hideCssSelectors.push('ytd-browse[page-subtype="channels"] #page-header-banner')
       }
       if (mobile) {
-        hideCssSelectors.push('html[cpfyt-page="channel"] .page-header-view-model-wiz__page-header-banner-container')
+        hideCssSelectors.push('html[cpfyt-page="channel"] .yt-page-header-view-model__page-header-banner-container')
       }
     }
 
@@ -1648,7 +1648,7 @@ const configureCss = (() => {
       if (config.searchThumbnailSize != 'large') {
         cssRules.push(`
           ytd-search ytd-video-renderer ytd-thumbnail.ytd-video-renderer,
-          ytd-search yt-lockup-view-model .yt-lockup-view-model-wiz__content-image {
+          ytd-search yt-lockup-view-model .yt-lockup-view-model__content-image {
             max-width: ${{
               medium: 420,
               small: 360,
