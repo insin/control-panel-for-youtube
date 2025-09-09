@@ -1065,13 +1065,16 @@ const configureCss = (() => {
 
     if (config.hideMembersOnly) {
       if (desktop) {
+        const membersOnlyIconPath = 'path[d="M6 11.5a5.5 5.5 0 100-11 5.5 5.5 0 000 11Zm1.058-6.956L6 2 4.942 4.544l-2.746.22 2.092 1.792-.64 2.68L6 7.8l2.351 1.436-.64-2.68 2.093-1.792-2.746-.22Z"]'
         hideCssSelectors.push(
           // Grid item (Home, Subscriptions, Channel videos tab)
           'ytd-rich-item-renderer:has(.badge-style-type-members-only)',
+          `ytd-rich-item-renderer:has(${membersOnlyIconPath})`,
           // List item (Search)
           'ytd-video-renderer:has(.badge-style-type-members-only)',
           // Related
           'ytd-compact-video-renderer:has(.badge-style-type-members-only)',
+          `#related yt-lockup-view-model:has(${membersOnlyIconPath})`,
           // Playlist in channel Home tab
           'ytd-item-section-renderer[page-subtype="channels"]:has(.badge-style-type-members-only)',
           // Video endscreen
