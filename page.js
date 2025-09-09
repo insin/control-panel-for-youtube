@@ -1039,12 +1039,12 @@ const configureCss = (() => {
         hideCssSelectors.push(
           // Grid item (Home, Subscriptions)
           'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(ytd-thumbnail[is-live-video])',
-          'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(.badge-shape-wiz--thumbnail-live)',
+          'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(.yt-badge-shape--thumbnail-live)',
           // List item (Search)
           'ytd-video-renderer:has(ytd-thumbnail[is-live-video])',
           // Related
           'ytd-compact-video-renderer:has(> .ytd-compact-video-renderer > ytd-thumbnail[is-live-video])',
-          '#related yt-lockup-view-model:has(.badge-shape-wiz--thumbnail-live)',
+          '#related yt-lockup-view-model:has(.yt-badge-shape--thumbnail-live)',
         )
       }
       if (mobile) {
@@ -3359,7 +3359,7 @@ function manuallyHideVideo($video) {
     if (desktop) {
       let $metadata = /** @type {HTMLElement} */ ($video.querySelector(
         // TODO Remove #metadata-line after confirming all videos have moved to yt-lockup-view-model
-        '#metadata-line, yt-content-metadata-view-model .yt-content-metadata-view-model-wiz__delimiter + .yt-content-metadata-view-model-wiz__metadata-text'
+        '#metadata-line, yt-content-metadata-view-model .yt-content-metadata-view-model__delimiter + .yt-content-metadata-view-model__metadata-text'
       ))
       if ($metadata) {
         hide = Boolean($metadata.innerText.match(getString('STREAMED_METADATA_INNERTEXT_RE')))
