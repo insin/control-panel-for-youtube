@@ -3386,21 +3386,20 @@ function hideWatched($video) {
  * @param {{hideDismissed?: boolean}} [options]
  */
 function manuallyHideVideo($video, {hideDismissed = false} = {}) {
-  // This option is only used for yt-lockup-view-model videos
   if (hideDismissed) {
+    // This option is only used for yt-lockup-view-model videos
     let $dismissedContent = $video.querySelector('.ytDismissibleItemReplacedContent')
     let isDismissed = Boolean($dismissedContent)
-    $video?.classList.toggle(Classes.HIDE_HIDDEN, isDismissed)
+    $video.classList.toggle(Classes.HIDE_HIDDEN, isDismissed)
     if (isDismissed) {
       let $undoButton = $dismissedContent.querySelector('button')
       $undoButton?.addEventListener('click', () => {
-        $video?.classList.remove(Classes.HIDE_HIDDEN)
+        $video.classList.remove(Classes.HIDE_HIDDEN)
       })
-      return
     }
   }
 
-  if (hideWatched($video)) return
+  hideWatched($video)
 
   // Streamed videos are identified using the video title's aria-label
   if (config.hideStreamed) {
