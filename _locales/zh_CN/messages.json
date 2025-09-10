@@ -44,6 +44,9 @@
   "disableHomeFeedNote": {
     "message": "仅当登录时——重定向到订阅页面"
   },
+  "disableTheaterBigMode": {
+    "message": "停用影院模式下的放大界面"
+  },
   "downloadTranscript": {
     "message": "使转录稿可下载"
   },

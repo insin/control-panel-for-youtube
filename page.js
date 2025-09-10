@@ -11,6 +11,7 @@ let defaultConfig = {
   disableAmbientMode: true,
   disableAutoplay: true,
   disableHomeFeed: false,
+  disableTheaterBigMode: true,
   hiddenChannels: [],
   hideAI: true,
   hideChannelBanner: false,
@@ -640,6 +641,7 @@ function getElement(selector, {
  })
 }
 
+// @ts-ignore
 let policy = window.trustedTypes?.createPolicy?.('tagged-html-policy', {createHTML: (s) => s}) || {createHTML: (s) => s}
 function html(strings, ...values) {
   return /** @type {string} */ (policy.createHTML(strings.reduce((acc, str, i) => acc + str + (values[i] || ''), '')))
@@ -2036,6 +2038,28 @@ async function disableAutoplay() {
   }
 }
 
+async function disableTheaterBigMode() {
+  let $player = await getElement('#movie_player', {
+    name: 'player (disableTheaterBigMode)',
+    stopIf: currentUrlChanges(),
+  })
+  if (!$player) return
+  observeElement($player, () => {
+    if ($player.classList.contains('ytp-big-mode') &&
+        $player.closest('ytd-watch-flexy[role="main"][theater]:not([fullscreen])')) {
+      log('disableTheaterBigMode: removing .ytp-big-mode from player')
+      $player.classList.remove('ytp-big-mode')
+    }
+  }, {
+    leading: true,
+    name: 'disableTheaterBigMode: player',
+    observers: pageObservers,
+  }, {
+    attributes: true,
+    attributeFilter: ['class'],
+  })
+}
+
 function downloadTranscript() {
   // TODO Check if the transcript is still loading
   let $segments = document.querySelector('.ytd-transcript-search-panel-renderer #segments-container')
@@ -2860,6 +2884,80 @@ function onDesktopMenuAppeared($dropdown) {
   }
 }
 
+/** @param {HTMLElement} $popupContainer */
+function observeDesktopContextMenu($popupContainer) {
+  let $contextMenu = /** @type {HTMLElement} */ ($popupContainer.querySelector('.ytp-popup.ytp-contextmenu'))
+
+  function addTakeShapshotMenuItem() {
+    let $insertAfter = $contextMenu.querySelector('.ytp-menuitem:last-child')
+    $insertAfter.insertAdjacentHTML('afterend', html`
+<div id="cpfyt-snaphot-menu-item" class="ytp-menuitem" role="menuitem" tabindex="0">
+  <div class="ytp-menuitem-icon">
+    <svg fill="#fff" height="24px" viewBox="0 -960 960 960" width="24px">
+      <path d="M480-400q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0 80q66 0 113-47t47-113q0-66-47-113t-113-47q-66 0-113 47t-47 113q0 66 47 113t113 47ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/>
+    </svg>
+  </div>
+  <div class="ytp-menuitem-label">${getString('TAKE_SNAPSHOT')}</div>
+  <div class="ytp-menuitem-content"></div>
+</div>
+    `)
+    $contextMenu.querySelector('#cpfyt-snaphot-menu-item').addEventListener('click', takeSnapshot)
+    // Adjust context menu height for new item
+    let height = `${parseInt($contextMenu.style.height) + 40}px`
+    $contextMenu.style.height = height
+    if ($contextMenu.children[0]) {
+      /** @type {HTMLElement} */ ($contextMenu.children[0]).style.height = height
+      if ($contextMenu.children[0].children[0]) {
+        /** @type {HTMLElement} */ ($contextMenu.children[0].children[0]).style.height = height
+      }
+    }
+  }
+
+  function observeContextMenuClass() {
+    // The big mode class is applied separately to the video context menu
+    observeElement($contextMenu, () => {
+      if ($contextMenu.classList.contains('ytp-big-mode') &&
+          document.querySelector('ytd-watch-flexy[role="main"][theater]:not([fullscreen])')) {
+        log('disableTheaterBigMode: removing .ytp-big-mode from context menu')
+        $contextMenu.classList.remove('ytp-big-mode')
+      }
+    }, {
+      leading: true,
+      name: 'disableTheaterBigMode: context menu class',
+      observers: globalObservers,
+    }, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+  }
+
+  function processContextMenu() {
+    if (config.addTakeSnapshot) addTakeShapshotMenuItem()
+    if (config.disableTheaterBigMode) observeContextMenuClass()
+  }
+
+  if ($contextMenu) {
+    processContextMenu()
+  } else {
+    // Context menu not added yet - wait for it to appear
+    observeElement(document.body, (mutations, observer) => {
+      for (let mutation of mutations) {
+        for (let $el of mutation.addedNodes) {
+          if ($el instanceof HTMLElement && $el.classList.contains('ytp-contextmenu')) {
+            $contextMenu = $el
+            observer.disconnect()
+            processContextMenu()
+            return
+          }
+        }
+      }
+    }, {
+      name: '<body> (for player context menu being added)',
+      observers: globalObservers,
+    })
+  }
+}
+
 async function observePopups() {
   if (desktop) {
     /** @param {HTMLElement} $dialog */
@@ -2930,55 +3028,7 @@ async function observePopups() {
       observers: globalObservers,
     })
 
-    if (config.addTakeSnapshot) {
-      let $contextMenu = /** @type {HTMLElement} */ ($popupContainer.querySelector('.ytp-popup.ytp-contextmenu'))
-
-      function addTakeShapshotMenuItem() {
-        let $insertAfter = $contextMenu.querySelector('.ytp-menuitem:last-child')
-        $insertAfter.insertAdjacentHTML('afterend', html`
-<div id="cpfyt-snaphot-menu-item" class="ytp-menuitem" role="menuitem" tabindex="0">
-  <div class="ytp-menuitem-icon">
-    <svg fill="#fff" height="24px" viewBox="0 -960 960 960" width="24px">
-      <path d="M480-400q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0 80q66 0 113-47t47-113q0-66-47-113t-113-47q-66 0-113 47t-47 113q0 66 47 113t113 47ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/>
-    </svg>
-  </div>
-  <div class="ytp-menuitem-label">${getString('TAKE_SNAPSHOT')}</div>
-  <div class="ytp-menuitem-content"></div>
-</div>
-        `)
-        $contextMenu.querySelector('#cpfyt-snaphot-menu-item').addEventListener('click', takeSnapshot)
-        // Adjust context menu height for new item
-        let height = `${parseInt($contextMenu.style.height) + 40}px`
-        $contextMenu.style.height = height
-        if ($contextMenu.children[0]) {
-          /** @type {HTMLElement} */ ($contextMenu.children[0]).style.height = height
-          if ($contextMenu.children[0].children[0]) {
-            /** @type {HTMLElement} */ ($contextMenu.children[0].children[0]).style.height = height
-          }
-        }
-      }
-
-      if ($contextMenu) {
-        addTakeShapshotMenuItem()
-      } else {
-        // Context menu not added yet - wait for it to appear
-        observeElement(document.body, (mutations, observer) => {
-          for (let mutation of mutations) {
-            for (let $el of mutation.addedNodes) {
-              if ($el instanceof HTMLElement && $el.classList.contains('ytp-contextmenu')) {
-                $contextMenu = $el
-                observer.disconnect()
-                addTakeShapshotMenuItem()
-                return
-              }
-            }
-          }
-        }, {
-          name: '<body> (for player context menu being added)',
-          observers: globalObservers,
-        })
-      }
-    }
+    observeDesktopContextMenu($popupContainer)
   }
 
   if (mobile) {
@@ -3813,6 +3863,9 @@ async function tweakVideoPage() {
   }
   if (desktop && config.alwaysUseOriginalAudio) {
     alwaysUseOriginalAudio()
+  }
+  if (desktop && config.disableTheaterBigMode) {
+    disableTheaterBigMode()
   }
   if (desktop && config.hideChannels && !config.hideEndVideos && config.hiddenChannels.length > 0) {
     observeDesktopEndscreenVideos()

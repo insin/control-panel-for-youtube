@@ -44,6 +44,9 @@
   "disableHomeFeedNote": {
     "message": "Only when logged in - redirects to Subscriptions"
   },
+  "disableTheaterBigMode": {
+    "message": "Disable enlarged UI in theater mode"
+  },
   "downloadTranscript": {
     "message": "Make Transcript downloadable"
   },

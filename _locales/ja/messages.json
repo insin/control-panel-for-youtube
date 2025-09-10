@@ -44,6 +44,9 @@
   "disableHomeFeedNote": {
     "message": "ログイン時に登録チャンネルへリダイレクト"
   },
+  "disableTheaterBigMode": {
+    "message": "シアターモードの拡大UIを無効にする"
+  },
   "downloadTranscript": {
     "message": "文字起こしをダウンロード可能にする"
   },

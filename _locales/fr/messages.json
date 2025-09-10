@@ -44,6 +44,9 @@
   "disableHomeFeedNote": {
     "message": "Seulement si connecté(e) - redirige vers les Abonnements"
   },
+  "disableTheaterBigMode": {
+    "message": "Désactiver l'interface agrandie en mode cinéma"
+  },
   "downloadTranscript": {
     "message": "Rendre la transcription téléchargeable"
   },
