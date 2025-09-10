@@ -1254,6 +1254,8 @@ const configureCss = (() => {
           `ytd-menu-renderer yt-button-view-model:has(> button-view-model > button[aria-label="${getString('SHARE')}"])`,
           `ytd-menu-renderer yt-button-view-model:has(> button-view-model > button[aria-label="${getString('THANKS')}"])`,
           `ytd-menu-renderer yt-button-view-model:has(> button-view-model > button[aria-label="${getString('CLIP')}"])`,
+          // Share button in player
+          'button.ytp-share-button',
           // Menu items
           `.${Classes.HIDE_SHARE_THANKS_CLIP}`,
           // Shorts button
