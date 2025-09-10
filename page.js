@@ -2436,6 +2436,155 @@ async function observeDesktopEndscreenVideos() {
   })
 }
 
+async function observeDesktopRelatedVideos() {
+  /** @type {Element} */
+  let $renderer
+  /** @type {Element} */
+  let $contents
+  /** @type {Element} */
+  let $canShowMoreElement
+  let itemCount = 0
+
+  function init() {
+    observeRelatedCanShowMoreAttribute()
+    observeRelatedContents()
+    processCurrentItems()
+  }
+
+  function observeRelatedCanShowMoreAttribute() {
+    // A can-show-more attribute is added when related items are refreshed
+    observeElement($canShowMoreElement, () => {
+      if ($canShowMoreElement.getAttribute('can-show-more') == null) {
+        log('can-show-more attribute removed - reprocessing refreshed items')
+        processCurrentItems()
+      }
+    }, {
+      name: '#related can-show-more attribute',
+      observers: pageObservers,
+    }, {
+      attributes: true,
+      attributeFilter: ['can-show-more'],
+    })
+  }
+
+  function observeRelatedContents() {
+    observeElement($contents, (mutations) => {
+      let newItemCount = 0
+      for (let mutation of mutations) {
+        for (let $addedNode of mutation.addedNodes) {
+          if (!($addedNode instanceof HTMLElement)) continue
+          // TODO Remove YTD-COMPACT-VIDEO-RENDERER if all Related videos move to YT-LOCKUP-VIEW-MODEL
+          if ($addedNode.nodeName == 'YTD-COMPACT-VIDEO-RENDERER' || $addedNode.nodeName == 'YT-LOCKUP-VIEW-MODEL') {
+            processRelatedItem($addedNode)
+            newItemCount++
+          }
+        }
+      }
+      if (newItemCount > 0) log(newItemCount, `related item${s(newItemCount)} added`)
+    }, {
+      name: '#related contents (for new items being added)',
+      observers: pageObservers,
+    })
+  }
+
+  async function observeRelatedSection() {
+    $renderer = await getElement('#related.ytd-watch-flexy ytd-watch-next-secondary-results-renderer', {
+      name: '#related renderer',
+      stopIf: currentUrlChanges(),
+    })
+    if (!$renderer) return
+
+    let $items = $renderer.querySelector(':scope > #items')
+    if (!$items) {
+      warn('related #items not found')
+      return
+    }
+
+    // When categories are available, items are rendered in a ytd-item-section-renderer
+    let $itemSectionRenderer = $items.querySelector(':scope > ytd-item-section-renderer')
+    if ($itemSectionRenderer) {
+      $canShowMoreElement = $itemSectionRenderer
+      $contents = $itemSectionRenderer.querySelector('#contents')
+    } else {
+      $canShowMoreElement = $renderer
+      $contents = $items
+    }
+
+    // Categories can be added or removed after navigating between videos
+    observeElement($items, (mutations) => {
+      for (let mutation of mutations) {
+        for (let $addedNode of mutation.addedNodes) {
+          if (!($addedNode instanceof HTMLElement)) continue
+          if ($addedNode.nodeName === 'YTD-ITEM-SECTION-RENDERER') {
+            log('#related categories appeared')
+            $canShowMoreElement = $addedNode
+            $contents = $addedNode.querySelector('#contents')
+            init()
+          }
+        }
+        for (let $removedNode of mutation.removedNodes) {
+          if (!($removedNode instanceof HTMLElement)) continue
+          if ($removedNode.nodeName === 'YTD-ITEM-SECTION-RENDERER') {
+            log('#related categories disappeared')
+            $canShowMoreElement = $renderer
+            $contents = $items
+            init()
+          }
+        }
+      }
+    }, {
+      name: '#related #items',
+      observers: pageObservers,
+    })
+
+    init()
+  }
+
+  function processCurrentItems() {
+    itemCount = 0
+    for (let $item of $contents.children) {
+      // TODO Remove YTD-COMPACT-VIDEO-RENDERER if all Related videos moved to YT-LOCKUP-VIEW-MODEL
+      if ($item.nodeName == 'YTD-COMPACT-VIDEO-RENDERER' || $item.nodeName == 'YT-LOCKUP-VIEW-MODEL') {
+        processRelatedItem($item)
+      }
+    }
+  }
+
+  /** @param {Element} $item  */
+  function processRelatedItem($item) {
+    let itemNumber = ++itemCount
+    manuallyHideVideo($item, {hideDismissed: $item.nodeName == 'YT-LOCKUP-VIEW-MODEL'})
+    if ($item.nodeName == 'YTD-COMPACT-VIDEO-RENDERER') {
+      waitForVideoOverlay($item, `related item ${itemNumber}`)
+    }
+  }
+
+  observeRelatedSection()
+
+  // In the new layout, #related appears as a child of #secondary-inner or
+  // #below and will be moved as the viewport width changes.
+  for (let selector of ['#secondary-inner', '#below']) {
+    run(async () => {
+      let $el = await getElement(selector, {name: selector, stopIf: currentUrlChanges()})
+      if (!$el) return
+      observeElement($el, (mutations) => {
+        for (let mutation of mutations) {
+          for (let $addedNode of mutation.addedNodes) {
+            if (!($addedNode instanceof HTMLElement)) continue
+            if ($addedNode.id == 'related') {
+              log('#related moved to', selector)
+              observeRelatedSection()
+            }
+          }
+        }
+      }, {
+        name: `${selector} (for #related being added)`,
+        observers: pageObservers,
+      })
+    })
+  }
+}
+
 /**
  * If you navigate back to Subscriptions after a period of time, its contents
  * will be refreshed, reusing elements. We need to detect this and re-apply
@@ -3669,72 +3818,8 @@ async function tweakVideoPage() {
   if (config.hideRelated || (!config.hideWatched && !config.hideStreamed && !config.hideChannels)) return
 
   if (desktop) {
-    let $section = await getElement('#related.ytd-watch-flexy ytd-item-section-renderer', {
-      name: 'related <ytd-item-section-renderer>',
-      stopIf: currentUrlChanges(),
-    })
-    if (!$section) return
-
-    let $contents = $section.querySelector('#contents')
-    let itemCount = 0
-
-    /** @param {Element} $item  */
-    function processItem($item) {
-      manuallyHideVideo($item, {hideDismissed: $item.nodeName == 'YT-LOCKUP-VIEW-MODEL'})
-      if ($item.nodeName == 'YTD-COMPACT-VIDEO-RENDERER') {
-        waitForVideoOverlay($item, `related item ${++itemCount}`)
-      }
-    }
-
-    function processCurrentItems() {
-      itemCount = 0
-      for (let $item of $contents.children) {
-        // TODO Remove YTD-COMPACT-VIDEO-RENDERER after confirming all Related videos have moved to YT-LOCKUP-VIEW-MODEL
-        if ($item.nodeName == 'YTD-COMPACT-VIDEO-RENDERER' || $item.nodeName == 'YT-LOCKUP-VIEW-MODEL') {
-          processItem($item)
-        }
-      }
-    }
-
-    // If the video changes (e.g. a related video is clicked) on desktop,
-    // the related items section is refreshed - the section has a can-show-more
-    // attribute while this is happening.
-    observeElement($section, () => {
-      if ($section.getAttribute('can-show-more') == null) {
-        log('can-show-more attribute removed - reprocessing refreshed items')
-        processCurrentItems()
-      }
-    }, {
-      name: 'related <ytd-item-section-renderer> can-show-more attribute',
-      observers: pageObservers,
-    }, {
-      attributes: true,
-      attributeFilter: ['can-show-more'],
-    })
-
-    observeElement($contents, (mutations) => {
-      let newItemCount = 0
-      for (let mutation of mutations) {
-        for (let $addedNode of mutation.addedNodes) {
-          if (!($addedNode instanceof HTMLElement)) continue
-          // TODO Remove YTD-COMPACT-VIDEO-RENDERER after confirming all Related videos have moved to YT-LOCKUP-VIEW-MODEL
-          if ($addedNode.nodeName == 'YTD-COMPACT-VIDEO-RENDERER' || $addedNode.nodeName == 'YT-LOCKUP-VIEW-MODEL') {
-            processItem($addedNode)
-            newItemCount++
-          }
-        }
-      }
-      if (newItemCount > 0) {
-        log(newItemCount, `related item${s(newItemCount)} added`)
-      }
-    }, {
-      name: `related <ytd-item-section-renderer> contents (for new items being added)`,
-      observers: pageObservers,
-    })
-
-    processCurrentItems()
+    observeDesktopRelatedVideos()
   }
-
   if (mobile) {
     // If the video changes on mobile, related videos are rendered from scratch
     observeVideoList({
