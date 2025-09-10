@@ -1648,7 +1648,8 @@ const configureCss = (() => {
       if (config.searchThumbnailSize != 'large') {
         cssRules.push(`
           ytd-search ytd-video-renderer ytd-thumbnail.ytd-video-renderer,
-          ytd-search yt-lockup-view-model .yt-lockup-view-model__content-image {
+          ytd-search yt-lockup-view-model .yt-lockup-view-model__content-image,
+          ytd-search ytd-channel-renderer #avatar-section {
             max-width: ${{
               medium: 420,
               small: 360,
