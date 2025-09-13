@@ -83,9 +83,7 @@ let desktop = !mobile
 /** @type {import("./types").Version} */
 let version = mobile ? 'mobile' : 'desktop'
 /** @type {string} */
-let lang
-/** @type {string[]} */
-let langCodes = []
+let lang = document.documentElement.lang || ''
 let loggedIn = /(^|; )SID=/.test(document.cookie)
 
 function log(...args) {
@@ -463,6 +461,11 @@ const locales = {
     SHORTS: 'Okufushane',
   },
 }
+
+const langCodes = lang.split('-')
+  .map((_, index, parts) => parts.slice(0, parts.length - index).join('-'))
+  .filter(langCode => Object.hasOwn(locales, langCode))
+  .concat('en')
 
 /**
  * @param {import("./types").LocaleKey} code
@@ -4102,38 +4105,6 @@ function configChanged(changes) {
   }
 }
 
-async function initLang() {
-  /** @param {HTMLElement} $el */
-  async function waitForLang($el) {
-    if ($el.lang) return $el.lang
-    let startTime = Date.now()
-    return new Promise(resolve => {
-      let observer = new MutationObserver(() => {
-        if ($el.lang) {
-          let elapsed = Date.now() - startTime
-          if (elapsed > 0) {
-            log(version, 'lang became available after', elapsed, 'ms')
-          }
-          observer.disconnect()
-          resolve($el.lang)
-        }
-      })
-      observer.observe($el, {attributes: true, attributeFilter: ['lang']})
-    })
-  }
-  if (mobile) {
-    lang = await waitForLang(await getElement('body', {name: 'mobile <body> for lang'}))
-  } else {
-    lang = await waitForLang(document.documentElement)
-  }
-  log('lang is', lang)
-  langCodes = lang.split('-')
-    .map((_, index, parts) => parts.slice(0, parts.length - index).join('-'))
-    .filter(langCode => Object.hasOwn(locales, langCode))
-    .concat('en')
-  main()
-}
-
 /**
  * @param {MessageEvent<import("./types").SiteConfigMessage>} message
  */
@@ -4142,12 +4113,12 @@ function receiveConfigFromContentScript({data: {type, siteConfig}}) {
     config = {...defaultConfig, ...siteConfig}
     debug = config.debug
     debugManualHiding = config.debugManualHiding
-    log('initial config', config, {version, loggedIn})
+    log('initial config', config, {version, lang, loggedIn})
 
     // Let the options page know which version is being used
     storeConfigChanges({version})
 
-    initLang()
+    main()
     return
   }
 
