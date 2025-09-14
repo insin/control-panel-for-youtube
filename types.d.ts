@@ -50,6 +50,7 @@ export type SiteConfig = {
   collapsedOptions?: string[]
   debug?: boolean
   debugManualHiding?: boolean
+  defaultPlaybackSpeed: string
   alwaysShowShortsProgressBar: boolean
   blockAds: boolean
   disableAmbientMode: boolean
