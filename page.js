@@ -1439,8 +1439,8 @@ const configureCss = (() => {
         hideCssSelectors.push(
           // Grid item
           'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(ytd-thumbnail-overlay-time-status-renderer[overlay-style="UPCOMING"])',
-          // Grid item in Home with "Notify Me" button
-          'ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(lockup-attachments-view-model)',
+          // Grid item with "Notify Me" button
+          'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(lockup-attachments-view-model)',
           // List item
           'ytd-video-renderer:has(ytd-thumbnail-overlay-time-status-renderer[overlay-style="UPCOMING"])',
         )
@@ -2385,7 +2385,7 @@ function getChannelDetailsFromVideo($video) {
       }
     }
     else if ($video.tagName == 'YT-LOCKUP-VIEW-MODEL') {
-      // Home videos have a channel link
+      // Home and Subscriptions videos have a channel link
       let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('yt-content-metadata-view-model a'))
       if ($link) {
         return {
@@ -2616,83 +2616,7 @@ async function observeDesktopRelatedVideos() {
 }
 
 /**
- * If you navigate back to Subscriptions after a period of time, its contents
- * will be refreshed, reusing elements. We need to detect this and re-apply
- * manual hiding preferences for the updated video in each element.
- * @param {Element} $gridItem
- * @param {string} uniqueId
- */
-function observeDesktopRichGridMediaItemContent($gridItem, uniqueId) {
-  observeDesktopRichGridMediaProgress($gridItem, uniqueId)
-
-  // For videos, observe the thumbnail link for the videoId being changed
-  let thumbnailSelector = 'ytd-rich-grid-media a#thumbnail'
-  let $thumbnailLink = /** @type {HTMLAnchorElement} */ ($gridItem.querySelector(thumbnailSelector))
-  /** @type {import("./types").CustomMutationObserver} */
-  let thumbnailObserver
-
-  function observeThumbnail() {
-    if (!$thumbnailLink) {
-      log(`${uniqueId} has no video thumbnail link`)
-      return
-    }
-    thumbnailObserver = observeElement($thumbnailLink, (mutations) => {
-      let searchParams = new URLSearchParams($thumbnailLink.search)
-      if (searchParams.has('v') && !mutations[0].oldValue.includes(searchParams.get('v'))) {
-        log(`${uniqueId} thumbnail link href changed`, mutations[0].oldValue, '→', $thumbnailLink.href)
-        manuallyHideVideo($gridItem)
-      }
-    }, {
-      name: `${uniqueId} thumbnail link href`,
-      observers: pageObservers,
-    }, {
-      attributes: true,
-      attributeFilter: ['href'],
-      attributeOldValue: true,
-    })
-  }
-
-  if ($thumbnailLink) {
-    observeThumbnail()
-  }
-
-  // Observe the content of the grid item for a video being added or removed
-  // when grid contents are refreshed.
-  let $content = $gridItem.querySelector(':scope > #content')
-  observeElement($content, (mutations) => {
-    for (let mutation of mutations) {
-      for (let $addedNode of mutation.addedNodes) {
-        if (!($addedNode instanceof HTMLElement)) continue
-        if ($addedNode.nodeName == 'YTD-RICH-GRID-MEDIA') {
-          log('ytd-rich-grid-media added to', uniqueId, $addedNode)
-          $thumbnailLink = /** @type {HTMLAnchorElement} */ ($gridItem.querySelector(thumbnailSelector))
-          observeThumbnail()
-          manuallyHideVideo($gridItem)
-          if (config.hideWatched) {
-            observeDesktopRichGridMediaProgress($gridItem, uniqueId)
-          }
-        }
-      }
-      for (let $removedNode of mutation.removedNodes) {
-        if (!($removedNode instanceof HTMLElement)) continue
-        if ($removedNode.nodeName == 'YTD-RICH-GRID-MEDIA') {
-          log(uniqueId, 'ytd-rich-grid-media removed from grid item')
-          $thumbnailLink = null
-          thumbnailObserver?.disconnect()
-          manuallyHideVideo($gridItem)
-        }
-      }
-    }
-  }, {
-    name: `${uniqueId} #content`,
-    observers: pageObservers,
-  })
-}
-
-/**
- * If you navigate back to Home after a period of time or use the categories
- * pills, grid item contents are re-rendered. We need to re-apply manual hiding
- * when this happens.
+ * Re-apply manual hiding when Home or Subscriptions grid items re-render.
  *
  * yt-lockup-view-model seems to be re-rendered from scratch, even if the same
  * video will end up in the same grid item. The element also seems to be empty
@@ -2719,73 +2643,6 @@ function observeDesktopYtLockupViewModelItemContent($gridItem, uniqueId) {
   })
 }
 
-/**
- * If you watch a video then navigate back to Subscriptions without causing its
- * contents to be refreshed, its watch progress will be updated in-place.
- * @param {Element} $video
- * @param {string} uniqueId
- */
-function observeDesktopRichGridMediaProgress($video, uniqueId) {
-  let $overlays = $video.querySelector('ytd-rich-grid-media #overlays')
-  if (!$overlays) {
-    log(uniqueId, 'has no video #overlay')
-    return
-  }
-
-  let $progress = $overlays.querySelector('#progress')
-  /** @type {import("./types").CustomMutationObserver} */
-  let progressObserver
-
-  function observeProgress() {
-    if (!$progress) {
-      log(`${uniqueId} has no #progress`)
-      return
-    }
-    progressObserver = observeElement($progress, (mutations) => {
-      if (mutations.length > 0) {
-        log(`${uniqueId} #progress style changed`)
-        hideWatched($video)
-      }
-    }, {
-      name: `${uniqueId} #progress (for style changes)`,
-      observers: pageObservers,
-    }, {
-      attributes: true,
-      attributeFilter: ['style'],
-    })
-  }
-
-  if ($progress) {
-    observeProgress()
-  }
-
-  // Observe overlay contents for a progress bar being added or removed when
-  // the video is updated.
-  observeElement($overlays, (mutations) => {
-    for (let mutation of mutations) {
-      for (let $addedNode of mutation.addedNodes) {
-        if (!($addedNode instanceof HTMLElement)) continue
-        if ($addedNode.nodeName == 'YTD-THUMBNAIL-OVERLAY-RESUME-PLAYBACK-RENDERER') {
-          $progress = $addedNode.querySelector('#progress')
-          observeProgress()
-          hideWatched($video)
-        }
-      }
-      for (let $removedNode of mutation.removedNodes) {
-        if (!($removedNode instanceof HTMLElement)) continue
-        if ($removedNode.nodeName == 'YTD-THUMBNAIL-OVERLAY-RESUME-PLAYBACK-RENDERER') {
-          $progress = null
-          progressObserver?.disconnect()
-          hideWatched($video)
-        }
-      }
-    }
-  }, {
-    name: `${uniqueId} #overlays (for #progress being added or removed)`,
-    observers: pageObservers,
-  })
-}
-
 /** @param {{page: 'home' | 'subscriptions'}} options */
 async function observeDesktopRichGridItems(options) {
   let {page} = options
@@ -2805,8 +2662,7 @@ async function observeDesktopRichGridItems(options) {
    */
   function processGridItem($gridItem, uniqueId) {
     manuallyHideVideo($gridItem, {hideDismissed: page === 'home'})
-    if (page == 'home') observeDesktopYtLockupViewModelItemContent($gridItem, uniqueId)
-    if (page == 'subscriptions') observeDesktopRichGridMediaItemContent($gridItem, uniqueId)
+    observeDesktopYtLockupViewModelItemContent($gridItem, uniqueId)
   }
 
   function processAllVideos() {
