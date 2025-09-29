@@ -2764,11 +2764,9 @@ function observeDesktopContextMenu($popupContainer) {
     // Adjust context menu height for new item
     let height = `${parseInt($contextMenu.style.height) + 40}px`
     $contextMenu.style.height = height
-    if ($contextMenu.children[0]) {
-      /** @type {HTMLElement} */ ($contextMenu.children[0]).style.height = height
-      if ($contextMenu.children[0].children[0]) {
-        /** @type {HTMLElement} */ ($contextMenu.children[0].children[0]).style.height = height
-      }
+    let $panel = /** @type {HTMLElement} */ ($contextMenu.querySelector('.ytp-panel'))
+    if ($panel) {
+      $panel.style.height = height
     }
   }
 
