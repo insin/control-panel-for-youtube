@@ -2246,6 +2246,8 @@ function handleDesktopWatchChannelMenu($menu) {
 
 /** @param {HTMLElement} $menu */
 function addHideChannelToDesktopVideoMenu($menu) {
+  $menu.querySelector('#cpfyt-hide-channel-menu-item')?.remove()
+
   let videoContainerElementSelector
   if (isSearchPage()) {
     videoContainerElementSelector = 'ytd-video-renderer'
@@ -2268,8 +2270,6 @@ function addHideChannelToDesktopVideoMenu($menu) {
   if (!channel) return
   lastClickedChannel = channel
   log('channel for clicked video', lastClickedChannel)
-
-  $menu.querySelector('#cpfyt-hide-channel-menu-item')?.remove()
 
   let $menuItems = $menu.querySelector([
     'tp-yt-paper-listbox',
