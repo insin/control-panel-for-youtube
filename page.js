@@ -1560,6 +1560,7 @@ const configureCss = (() => {
           '#movie_player .ytp-endscreen-content',
           '#movie_player .ytp-endscreen-previous',
           '#movie_player .ytp-endscreen-next',
+          '#movie_player .ytp-fullscreen-grid-stills-container',
         )
       }
       if (config.hideMerchEtc) {
