@@ -2329,7 +2329,7 @@ async function addHideChannelToMobileVideoMenu($menu) {
   let hasIcon = Boolean($menuItems.querySelector('c3-icon'))
   let hideChannelMenuItemHTML = html`
     <ytm-menu-item id="cpfyt-hide-channel-menu-item">
-      <button class="menu-item-button">
+      <button class="menu-item-button list-item-styles">
         ${hasIcon ? `<c3-icon>
           <div style="width: 100%; height: 100%; fill: currentcolor;">
             ${Svgs.DELETE}
