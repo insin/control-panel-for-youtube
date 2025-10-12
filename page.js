@@ -2586,7 +2586,7 @@ async function observeDesktopRelatedVideos() {
     let itemNumber = ++itemCount
     manuallyHideVideo($item, {hideDismissed: $item.nodeName == 'YT-LOCKUP-VIEW-MODEL'})
     if ($item.nodeName == 'YTD-COMPACT-VIDEO-RENDERER') {
-      waitForVideoOverlay($item, `related item ${itemNumber}`)
+      waitForDesktopVideoOverlay($item, `related item ${itemNumber}`)
     }
   }
 
@@ -2986,10 +2986,34 @@ async function observeSearchResultSections(options) {
   let sectionCount = 0
 
   /**
+   * Initial items in a previously-rendered mobile search may be placeholders,
+   * e.g. Search → Click a video → Go back
+   * @param {Element} $item
+   * @param {number} itemNumber
+   */
+  function waitForMobileVideoToRender($item, itemNumber) {
+    let $videoLink = /** @type {HTMLAnchorElement} */ ($item.querySelector('ytm-media-item > a'))
+    if ($videoLink && !$videoLink.href) {
+      observeElement($videoLink, (_, observer) => {
+        if ($videoLink.href) {
+          manuallyHideVideo($item)
+          observer.disconnect()
+        }
+      }, {
+        name: `mobile search result placeholder ${itemNumber}`,
+        observers: pageObservers,
+      }, {
+        attributes: true,
+        attributeFilter: ['href'],
+      })
+    }
+  }
+
+  /**
    * @param {HTMLElement} $section
    * @param {number} sectionNum
    */
-  function processSection($section, sectionNum) {
+  function processSection($section, sectionNum, isInitialSection = false) {
     let $contents = /** @type {HTMLElement} */ ($section.querySelector(sectionContentsSelector))
     let itemCount = 0
     let suggestedSectionCount = 0
@@ -3006,7 +3030,9 @@ async function observeSearchResultSections(options) {
       for (let $item of $contents.children) {
         if ($item.nodeName == videoNodeName) {
           manuallyHideVideo($item)
-          waitForVideoOverlay($item, `section ${sectionNum} item ${++itemCount}`, itemObservers)
+          if (mobile && isInitialSection) {
+            waitForMobileVideoToRender($item, ++itemCount)
+          }
         }
         if (!config.hideSuggestedSections && suggestedSectionNodeName != null && $item.nodeName == suggestedSectionNodeName) {
           processSuggestedSection($item)
@@ -3021,13 +3047,11 @@ async function observeSearchResultSections(options) {
      * @param {Element} $suggestedSection
      */
     function processSuggestedSection($suggestedSection) {
-      let suggestedItemCount = 0
       let uniqueId = `section ${sectionNum} suggested section ${++suggestedSectionCount}`
       let $items = $suggestedSection.querySelector('#items')
       for (let $video of $items.children) {
         if ($video.nodeName == videoNodeName) {
           manuallyHideVideo($video)
-          waitForVideoOverlay($video, `${uniqueId} item ${++suggestedItemCount}`, itemObservers)
         }
       }
       // More videos are added if the "More" control is used
@@ -3039,7 +3063,6 @@ async function observeSearchResultSections(options) {
             if ($addedNode.nodeName == videoNodeName) {
               if (!moreVideosAdded) moreVideosAdded = true
               manuallyHideVideo($addedNode)
-              waitForVideoOverlay($addedNode, `${uniqueId} item ${++suggestedItemCount}`, itemObservers)
             }
           }
         }
@@ -3076,7 +3099,9 @@ async function observeSearchResultSections(options) {
           if (!($addedNode instanceof HTMLElement)) continue
           if ($addedNode.nodeName == videoNodeName) {
             manuallyHideVideo($addedNode)
-            waitForVideoOverlay($addedNode, `section ${sectionNum} item ${++itemCount}`, observers)
+            if (mobile && isInitialSection) {
+              waitForMobileVideoToRender($addedNode, ++itemCount)
+            }
           }
           if (!config.hideSuggestedSections && suggestedSectionNodeName != null && $addedNode.nodeName == suggestedSectionNodeName) {
             processSuggestedSection($addedNode)
@@ -3128,7 +3153,7 @@ async function observeSearchResultSections(options) {
   let $initialSections = /** @type {NodeListOf<HTMLElement>} */ ($sections.querySelectorAll(sectionElement))
   log($initialSections.length, `initial search result section${s($initialSections.length)}`)
   for (let $initialSection of $initialSections) {
-    processSection($initialSection, ++sectionCount)
+    processSection($initialSection, ++sectionCount, true)
   }
 }
 
@@ -3323,14 +3348,12 @@ function observeVideoHiddenState() {
  *   videoElements: Set<string>
  * }} options
  */
-async function observeVideoList(options) {
+async function observeMobileVideoList(options) {
   let {name, selector, stopIf = currentUrlChanges(), page, videoElements} = options
   let videoNodeNames = new Set(Array.from(videoElements, (name) => name.toUpperCase()))
 
   let $list = await getElement(selector, {name, stopIf})
   if (!$list) return
-
-  let itemCount = 0
 
   observeElement($list, (mutations) => {
     let newItemCount = 0
@@ -3338,8 +3361,7 @@ async function observeVideoList(options) {
       for (let $addedNode of mutation.addedNodes) {
         if (!($addedNode instanceof HTMLElement)) continue
         if (videoNodeNames.has($addedNode.nodeName)) {
-          manuallyHideVideo($addedNode)
-          waitForVideoOverlay($addedNode, `item ${++itemCount}`)
+          requestAnimationFrame(() => manuallyHideVideo($addedNode))
           newItemCount++
         }
       }
@@ -3355,8 +3377,7 @@ async function observeVideoList(options) {
   let initialItemCount = 0
   for (let $initialItem of $list.children) {
     if (videoNodeNames.has($initialItem.nodeName)) {
-      manuallyHideVideo($initialItem)
-      waitForVideoOverlay($initialItem, `item ${++itemCount}`)
+      requestAnimationFrame(() => manuallyHideVideo($initialItem))
       initialItemCount++
     }
   }
@@ -3581,7 +3602,7 @@ async function tweakHomePage() {
     observeDesktopRichGridItems({page: 'home'})
   }
   if (mobile) {
-    observeVideoList({
+    observeMobileVideoList({
       name: 'home <ytm-rich-grid-renderer> contents',
       selector: '.tab-content[tab-identifier="FEwhat_to_watch"] .rich-grid-renderer-contents',
       page: 'home',
@@ -3703,7 +3724,7 @@ async function tweakSubscriptionsPage() {
     observeDesktopRichGridItems({page: 'subscriptions'})
   }
   if (mobile) {
-    observeVideoList({
+    observeMobileVideoList({
       name: 'subscriptions <lazy-list>',
       selector: '.tab-content[tab-identifier="FEsubscriptions"] ytm-section-list-renderer > lazy-list',
       page: 'subscriptions',
@@ -3736,7 +3757,7 @@ async function tweakVideoPage() {
   }
   if (mobile) {
     // If the video changes on mobile, related videos are rendered from scratch
-    observeVideoList({
+    observeMobileVideoList({
       name: 'related <lazy-list>',
       selector: 'ytm-item-section-renderer[section-identifier="related-items"] > lazy-list',
       page: 'related',
@@ -3746,63 +3767,35 @@ async function tweakVideoPage() {
   }
 }
 
-// TODO Check if we need to update this for <yt-lockup-view-model> videos
 /**
  * Wait for video overlays with watch progress when they're loazed lazily.
  * @param {Element} $video
  * @param {string} uniqueId
- * @param {Map<string, import("./types").Disconnectable>} [observers]
  */
-function waitForVideoOverlay($video, uniqueId, observers) {
+function waitForDesktopVideoOverlay($video, uniqueId) {
   if (!config.hideWatched) return
 
-  if (desktop) {
-    // The overlay element is initially empty
-    let $overlays = $video.querySelector('#overlays')
-    if (!$overlays || $overlays.childElementCount > 0) return
+  // The overlay element is initially empty
+  let $overlays = $video.querySelector('#overlays')
+  if (!$overlays || $overlays.childElementCount > 0) return
 
-    observeElement($overlays, (mutations, observer) => {
-      let nodesAdded = false
-      for (let mutation of mutations) {
-        for (let $addedNode of mutation.addedNodes) {
-          if (!nodesAdded) nodesAdded = true
-          if ($addedNode.nodeName == 'YTD-THUMBNAIL-OVERLAY-RESUME-PLAYBACK-RENDERER') {
-            hideWatched($video)
-          }
+  observeElement($overlays, (mutations, observer) => {
+    let nodesAdded = false
+    for (let mutation of mutations) {
+      for (let $addedNode of mutation.addedNodes) {
+        if (!nodesAdded) nodesAdded = true
+        if ($addedNode.nodeName == 'YTD-THUMBNAIL-OVERLAY-RESUME-PLAYBACK-RENDERER') {
+          hideWatched($video)
         }
       }
-      if (nodesAdded) {
-        observer.disconnect()
-      }
-    }, {
-      name: `${uniqueId} #overlays (for overlay elements being added)`,
-      observers: [observers, pageObservers].filter(Boolean),
-    })
-  }
-
-  if (mobile) {
-    // The overlay element has a different initial class
-    let $placeholder = $video.querySelector('.video-thumbnail-overlay-bottom-group')
-    if (!$placeholder) return
-
-    observeElement($placeholder, (mutations, observer) => {
-      let nodesAdded = false
-      for (let mutation of mutations) {
-        for (let $addedNode of mutation.addedNodes) {
-          if (!nodesAdded) nodesAdded = true
-          if ($addedNode.nodeName == 'YTM-THUMBNAIL-OVERLAY-RESUME-PLAYBACK-RENDERER') {
-            hideWatched($video)
-          }
-        }
-      }
-      if (nodesAdded) {
-        observer.disconnect()
-      }
-    }, {
-      name: `${uniqueId} .video-thumbnail-overlay-bottom-group (for overlay elements being added)`,
-      observers: [observers, pageObservers].filter(Boolean),
-    })
-  }
+    }
+    if (nodesAdded) {
+      observer.disconnect()
+    }
+  }, {
+    name: `${uniqueId} #overlays (for overlay elements being added)`,
+    observers: pageObservers,
+  })
 }
 //#endregion
 
