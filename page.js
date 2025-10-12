@@ -51,6 +51,7 @@ let defaultConfig = {
   fullSizeTheaterModeHideHeader: true,
   fullSizeTheaterModeHideScrollbar: false,
   hideChat: false,
+  hideCollaborations: false,
   hideEndCards: false,
   hideEndVideos: true,
   hideMerchEtc: false,
@@ -1550,6 +1551,11 @@ const configureCss = (() => {
           '#teaser-carousel.ytd-watch-metadata',
           // Chat panel in theater mode
           '#full-bleed-container.ytd-watch-flexy #panels-full-bleed-container.ytd-watch-flexy',
+        )
+      }
+      if (config.hideCollaborations) {
+        hideCssSelectors.push(
+          'ytd-browse[page-subtype="subscriptions"] ytd-rich-item-renderer:has(yt-avatar-stack-view-model)'
         )
       }
       if (config.hideEndCards) {

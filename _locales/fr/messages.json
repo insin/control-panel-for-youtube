@@ -105,6 +105,9 @@
   "hideChat": {
     "message": "Masquer le chat"
   },
+  "hideCollaborations": {
+    "message": "Masquer les Collaborations dans les Abonnements"
+  },
   "hideComments": {
     "message": "Masquer les commentaires"
   },

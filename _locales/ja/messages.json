@@ -104,6 +104,9 @@
   "hideChat": {
     "message": "チャットを非表示"
   },
+  "hideCollaborations": {
+    "message": "登録チャンネルのコラボレーションを非表示にする"
+  },
   "hideComments": {
     "message": "コメントを非表示"
   },

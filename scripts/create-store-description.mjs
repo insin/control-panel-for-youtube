@@ -108,6 +108,7 @@ ${messages.videoLists}:
 • ${messages.disableHomeFeed}
 • ${messages.searchThumbnailSize}${messages.desktopVersion}
 • ${messages.minimumGridItemsPerRow}${messages.desktopVersion}
+• ${messages.hideCollaborations}${messages.desktopVersion}
 
 ${messages.videoPages}:
 

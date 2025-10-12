@@ -105,6 +105,9 @@
   "hideChat": {
     "message": "隐藏聊天"
   },
+  "hideCollaborations": {
+    "message": "隐藏订阅中的联合创作"
+  },
   "hideComments": {
     "message": "隐藏注释"
   },
