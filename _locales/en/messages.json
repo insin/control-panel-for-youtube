@@ -32,6 +32,9 @@
   "desktopOnly": {
     "message": "Desktop only"
   },
+  "defaultPlaybackSpeed": {
+    "message": "Default Playback Speed"
+  },
   "disableAmbientMode": {
     "message": "Disable Ambient mode"
   },
