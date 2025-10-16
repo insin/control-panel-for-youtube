@@ -239,8 +239,23 @@
   "mobileOnly": {
     "message": "モバイルのみ"
   },
+  "newVideoPlayerUI": {
+    "message": "新しい動画プレーヤーUI"
+  },
   "pauseChannelTrailers": {
     "message": "チャンネルのトレーラーを自動的に一時停止"
+  },
+  "playerCompactPlayButton": {
+    "message": "常にコンパクトな再生ボタンを使用する"
+  },
+  "playerHideFullScreenControls": {
+    "message": "新しい全画面コントロールを非表示にする"
+  },
+  "playerHideFullScreenTitle": {
+    "message": "全画面のタイトルを非表示にする"
+  },
+  "playerRemoveControlsBg": {
+    "message": "コントロールから背景を削除する"
   },
   "qualityFull": {
     "message": "最高"

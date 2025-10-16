@@ -82,6 +82,13 @@ ${messages.ads}:
 • ${messages.hideSponsored}
 • ${messages.hideMerchEtc}${messages.desktopVersion}
 
+${messages.newVideoPlayerUI}${messages.desktopVersion}:
+
+• ${messages.playerCompactPlayButton}
+• ${messages.playerRemoveControlsBg}
+• ${messages.playerHideFullScreenControls}
+• ${messages.playerHideFullScreenTitle}
+
 ${messages.annoyances}:
 
 • ${messages.hideAI}

@@ -62,7 +62,7 @@ let defaultConfig = {
   minimumGridItemsPerRow: 'auto',
   minimumShortsPerRow: 'auto',
   pauseChannelTrailers: true,
-  playerCompactPlayButton: false,
+  playerCompactPlayButton: true,
   playerHideFullScreenControls: false,
   playerHideFullScreenTitle: false,
   playerRemoveControlsBg: false,

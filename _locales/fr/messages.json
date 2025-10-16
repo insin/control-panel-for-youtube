@@ -240,8 +240,23 @@
   "mobileOnly": {
     "message": "Mobile uniquement"
   },
+  "newVideoPlayerUI": {
+    "message": "Nouvelle interface du lecteur vidéo"
+  },
   "pauseChannelTrailers": {
     "message": "Mettre en pause automatiquement les bandes-annonces de chaîne"
+  },
+  "playerCompactPlayButton": {
+    "message": "Toujours utiliser le bouton Lecture compact"
+  },
+  "playerHideFullScreenControls": {
+    "message": "Masquer les nouveaux contrôles en plein écran"
+  },
+  "playerHideFullScreenTitle": {
+    "message": "Masquer le titre en plein écran"
+  },
+  "playerRemoveControlsBg": {
+    "message": "Supprimer l'arrière-plan des contrôles"
   },
   "qualityFull": {
     "message": "Maximum"

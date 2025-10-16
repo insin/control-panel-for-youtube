@@ -240,8 +240,23 @@
   "mobileOnly": {
     "message": "仅限移动设备"
   },
+  "newVideoPlayerUI": {
+    "message": "新版视频播放器界面"
+  },
   "pauseChannelTrailers": {
     "message": "自动暂停频道预告片"
+  },
+  "playerCompactPlayButton": {
+    "message": "始终使用紧凑的播放按钮"
+  },
+  "playerHideFullScreenControls": {
+    "message": "隐藏新的全屏控件"
+  },
+  "playerHideFullScreenTitle": {
+    "message": "隐藏全屏标题"
+  },
+  "playerRemoveControlsBg": {
+    "message": "移除控件的背景"
   },
   "qualityFull": {
     "message": "最高"

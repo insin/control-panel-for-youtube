@@ -240,8 +240,23 @@
   "mobileOnly": {
     "message": "Mobile only"
   },
+  "newVideoPlayerUI": {
+    "message": "New video player UI"
+  },
   "pauseChannelTrailers": {
     "message": "Automatically pause channel trailers"
+  },
+  "playerCompactPlayButton": {
+    "message": "Always use compact Play button"
+  },
+  "playerHideFullScreenControls": {
+    "message": "Hide new full screen controls"
+  },
+  "playerHideFullScreenTitle": {
+    "message": "Hide full screen title"
+  },
+  "playerRemoveControlsBg": {
+    "message": "Remove background from controls"
   },
   "qualityFull": {
     "message": "Full"
