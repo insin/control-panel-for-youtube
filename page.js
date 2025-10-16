@@ -62,6 +62,10 @@ let defaultConfig = {
   minimumGridItemsPerRow: 'auto',
   minimumShortsPerRow: 'auto',
   pauseChannelTrailers: true,
+  playerCompactPlayButton: false,
+  playerHideFullScreenControls: false,
+  playerHideFullScreenTitle: false,
+  playerRemoveControlsBg: false,
   redirectLogoToSubscriptions: false,
   searchThumbnailSize: 'medium',
   snapshotFormat: 'jpeg',
@@ -520,8 +524,8 @@ const MenuConfigs = {
 }
 
 const Svgs = {
-  DELETE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M11 17H9V8h2v9zm4-9h-2v9h2V8zm4-4v1h-1v16H6V5H5V4h4V3h6v1h4zm-2 1H7v15h10V5z"></path></svg>',
-  RESTORE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M460-347.692h40V-535.23l84 83.538L612.308-480 480-612.308 347.692-480 376-451.692l84-83.538v187.538ZM304.615-160Q277-160 258.5-178.5 240-197 240-224.615V-720h-40v-40h160v-30.77h240V-760h160v40h-40v495.385Q720-197 701.5-178.5 683-160 655.385-160h-350.77ZM680-720H280v495.385q0 9.23 7.692 16.923Q295.385-200 304.615-200h350.77q9.23 0 16.923-7.692Q680-215.385 680-224.615V-720Zm-400 0v520-520Z"/></svg>',
+  DELETE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M19 3h-4V2a1 1 0 00-1-1h-4a1 1 0 00-1 1v1H5a2 2 0 00-2 2h18a2 2 0 00-2-2ZM6 19V7H4v12a4 4 0 004 4h8a4 4 0 004-4V7h-2v12a2 2 0 01-2 2H8a2 2 0 01-2-2Zm4-11a1 1 0 00-1 1v8a1 1 0 102 0V9a1 1 0 00-1-1Zm4 0a1 1 0 00-1 1v8a1 1 0 002 0V9a1 1 0 00-1-1Z"></path></svg>',
+  RESTORE: '<svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M8.76 1.487c9.617-2.963 17.833 7.473 12.698 16.126-5.135 8.652-18.231 6.441-20.238-3.42-.267-1.307 1.693-1.707 1.96-.4 1.321 6.495 8.971 9.382 14.254 5.38 5.016-3.8 4.683-11.443-.644-14.793A9 9 0 0 0 4.518 7H7c1.333 0 1.333 2 0 2H1V3c0-1.333 2-1.333 2 0v2.678a11 11 0 0 1 5.76-4.192Z"/></svg>',
 }
 
 // YouTube channel URLs: https://support.google.com/youtube/answer/6180214
@@ -945,14 +949,16 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           '#comments',
-          // Shorts comments button
+          // Shorts button
           '#comments-button.ytd-reel-player-overlay-renderer',
+          // Full screen button
+          'yt-player-quick-action-buttons > toggle-button-view-model:nth-of-type(1)',
         )
       }
       if (mobile) {
         hideCssSelectors.push(
           'ytm-slim-video-metadata-section-renderer + ytm-item-section-renderer',
-          // Shorts comments button
+          // Shorts button
           'ytm-button-renderer.icon-shorts_comment',
         )
       }
@@ -1266,6 +1272,8 @@ const configureCss = (() => {
           `.${Classes.HIDE_SHARE_THANKS_CLIP}`,
           // Shorts button
           '#share-button.ytd-reel-player-overlay-renderer',
+          // Full screen button
+          `yt-player-quick-action-buttons button[aria-label="${getString('SHARE')}"]`,
         )
       }
       if (mobile) {
@@ -1550,7 +1558,9 @@ const configureCss = (() => {
           // "Live chat replay" panel in video metadata
           '#teaser-carousel.ytd-watch-metadata',
           // Chat panel in theater mode
-          '#full-bleed-container.ytd-watch-flexy #panels-full-bleed-container.ytd-watch-flexy',
+          'ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container.ytd-watch-flexy #panels-full-bleed-container.ytd-watch-flexy',
+          // Full screen button
+          'yt-player-quick-action-buttons > toggle-button-view-model:nth-of-type(2)',
         )
       }
       if (config.hideCollaborations) {
@@ -1644,6 +1654,115 @@ const configureCss = (() => {
           // Hide the Show more/Show less button if we're showing everything
           hideCssSelectors.push('ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer[is-shorts] .expand-collapse-button')
         }
+      }
+      if (config.playerCompactPlayButton) {
+        cssRules.push(`
+          /* Use compact layout at wider screen sizes in default and theater mode */
+          ytd-watch-flexy:is([default-layout], [theater]:not([fullscreen])) .ytp-delhi-modern:not(.ytp-delhi-modern-compact-controls) {
+            /* Make Play/Pause the same size as other buttons */
+            .ytp-play-button {
+              width: 48px;
+              height: 48px;
+              margin-top: 12px;
+            }
+            .ytp-play-button > svg {
+              width: 24px;
+              height: 24px;
+              padding: 12px;
+            }
+            /* Move progress bar down */
+            .ytp-chrome-bottom {
+              --yt-delhi-bottom-controls-height: 56px;
+            }
+            /* Prevent jumping when the progress bar is dragged */
+            .ytp-chrome-bottom:has(> .ytp-drag) {
+              height: 56px !important;
+            }
+            /* Adjust position of controls */
+            .ytp-left-controls > :is(button, a, .ytp-volume-area),
+            .ytp-right-controls {
+              margin-top: 4px !important;
+            }
+            /* Make time display and chapters smaller */
+            .ytp-time-wrapper, button.ytp-chapter-title {
+              height: 40px !important;
+            }
+            .ytp-time-contents, .ytp-chapter-container {
+              line-height: 40px !important;
+            }
+            .ytp-time-display, .ytp-chapter-container {
+              padding: 8px !important;
+            }
+          }
+
+          /* Full screen mode */
+          ytd-watch-flexy[fullscreen] .ytp-delhi-modern {
+            /* Normal sized Play/Pause */
+            .ytp-play-button {
+              width: 56px !important;
+              height: 56px !important;
+              margin-top: 4px !important;
+            }
+            .ytp-play-button > svg {
+              width: 24px;
+              height: 24px;
+              padding: 16px !important;
+            }
+            /* Move progress
+            /* Move progress bar down */
+            .ytp-chrome-bottom {
+              --yt-delhi-big-mode-bottom-controls-height: 64px;
+            }
+            /* Prevent jumping when the progress bar is dragged */
+            .ytp-chrome-bottom:has(> .ytp-drag) {
+              height: 64px !important;
+            }
+            /* Adjust position of controls */
+            .ytp-left-controls > :is(button, a, .ytp-volume-area),
+            .ytp-right-controls {
+              margin-top: 4px !important;
+            }
+            /* Make time display and chapters smaller */
+            .ytp-time-wrapper, button.ytp-chapter-title {
+              height: 40px !important;
+            }
+            .ytp-time-contents, .ytp-chapter-container {
+              line-height: 40px !important;
+            }
+            .ytp-time-display, .ytp-chapter-container {
+              padding: 12px !important;
+            }
+          }
+          /* Adjust position of full screen overlays */
+          .ytp-delhi-modern.ytp-big-mode.ytp-fullscreen-grid-peeking .ytp-overlays-container {
+            bottom: 84px !important;
+          }
+          /* Adjust position of More videos */
+          .ytp-big-mode .ytp-fullscreen-grid-expand-button {
+            margin-top: -60px !important;
+          }
+        `)
+      }
+      if (config.playerHideFullScreenControls) {
+        hideCssSelectors.push('.ytp-fullscreen-quick-actions')
+      }
+      if (config.playerHideFullScreenTitle) {
+        hideCssSelectors.push('.ytp-fullscreen-metadata')
+      }
+      if (config.playerRemoveControlsBg) {
+        cssRules.push(`
+          .ytp-delhi-modern {
+            .ytp-left-controls > :is(button, a, .ytp-volume-area),
+            .ytp-time-wrapper,
+            .ytp-chapter-title,
+            .ytp-right-controls {
+              background: transparent !important;
+            }
+          }
+          .ytp-big-mode .ytp-fullscreen-grid-expand-button {
+            background: transparent !important;
+          }
+        `)
       }
       if (config.removePink) {
         cssRules.push(`
