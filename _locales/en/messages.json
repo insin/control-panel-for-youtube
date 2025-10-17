@@ -135,6 +135,9 @@
   "hideHomeCategories": {
     "message": "Hide categories in Home"
   },
+  "hideHomePosts": {
+    "message": "Hide Posts in Home"
+  },
   "hideInfoPanels": {
     "message": "Hide information panels"
   },

@@ -135,6 +135,9 @@
   "hideHomeCategories": {
     "message": "Masquer les catégories de la page d'accueil"
   },
+  "hideHomePosts": {
+    "message": "Masquer les posts dans l'accueil"
+  },
   "hideInfoPanels": {
     "message": "Masquer les panneaux d'information"
   },

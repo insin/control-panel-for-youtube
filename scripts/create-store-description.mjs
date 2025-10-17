@@ -136,6 +136,7 @@ ${messages.videoPages}:
 • ${messages.hideChat}${messages.desktopVersion}
 • ${messages.addTakeSnapshot} (JPEG / PNG) ${messages.desktopVersion}
 • ${messages.downloadTranscript}${messages.desktopVersion}
+• ${messages.hideHomePosts}${messages.mobileVersion}
 
 ${messages.shorts}:
 

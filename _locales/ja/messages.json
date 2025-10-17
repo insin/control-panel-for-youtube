@@ -134,6 +134,9 @@
   "hideHomeCategories": {
     "message": "ホームのカテゴリを非表示"
   },
+  "hideHomePosts": {
+    "message": "ホームの投稿を非表示にする"
+  },
   "hideInfoPanels": {
     "message": "情報パネルを非表示"
   },

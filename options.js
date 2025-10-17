@@ -48,6 +48,7 @@ for (let translationId of [
   'hideHiddenVideos',
   'hideHiddenVideosNote',
   'hideHomeCategories',
+  'hideHomePosts',
   'hideInfoPanels',
   'hideLive',
   'hideMembersOnly',
@@ -191,6 +192,7 @@ let defaultConfig = {
   // Mobile only
   allowBackgroundPlay: true,
   hideExploreButton: true,
+  hideHomePosts: false,
   hideOpenApp: true,
   hideSubscriptionsChannelList: false,
   mobileGridView: true,

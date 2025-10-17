@@ -117,6 +117,7 @@ export type SiteConfig = {
   // Mobile only
   allowBackgroundPlay: boolean
   hideExploreButton: boolean
+  hideHomePosts: boolean
   hideOpenApp: boolean
   hideSubscriptionsChannelList: boolean
   mobileGridView: boolean

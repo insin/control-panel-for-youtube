@@ -135,6 +135,9 @@
   "hideHomeCategories": {
     "message": "隐藏主页中的类别"
   },
+  "hideHomePosts": {
+    "message": "隐藏主页中的帖子"
+  },
   "hideInfoPanels": {
     "message": "隐藏信息面板"
   },

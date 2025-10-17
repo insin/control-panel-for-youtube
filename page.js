@@ -74,6 +74,7 @@ let defaultConfig = {
   // Mobile only
   allowBackgroundPlay: true,
   hideExploreButton: true,
+  hideHomePosts: false,
   hideOpenApp: true,
   hideSubscriptionsChannelList: false,
   mobileGridView: true,
@@ -1429,8 +1430,8 @@ const configureCss = (() => {
       if (mobile) {
         if (loggedIn) {
           hideCssSelectors.push(
-            // Shelves in Home
-            '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer',
+            // Shelves in Home (except Posts)
+            '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer:not(:has(> div > ytm-backstage-post-thread-renderer))',
             // Looking for something different? tile in Home
             'ytm-rich-item-renderer:has(> .feed-nudge-wrapper)',
           )
@@ -1828,6 +1829,9 @@ const configureCss = (() => {
       if (config.hideExploreButton) {
         // Explore button on Home screen
         hideCssSelectors.push('ytm-chip-cloud-chip-renderer[chip-style="STYLE_EXPLORE_LAUNCHER_CHIP"]')
+      }
+      if (config.hideHomePosts) {
+        hideCssSelectors.push('.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer:has(> div > ytm-backstage-post-thread-renderer)')
       }
       if (config.hideOpenApp) {
         hideCssSelectors.push(
