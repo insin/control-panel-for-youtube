@@ -1282,6 +1282,8 @@ const configureCss = (() => {
           `ytm-slim-video-action-bar-renderer button-view-model:has(button[aria-label="${getString('SHARE')}"])`,
           // Shorts button
           '.reel-player-overlay-actions .icon-shorts_share',
+          // Full screen button
+          `player-fullscreen-action-menu ytm-slim-metadata-button-renderer:has(button[aria-label="${getString('SHARE')}"])`,
         )
       }
     }
