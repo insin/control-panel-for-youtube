@@ -834,7 +834,7 @@ const configureCss = (() => {
         hideCssSelectors.push(`#expandable-metadata:has(path[d="${geminiSvgPath}"])`)
       }
       if (mobile) {
-        const geminiSvgPath = 'M6 0c0 3.314-2.69 6-6 6 3.31 0 6 2.686 6 6 0-3.314 2.69-6 6-6-3.31 0-6-2.686-6-6Z'
+        const geminiSvgPath = 'M12 2a1 1 0 00-1 1 8 8 0 01-8 8 1 1 0 000 2 8 8 0 018 8 1 1 0 002 0 8 8 0 018-8 1 1 0 000-2 8 8 0 01-8-8 1 1 0 00-1-1Zm0 5.364A10.04 10.04 0 0016.636 12 10.04 10.04 0 0012 16.636 10.04 10.04 0 007.364 12 10.04 10.04 0 0012 7.364Z'
         hideCssSelectors.push(`ytm-expandable-metadata-renderer:has(path[d="${geminiSvgPath}"])`)
       }
     }
