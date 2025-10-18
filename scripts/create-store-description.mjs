@@ -82,12 +82,14 @@ ${messages.ads}:
 • ${messages.hideSponsored}
 • ${messages.hideMerchEtc}${messages.desktopVersion}
 
-${messages.newVideoPlayerUI}${messages.desktopVersion}:
+${messages.newVideoPlayerUI}:
 
-• ${messages.playerCompactPlayButton}
-• ${messages.playerRemoveControlsBg}
+• ${messages.playerRemoveDelhiExperimentFlags}${messages.desktopVersion} - ${messages.playerRemoveDelhiExperimentFlagsNote}
 • ${messages.playerHideFullScreenControls}
-• ${messages.playerHideFullScreenTitle}
+• ${messages.playerHideFullScreenMoreVideos}
+• ${messages.playerCompactPlayButton}${messages.desktopVersion}
+• ${messages.playerRemoveControlsBg}${messages.desktopVersion}
+• ${messages.playerHideFullScreenTitle}${messages.desktopVersion}
 
 ${messages.annoyances}:
 
@@ -116,6 +118,7 @@ ${messages.videoLists}:
 • ${messages.searchThumbnailSize}${messages.desktopVersion}
 • ${messages.minimumGridItemsPerRow}${messages.desktopVersion}
 • ${messages.hideCollaborations}${messages.desktopVersion}
+• ${messages.hideHomePosts}${messages.mobileVersion}
 
 ${messages.videoPages}:
 
@@ -133,6 +136,7 @@ ${messages.videoPages}:
 • ${messages.hideMiniplayerButton}${messages.desktopVersion}
 • ${messages.hideEndCards}${messages.desktopVersion}
 • ${messages.hideEndVideos}${messages.desktopVersion}
+• ${messages.hideChannelWatermark}${messages.desktopVersion}
 • ${messages.hideChat}${messages.desktopVersion}
 • ${messages.addTakeSnapshot} (JPEG / PNG) ${messages.desktopVersion}
 • ${messages.downloadTranscript}${messages.desktopVersion}
