@@ -47,21 +47,29 @@
         </label>
       </section>
     </section>
-    <section class="group labelled collapsible desktop">
+    <section class="group labelled collapsible">
       <label data-collapse-id="new-player">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
           <path d="m6.24 8.999 3.614-3.613a.498.498 0 0 0 0-.707.5.5 0 0 0-.707 0L5.999 7.826 2.854 4.68a.5.5 0 0 0-.707.707L5.759 9l.481-.001z"/>
         </svg>
         <span id="newVideoPlayerUI">New video player UI</span>
       </label>
-      <section class="checkbox">
+      <section class="checkbox desktop">
+        <label>
+          <span id="playerRemoveDelhiExperimentFlags">Disable new progress bar and controls</span>
+          <input type="checkbox" name="playerRemoveDelhiExperimentFlags">
+          <span class="toggle"></span>
+        </label>
+        <p id="playerRemoveDelhiExperimentFlagsNote">Note: this will stop working when YouTube removes the old player UI</p>
+      </section>
+      <section class="checkbox desktop">
         <label>
           <span id="playerCompactPlayButton">Always use compact Play button</span>
           <input type="checkbox" name="playerCompactPlayButton">
           <span class="toggle"></span>
         </label>
       </section>
-      <section class="checkbox">
+      <section class="checkbox desktop">
         <label>
           <span id="playerRemoveControlsBg">Remove background from controls</span>
           <input type="checkbox" name="playerRemoveControlsBg">
@@ -75,10 +83,17 @@
           <span class="toggle"></span>
         </label>
       </section>
-      <section class="checkbox">
+      <section class="checkbox desktop">
         <label>
           <span id="playerHideFullScreenTitle">Hide full screen title</span>
           <input type="checkbox" name="playerHideFullScreenTitle">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox">
+        <label>
+          <span id="playerHideFullScreenMoreVideos">Hide "More videos" in full screen</span>
+          <input type="checkbox" name="playerHideFullScreenMoreVideos">
           <span class="toggle"></span>
         </label>
       </section>
@@ -380,6 +395,13 @@
         <label>
           <span id="hideEndVideos">Hide video endscreen content</span>
           <input type="checkbox" name="hideEndVideos">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox desktop">
+        <label>
+          <span id="hideChannelWatermark">Hide channel watermark</span>
+          <input type="checkbox" name="hideChannelWatermark">
           <span class="toggle"></span>
         </label>
       </section>

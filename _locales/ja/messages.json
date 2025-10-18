@@ -95,6 +95,9 @@
   "hideChannelBanner": {
     "message": "チャンネルバナー画像を非表示にする"
   },
+  "hideChannelWatermark": {
+    "message": "チャンネルの透かしを非表示にする"
+  },
   "hideChannels": {
     "message": "チャンネルを非表示"
   },
@@ -254,11 +257,20 @@
   "playerHideFullScreenControls": {
     "message": "新しい全画面コントロールを非表示にする"
   },
+  "playerHideFullScreenMoreVideos": {
+    "message": "全画面で「その他の動画」を非表示にする"
+  },
   "playerHideFullScreenTitle": {
     "message": "全画面のタイトルを非表示にする"
   },
   "playerRemoveControlsBg": {
     "message": "コントロールから背景を削除する"
+  },
+  "playerRemoveDelhiExperimentFlags": {
+    "message": "新しいプログレスバーとコントロールを無効にする"
+  },
+  "playerRemoveDelhiExperimentFlagsNote": {
+    "message": "注：YouTubeが古いプレーヤーUIを削除すると、この機能は動作しなくなります。"
   },
   "qualityFull": {
     "message": "最高"

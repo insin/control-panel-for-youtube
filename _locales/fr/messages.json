@@ -96,6 +96,9 @@
   "hideChannelBanner": {
     "message": "Masquer la bannière de la chaîne"
   },
+  "hideChannelWatermark": {
+    "message": "Masquer le filigrane de la chaîne"
+  },
   "hideChannels": {
     "message": "Masquer les chaînes"
   },
@@ -255,11 +258,20 @@
   "playerHideFullScreenControls": {
     "message": "Masquer les nouveaux contrôles en plein écran"
   },
+  "playerHideFullScreenMoreVideos": {
+    "message": "Masquer « Plus de vidéos » en plein écran"
+  },
   "playerHideFullScreenTitle": {
     "message": "Masquer le titre en plein écran"
   },
   "playerRemoveControlsBg": {
     "message": "Supprimer l'arrière-plan des contrôles"
+  },
+  "playerRemoveDelhiExperimentFlags": {
+    "message": "Désactiver les nouveaux contrôles et barre de progression"
+  },
+  "playerRemoveDelhiExperimentFlagsNote": {
+    "message": "Remarque : cette option ne fonctionnera plus lorsque YouTube supprimera l'ancienne interface du lecteur."
   },
   "qualityFull": {
     "message": "Maximum"

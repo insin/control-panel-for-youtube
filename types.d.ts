@@ -82,6 +82,8 @@ export type SiteConfig = {
   hideVoiceSearch: boolean
   hideWatched: boolean
   hideWatchedThreshold: string
+  playerHideFullScreenControls: boolean
+  playerHideFullScreenMoreVideos: boolean
   redirectShorts: boolean
   removePink: boolean
   stopShortsLooping: boolean
@@ -93,6 +95,7 @@ export type SiteConfig = {
   fullSizeTheaterMode: boolean
   fullSizeTheaterModeHideHeader: boolean
   fullSizeTheaterModeHideScrollbar: boolean
+  hideChannelWatermark: boolean
   hideChat: boolean
   hideCollaborations: boolean
   hideEndCards: boolean
@@ -104,9 +107,9 @@ export type SiteConfig = {
   minimumShortsPerRow: 'auto' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12'
   pauseChannelTrailers: boolean
   playerCompactPlayButton: boolean
-  playerHideFullScreenControls: boolean
   playerHideFullScreenTitle: boolean
   playerRemoveControlsBg: boolean
+  playerRemoveDelhiExperimentFlags: boolean
   redirectLogoToSubscriptions: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small'
   hideShortsRemixButton: boolean

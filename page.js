@@ -39,6 +39,8 @@ let defaultConfig = {
   hideVoiceSearch: false,
   hideWatched: true,
   hideWatchedThreshold: '80',
+  playerHideFullScreenControls: false,
+  playerHideFullScreenMoreVideos: false,
   redirectShorts: true,
   removePink: false,
   stopShortsLooping: true,
@@ -50,6 +52,7 @@ let defaultConfig = {
   fullSizeTheaterMode: false,
   fullSizeTheaterModeHideHeader: true,
   fullSizeTheaterModeHideScrollbar: false,
+  hideChannelWatermark: false,
   hideChat: false,
   hideCollaborations: false,
   hideEndCards: false,
@@ -63,9 +66,9 @@ let defaultConfig = {
   minimumShortsPerRow: 'auto',
   pauseChannelTrailers: true,
   playerCompactPlayButton: true,
-  playerHideFullScreenControls: false,
   playerHideFullScreenTitle: false,
   playerRemoveControlsBg: false,
+  playerRemoveDelhiExperimentFlags: false,
   redirectLogoToSubscriptions: false,
   searchThumbnailSize: 'medium',
   snapshotFormat: 'jpeg',
@@ -1489,6 +1492,54 @@ const configureCss = (() => {
       }
     }
 
+    if (config.playerHideFullScreenMoreVideos) {
+      if (desktop) {
+        hideCssSelectors.push('.ytp-fullscreen-grid')
+        cssRules.push(`
+          /* Prevent full screen player from visually scrolling */
+          #movie_player.ytp-delhi-modern {
+            --ytp-grid-scroll-percentage: 0 !important;
+          }
+          /* Prevent controls moving and hiding when full screen is scrolled */
+          .ytp-delhi-modern.ytp-grid-scrolling .ytp-chrome-bottom {
+            bottom: 0 !important;
+            opacity: 1 !important;
+          }
+          /* Hide full screen scrolling gradient */
+          .ytp-delhi-modern .ytp-gradient-bottom {
+            display: none !important;
+          }
+        `)
+      }
+      if (mobile) {
+        hideCssSelectors.push('.fullscreen-watch-next-entrypoint-wrapper')
+      }
+    }
+
+    if (config.playerHideFullScreenControls) {
+      if (desktop) {
+        hideCssSelectors.push('.ytp-fullscreen-quick-actions')
+      }
+      if (mobile) {
+        hideCssSelectors.push('player-fullscreen-action-menu .action-menu-engagement-buttons-wrapper')
+      }
+    }
+
+    if (config.playerHideFullScreenControls && config.playerHideFullScreenMoreVideos) {
+      if (mobile) {
+
+        cssRules.push(`
+          /* Move full screen progress bar down when hiding all controls under it */
+          body[faux-fullscreen="true"] .enable-fullscreen-controls.fs-watch-system .watch-page-progress-bar {
+            bottom: 0 !important;
+          }
+          body[faux-fullscreen="true"] .enable-fullscreen-controls.fs-watch-system .player-controls-bottom {
+            bottom: 30px !important;
+          }
+        `)
+      }
+    }
+
     //#region Desktop-only
     if (desktop) {
       // Fix spaces & gaps caused by left gutter margin on first column items
@@ -1554,6 +1605,9 @@ const configureCss = (() => {
           `)
         }
       }
+      if (config.hideChannelWatermark) {
+        hideCssSelectors.push('.annotation.iv-branding')
+      }
       if (config.hideChat) {
         hideCssSelectors.push(
           // Live chat / Chat replay
@@ -1572,7 +1626,11 @@ const configureCss = (() => {
         )
       }
       if (config.hideEndCards) {
-        hideCssSelectors.push('#movie_player .ytp-ce-element')
+        hideCssSelectors.push(
+          '#movie_player .ytp-ce-element',
+          // Hide YouTube's own new Hide button
+          '#movie_player .ytp-ce-hide-button-container',
+        )
       }
       if (config.hideEndVideos) {
         hideCssSelectors.push(
@@ -1745,9 +1803,6 @@ const configureCss = (() => {
             margin-top: -60px !important;
           }
         `)
-      }
-      if (config.playerHideFullScreenControls) {
-        hideCssSelectors.push('.ytp-fullscreen-quick-actions')
       }
       if (config.playerHideFullScreenTitle) {
         hideCssSelectors.push('.ytp-fullscreen-metadata')
@@ -4051,6 +4106,19 @@ function main() {
     } else {
       configureCss()
       triggerVideoPageResize()
+      if (config.playerRemoveDelhiExperimentFlags) {
+        // @ts-ignore
+        waitFor(() => window.yt, 'yt').then(() => {
+          // @ts-ignore
+          let watchConfig = window.yt?.config_?.WEB_PLAYER_CONTEXT_CONFIGS?.WEB_PLAYER_CONTEXT_CONFIG_ID_KEVLAR_WATCH
+          if (typeof watchConfig?.serializedExperimentFlags == 'string') {
+            log('playerDisableDelhiExperiments: removing delhi_modern_web_player experiment flags')
+            watchConfig.serializedExperimentFlags = watchConfig.serializedExperimentFlags
+              .replace(/&delhi_modern_web_player=true/g, '')
+              .replace(/&delhi_modern_web_player_icons=true/g, '')
+          }
+        })
+      }
     }
     observeTitle()
     observePopups()

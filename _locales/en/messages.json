@@ -96,6 +96,9 @@
   "hideChannelBanner": {
     "message": "Hide channel banner images"
   },
+  "hideChannelWatermark": {
+    "message": "Hide channel watermark"
+  },
   "hideChannels": {
     "message": "Hide channels"
   },
@@ -255,11 +258,20 @@
   "playerHideFullScreenControls": {
     "message": "Hide new full screen controls"
   },
+  "playerHideFullScreenMoreVideos": {
+    "message": "Hide \"More videos\" in full screen"
+  },
   "playerHideFullScreenTitle": {
     "message": "Hide full screen title"
   },
   "playerRemoveControlsBg": {
     "message": "Remove background from controls"
+  },
+  "playerRemoveDelhiExperimentFlags": {
+    "message": "Disable new progress bar and controls"
+  },
+  "playerRemoveDelhiExperimentFlagsNote": {
+    "message": "Note: this will stop working when YouTube removes the old player UI"
   },
   "qualityFull": {
     "message": "Full"

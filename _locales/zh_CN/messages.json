@@ -96,6 +96,9 @@
   "hideChannelBanner": {
     "message": "隐藏频道横幅图片"
   },
+  "hideChannelWatermark": {
+    "message": "隐藏频道水印"
+  },
   "hideChannels": {
     "message": "隐藏频道"
   },
@@ -255,11 +258,20 @@
   "playerHideFullScreenControls": {
     "message": "隐藏新的全屏控件"
   },
+  "playerHideFullScreenMoreVideos": {
+    "message": "隐藏全屏下的“更多视频”"
+  },
   "playerHideFullScreenTitle": {
     "message": "隐藏全屏标题"
   },
   "playerRemoveControlsBg": {
     "message": "移除控件的背景"
+  },
+  "playerRemoveDelhiExperimentFlags": {
+    "message": "停用新的进度条和控件"
+  },
+  "playerRemoveDelhiExperimentFlagsNote": {
+    "message": "注意：当 YouTube 移除旧版播放器界面后，此选项将失效。"
   },
   "qualityFull": {
     "message": "最高"
