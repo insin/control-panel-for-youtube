@@ -156,9 +156,6 @@
   "hideMetadata": {
     "message": "隐藏视频元数据"
   },
-  "hideMiniplayerButton": {
-    "message": "隐藏迷你播放器按钮"
-  },
   "hideMixes": {
     "message": "隐藏混音"
   },
@@ -293,6 +290,9 @@
   },
   "removePink": {
     "message": "从进度条中移除粉色渐变"
+  },
+  "restoreMiniplayerButton": {
+    "message": "恢复迷你播放器按钮"
   },
   "searchThumbnailSize": {
     "message": "搜索缩略图大小"

@@ -156,9 +156,6 @@
   "hideMetadata": {
     "message": "Masquer les métadonnées de la vidéo"
   },
-  "hideMiniplayerButton": {
-    "message": "Masquer le bouton lecteur réduit"
-  },
   "hideMixes": {
     "message": "Masquer les Mix"
   },
@@ -293,6 +290,9 @@
   },
   "removePink": {
     "message": "Supprimer le dégradé rose des barres de progression"
+  },
+  "restoreMiniplayerButton": {
+    "message": "Restaurer le bouton du mini-lecteur"
   },
   "searchThumbnailSize": {
     "message": "Taille des miniatures dans les résultats de recherche"

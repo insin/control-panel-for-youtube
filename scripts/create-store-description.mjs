@@ -89,6 +89,7 @@ ${messages.newVideoPlayerUI}:
 • ${messages.playerHideFullScreenMoreVideos}
 • ${messages.playerCompactPlayButton}${messages.desktopVersion}
 • ${messages.playerRemoveControlsBg}${messages.desktopVersion}
+• ${messages.restoreMiniplayerButton}${messages.desktopVersion}
 • ${messages.playerHideFullScreenTitle}${messages.desktopVersion}
 
 ${messages.annoyances}:
@@ -133,7 +134,6 @@ ${messages.videoPages}:
 • ${messages.fullSizeTheaterMode}${messages.desktopVersion} - ${messages.fullSizeTheaterModeHideHeader} / ${messages.fullSizeTheaterModeHideScrollbar}
 • ${messages.disableTheaterBigMode}${messages.desktopVersion}
 • ${messages.alwaysUseOriginalAudio}${messages.desktopVersion}
-• ${messages.hideMiniplayerButton}${messages.desktopVersion}
 • ${messages.hideEndCards}${messages.desktopVersion}
 • ${messages.hideEndVideos}${messages.desktopVersion}
 • ${messages.hideChannelWatermark}${messages.desktopVersion}

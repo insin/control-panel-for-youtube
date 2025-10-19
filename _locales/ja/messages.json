@@ -155,9 +155,6 @@
   "hideMetadata": {
     "message": "動画のメタデータを非表示"
   },
-  "hideMiniplayerButton": {
-    "message": "ミニプレイヤーボタンを非表示"
-  },
   "hideMixes": {
     "message": "ミックスを非表示"
   },
@@ -292,6 +289,9 @@
   },
   "removePink": {
     "message": "進捗バーからピンクのグラデーションを削除"
+  },
+  "restoreMiniplayerButton": {
+    "message": "ミニプレーヤーボタンを復元する"
   },
   "searchThumbnailSize": {
     "message": "検索サムネイルのサイズ"

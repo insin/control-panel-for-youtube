@@ -101,7 +101,8 @@ export type SiteConfig = {
   hideEndCards: boolean
   hideEndVideos: boolean
   hideMerchEtc: boolean
-  hideMiniplayerButton: boolean
+  hideShortsMetadataUntilHover: boolean
+  hideShortsRemixButton: boolean
   hideSubscriptionsLatestBar: boolean
   minimumGridItemsPerRow: 'auto' | '3' | '4' | '5' | '6'
   minimumShortsPerRow: 'auto' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12'
@@ -111,9 +112,8 @@ export type SiteConfig = {
   playerRemoveControlsBg: boolean
   playerRemoveDelhiExperimentFlags: boolean
   redirectLogoToSubscriptions: boolean
+  restoreMiniplayerButton: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small'
-  hideShortsRemixButton: boolean
-  hideShortsMetadataUntilHover: boolean
   snapshotFormat: 'jpeg' | 'png'
   snapshotQuality: string
   tidyGuideSidebar: boolean
