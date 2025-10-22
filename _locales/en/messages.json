@@ -252,6 +252,9 @@
   "playerCompactPlayButton": {
     "message": "Always use compact Play button"
   },
+  "playerFixFullScreenButton": {
+    "message": "Restore corner click to toggle full screen"
+  },
   "playerHideFullScreenControls": {
     "message": "Hide new full screen controls"
   },

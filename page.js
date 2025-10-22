@@ -65,6 +65,7 @@ let defaultConfig = {
   minimumShortsPerRow: 'auto',
   pauseChannelTrailers: true,
   playerCompactPlayButton: true,
+  playerFixFullScreenButton: true,
   playerHideFullScreenTitle: false,
   playerRemoveControlsBg: false,
   playerRemoveDelhiExperimentFlags: false,
@@ -1800,6 +1801,23 @@ const configureCss = (() => {
           /* Adjust position of More videos */
           .ytp-big-mode .ytp-fullscreen-grid-expand-button {
             margin-top: -60px !important;
+          }
+        `)
+      }
+      if (config.playerFixFullScreenButton) {
+        cssRules.push(`
+          .ytp-delhi-modern {
+            /* Make overflow area clickable */
+            .ytp-fullscreen-button {
+              overflow: visible;
+            }
+            /* Extend overflow area from top-left of the button to the corner */
+            .ytp-fullscreen-button::after {
+              top: 0;
+              left: 0;
+              width: 84px;
+              height: 76px;
+            }
           }
         `)
       }

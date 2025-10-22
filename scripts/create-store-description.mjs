@@ -90,6 +90,7 @@ ${messages.newVideoPlayerUI}:
 • ${messages.playerCompactPlayButton}${messages.desktopVersion}
 • ${messages.playerRemoveControlsBg}${messages.desktopVersion}
 • ${messages.restoreMiniplayerButton}${messages.desktopVersion}
+• ${messages.playerFixFullScreenButton}${messages.desktopVersion}
 • ${messages.playerHideFullScreenTitle}${messages.desktopVersion}
 
 ${messages.annoyances}:

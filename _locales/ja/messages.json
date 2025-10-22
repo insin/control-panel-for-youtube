@@ -251,6 +251,9 @@
   "playerCompactPlayButton": {
     "message": "常にコンパクトな再生ボタンを使用する"
   },
+  "playerFixFullScreenButton": {
+    "message": "隅のクリックで全画面を切り替える機能を復元"
+  },
   "playerHideFullScreenControls": {
     "message": "新しい全画面コントロールを非表示にする"
   },

@@ -108,6 +108,7 @@ export type SiteConfig = {
   minimumShortsPerRow: 'auto' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12'
   pauseChannelTrailers: boolean
   playerCompactPlayButton: boolean
+  playerFixFullScreenButton: boolean
   playerHideFullScreenTitle: boolean
   playerRemoveControlsBg: boolean
   playerRemoveDelhiExperimentFlags: boolean

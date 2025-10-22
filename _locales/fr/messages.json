@@ -252,6 +252,9 @@
   "playerCompactPlayButton": {
     "message": "Toujours utiliser le bouton Lecture compact"
   },
+  "playerFixFullScreenButton": {
+    "message": "Restaurer le clic dans le coin pour basculer le mode plein écran"
+  },
   "playerHideFullScreenControls": {
     "message": "Masquer les nouveaux contrôles en plein écran"
   },

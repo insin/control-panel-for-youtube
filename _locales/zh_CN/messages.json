@@ -252,6 +252,9 @@
   "playerCompactPlayButton": {
     "message": "始终使用紧凑的播放按钮"
   },
+  "playerFixFullScreenButton": {
+    "message": "恢复点击角落切换全屏的功能"
+  },
   "playerHideFullScreenControls": {
     "message": "隐藏新的全屏控件"
   },
