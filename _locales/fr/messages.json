@@ -47,6 +47,9 @@
   "disableTheaterBigMode": {
     "message": "Désactiver l'interface agrandie en mode cinéma"
   },
+  "disableThemedHover": {
+    "message": "Désactiver le survol thématique des descriptions de vidéo"
+  },
   "downloadTranscript": {
     "message": "Rendre la transcription téléchargeable"
   },

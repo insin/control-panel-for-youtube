@@ -95,6 +95,7 @@ export type SiteConfig = {
   fullSizeTheaterMode: boolean
   fullSizeTheaterModeHideHeader: boolean
   fullSizeTheaterModeHideScrollbar: boolean
+  disableThemedHover: boolean
   hideChannelWatermark: boolean
   hideChat: boolean
   hideCollaborations: boolean

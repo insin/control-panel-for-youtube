@@ -47,6 +47,9 @@
   "disableTheaterBigMode": {
     "message": "シアターモードの拡大UIを無効にする"
   },
+  "disableThemedHover": {
+    "message": "動画概要欄のテーマカラーホバーを無効にする"
+  },
   "downloadTranscript": {
     "message": "文字起こしをダウンロード可能にする"
   },

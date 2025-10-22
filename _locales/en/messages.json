@@ -47,6 +47,9 @@
   "disableTheaterBigMode": {
     "message": "Disable enlarged UI in theater mode"
   },
+  "disableThemedHover": {
+    "message": "Disable themed hover on video descriptions"
+  },
   "downloadTranscript": {
     "message": "Make Transcript downloadable"
   },

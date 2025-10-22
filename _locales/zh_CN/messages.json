@@ -47,6 +47,9 @@
   "disableTheaterBigMode": {
     "message": "停用影院模式下的放大界面"
   },
+  "disableThemedHover": {
+    "message": "停用视频简介的主题悬停效果"
+  },
   "downloadTranscript": {
     "message": "使转录稿可下载"
   },

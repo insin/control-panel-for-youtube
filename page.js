@@ -48,6 +48,7 @@ let defaultConfig = {
   addTakeSnapshot: true,
   alwaysUseOriginalAudio: false,
   alwaysUseTheaterMode: false,
+  disableThemedHover: false,
   downloadTranscript: true,
   fullSizeTheaterMode: false,
   fullSizeTheaterModeHideHeader: true,
@@ -1562,6 +1563,37 @@ const configureCss = (() => {
       `)
       if (!config.addTakeSnapshot) {
         hideCssSelectors.push('#cpfyt-snaphot-menu-item')
+      }
+      if (config.disableThemedHover) {
+        cssRules.push(`
+          /* Unset variables for thumbnail theme colour */
+          ytd-watch-metadata {
+            --yt-saturated-base-background: unset !important;
+            --yt-saturated-raised-background:  unset !important;
+            --yt-saturated-additive-background:  unset !important;
+            --yt-saturated-text-primary: unset !important;
+            --yt-saturated-text-secondary: unset !important;
+            --yt-saturated-outline: unset !important;
+            --yt-saturated-key-light: unset !important;
+            --yt-saturated-collection-stack: unset !important;
+            --yt-saturated-inverted-background: unset !important;
+            --yt-saturated-text-primary-inverse: unset !important;
+            --yt-saturated-text-disabled: unset !important;
+            --yt-saturated-drop-shadow: unset !important;
+            --yt-saturated-card-outline: unset !important;
+            --yt-saturated-overlay-background: unset !important;
+            --yt-saturated-overlay-text-primary: unset !important;
+          }
+          /* Override colour which is manually applied to text in the description snippet on hover */
+          #description.ytd-watch-metadata:hover #snippet-text.ytd-text-inline-expander .yt-core-attributed-string--link-inherit-color[style] {
+            color: inherit !important;
+          }
+          /* Restore link colours */
+          #info.ytd-watch-info-text a,
+          #description.ytd-watch-metadata #snippet-text.ytd-text-inline-expander a {
+            color: var(--yt-spec-call-to-action);
+          }
+        `)
       }
       if (config.fullSizeTheaterMode) {
         // TODO Observe current theater mode state to get rid of these :has()
