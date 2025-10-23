@@ -959,6 +959,8 @@ const configureCss = (() => {
           '#comments',
           // Shorts button
           '#comments-button.ytd-reel-player-overlay-renderer',
+          // Shorts button (new UI)
+          'reel-action-bar-view-model > button-view-model:nth-of-type(1)',
           // Full screen button
           'yt-player-quick-action-buttons > toggle-button-view-model:nth-of-type(1)',
         )
@@ -1280,6 +1282,8 @@ const configureCss = (() => {
           `.${Classes.HIDE_SHARE_THANKS_CLIP}`,
           // Shorts button
           '#share-button.ytd-reel-player-overlay-renderer',
+          // Shorts button (new UI)
+          'reel-action-bar-view-model > button-view-model:nth-of-type(2)',
           // Full screen button
           `yt-player-quick-action-buttons button[aria-label="${getString('SHARE')}"]`,
         )
@@ -1698,7 +1702,11 @@ const configureCss = (() => {
         `)
       }
       if (config.hideShortsRemixButton) {
-        hideCssSelectors.push('#remix-button.ytd-reel-player-overlay-renderer')
+        hideCssSelectors.push(
+          '#remix-button.ytd-reel-player-overlay-renderer',
+          // New UI
+          'reel-action-bar-view-model > button-view-model:nth-of-type(3)',
+        )
       }
       if (config.hideSubscriptionsLatestBar) {
         hideCssSelectors.push(
