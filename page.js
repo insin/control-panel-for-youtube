@@ -1303,7 +1303,7 @@ const configureCss = (() => {
           // Side nav item
           `ytd-guide-entry-renderer:has(> a[title="${getString('SHORTS')}"])`,
           // Mini side nav item
-          `ytd-mini-guide-entry-renderer[aria-label="${getString('SHORTS')}"]`,
+          `ytd-mini-guide-entry-renderer:has(> a[aria-label="${getString('SHORTS')}"])`,
           // Grid shelf
           'ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer[is-shorts])',
           // Group of 3 Shorts in Home grid
