@@ -1509,9 +1509,12 @@ const configureCss = (() => {
             --ytp-grid-scroll-percentage: 0 !important;
           }
           /* Prevent controls moving and hiding when full screen is scrolled */
-          .ytp-delhi-modern.ytp-grid-scrolling .ytp-chrome-bottom {
+          .ytp-delhi-modern:is(.ytp-grid-scrolling, .ytp-fullscreen-grid-active) .ytp-chrome-bottom {
             bottom: 0 !important;
             opacity: 1 !important;
+          }
+          .ytp-delhi-modern.ytp-fullscreen-grid-active .ytp-chrome-bottom {
+            display: block !important;
           }
           /* Hide full screen scrolling gradient */
           .ytp-delhi-modern .ytp-gradient-bottom {
