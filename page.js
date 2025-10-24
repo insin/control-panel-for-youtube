@@ -1589,7 +1589,7 @@ const configureCss = (() => {
             --cpfyt-metadata-color: #aaa;
           }
           ytd-browse[page-subtype="home"] {
-            yt-touch-feedback-shape {
+            .yt-spec-touch-feedback-shape__hover-effect {
               display: none !important;
             }
             .yt-lockup-metadata-view-model__title {
