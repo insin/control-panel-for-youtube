@@ -58,6 +58,7 @@ export type SiteConfig = {
   hiddenChannels: Channel[]
   hideAI: boolean
   hideChannelBanner: boolean
+  hideChannelWatermark: boolean
   hideChannels: boolean
   hideComments: boolean
   hideHiddenVideos: boolean
@@ -96,7 +97,6 @@ export type SiteConfig = {
   fullSizeTheaterModeHideHeader: boolean
   fullSizeTheaterModeHideScrollbar: boolean
   disableThemedHover: boolean
-  hideChannelWatermark: boolean
   hideChat: boolean
   hideCollaborations: boolean
   hideEndCards: boolean

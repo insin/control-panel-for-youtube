@@ -129,6 +129,7 @@ ${messages.videoPages}:
 • ${messages.disableAmbientMode}
 • ${messages.hideRelated}
 • ${messages.hideNextButton}
+• ${messages.hideChannelWatermark}
 • ${messages.hideShareThanksClip}
 • ${messages.hideMetadata}
 • ${messages.hideComments}
@@ -138,7 +139,6 @@ ${messages.videoPages}:
 • ${messages.alwaysUseOriginalAudio}${messages.desktopVersion}
 • ${messages.hideEndCards}${messages.desktopVersion}
 • ${messages.hideEndVideos}${messages.desktopVersion}
-• ${messages.hideChannelWatermark}${messages.desktopVersion}
 • ${messages.hideChat}${messages.desktopVersion}
 • ${messages.addTakeSnapshot} (JPEG / PNG) ${messages.desktopVersion}
 • ${messages.downloadTranscript}${messages.desktopVersion}

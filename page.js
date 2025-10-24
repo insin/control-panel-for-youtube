@@ -15,6 +15,7 @@ let defaultConfig = {
   hiddenChannels: [],
   hideAI: true,
   hideChannelBanner: false,
+  hideChannelWatermark: false,
   hideChannels: true,
   hideComments: false,
   hideHiddenVideos: true,
@@ -53,7 +54,6 @@ let defaultConfig = {
   fullSizeTheaterMode: false,
   fullSizeTheaterModeHideHeader: true,
   fullSizeTheaterModeHideScrollbar: false,
-  hideChannelWatermark: false,
   hideChat: false,
   hideCollaborations: false,
   hideEndCards: false,
@@ -858,6 +858,19 @@ const configureCss = (() => {
       }
     }
 
+    if (config.hideChannelWatermark) {
+      if (desktop) {
+        hideCssSelectors.push(
+          '.annotation.iv-branding',
+          // Shorts
+          '#pivot-button.ytd-reel-player-overlay-renderer',
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push('.reel-player-overlay-actions > pivot-button-view-model')
+      }
+    }
+
     if (config.hideHomeCategories) {
       if (desktop) {
         hideCssSelectors.push('ytd-browse[page-subtype="home"] #header')
@@ -972,6 +985,8 @@ const configureCss = (() => {
           'ytm-slim-video-metadata-section-renderer + ytm-item-section-renderer',
           // Shorts button
           'ytm-button-renderer.icon-shorts_comment',
+          // Shorts button (new UI)
+          'reel-action-bar-view-model > button-view-model:nth-of-type(1)',
         )
       }
     }
@@ -1296,6 +1311,8 @@ const configureCss = (() => {
           `ytm-slim-video-action-bar-renderer button-view-model:has(button[aria-label="${getString('SHARE')}"])`,
           // Shorts button
           '.reel-player-overlay-actions .icon-shorts_share',
+          // Shorts button (new UI)
+          `reel-action-bar-view-model button-view-model:has(button[title="${getString('SHARE')}"])`,
           // Full screen button
           `player-fullscreen-action-menu ytm-slim-metadata-button-renderer:has(button[aria-label="${getString('SHARE')}"])`,
         )
@@ -1676,9 +1693,6 @@ const configureCss = (() => {
             }
           `)
         }
-      }
-      if (config.hideChannelWatermark) {
-        hideCssSelectors.push('.annotation.iv-branding')
       }
       if (config.hideChat) {
         hideCssSelectors.push(
@@ -3719,9 +3733,16 @@ function onMobileMenuAppeared($menu) {
     for (let $menuItem of menuItems) {
       let itemText = $menuItem.textContent
       if (itemText == getYtString('OPEN_APP')) {
-        log('tagging Open App menu item')
+        log('tagging Open App menu item by text')
         $menuItem.classList.add(Classes.HIDE_OPEN_APP)
         break
+      } else {
+        requestAnimationFrame(() => {
+          if ($menuItem.querySelector('path[d="M19 5H8a1 1 0 000 2h7.586L5.293 17.293a1 1 0 101.414 1.414L17 8.414V16a1 1 0 002 0V5Z"]')) {
+            log('tagging Open App menu item by icon')
+            $menuItem.classList.add(Classes.HIDE_OPEN_APP)
+          }
+        })
       }
     }
   }
