@@ -102,6 +102,7 @@ export type SiteConfig = {
   hideEndCards: boolean
   hideEndVideos: boolean
   hideMerchEtc: boolean
+  hideRelatedBelow: boolean
   hideShortsMetadataUntilHover: boolean
   hideShortsRemixButton: boolean
   hideSubscriptionsLatestBar: boolean

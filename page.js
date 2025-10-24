@@ -59,6 +59,7 @@ let defaultConfig = {
   hideEndCards: false,
   hideEndVideos: true,
   hideMerchEtc: false,
+  hideRelatedBelow: false,
   hideShortsMetadataUntilHover: true,
   hideShortsRemixButton: true,
   hideSubscriptionsLatestBar: false,
@@ -1262,7 +1263,7 @@ const configureCss = (() => {
 
     if (config.hideRelated) {
       if (desktop) {
-        hideCssSelectors.push('#related')
+        hideCssSelectors.push(config.hideRelatedBelow ? '#below #related' : '#related')
       }
       if (mobile) {
         hideCssSelectors.push('ytm-item-section-renderer[section-identifier="related-items"]')
@@ -2878,6 +2879,7 @@ async function observeDesktopRelatedVideos() {
             if (!($addedNode instanceof HTMLElement)) continue
             if ($addedNode.id == 'related') {
               log('#related moved to', selector)
+              // TODO hideHiddenVideos: re-hide videos which were hidden with "Not interested"
               observeRelatedSection()
             }
           }

@@ -185,6 +185,9 @@
   "hideRelated": {
     "message": "関連動画を非表示"
   },
+  "hideRelatedBelow": {
+    "message": "動画の下に表示される場合のみ"
+  },
   "hideShareThanksClip": {
     "message": "共有/Thanks/クリップなどを非表示"
   },

@@ -186,6 +186,9 @@
   "hideRelated": {
     "message": "Masquer les vidéos associées"
   },
+  "hideRelatedBelow": {
+    "message": "Uniquement lorsqu'elles apparaissent sous la vidéo"
+  },
   "hideShareThanksClip": {
     "message": "Masquer Partager/Merci/Clip etc."
   },

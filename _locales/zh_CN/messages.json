@@ -186,6 +186,9 @@
   "hideRelated": {
     "message": "隐藏相关视频"
   },
+  "hideRelatedBelow": {
+    "message": "仅在视频下方显示时"
+  },
   "hideShareThanksClip": {
     "message": "隐藏分享/点赞/剪辑等"
   },
