@@ -312,6 +312,9 @@
   "shorts": {
     "message": "Shorts"
   },
+  "showFullVideoTitles": {
+    "message": "Show full video titles"
+  },
   "small": {
     "message": "Small"
   },

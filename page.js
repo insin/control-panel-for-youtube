@@ -74,6 +74,7 @@ let defaultConfig = {
   redirectLogoToSubscriptions: false,
   restoreMiniplayerButton: false,
   searchThumbnailSize: 'medium',
+  showFullVideoTitles: false,
   snapshotFormat: 'jpeg',
   snapshotQuality: '0.92',
   tidyGuideSidebar: false,
@@ -1934,6 +1935,19 @@ const configureCss = (() => {
               medium: 420,
               small: 360,
             }[config.searchThumbnailSize]}px !important;
+          }
+        `)
+      }
+      if (config.showFullVideoTitles) {
+        cssRules.push(`
+          #video-title,
+          .yt-lockup-metadata-view-model__title,
+          .ytp-modern-videowall-still-info-title,
+          .shortsLockupViewModelHostOutsideMetadataTitle,
+          .ytShortsVideoTitleViewModelShortsVideoTitle,
+          .ytShortsVideoTitleViewModelShortsVideoTitleLarge {
+            max-height: unset !important;
+            -webkit-line-clamp: unset !important;
           }
         `)
       }

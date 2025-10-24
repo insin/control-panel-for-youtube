@@ -309,6 +309,9 @@
   "searchThumbnailSize": {
     "message": "搜索缩略图大小"
   },
+  "showFullVideoTitles": {
+    "message": "显示完整视频标题"
+  },
   "small": {
     "message": "小号"
   },

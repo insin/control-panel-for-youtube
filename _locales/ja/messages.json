@@ -311,6 +311,9 @@
   "shorts": {
     "message": "ショート"
   },
+  "showFullVideoTitles": {
+    "message": "動画のタイトルを全文表示する"
+  },
   "small": {
     "message": "小"
   },

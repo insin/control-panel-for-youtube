@@ -312,6 +312,9 @@
   "shorts": {
     "message": "Shorts"
   },
+  "showFullVideoTitles": {
+    "message": "Afficher les titres complets des vidéos"
+  },
   "small": {
     "message": "Petit"
   },
