@@ -1600,6 +1600,11 @@ const configureCss = (() => {
               color: var(--cpfyt-metadata-color) !important;
             }
           }
+          /* Home Shorts */
+          ytd-browse[page-subtype="home"] ytd-rich-item-renderer[rich-grid-hover-highlight] {
+            background: none !important;
+            box-shadow: none !important;
+          }
           /* Video descriptions */
           ytd-watch-metadata {
             --yt-saturated-base-background: unset !important;
