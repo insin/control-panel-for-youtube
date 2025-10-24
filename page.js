@@ -1526,7 +1526,12 @@ const configureCss = (() => {
 
     if (config.playerHideFullScreenControls) {
       if (desktop) {
-        hideCssSelectors.push('.ytp-fullscreen-quick-actions')
+        hideCssSelectors.push(
+          // Top right
+          '#movie_player .ytp-overlay-top-right',
+          // Bottom right
+          '#movie_player .ytp-fullscreen-quick-actions',
+        )
       }
       if (mobile) {
         hideCssSelectors.push('player-fullscreen-action-menu .action-menu-engagement-buttons-wrapper')
@@ -1776,9 +1781,8 @@ const configureCss = (() => {
       }
       if (config.playerCompactPlayButton) {
         cssRules.push(`
-          /* Use compact layout at wider screen sizes in default and theater mode */
-          ytd-watch-flexy:is([default-layout], [theater]:not([fullscreen])) .ytp-delhi-modern:not(.ytp-delhi-modern-compact-controls) {
-            /* Make Play/Pause the same size as other buttons */
+          /* Make normal mode Play/Pause the same size as other buttons */
+          ytd-watch-flexy .ytp-delhi-modern:not(.ytp-delhi-modern-compact-controls):not(.ytp-big-mode) {
             .ytp-play-button {
               width: 48px;
               height: 48px;
@@ -1789,13 +1793,19 @@ const configureCss = (() => {
               height: 24px;
               padding: 12px;
             }
-            /* Move progress bar down */
+            /* Move progress bar and full screen elements down */
             .ytp-chrome-bottom {
               --yt-delhi-bottom-controls-height: 56px;
             }
+            &.ytp-fullscreen-grid-peeking .ytp-overlays-container {
+              bottom: 76px !important;
+            }
+            .ytp-fullscreen-grid-expand-button {
+              margin-top: -52px !important;
+            }
             /* Prevent jumping when the progress bar is dragged */
             .ytp-chrome-bottom:has(> .ytp-drag) {
-              height: 56px !important;
+              height: var(--yt-delhi-bottom-controls-height) !important;
             }
             /* Adjust position of controls */
             .ytp-left-controls > :is(button, a, .ytp-volume-area),
@@ -1813,10 +1823,8 @@ const configureCss = (() => {
               padding: 8px !important;
             }
           }
-
-          /* Full screen mode */
-          ytd-watch-flexy[fullscreen] .ytp-delhi-modern {
-            /* Normal sized Play/Pause */
+          /* Make big mode Play/Pause the same size as other buttons */
+          ytd-watch-flexy .ytp-delhi-modern.ytp-big-mode {
             .ytp-play-button {
               width: 56px !important;
               height: 56px !important;
@@ -1827,14 +1835,19 @@ const configureCss = (() => {
               height: 24px;
               padding: 16px !important;
             }
-            /* Move progress
-            /* Move progress bar down */
+            /* Move progress bar and full screen elements down */
             .ytp-chrome-bottom {
               --yt-delhi-big-mode-bottom-controls-height: 64px;
             }
+            &.ytp-fullscreen-grid-peeking .ytp-overlays-container {
+              bottom: 84px !important;
+            }
+            .ytp-fullscreen-grid-expand-button {
+              margin-top: -60px !important;
+            }
             /* Prevent jumping when the progress bar is dragged */
             .ytp-chrome-bottom:has(> .ytp-drag) {
-              height: 64px !important;
+              height: var(--yt-delhi-big-mode-bottom-controls-height) !important;
             }
             /* Adjust position of controls */
             .ytp-left-controls > :is(button, a, .ytp-volume-area),
@@ -1851,14 +1864,6 @@ const configureCss = (() => {
             .ytp-time-display, .ytp-chapter-container {
               padding: 12px !important;
             }
-          }
-          /* Adjust position of full screen overlays */
-          .ytp-delhi-modern.ytp-big-mode.ytp-fullscreen-grid-peeking .ytp-overlays-container {
-            bottom: 84px !important;
-          }
-          /* Adjust position of More videos */
-          .ytp-big-mode .ytp-fullscreen-grid-expand-button {
-            margin-top: -60px !important;
           }
         `)
       }
