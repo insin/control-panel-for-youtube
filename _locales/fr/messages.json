@@ -48,7 +48,10 @@
     "message": "Désactiver l'interface agrandie en mode cinéma"
   },
   "disableThemedHover": {
-    "message": "Désactiver le survol thématique des descriptions de vidéo"
+    "message": "Désactiver les effets de survol thématiques"
+  },
+  "disableThemedHoverNote": {
+    "message": "Dans l'accueil et sur les descriptions de vidéos"
   },
   "downloadTranscript": {
     "message": "Rendre la transcription téléchargeable"

@@ -28,6 +28,7 @@ for (let translationId of [
   'disableHomeFeedNote',
   'disableTheaterBigMode',
   'disableThemedHover',
+  'disableThemedHoverNote',
   'downloadTranscript',
   'embeddedVideos',
   'enabled',

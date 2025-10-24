@@ -48,7 +48,10 @@
     "message": "Disable enlarged UI in theater mode"
   },
   "disableThemedHover": {
-    "message": "Disable themed hover on video descriptions"
+    "message": "Disable themed hover effects"
+  },
+  "disableThemedHoverNote": {
+    "message": "In Home and on video descriptions"
   },
   "downloadTranscript": {
     "message": "Make Transcript downloadable"

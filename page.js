@@ -1570,7 +1570,27 @@ const configureCss = (() => {
       }
       if (config.disableThemedHover) {
         cssRules.push(`
-          /* Unset variables for thumbnail theme colour */
+          /* Home thumbnails */
+          html {
+            --cpfyt-title-color: #0f0f0f;
+            --cpfyt-metadata-color: #606060;
+          }
+          html[dark] {
+            --cpfyt-title-color: #f1f1f1;
+            --cpfyt-metadata-color: #aaa;
+          }
+          ytd-browse[page-subtype="home"] {
+            yt-touch-feedback-shape {
+              display: none !important;
+            }
+            .yt-lockup-metadata-view-model__title {
+              color: var(--cpfyt-title-color) !important;
+            }
+            .yt-lockup-metadata-view-model__metadata {
+              color: var(--cpfyt-metadata-color) !important;
+            }
+          }
+          /* Video descriptions */
           ytd-watch-metadata {
             --yt-saturated-base-background: unset !important;
             --yt-saturated-raised-background:  unset !important;
@@ -1588,11 +1608,9 @@ const configureCss = (() => {
             --yt-saturated-overlay-background: unset !important;
             --yt-saturated-overlay-text-primary: unset !important;
           }
-          /* Override colour which is manually applied to text in the description snippet on hover */
           #description.ytd-watch-metadata:hover #snippet-text.ytd-text-inline-expander .yt-core-attributed-string--link-inherit-color[style] {
             color: inherit !important;
           }
-          /* Restore link colours */
           #info.ytd-watch-info-text a,
           #description.ytd-watch-metadata #snippet-text.ytd-text-inline-expander a {
             color: var(--yt-spec-call-to-action);

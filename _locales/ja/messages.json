@@ -48,7 +48,10 @@
     "message": "シアターモードの拡大UIを無効にする"
   },
   "disableThemedHover": {
-    "message": "動画概要欄のテーマカラーホバーを無効にする"
+    "message": "テーマホバー効果を無効にする"
+  },
+  "disableThemedHoverNote": {
+    "message": "ホームと動画の概要欄"
   },
   "downloadTranscript": {
     "message": "文字起こしをダウンロード可能にする"

@@ -48,7 +48,10 @@
     "message": "停用影院模式下的放大界面"
   },
   "disableThemedHover": {
-    "message": "停用视频简介的主题悬停效果"
+    "message": "停用主题悬停效果"
+  },
+  "disableThemedHoverNote": {
+    "message": "在主页和视频简介中"
   },
   "downloadTranscript": {
     "message": "使转录稿可下载"
