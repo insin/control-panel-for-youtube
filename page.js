@@ -1582,6 +1582,7 @@ const configureCss = (() => {
         cssRules.push(`
           #video-title,
           .yt-lockup-metadata-view-model__title,
+          .ytPlayerOverlayVideoDetailsRendererTitle,
           .ytp-modern-videowall-still-info-title,
           .shortsLockupViewModelHostOutsideMetadataTitle,
           .ytShortsVideoTitleViewModelShortsVideoTitle,
