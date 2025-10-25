@@ -4133,7 +4133,7 @@ async function tweakVideoPage() {
     restoreMiniplayerButton()
   }
 
-  if (config.hideRelated || (!config.hideWatched && !config.hideStreamed && !config.hideChannels)) return
+  if (!config.hideWatched && !config.hideStreamed && !config.hideChannels) return
 
   if (desktop) {
     observeDesktopRelatedVideos()

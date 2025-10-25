@@ -327,7 +327,6 @@ function updateDisplay() {
   $body.classList.toggle('disabled', !optionsConfig.enabled)
   $body.classList.toggle('fullSizeTheaterMode', optionsConfig.fullSizeTheaterMode)
   $body.classList.toggle('hiddenChannels', shouldDisplayHiddenChannels())
-  $body.classList.toggle('hidingRelated', optionsConfig.hideRelated)
   $body.classList.toggle('hidingWatched', optionsConfig.hideWatched)
   $body.classList.toggle('jpegSnapshot', optionsConfig.snapshotFormat == 'jpeg')
   $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
