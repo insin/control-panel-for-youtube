@@ -114,6 +114,9 @@
   "hideChat": {
     "message": "Hide Chat"
   },
+  "hideChatFullScreen": {
+    "message": "Only in full screen"
+  },
   "hideCollaborations": {
     "message": "Hide Collaborations in Subscriptions"
   },

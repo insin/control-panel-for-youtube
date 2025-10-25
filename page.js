@@ -56,6 +56,7 @@ let defaultConfig = {
   fullSizeTheaterModeHideHeader: true,
   fullSizeTheaterModeHideScrollbar: false,
   hideChat: false,
+  hideChatFullScreen: false,
   hideCollaborations: false,
   hideEndCards: false,
   hideEndVideos: true,
@@ -532,6 +533,7 @@ const MenuConfigs = {
 }
 
 const Svgs = {
+  CHAT_PATH: 'M16 2H4a3 3 0 00-3 3v8a3 3 0 003 3h1v2.14a.8.8 0 001.188.7L11.3 16H16a3 3 0 003-3V5a3 3 0 00-3-3ZM4 4h12a1 1 0 011 1v8a1 1 0 01-1 1h-5.218l-.452.252L7 16.1V14H4a1 1 0 01-1-1V5a1 1 0 011-1Zm17 2.174A3 3 0 0123 9v8a3 3 0 01-2.846 2.996L20 20v2.14a.8.8 0 01-1.189.7L13.701 20H8.216l3.6-2h2.402l.453.252L18 20.101V18.05l1.95-.05.113-.003A1 1 0 0021 17V6.174Z',
   DELETE: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M19 3h-4V2a1 1 0 00-1-1h-4a1 1 0 00-1 1v1H5a2 2 0 00-2 2h18a2 2 0 00-2-2ZM6 19V7H4v12a4 4 0 004 4h8a4 4 0 004-4V7h-2v12a2 2 0 01-2 2H8a2 2 0 01-2-2Zm4-11a1 1 0 00-1 1v8a1 1 0 102 0V9a1 1 0 00-1-1Zm4 0a1 1 0 00-1 1v8a1 1 0 002 0V9a1 1 0 00-1-1Z"></path></svg>',
   MINIPLAYER_NEW_PATH: 'M21.20 3.01C21.66 3.05 22.08 3.26 22.41 3.58C22.73 3.91 22.94 4.33 22.98 4.79L23 5V19C23.00 19.49 22.81 19.97 22.48 20.34C22.15 20.70 21.69 20.93 21.20 20.99L21 21H3L2.79 20.99C2.30 20.93 1.84 20.70 1.51 20.34C1.18 19.97 .99 19.49 1 19V13H3V19H21V5H11V3H21L21.20 3.01ZM1.29 3.29C1.10 3.48 1.00 3.73 1.00 4C1.00 4.26 1.10 4.51 1.29 4.70L5.58 9H3C2.73 9 2.48 9.10 2.29 9.29C2.10 9.48 2 9.73 2 10C2 10.26 2.10 10.51 2.29 10.70C2.48 10.89 2.73 11 3 11H9V5C9 4.73 8.89 4.48 8.70 4.29C8.51 4.10 8.26 4 8 4C7.73 4 7.48 4.10 7.29 4.29C7.10 4.48 7 4.73 7 5V7.58L2.70 3.29C2.51 3.10 2.26 3.00 2 3.00C1.73 3.00 1.48 3.10 1.29 3.29ZM19.10 11.00L19 11H12L11.89 11.00C11.66 11.02 11.45 11.13 11.29 11.29C11.13 11.45 11.02 11.66 11.00 11.89L11 12V17C10.99 17.24 11.09 17.48 11.25 17.67C11.42 17.85 11.65 17.96 11.89 17.99L12 18H19L19.10 17.99C19.34 17.96 19.57 17.85 19.74 17.67C19.90 17.48 20.00 17.24 20 17V12L19.99 11.89C19.97 11.66 19.87 11.45 19.70 11.29C19.54 11.13 19.33 11.02 19.10 11.00ZM13 16V13H18V16H13Z',
   MINIPLAYER_OLD_PATH: 'M25,17 L17,17 L17,23 L25,23 L25,17 L25,17 Z M29,25 L29,10.98 C29,9.88 28.1,9 27,9 L9,9 C7.9,9 7,9.88 7,10.98 L7,25 C7,26.1 7.9,27 9,27 L27,27 C28.1,27 29,26.1 29,25 L29,25 Z M27,25.02 L9,25.02 L9,10.97 L27,10.97 L27,25.02 L27,25.02 Z',
@@ -1726,16 +1728,21 @@ const configureCss = (() => {
         }
       }
       if (config.hideChat) {
-        hideCssSelectors.push(
-          // Live chat / Chat replay
-          '#chat-container',
-          // "Live chat replay" panel in video metadata
-          '#teaser-carousel.ytd-watch-metadata',
-          // Side panel when chat is open
-          'ytd-watch-flexy[live-chat-present-and-expanded] #panels-full-bleed-container',
-          // Full screen button
-          'yt-player-quick-action-buttons > toggle-button-view-model:has(path[d="M16 2H4a3 3 0 00-3 3v8a3 3 0 003 3h1v2.14a.8.8 0 001.188.7L11.3 16H16a3 3 0 003-3V5a3 3 0 00-3-3ZM4 4h12a1 1 0 011 1v8a1 1 0 01-1 1h-5.218l-.452.252L7 16.1V14H4a1 1 0 01-1-1V5a1 1 0 011-1Zm17 2.174A3 3 0 0123 9v8a3 3 0 01-2.846 2.996L20 20v2.14a.8.8 0 01-1.189.7L13.701 20H8.216l3.6-2h2.402l.453.252L18 20.101V18.05l1.95-.05.113-.003A1 1 0 0021 17V6.174Z"])',
-        )
+        // Full screen button
+        hideCssSelectors.push(`yt-player-quick-action-buttons > toggle-button-view-model:has(path[d="${Svgs.CHAT_PATH}"])`)
+        if (config.hideChatFullScreen) {
+          // Only hide full screen side panel when chat is open
+          hideCssSelectors.push('ytd-watch-flexy[fullscreen][live-chat-present-and-expanded] #panels-full-bleed-container')
+        } else {
+          hideCssSelectors.push(
+            // Live chat / Chat replay
+            '#chat-container',
+            // "Live chat replay" panel in video metadata
+            '#teaser-carousel.ytd-watch-metadata',
+            // Side panel when chat is open
+            'ytd-watch-flexy[live-chat-present-and-expanded] #panels-full-bleed-container',
+          )
+        }
       }
       if (config.hideCollaborations) {
         hideCssSelectors.push(

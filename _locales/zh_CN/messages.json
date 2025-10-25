@@ -114,6 +114,9 @@
   "hideChat": {
     "message": "隐藏聊天"
   },
+  "hideChatFullScreen": {
+    "message": "仅在全屏模式下"
+  },
   "hideCollaborations": {
     "message": "隐藏订阅中的联合创作"
   },

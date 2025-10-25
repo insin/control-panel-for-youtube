@@ -113,6 +113,9 @@
   "hideChat": {
     "message": "チャットを非表示"
   },
+  "hideChatFullScreen": {
+    "message": "全画面表示中のみ"
+  },
   "hideCollaborations": {
     "message": "登録チャンネルのコラボレーションを非表示にする"
   },
