@@ -977,7 +977,9 @@ const configureCss = (() => {
           // Shorts button (new UI)
           'reel-action-bar-view-model > button-view-model:nth-of-type(1)',
           // Full screen button
-          'yt-player-quick-action-buttons > toggle-button-view-model:nth-of-type(1)',
+          `yt-player-quick-action-buttons > toggle-button-view-model:has(button[aria-label="${getYtString('COMMENTS')}"])`,
+          // Full screen panel
+          //'ytd-watch-flexy[engagement-panel-expanded] #panels-full-bleed-container:has(ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-comments-section"][visibility="ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"])'
         )
       }
       if (mobile) {
@@ -1728,10 +1730,10 @@ const configureCss = (() => {
           '#chat-container',
           // "Live chat replay" panel in video metadata
           '#teaser-carousel.ytd-watch-metadata',
-          // Chat panel in theater mode
-          'ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container.ytd-watch-flexy #panels-full-bleed-container.ytd-watch-flexy',
+          // Side panel when chat is open
+          'ytd-watch-flexy[live-chat-present-and-expanded] #panels-full-bleed-container',
           // Full screen button
-          'yt-player-quick-action-buttons > toggle-button-view-model:nth-of-type(2)',
+          'yt-player-quick-action-buttons > toggle-button-view-model:has(path[d="M16 2H4a3 3 0 00-3 3v8a3 3 0 003 3h1v2.14a.8.8 0 001.188.7L11.3 16H16a3 3 0 003-3V5a3 3 0 00-3-3ZM4 4h12a1 1 0 011 1v8a1 1 0 01-1 1h-5.218l-.452.252L7 16.1V14H4a1 1 0 01-1-1V5a1 1 0 011-1Zm17 2.174A3 3 0 0123 9v8a3 3 0 01-2.846 2.996L20 20v2.14a.8.8 0 01-1.189.7L13.701 20H8.216l3.6-2h2.402l.453.252L18 20.101V18.05l1.95-.05.113-.003A1 1 0 0021 17V6.174Z"])',
         )
       }
       if (config.hideCollaborations) {
@@ -4286,26 +4288,26 @@ function main() {
     if (mobile && config.allowBackgroundPlay) {
       allowBackgroundPlay()
     }
-    if (mobile) {
-      // Mobile uses some of YouTube's own translations in its CSS
-      // @ts-ignore
-      waitFor(() => window.ytcfg?.msgs, 'ytcfg.msgs').then(configureCss)
-    } else {
+    // CSS uses some of YouTube's own translations
+    // @ts-ignore
+    waitFor(() => window.ytcfg?.msgs, 'ytcfg.msgs').then(() => {
       configureCss()
-      triggerVideoPageResize()
-      if (config.playerRemoveDelhiExperimentFlags) {
-        // @ts-ignore
-        waitFor(() => window.yt, 'yt').then(() => {
-          // @ts-ignore
-          let watchConfig = window.yt?.config_?.WEB_PLAYER_CONTEXT_CONFIGS?.WEB_PLAYER_CONTEXT_CONFIG_ID_KEVLAR_WATCH
-          if (typeof watchConfig?.serializedExperimentFlags == 'string') {
-            log('playerDisableDelhiExperiments: removing delhi_modern_web_player experiment flags')
-            watchConfig.serializedExperimentFlags = watchConfig.serializedExperimentFlags
-              .replace(/&delhi_modern_web_player=true/g, '')
-              .replace(/&delhi_modern_web_player_icons=true/g, '')
-          }
-        })
+      if (desktop) {
+        triggerVideoPageResize()
       }
+    })
+    if (desktop && config.playerRemoveDelhiExperimentFlags) {
+      // @ts-ignore
+      waitFor(() => window.yt, 'yt').then(() => {
+        // @ts-ignore
+        let watchConfig = window.yt?.config_?.WEB_PLAYER_CONTEXT_CONFIGS?.WEB_PLAYER_CONTEXT_CONFIG_ID_KEVLAR_WATCH
+        if (typeof watchConfig?.serializedExperimentFlags == 'string') {
+          log('playerDisableDelhiExperiments: removing delhi_modern_web_player experiment flags')
+          watchConfig.serializedExperimentFlags = watchConfig.serializedExperimentFlags
+            .replace(/&delhi_modern_web_player=true/g, '')
+            .replace(/&delhi_modern_web_player_icons=true/g, '')
+        }
+      })
     }
     observeTitle()
     observePopups()
