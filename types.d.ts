@@ -87,6 +87,7 @@ export type SiteConfig = {
   playerHideFullScreenMoreVideos: boolean
   redirectShorts: boolean
   removePink: boolean
+  showFullVideoTitles: boolean
   stopShortsLooping: boolean
   // Desktop only
   addTakeSnapshot: boolean
@@ -117,7 +118,6 @@ export type SiteConfig = {
   redirectLogoToSubscriptions: boolean
   restoreMiniplayerButton: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small'
-  showFullVideoTitles: boolean
   snapshotFormat: 'jpeg' | 'png'
   snapshotQuality: string
   tidyGuideSidebar: boolean

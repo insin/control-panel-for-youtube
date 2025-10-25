@@ -157,10 +157,10 @@ ${messages.shorts}:
 
 ${messages.uiTweaks}:
 
+• ${messages.showFullVideoTitles}
 • ${messages.hideHomeCategories}
 • ${messages.hideChannelBanner}
 • ${messages.hideVoiceSearch}
-• ${messages.showFullVideoTitles}${messages.desktopVersion}
 • ${messages.redirectLogoToSubscriptions}${messages.desktopVersion}
 • ${messages.tidyGuideSidebar}${messages.desktopVersion}
 • ${messages.hideSubscriptionsLatestBar}${messages.desktopVersion}

@@ -44,6 +44,7 @@ let defaultConfig = {
   playerHideFullScreenMoreVideos: false,
   redirectShorts: true,
   removePink: false,
+  showFullVideoTitles: false,
   stopShortsLooping: true,
   // Desktop only
   addTakeSnapshot: true,
@@ -74,7 +75,6 @@ let defaultConfig = {
   redirectLogoToSubscriptions: false,
   restoreMiniplayerButton: false,
   searchThumbnailSize: 'medium',
-  showFullVideoTitles: false,
   snapshotFormat: 'jpeg',
   snapshotQuality: '0.92',
   tidyGuideSidebar: false,
@@ -1575,6 +1575,34 @@ const configureCss = (() => {
       }
     }
 
+    if (config.showFullVideoTitles) {
+      if (desktop) {
+        cssRules.push(`
+          #video-title,
+          .yt-lockup-metadata-view-model__title,
+          .ytp-modern-videowall-still-info-title,
+          .shortsLockupViewModelHostOutsideMetadataTitle,
+          .ytShortsVideoTitleViewModelShortsVideoTitle,
+          .ytShortsVideoTitleViewModelShortsVideoTitleLarge {
+            max-height: unset !important;
+            -webkit-line-clamp: unset !important;
+          }
+        `)
+      }
+      if (mobile) {
+        cssRules.push(`
+          .media-item-headline,
+          .video-card-title,
+          .yt-lockup-metadata-view-model__title,
+          .YtmCompactMediaItemHeadline,
+          .shortsLockupViewModelHostMetadataTitle {
+            max-height: unset !important;
+            -webkit-line-clamp: unset !important;
+          }
+        `)
+      }
+    }
+
     //#region Desktop-only
     if (desktop) {
       // Fix spaces & gaps caused by left gutter margin on first column items
@@ -1954,19 +1982,6 @@ const configureCss = (() => {
               medium: 420,
               small: 360,
             }[config.searchThumbnailSize]}px !important;
-          }
-        `)
-      }
-      if (config.showFullVideoTitles) {
-        cssRules.push(`
-          #video-title,
-          .yt-lockup-metadata-view-model__title,
-          .ytp-modern-videowall-still-info-title,
-          .shortsLockupViewModelHostOutsideMetadataTitle,
-          .ytShortsVideoTitleViewModelShortsVideoTitle,
-          .ytShortsVideoTitleViewModelShortsVideoTitleLarge {
-            max-height: unset !important;
-            -webkit-line-clamp: unset !important;
           }
         `)
       }

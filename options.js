@@ -171,6 +171,7 @@ let defaultConfig = {
   playerHideFullScreenMoreVideos: false,
   redirectShorts: true,
   removePink: false,
+  showFullVideoTitles: false,
   stopShortsLooping: true,
   // Desktop only
   addTakeSnapshot: true,
@@ -201,7 +202,6 @@ let defaultConfig = {
   redirectLogoToSubscriptions: false,
   restoreMiniplayerButton: false,
   searchThumbnailSize: 'medium',
-  showFullVideoTitles: false,
   snapshotFormat: 'jpeg',
   snapshotQuality: '0.92',
   tidyGuideSidebar: false,
