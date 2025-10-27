@@ -4183,106 +4183,115 @@ function waitForDesktopVideoOverlay($video, uniqueId) {
 //#endregion
 
 //#region Global patching
+let globalsPatched = false
+
 let Request_clone = Request.prototype.clone
 let Response_clone = Response.prototype.clone
 let ytInitialPlayerResponse
 let ytInitialReelWatchSequenceResponse
 
-function filterShortsAd(entry) {
-  return entry.command?.reelWatchEndpoint?.adClientParams?.isAd != true
-}
+function blockAds() {
+  if (globalsPatched) return
 
-function processPlayerResponse(data) {
-  if (data.videoDetails) {
-    delete data.adPlacements
-    delete data.adSlots
-    delete data.playerAds
-  }
-}
+  log('blockAds: patching globals')
+  globalsPatched = true
 
-function processReelWatchSequenceResponse(data) {
-  if (Array.isArray(data.entries) && data.entries[0]?.command?.reelWatchEndpoint) {
-    data.entries = data.entries.filter(filterShortsAd)
-  }
-  if (Array.isArray(data.reelWatchSequenceResponse?.entries) &&
-      data.reelWatchSequenceResponse.entries[0]?.command?.reelWatchEndpoint) {
-    data.reelWatchSequenceResponse.entries = data.reelWatchSequenceResponse.entries.filter(filterShortsAd)
-  }
-}
-
-function proxyFetch(target, thisArg, argArray) {
-  let request = argArray?.[0]
-  let url = request?.url
-  if (
-    config && !config.blockAds ||
-    !(request instanceof Request) ||
-    !url || !url.includes('/player') && !url.includes('/reel_watch_sequence') ||
-    // Ignore adblock detection requests with data: URL payloads
-    !Request_clone.call(request).url.startsWith('https://')
-  ) {
-    return Reflect.apply(target, thisArg, argArray)
+  function filterShortsAd(entry) {
+    return entry.command?.reelWatchEndpoint?.adClientParams?.isAd != true
   }
 
-  return Reflect.apply(target, thisArg, argArray).then(response => {
-    return Response_clone.call(response).text().then(responseText => {
-      try {
-        let data = JSON.parse(responseText)
-        if (url.includes('/player')) {
-          processPlayerResponse(data)
+  function processPlayerResponse(data) {
+    if (data.videoDetails) {
+      delete data.adPlacements
+      delete data.adSlots
+      delete data.playerAds
+    }
+  }
+
+  function processReelWatchSequenceResponse(data) {
+    if (Array.isArray(data.entries) && data.entries[0]?.command?.reelWatchEndpoint) {
+      data.entries = data.entries.filter(filterShortsAd)
+    }
+    if (Array.isArray(data.reelWatchSequenceResponse?.entries) &&
+        data.reelWatchSequenceResponse.entries[0]?.command?.reelWatchEndpoint) {
+      data.reelWatchSequenceResponse.entries = data.reelWatchSequenceResponse.entries.filter(filterShortsAd)
+    }
+  }
+
+  function proxyFetch(target, thisArg, argArray) {
+    let request = argArray?.[0]
+    let url = request?.url
+    if (
+      (config && !(config.enabled && config.blockAds)) ||
+      !(request instanceof Request) ||
+      !url || !url.includes('/player') && !url.includes('/reel_watch_sequence') ||
+      // Ignore adblock detection requests with data: URL payloads
+      !Request_clone.call(request).url.startsWith('https://')
+    ) {
+      return Reflect.apply(target, thisArg, argArray)
+    }
+
+    return Reflect.apply(target, thisArg, argArray).then(response => {
+      return Response_clone.call(response).text().then(responseText => {
+        try {
+          let data = JSON.parse(responseText)
+          if (url.includes('/player')) {
+            processPlayerResponse(data)
+          }
+          else if (url.includes('/reel_watch_sequence')) {
+            processReelWatchSequenceResponse(data)
+          }
+          return new Response(JSON.stringify(data))
+        } catch (error) {
+          warn('blockAds: error parsing', new URL(url).pathname, 'response:', error, responseText)
         }
-        else if (url.includes('/reel_watch_sequence')) {
-          processReelWatchSequenceResponse(data)
-        }
-        return new Response(JSON.stringify(data))
-      } catch (error) {
-        warn('blockAds: error parsing', new URL(url).pathname, 'response:', error, responseText)
-      }
-      return response
+        return response
+      })
     })
-  })
-}
-
-try {
-  Object.defineProperty(window, 'ytInitialPlayerResponse', {
-    set(data) {
-      ytInitialPlayerResponse = data
-      if (ytInitialPlayerResponse != null && (!config || config.blockAds)) {
-        processPlayerResponse(ytInitialPlayerResponse)
-      }
-    },
-    get() {
-      return ytInitialPlayerResponse
-    }
-  })
-} catch(error) {
-  if (!config || config.blockAds) {
-    warn('blockAds: error defining ytInitialPlayerResponse:', error)
   }
-}
 
-try {
-  Object.defineProperty(window, 'ytInitialReelWatchSequenceResponse', {
-    set(data) {
-      ytInitialReelWatchSequenceResponse = data
-      if (ytInitialReelWatchSequenceResponse != null && (!config || config.blockAds)) {
-        processReelWatchSequenceResponse(ytInitialReelWatchSequenceResponse)
+  try {
+    Object.defineProperty(window, 'ytInitialPlayerResponse', {
+      set(data) {
+        ytInitialPlayerResponse = data
+        if (ytInitialPlayerResponse != null && config?.enabled && config.blockAds) {
+          processPlayerResponse(ytInitialPlayerResponse)
+        }
+      },
+      get() {
+        return ytInitialPlayerResponse
       }
-    },
-    get() {
-      return ytInitialReelWatchSequenceResponse
+    })
+  } catch(error) {
+    if (config?.enabled && config.blockAds) {
+      warn('blockAds: error defining ytInitialPlayerResponse:', error)
     }
-  })
-} catch(error) {
-  if (!config || config.blockAds) {
-    warn('blockAds: error defining ytInitialReelWatchSequenceResponse:', error)
   }
-}
 
-try {
-  window.fetch = new Proxy(window.fetch, {apply: proxyFetch})
-} catch (error) {
-  if (!config || config.blockAds) {
-    warn('blockAds: error proxying fetch:', error)
+  try {
+    Object.defineProperty(window, 'ytInitialReelWatchSequenceResponse', {
+      set(data) {
+        ytInitialReelWatchSequenceResponse = data
+        if (ytInitialReelWatchSequenceResponse != null && config?.enabled && config.blockAds) {
+          processReelWatchSequenceResponse(ytInitialReelWatchSequenceResponse)
+        }
+      },
+      get() {
+        return ytInitialReelWatchSequenceResponse
+      }
+    })
+  } catch(error) {
+    if (config?.enabled && config.blockAds) {
+      warn('blockAds: error defining ytInitialReelWatchSequenceResponse:', error)
+    }
+  }
+
+  try {
+    window.fetch = new Proxy(window.fetch, {apply: proxyFetch})
+  } catch (error) {
+    if (config?.enabled && config.blockAds) {
+      warn('blockAds: error proxying fetch:', error)
+    }
   }
 }
 //#endregion
@@ -4293,6 +4302,9 @@ let channel = new BroadcastChannel(channelName)
 
 function main() {
   if (config.enabled) {
+    if (config.blockAds) {
+      blockAds()
+    }
     if (mobile && config.allowBackgroundPlay) {
       allowBackgroundPlay()
     }
@@ -4332,6 +4344,9 @@ function main() {
 function configChanged(changes) {
   if (!changes.hasOwnProperty('enabled')) {
     log('config changed', changes)
+    if (config.blockAds) {
+      blockAds()
+    }
     configureCss()
     triggerVideoPageResize()
     handleCurrentUrl()

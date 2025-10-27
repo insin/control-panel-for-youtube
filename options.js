@@ -22,6 +22,7 @@ for (let translationId of [
   'annoyances',
   'anyPercent',
   'blockAds',
+  'blockAdsNote',
   'disableAmbientMode',
   'disableAutoplay',
   'disableHomeFeed',

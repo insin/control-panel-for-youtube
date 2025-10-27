@@ -29,6 +29,9 @@
   "blockAds": {
     "message": "Block ads"
   },
+  "blockAdsNote": {
+    "message": "Disable to avoid conflicts with other adblockers"
+  },
   "desktopOnly": {
     "message": "Desktop only"
   },

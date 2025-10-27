@@ -29,6 +29,9 @@
   "blockAds": {
     "message": "Bloquer les publicités"
   },
+  "blockAdsNote": {
+    "message": "Désactiver pour éviter les conflits avec d'autres bloqueurs de publicités"
+  },
   "desktopOnly": {
     "message": "Bureau uniquement"
   },

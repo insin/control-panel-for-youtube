@@ -29,6 +29,9 @@
   "blockAds": {
     "message": "広告をブロックする"
   },
+  "blockAdsNote": {
+    "message": "他の広告ブロッカーとの競合を避けるため、無効にしてください"
+  },
   "desktopOnly": {
     "message": "デスクトップのみ"
   },

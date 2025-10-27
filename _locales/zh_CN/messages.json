@@ -29,6 +29,9 @@
   "blockAds": {
     "message": "拦截广告"
   },
+  "blockAdsNote": {
+    "message": "为避免与其他广告拦截工具冲突，请停用此项"
+  },
   "desktopOnly": {
     "message": "仅限桌面"
   },
