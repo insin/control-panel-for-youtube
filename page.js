@@ -1813,7 +1813,6 @@ const configureCss = (() => {
       }
       if (!config.hideShorts && config.minimumShortsPerRow != 'auto') {
         let shortsPerRow = Number(config.minimumShortsPerRow)
-        let subscriptionsShortsPerRow = Math.min(6, shortsPerRow)
         // Don't override the number of items if YouTube wants to show more
         let exclude = []
         for (let i = 6; i > shortsPerRow; i--) {
@@ -1822,17 +1821,14 @@ const configureCss = (() => {
         let excludeSelector = exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''
         cssRules.push(`
           ytd-browse[page-subtype="home"] ytd-rich-shelf-renderer[is-shorts]${excludeSelector},
+          ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer[is-shorts]${excludeSelector},
           ytd-browse[page-subtype="filteredsubscriptions"] ytd-rich-grid-renderer[is-shorts-grid]${excludeSelector} {
             --ytd-rich-grid-slim-items-per-row: ${shortsPerRow} !important;
             --ytd-rich-grid-items-per-row: ${shortsPerRow} !important;
           }
-          ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer[is-shorts]${excludeSelector} {
-            --ytd-rich-grid-slim-items-per-row: ${subscriptionsShortsPerRow} !important;
-            --ytd-rich-grid-items-per-row: ${subscriptionsShortsPerRow} !important;
-          }
           /* Show Shorts beyond the ones YouTube thinks should be visible */
           ytd-browse[page-subtype="home"] ytd-rich-item-renderer[is-slim-media]:nth-child(-n+${shortsPerRow}),
-          ytd-browse[page-subtype="subscriptions"] ytd-rich-item-renderer[is-slim-media]:nth-child(-n+${subscriptionsShortsPerRow}) {
+          ytd-browse[page-subtype="subscriptions"] ytd-rich-item-renderer[is-slim-media]:nth-child(-n+${shortsPerRow}) {
             display: block !important;
           }
         `)
