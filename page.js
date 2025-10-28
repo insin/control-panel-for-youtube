@@ -2239,9 +2239,9 @@ function allowBackgroundPlay() {
   }, true)
 }
 
-async function alwaysUseOriginalAudio() {
-  let $player = await getElement('#movie_player', {
-    name: 'player (alwaysUseOriginalAudio)',
+async function alwaysUseOriginalAudio(playerSelector) {
+  let $player = await getElement(playerSelector, {
+    name: `${playerSelector} (alwaysUseOriginalAudio)`,
     stopIf: currentUrlChanges(),
   })
   if (!$player) return
@@ -4068,6 +4068,10 @@ function tweakSearchPage() {
 }
 
 async function tweakShortsPage() {
+  if (desktop && config.alwaysUseOriginalAudio) {
+    alwaysUseOriginalAudio('#shorts-player')
+  }
+
   if (config.stopShortsLooping) {
     let $player = await getElement(desktop ? '#shorts-player' : '#movie_player', {
       name: 'shorts player',
@@ -4121,7 +4125,7 @@ async function tweakVideoPage() {
     alwaysUseTheaterMode()
   }
   if (desktop && config.alwaysUseOriginalAudio) {
-    alwaysUseOriginalAudio()
+    alwaysUseOriginalAudio('#movie_player')
   }
   if (desktop && config.disableTheaterBigMode) {
     disableTheaterBigMode()
