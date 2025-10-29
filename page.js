@@ -1108,7 +1108,7 @@ const configureCss = (() => {
 
     if (config.hideMembersOnly) {
       if (desktop) {
-        const membersOnlyIconPath = 'path[d="M6 11.5a5.5 5.5 0 100-11 5.5 5.5 0 000 11Zm1.058-6.956L6 2 4.942 4.544l-2.746.22 2.092 1.792-.64 2.68L6 7.8l2.351 1.436-.64-2.68 2.093-1.792-2.746-.22Z"]'
+        const membersOnlyIconPath = 'path[d="M12 23c6.075 0 11-4.925 11-11S18.075 1 12 1 1 5.925 1 12s4.925 11 11 11Zm2.351-14.236 4.054.59a.6.6 0 01.333 1.023l-2.934 2.86.692 4.038a.6.6 0 01-.87.632L12 16l-3.627 1.906a.6.6 0 01-.87-.632l.693-4.037-2.934-2.86a.6.6 0 01.333-1.024l4.054-.589 1.813-3.674a.6.6 0 011.076 0l1.813 3.674Z"]'
         hideCssSelectors.push(
           // Grid item (Home, Subscriptions, Channel videos tab)
           'ytd-rich-item-renderer:has(.badge-style-type-members-only)',
