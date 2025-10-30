@@ -14,6 +14,7 @@ let defaultConfig = {
   disableTheaterBigMode: true,
   hiddenChannels: [],
   hideAI: true,
+  hideAutoDubbed: false,
   hideChannelBanner: false,
   hideChannelWatermark: false,
   hideChannels: true,
@@ -848,6 +849,22 @@ const configureCss = (() => {
       if (mobile) {
         const geminiSvgPath = 'M12 2a1 1 0 00-1 1 8 8 0 01-8 8 1 1 0 000 2 8 8 0 018 8 1 1 0 002 0 8 8 0 018-8 1 1 0 000-2 8 8 0 01-8-8 1 1 0 00-1-1Zm0 5.364A10.04 10.04 0 0016.636 12 10.04 10.04 0 0012 16.636 10.04 10.04 0 007.364 12 10.04 10.04 0 0012 7.364Z'
         hideCssSelectors.push(`ytm-expandable-metadata-renderer:has(path[d="${geminiSvgPath}"])`)
+      }
+    }
+
+    if (config.hideAutoDubbed) {
+      const autoDubbedSvgPath = 'path[d="M19.4.2a1 1 0 00-.2 1.4 9 9 0 01-.022 10.83 1 1 0 001.595 1.206A11 11 0 0020.8.4a1 1 0 00-1.4-.2ZM10 2a5 5 0 100 10 5 5 0 000-10Zm6.17.3a1 1 0 00-.028 1.414c.895.932 1.365 2.114 1.358 3.312-.006 1.199-.49 2.378-1.396 3.302a1.001 1.001 0 101.427 1.4c1.257-1.281 1.959-2.953 1.969-4.69.009-1.738-.673-3.416-1.916-4.71A1 1 0 0016.17 2.3ZM10 13a8 8 0 00-8 8 1 1 0 001 1h14l.102-.005A1 1 0 0018 21a8 8 0 00-8-8Z"]'
+      if (desktop) {
+        hideCssSelectors.push(
+          // Related
+          `#related yt-lockup-view-model:has(${autoDubbedSvgPath})`
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(
+          // Related
+          `ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(${autoDubbedSvgPath})`,
+        )
       }
     }
 

@@ -57,6 +57,7 @@ export type SiteConfig = {
   disableTheaterBigMode: boolean
   hiddenChannels: Channel[]
   hideAI: boolean
+  hideAutoDubbed: boolean
   hideChannelBanner: boolean
   hideChannelWatermark: boolean
   hideChannels: boolean

@@ -102,6 +102,9 @@
   "hideAI": {
     "message": "Masquer les résumés IA"
   },
+  "hideAutoDubbed": {
+    "message": "Masquer les vidéos doublées automatiquement dans les recommandations"
+  },
   "hideChannelBanner": {
     "message": "Masquer la bannière de la chaîne"
   },

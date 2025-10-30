@@ -101,6 +101,9 @@
   "hideAI": {
     "message": "AIによる概要を非表示"
   },
+  "hideAutoDubbed": {
+    "message": "関連動画のオートダビング版を非表示にする"
+  },
   "hideChannelBanner": {
     "message": "チャンネルバナー画像を非表示にする"
   },

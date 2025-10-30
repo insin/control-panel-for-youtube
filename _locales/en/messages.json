@@ -102,6 +102,9 @@
   "hideAI": {
     "message": "Hide AI summaries"
   },
+  "hideAutoDubbed": {
+    "message": "Hide Auto-dubbed videos in Related"
+  },
   "hideChannelBanner": {
     "message": "Hide channel banner images"
   },
