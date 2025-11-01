@@ -344,6 +344,9 @@
   "uiTweaks": {
     "message": "UIの微調整"
   },
+  "useSquareCorners": {
+    "message": "サムネイルと動画の角を四角にする"
+  },
   "videoLists": {
     "message": "動画リスト"
   },

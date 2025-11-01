@@ -48,6 +48,7 @@ let defaultConfig = {
   removePink: false,
   showFullVideoTitles: false,
   stopShortsLooping: true,
+  useSquareCorners: false,
   // Desktop only
   addTakeSnapshot: true,
   alwaysUseOriginalAudio: false,
@@ -1628,6 +1629,76 @@ const configureCss = (() => {
           .shortsLockupViewModelHostMetadataTitle {
             max-height: unset !important;
             -webkit-line-clamp: unset !important;
+          }
+        `)
+      }
+    }
+
+    if (config.useSquareCorners) {
+      if (desktop) {
+        cssRules.push(`
+          /* Thumbnails */
+          .ytThumbnailViewModelSmall,
+          .ytThumbnailViewModelMedium,
+          .ytThumbnailViewModelLarge,
+          ytd-thumbnail:is([side=small], [size=medium], [size=large]) a.ytd-thumbnail,
+          ytd-thumbnail:is([side=small], [size=medium], [size=large])::before,
+          yt-lockup-view-model .yt-spec-touch-feedback-shape:not(.yt-spec-touch-feedback-shape--circular) :is(.yt-spec-touch-feedback-shape__stroke, .yt-spec-touch-feedback-shape__fill, .yt-spec-touch-feedback-shape__hover-effect),
+          .ytp-videowall-still-image,
+          .ytp-modern-videowall-still-image,
+          .ytp-modern-videowall-still:hover,
+          ytd-universal-watch-card-renderer[rounded] :is(#header, #hero),
+          #thumbnail.ytd-macro-markers-list-item-renderer,
+          .ytCollectionsStackCollectionStack1,
+          .ytCollectionsStackCollectionStack2,
+          .rich-thumbnail.ytd-ghost-grid-renderer,
+          /* Players */
+          ytd-watch-flexy[rounded-player] #ytd-player.ytd-watch-flexy,
+          .ytdMiniplayerComponentContent,
+          .ytp-miniplayer-scrim,
+          /* Under video */
+          #description.ytd-watch-metadata,
+          yt-interaction:not(.circular) :is(.fill.yt-interaction, .stroke.yt-interaction),
+          ytd-rich-metadata-renderer[rounded],
+          ytd-expandable-metadata-renderer,
+          #header.ytd-expandable-metadata-renderer:hover,
+          .ytVideoMetadataCarouselViewModelHost,
+          #container.ytd-playlist-panel-renderer,
+          ytd-engagement-panel-section-list-renderer:not([live-chat-engagement-panel]),
+          ytd-live-chat-frame[rounded-container],
+          /* Shorts */
+          .shortsLockupViewModelHostThumbnailParentContainerRounded,
+          .player-container.ytd-reel-video-renderer,
+          .reel-video-in-sequence-thumbnail.ytd-shorts,
+          .anchored-panel.ytd-shorts,
+          /* Misc */
+          .yt-page-header-view-model__page-header-background {
+            border-radius: 0 !important;
+          }
+        `)
+      }
+      if (mobile) {
+        cssRules.push(`
+          /* Thumbnails */
+          .rounded-thumbnail,
+          .thumbnail-cover-rounded,
+          .video-thumbnail-container-compact-rounded,
+          .video-thumbnail-container-large,
+          .ytCollectionsStackCollectionStack1,
+          .ytContentPreviewImageViewModelHost:not(.ytContentPreviewImageViewModelCircleImage),
+          .ytmFullscreenRelatedVideosEntryPointViewModelThumbnailContainer,
+          .ytmFullscreenRelatedVideosEntryPointViewModelFadedThumbnail,
+          .ytmBackstageImageRendererHost,
+          .ghost-video-thumbnail-container-large,
+          /* Under video */
+          .ytVideoMetadataCarouselViewModelHost,
+          ytm-factoid-renderer .factoid,
+          .expandable-video-description-body-main,
+          .YtmCommentSimpleboxRendererPlaceholder,
+          /* Shorts */
+          .shortsLockupViewModelHostThumbnailParentContainerRounded,
+          .shortsLockupViewModelHostMetadataRounded {
+            border-radius: 0 !important;
           }
         `)
       }

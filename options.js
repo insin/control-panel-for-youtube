@@ -113,6 +113,7 @@ for (let translationId of [
   'stopShortsLooping',
   'tidyGuideSidebar',
   'uiTweaks',
+  'useSquareCorners',
   'videoLists',
   'videoPages',
 ]) {
@@ -179,6 +180,7 @@ let defaultConfig = {
   removePink: false,
   showFullVideoTitles: false,
   stopShortsLooping: true,
+  useSquareCorners: false,
   // Desktop only
   addTakeSnapshot: true,
   alwaysUseOriginalAudio: false,

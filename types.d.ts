@@ -91,6 +91,7 @@ export type SiteConfig = {
   removePink: boolean
   showFullVideoTitles: boolean
   stopShortsLooping: boolean
+  useSquareCorners: boolean
   // Desktop only
   addTakeSnapshot: boolean
   alwaysUseOriginalAudio: boolean

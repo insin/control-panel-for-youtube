@@ -160,6 +160,7 @@ ${messages.shorts}:
 ${messages.uiTweaks}:
 
 • ${messages.showFullVideoTitles}
+• ${messages.useSquareCorners}
 • ${messages.hideHomeCategories}
 • ${messages.hideChannelBanner}
 • ${messages.hideVoiceSearch}

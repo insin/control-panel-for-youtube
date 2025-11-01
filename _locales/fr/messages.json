@@ -345,6 +345,9 @@
   "uiTweaks": {
     "message": "Amélioration de l'interface utilisateur"
   },
+  "useSquareCorners": {
+    "message": "Utiliser des coins carrés pour les miniatures et les vidéos"
+  },
   "videoLists": {
     "message": "Listes de vidéos"
   },

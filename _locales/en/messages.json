@@ -345,6 +345,9 @@
   "uiTweaks": {
     "message": "UI tweaks"
   },
+  "useSquareCorners": {
+    "message": "Use square corners for thumbnails and videos"
+  },
   "videoLists": {
     "message": "Video lists"
   },

@@ -342,6 +342,9 @@
   "uiTweaks": {
     "message": "界面调整"
   },
+  "useSquareCorners": {
+    "message": "为缩略图和视频使用直角边框"
+  },
   "videoLists": {
     "message": "视频列表"
   },
