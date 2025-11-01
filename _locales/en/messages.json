@@ -207,6 +207,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "Hide Shorts metadata until hover"
   },
+  "hideShortsRelatedLink": {
+    "message": "Hide link to related Short by the same channel"
+  },
   "hideShortsRemixButton": {
     "message": "Hide Remix button"
   },

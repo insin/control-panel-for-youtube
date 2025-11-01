@@ -207,6 +207,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "Masquer les métadonnées des Shorts jusqu'au survol"
   },
+  "hideShortsRelatedLink": {
+    "message": "Masquer le lien vers un Short similaire de la même chaîne"
+  },
   "hideShortsRemixButton": {
     "message": "Masquer le bouton Remix"
   },

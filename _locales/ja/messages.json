@@ -206,6 +206,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "ホバーするまでショートのメタデータを隠す"
   },
+  "hideShortsRelatedLink": {
+    "message": "同じチャンネルの関連ショート動画へのリンクを非表示にする"
+  },
   "hideShortsRemixButton": {
     "message": "リミックスボタンを隠す"
   },

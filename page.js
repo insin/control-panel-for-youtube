@@ -33,6 +33,7 @@ let defaultConfig = {
   hideRelated: false,
   hideShareThanksClip: false,
   hideShorts: true,
+  hideShortsRelatedLink: false,
   hideShortsSuggestedActions: true,
   hideSponsored: true,
   hideStreamed: false,
@@ -1392,6 +1393,10 @@ const configureCss = (() => {
           'ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(a[href^="/shorts"])',
         )
       }
+    }
+
+    if (config.hideShortsRelatedLink) {
+      hideCssSelectors.push('.ytReelMetapanelViewModelMetapanelItem:has(> yt-reel-multi-format-link-view-model)')
     }
 
     if (config.hideShortsSuggestedActions) {

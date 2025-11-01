@@ -150,6 +150,7 @@ ${messages.shorts}:
 • ${messages.hideShorts}
 • ${messages.redirectShorts}
 • ${messages.hideShortsSuggestedActions}
+• ${messages.hideShortsRelatedLink}
 • ${messages.alwaysShowShortsProgressBar}
 • ${messages.stopShortsLooping}
 • ${messages.hideShortsRemixButton}${messages.desktopVersion}
