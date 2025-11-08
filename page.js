@@ -1799,15 +1799,16 @@ const configureCss = (() => {
             }
             /* Make theater mode full view height */
             ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container.ytd-watch-flexy {
-              max-height: none;
-              height: 100vh;
+              max-height: 100vh !important;
+              height: 100vh !important;
             }
           `)
         } else {
           // 56px is the height of #container.ytd-masthead
           cssRules.push(`
             ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container {
-              max-height: calc(100vh - 56px);
+              max-height: calc(100vh - 56px) !important;
+              height: calc(100vh - 56px) !important;
             }
           `)
         }
