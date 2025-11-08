@@ -74,6 +74,7 @@ let defaultConfig = {
   playerCompactPlayButton: true,
   playerFixFullScreenButton: true,
   playerHideFullScreenTitle: false,
+  playerHideFullScreenVoting: false,
   playerRemoveControlsBg: false,
   playerRemoveDelhiExperimentFlags: false,
   redirectLogoToSubscriptions: false,
@@ -1588,7 +1589,6 @@ const configureCss = (() => {
 
     if (config.playerHideFullScreenControls && config.playerHideFullScreenMoreVideos) {
       if (mobile) {
-
         cssRules.push(`
           /* Move full screen progress bar down when hiding all controls under it */
           body[faux-fullscreen="true"] .enable-fullscreen-controls.fs-watch-system .watch-page-progress-bar {
@@ -2037,6 +2037,9 @@ const configureCss = (() => {
       if (config.playerHideFullScreenTitle) {
         hideCssSelectors.push('.ytp-fullscreen-metadata')
       }
+      if (config.playerHideFullScreenVoting) {
+        hideCssSelectors.push('yt-player-quick-action-buttons :is(like-button-view-model, dislike-button-view-model)')
+      }
       if (config.playerRemoveControlsBg) {
         cssRules.push(`
           .ytp-delhi-modern {
@@ -2048,6 +2051,9 @@ const configureCss = (() => {
             }
           }
           .ytp-big-mode .ytp-fullscreen-grid-expand-button {
+            background: transparent !important;
+          }
+          .ytPlayerQuickActionButtonsHost {
             background: transparent !important;
           }
         `)

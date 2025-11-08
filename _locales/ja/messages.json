@@ -284,6 +284,9 @@
   "playerHideFullScreenTitle": {
     "message": "全画面のタイトルを非表示にする"
   },
+  "playerHideFullScreenVoting": {
+    "message": "全画面の高評価/低評価ボタンを非表示にする"
+  },
   "playerRemoveControlsBg": {
     "message": "コントロールから背景を削除する"
   },

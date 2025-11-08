@@ -96,11 +96,11 @@ export type SiteConfig = {
   addTakeSnapshot: boolean
   alwaysUseOriginalAudio: boolean
   alwaysUseTheaterMode: boolean
+  disableThemedHover: boolean
   downloadTranscript: boolean
   fullSizeTheaterMode: boolean
   fullSizeTheaterModeHideHeader: boolean
   fullSizeTheaterModeHideScrollbar: boolean
-  disableThemedHover: boolean
   hideChat: boolean
   hideChatFullScreen: boolean
   hideCollaborations: boolean
@@ -117,6 +117,7 @@ export type SiteConfig = {
   playerCompactPlayButton: boolean
   playerFixFullScreenButton: boolean
   playerHideFullScreenTitle: boolean
+  playerHideFullScreenVoting: boolean
   playerRemoveControlsBg: boolean
   playerRemoveDelhiExperimentFlags: boolean
   redirectLogoToSubscriptions: boolean

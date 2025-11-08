@@ -285,6 +285,9 @@
   "playerHideFullScreenTitle": {
     "message": "Masquer le titre en plein écran"
   },
+  "playerHideFullScreenVoting": {
+    "message": "Masquer les boutons J'aime/Je n'aime pas en plein écran"
+  },
   "playerRemoveControlsBg": {
     "message": "Supprimer l'arrière-plan des contrôles"
   },

@@ -285,6 +285,9 @@
   "playerHideFullScreenTitle": {
     "message": "隐藏全屏标题"
   },
+  "playerHideFullScreenVoting": {
+    "message": "隐藏全屏下的“顶”/“踩”按钮"
+  },
   "playerRemoveControlsBg": {
     "message": "移除控件的背景"
   },

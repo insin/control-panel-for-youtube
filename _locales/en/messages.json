@@ -285,6 +285,9 @@
   "playerHideFullScreenTitle": {
     "message": "Hide full screen title"
   },
+  "playerHideFullScreenVoting": {
+    "message": "Hide full screen like/dislike buttons"
+  },
   "playerRemoveControlsBg": {
     "message": "Remove background from controls"
   },
