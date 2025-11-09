@@ -92,6 +92,7 @@ ${messages.newVideoPlayerUI}:
 • ${messages.restoreMiniplayerButton}${messages.desktopVersion}
 • ${messages.playerFixFullScreenButton}${messages.desktopVersion}
 • ${messages.playerHideFullScreenTitle}${messages.desktopVersion}
+• ${messages.playerHideFullScreenVoting}${messages.desktopVersion}
 
 ${messages.annoyances}:
 
