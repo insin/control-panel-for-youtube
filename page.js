@@ -966,7 +966,7 @@ const configureCss = (() => {
             color: var(--yt-spec-text-primary);
             fill: currentColor;
             height: 24px;
-            margin-right: 16px;
+            margin-right: 12px;
             width: 24px;
           }
           yt-list-view-model .cpfyt-menu-icon {
