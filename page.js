@@ -930,26 +930,28 @@ const configureCss = (() => {
           }
           tp-yt-paper-listbox .cpfyt-menu-item {
             -webkit-font-smoothing: antialiased;
+            border-radius: 8px;
+          }
+          tp-yt-paper-listbox .cpfyt-menu-item:hover {
+            background-color: var(--yt-spec-additive-background);
           }
           tp-yt-paper-listbox .cpfyt-menu-item:focus {
             position: relative;
-            background-color: var(--paper-item-focused-background-color);
-            outline: 0;
+            background-color: var(--yt-spec-additive-background);
+            outline: 2px solid currentColor;
+            outline-offset: -2px;
           }
           tp-yt-paper-listbox .cpfyt-menu-item:focus::before {
             position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
+            inset: 0;
             pointer-events: none;
             background: var(--paper-item-focused-before-background, currentColor);
             border-radius: var(--paper-item-focused-before-border-radius, 0);
             content: var(--paper-item-focused-before-content, "");
-            opacity: var(--paper-item-focused-before-opacity, var(--dark-divider-opacity, 0.12));
+            opacity: var(--paper-item-focused-before-opacity, var(--dark-divider-opacity, .12));
           }
-          tp-yt-paper-listbox .cpfyt-menu-item:hover {
-            background-color: var(--yt-spec-10-percent-layer);
+          yt-list-view-model .cpfyt-menu-item {
+            padding: 2px 16px;
           }
           yt-list-view-model .cpfyt-menu-item:focus {
             outline: 2px solid currentColor;
@@ -968,6 +970,7 @@ const configureCss = (() => {
             height: 24px;
             margin-right: 12px;
             width: 24px;
+            flex-shrink: 0;
           }
           yt-list-view-model .cpfyt-menu-icon {
             margin-right: 12px;
