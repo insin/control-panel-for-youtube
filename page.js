@@ -57,7 +57,6 @@ let defaultConfig = {
   downloadTranscript: true,
   fullSizeTheaterMode: false,
   fullSizeTheaterModeHideHeader: true,
-  fullSizeTheaterModeHideScrollbar: false,
   hideChat: false,
   hideChatFullScreen: false,
   hideCollaborations: false,
@@ -1812,13 +1811,6 @@ const configureCss = (() => {
             ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container {
               max-height: calc(100vh - 56px) !important;
               height: calc(100vh - 56px) !important;
-            }
-          `)
-        }
-        if (config.fullSizeTheaterModeHideScrollbar) {
-          cssRules.push(`
-            html:has(#page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) {
-              scrollbar-width: none;
             }
           `)
         }

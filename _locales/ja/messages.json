@@ -86,9 +86,6 @@
   "fullSizeTheaterModeHideHeader": {
     "message": "ヘッダーを非表示にする"
   },
-  "fullSizeTheaterModeHideScrollbar": {
-    "message": "スクロールバーを非表示にする"
-  },
   "hiddenChannelsSummary": {
     "message": "隠しチャンネル ($COUNT$)",
     "placeholders": {

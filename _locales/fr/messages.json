@@ -87,9 +87,6 @@
   "fullSizeTheaterModeHideHeader": {
     "message": "Masquer l'en-tête"
   },
-  "fullSizeTheaterModeHideScrollbar": {
-    "message": "Masquer la barre de défilement"
-  },
   "hiddenChannelsSummary": {
     "message": "Chaîne(s) masquée(s) ($COUNT$)",
     "placeholders": {

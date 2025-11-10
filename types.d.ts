@@ -100,7 +100,6 @@ export type SiteConfig = {
   downloadTranscript: boolean
   fullSizeTheaterMode: boolean
   fullSizeTheaterModeHideHeader: boolean
-  fullSizeTheaterModeHideScrollbar: boolean
   hideChat: boolean
   hideChatFullScreen: boolean
   hideCollaborations: boolean
