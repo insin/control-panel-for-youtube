@@ -318,6 +318,9 @@
   "restoreMiniplayerButton": {
     "message": "恢复迷你播放器按钮"
   },
+  "revertGiantRelated": {
+    "message": "恢复相关视频中的小缩略图"
+  },
   "searchThumbnailSize": {
     "message": "搜索缩略图大小"
   },

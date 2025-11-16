@@ -318,6 +318,9 @@
   "restoreMiniplayerButton": {
     "message": "Restore Miniplayer button"
   },
+  "revertGiantRelated": {
+    "message": "Restore small thumbnails in Related"
+  },
   "searchThumbnailSize": {
     "message": "Search thumbnail size"
   },

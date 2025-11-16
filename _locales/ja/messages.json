@@ -317,6 +317,9 @@
   "restoreMiniplayerButton": {
     "message": "ミニプレーヤーボタンを復元する"
   },
+  "revertGiantRelated": {
+    "message": "関連動画のサムネイルを小さく復元する"
+  },
   "searchThumbnailSize": {
     "message": "検索サムネイルのサイズ"
   },

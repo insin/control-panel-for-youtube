@@ -318,6 +318,9 @@
   "restoreMiniplayerButton": {
     "message": "Restaurer le bouton du mini-lecteur"
   },
+  "revertGiantRelated": {
+    "message": "Restaurer les petites miniatures dans les recommandations"
+  },
   "searchThumbnailSize": {
     "message": "Taille des miniatures dans les résultats de recherche"
   },
