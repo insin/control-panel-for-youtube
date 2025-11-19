@@ -545,7 +545,7 @@ const Svgs = {
 }
 
 // YouTube channel URLs: https://support.google.com/youtube/answer/6180214
-const URL_CHANNEL_RE = /\/(?:@[^\/]+|(?:c|channel|user)\/[^\/]+)(?:\/(featured|videos|shorts|playlists|community))?\/?$/
+const URL_CHANNEL_RE = /\/(?:@[^\/]+|(?:c|channel|user)\/[^\/]+)(?:\/(featured|videos|shorts|streams|playlists|community|posts|membership|search))?\/?$/
 //#endregion
 
 //#region State
@@ -1135,16 +1135,28 @@ const configureCss = (() => {
           // Grid item (Home, Subscriptions, Channel videos tab)
           'ytd-rich-item-renderer:has(.badge-style-type-members-only)',
           'ytd-rich-item-renderer:has(.yt-badge-shape--commerce > .yt-badge-shape__icon)',
+          'ytd-rich-item-renderer:has(.yt-badge-shape--membership)', // Current
           // List item (Search)
           'ytd-video-renderer:has(.badge-style-type-members-only)',
+          'ytd-video-renderer:has(.yt-badge-shape--membership)',
           // Related
           'ytd-compact-video-renderer:has(.badge-style-type-members-only)',
-          '#related yt-lockup-view-model:has(.yt-badge-shape--commerce > .yt-badge-shape__icon)',
-          // Playlist in channel Home tab
-          'ytd-item-section-renderer[page-subtype="channels"]:has(.badge-style-type-members-only)',
+          '#related yt-lockup-view-model:has(.yt-badge-shape--commerce > .yt-badge-shape__icon)', // Current
+          '#related yt-lockup-view-model:has(.yt-badge-shape--membership)',
           // Video endscreen
           // TODO Hide by href based on any of the first 12 items in #related being members only videos
         )
+        // In a channel's horizontal video lists
+        cssRules.push(`
+          html:not([cpfyt-channel-tab="membership"]) {
+            ytd-app {
+              ytd-item-section-renderer[page-subtype="channels"] ytd-grid-video-renderer:has(.badge-style-type-members-only),
+              ytd-item-section-renderer[page-subtype="channels"] ytd-grid-video-renderer:has(.yt-badge-shape--membership) {
+                display: none !important;
+              }
+            }
+          }
+        `)
       }
       if (mobile) {
         hideCssSelectors.push(
@@ -2570,6 +2582,7 @@ function handleCurrentUrl() {
   disconnectObservers(pageObservers, 'page')
 
   let page = ''
+  let channelTab = ''
   if (isHomePage()) {
     tweakHomePage()
   }
@@ -2587,11 +2600,20 @@ function handleCurrentUrl() {
   }
   else if (isChannelPage()) {
     page = 'channel'
+    channelTab = location.pathname.match(URL_CHANNEL_RE)[1] || 'featured'
     tweakChannelPage()
   }
   // Add a current page indicator to html[cpfyt-page] when we need a CSS hook
   if (mobile && document.documentElement.getAttribute('cpfyt-page') != page) {
     document.documentElement.setAttribute('cpfyt-page', page)
+  }
+  if (desktop) {
+    if (channelTab) {
+      document.documentElement.setAttribute('cpfyt-channel-tab', channelTab)
+    }
+    else if (document.documentElement.hasAttribute('cpfyt-channel-tab')) {
+      document.documentElement.removeAttribute('cpfyt-channel-tab')
+    }
   }
 
   if (location.pathname.startsWith('/shorts/')) {
