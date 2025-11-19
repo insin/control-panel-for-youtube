@@ -2641,7 +2641,7 @@ function handleDesktopWatchChannelMenu($menu) {
   let $channelMenuRenderer = $lastClickedElement.closest('ytd-menu-renderer.ytd-watch-metadata')
   if (!$channelMenuRenderer) return
 
-  let $channelLink = /** @type {HTMLAnchorElement} */ (document.querySelector('#channel-name a'))
+  let $channelLink = /** @type {HTMLAnchorElement} */ (document.querySelector('ytd-watch-flexy #channel-name a'))
   if (!$channelLink) {
     warn('channel link not found in video page')
     return
