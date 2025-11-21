@@ -204,6 +204,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "隐藏Shorts元数据直至悬停"
   },
+  "hideShortsMusicLink": {
+    "message": "隐藏音乐链接"
+  },
   "hideShortsRelatedLink": {
     "message": "隐藏同一频道的关联Shorts短视频链接"
   },

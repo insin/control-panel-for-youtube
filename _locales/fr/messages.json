@@ -204,6 +204,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "Masquer les métadonnées des Shorts jusqu'au survol"
   },
+  "hideShortsMusicLink": {
+    "message": "Masquer le lien de la musique"
+  },
   "hideShortsRelatedLink": {
     "message": "Masquer le lien vers un Short similaire de la même chaîne"
   },

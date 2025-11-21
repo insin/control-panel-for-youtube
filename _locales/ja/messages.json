@@ -203,6 +203,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "ホバーするまでショートのメタデータを隠す"
   },
+  "hideShortsMusicLink": {
+    "message": "楽曲リンクを非表示にする"
+  },
   "hideShortsRelatedLink": {
     "message": "同じチャンネルの関連ショート動画へのリンクを非表示にする"
   },

@@ -204,6 +204,9 @@
   "hideShortsMetadataUntilHover": {
     "message": "Hide Shorts metadata until hover"
   },
+  "hideShortsMusicLink": {
+    "message": "Hide music link"
+  },
   "hideShortsRelatedLink": {
     "message": "Hide link to related Short by the same channel"
   },
