@@ -108,6 +108,7 @@ export type SiteConfig = {
   hideEndVideos: boolean
   hideMerchEtc: boolean
   hideRelatedBelow: boolean
+  hideSidebarSubscriptions: boolean
   hideShortsMetadataUntilHover: boolean
   hideShortsRemixButton: boolean
   hideSubscriptionsLatestBar: boolean
@@ -124,6 +125,7 @@ export type SiteConfig = {
   restoreMiniplayerButton: boolean
   restoreSidebarSubscriptionsLink: boolean
   revertGiantRelated: boolean
+  revertSidebarOrder: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small'
   snapshotFormat: 'jpeg' | 'png'
   snapshotQuality: string

@@ -216,6 +216,9 @@
   "hideShortsSuggestedActions": {
     "message": "Hide suggested actions"
   },
+  "hideSidebarSubscriptions": {
+    "message": "Hide Subscriptions list"
+  },
   "hideSponsored": {
     "message": "Hide Sponsored videos & promos"
   },
@@ -326,6 +329,9 @@
   },
   "revertGiantRelated": {
     "message": "Restore small thumbnails in Related"
+  },
+  "revertSidebarOrder": {
+    "message": "Restore order of sidebar items"
   },
   "searchThumbnailSize": {
     "message": "Search thumbnail size"

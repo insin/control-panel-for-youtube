@@ -216,6 +216,9 @@
   "hideShortsSuggestedActions": {
     "message": "隐藏建议操作"
   },
+  "hideSidebarSubscriptions": {
+    "message": "隐藏订阅列表"
+  },
   "hideSponsored": {
     "message": "隐藏赞助视频和宣传片"
   },
@@ -326,6 +329,9 @@
   },
   "revertGiantRelated": {
     "message": "恢复相关视频中的小缩略图"
+  },
+  "revertSidebarOrder": {
+    "message": "恢复侧边栏项目的顺序"
   },
   "searchThumbnailSize": {
     "message": "搜索缩略图大小"

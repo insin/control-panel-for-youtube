@@ -215,6 +215,9 @@
   "hideShortsSuggestedActions": {
     "message": "提案アクションを非表示"
   },
+  "hideSidebarSubscriptions": {
+    "message": "登録チャンネルのリストを非表示にする"
+  },
   "hideSponsored": {
     "message": "スポンサー動画とプロモーションを非表示"
   },
@@ -325,6 +328,9 @@
   },
   "revertGiantRelated": {
     "message": "関連動画のサムネイルを小さく復元する"
+  },
+  "revertSidebarOrder": {
+    "message": "サイドバーの項目の並び順を復元する"
   },
   "searchThumbnailSize": {
     "message": "検索サムネイルのサイズ"

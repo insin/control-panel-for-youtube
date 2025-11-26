@@ -29,7 +29,8 @@ body:not(.fullSizeTheaterMode) .fullSizeTheaterMode,
 body:not(.hiddenChannels) #hiddenChannelsDetails,
 body:not(.hidingWatched) .hidingWatched,
 body:not(.jpegSnapshot) .jpegSnapshot,
-body:not(.snapshot) .snapshot {
+body:not(.snapshot) .snapshot,
+body:not(.tidyingGuideSidebar) .tidyingGuideSidebar {
   display: none;
 }
 

@@ -65,6 +65,7 @@ let defaultConfig = {
   hideEndVideos: true,
   hideMerchEtc: false,
   hideRelatedBelow: false,
+  hideSidebarSubscriptions: true,
   hideShortsMetadataUntilHover: true,
   hideShortsRemixButton: true,
   hideSubscriptionsLatestBar: false,
@@ -79,8 +80,9 @@ let defaultConfig = {
   playerRemoveDelhiExperimentFlags: false,
   redirectLogoToSubscriptions: false,
   restoreMiniplayerButton: false,
-  restoreSidebarSubscriptionsLink: false,
+  restoreSidebarSubscriptionsLink: true,
   revertGiantRelated: true,
+  revertSidebarOrder: true,
   searchThumbnailSize: 'medium',
   snapshotFormat: 'jpeg',
   snapshotQuality: '0.92',
@@ -2139,6 +2141,25 @@ const configureCss = (() => {
           }
         `)
       }
+      if (config.revertSidebarOrder) {
+        cssRules.push(`
+          #sections.ytd-guide-renderer {
+            display: flex;
+            flex-direction: column;
+          }
+          #sections.ytd-guide-renderer > :nth-child(1) {
+            order: -3;
+          }
+          /* Move Subscriptions down */
+          #sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):has(a[href="/feed/subscriptions"]) {
+            order: -1;
+          }
+          /* Move You up */
+          #sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(3):has(a[href="/feed/you"]) {
+            order: -2;
+          }
+        `)
+      }
       if (config.searchThumbnailSize != 'large') {
         cssRules.push(`
           ytd-search ytd-video-renderer ytd-thumbnail.ytd-video-renderer,
@@ -2151,39 +2172,16 @@ const configureCss = (() => {
           }
         `)
       }
-      if (config.tidyGuideSidebar) {
+      if (loggedIn && config.tidyGuideSidebar) {
         hideCssSelectors.push(
           // Current sidebar
-          // Logged in
           // Subscriptions (2nd of 5)
           '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(4)',
           // Explore (3rd of 5)
           '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(3):nth-last-child(3)',
           // More from YouTube (4th of 5)
           '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(4):nth-last-child(2)',
-          // Logged out
-          /*
-          // Subscriptions - prompts you to log in
-          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(1):nth-last-child(7) > #items > ytd-guide-entry-renderer:has(> a[href="/feed/subscriptions"])',
-          // You (2nd of 7) - prompts you to log in
-          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(6)',
-          */
-          // Explore (4th of 7)
-          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(4):nth-last-child(4)',
-          // Browse Channels (5th of 7)
-          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(5):nth-last-child(3)',
-          // More from YouTube (6th of 7)
-          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(6):nth-last-child(2)',
           // New sidebar in A/B test
-          // Logged in
-          // Subscriptions (2nd of 6)
-          config.restoreSidebarSubscriptionsLink ? (
-            // Hide entire sidebar section if we're restoring the Subscriptions link
-            '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(5)'
-          ) : (
-            // Otherwise, only hide contents under the Subscriptions header
-            '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(5) #items.ytd-guide-section-renderer > :not(:first-child)'
-          ),
           // Explore (4th of 6)
           '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(4):nth-last-child(3)',
           // More from YouTube (5th of 6)
@@ -2191,6 +2189,22 @@ const configureCss = (() => {
           // Footer
           '#footer.ytd-guide-renderer',
         )
+        if (config.hideSidebarSubscriptions) {
+          hideCssSelectors.push(
+            // Current sidebar
+            // Subscriptions (2nd of 5)
+            '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(4)',
+            // New sidebar in A/B test
+            // Subscriptions (2nd of 6)
+            config.restoreSidebarSubscriptionsLink ? (
+              // Hide entire sidebar section if we're restoring the Subscriptions link
+              '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(5)'
+            ) : (
+              // Otherwise, only hide contents under the Subscriptions header
+              '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(5) #items.ytd-guide-section-renderer > :not(:first-child)'
+            ),
+          )
+        }
       }
     }
     //#endregion

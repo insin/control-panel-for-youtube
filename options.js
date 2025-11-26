@@ -75,6 +75,7 @@ for (let translationId of [
   'hideShortsRelatedLink',
   'hideShortsRemixButton',
   'hideShortsSuggestedActions',
+  'hideSidebarSubscriptions',
   'hideSponsored',
   'hideStreamed',
   'hideSubscriptionsChannelList',
@@ -108,6 +109,7 @@ for (let translationId of [
   'restoreMiniplayerButton',
   'restoreSidebarSubscriptionsLink',
   'revertGiantRelated',
+  'revertSidebarOrder',
   'searchThumbnailSize',
   'shorts',
   'showFullVideoTitles',
@@ -201,6 +203,7 @@ let defaultConfig = {
   hideEndVideos: true,
   hideMerchEtc: false,
   hideRelatedBelow: false,
+  hideSidebarSubscriptions: true,
   hideShortsMetadataUntilHover: true,
   hideShortsRemixButton: true,
   hideSubscriptionsLatestBar: false,
@@ -215,8 +218,9 @@ let defaultConfig = {
   playerRemoveDelhiExperimentFlags: false,
   redirectLogoToSubscriptions: false,
   restoreMiniplayerButton: false,
-  restoreSidebarSubscriptionsLink: false,
+  restoreSidebarSubscriptionsLink: true,
   revertGiantRelated: true,
+  revertSidebarOrder: true,
   searchThumbnailSize: 'medium',
   snapshotFormat: 'jpeg',
   snapshotQuality: '0.92',
@@ -345,6 +349,7 @@ function updateDisplay() {
   $body.classList.toggle('jpegSnapshot', optionsConfig.snapshotFormat == 'jpeg')
   $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
   $body.classList.toggle('snapshot', optionsConfig.addTakeSnapshot)
+  $body.classList.toggle('tidyingGuideSidebar', optionsConfig.tidyGuideSidebar)
   updateCollapsedOptionsDisplay()
   updateHiddenChannelsDisplay()
 }
