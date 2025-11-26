@@ -321,6 +321,9 @@
   "restoreMiniplayerButton": {
     "message": "Restore Miniplayer button"
   },
+  "restoreSidebarSubscriptionsLink": {
+    "message": "Restore Subscriptions link in sidebar"
+  },
   "revertGiantRelated": {
     "message": "Restore small thumbnails in Related"
   },
@@ -359,5 +362,8 @@
   },
   "videoPages": {
     "message": "Video pages"
+  },
+  "youtubeExperiments": {
+    "message": "YouTube experiments"
   }
 }

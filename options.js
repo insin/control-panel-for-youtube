@@ -106,6 +106,7 @@ for (let translationId of [
   'redirectShorts',
   'removePink',
   'restoreMiniplayerButton',
+  'restoreSidebarSubscriptionsLink',
   'revertGiantRelated',
   'searchThumbnailSize',
   'shorts',
@@ -118,6 +119,7 @@ for (let translationId of [
   'useSquareCorners',
   'videoLists',
   'videoPages',
+  'youtubeExperiments',
 ]) {
   document.getElementById(translationId).textContent = chrome.i18n.getMessage(translationId)
 }
@@ -213,6 +215,7 @@ let defaultConfig = {
   playerRemoveDelhiExperimentFlags: false,
   redirectLogoToSubscriptions: false,
   restoreMiniplayerButton: false,
+  restoreSidebarSubscriptionsLink: false,
   revertGiantRelated: true,
   searchThumbnailSize: 'medium',
   snapshotFormat: 'jpeg',

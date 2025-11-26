@@ -122,6 +122,7 @@ export type SiteConfig = {
   playerRemoveDelhiExperimentFlags: boolean
   redirectLogoToSubscriptions: boolean
   restoreMiniplayerButton: boolean
+  restoreSidebarSubscriptionsLink: boolean
   revertGiantRelated: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small'
   snapshotFormat: 'jpeg' | 'png'

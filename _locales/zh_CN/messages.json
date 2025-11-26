@@ -321,6 +321,9 @@
   "restoreMiniplayerButton": {
     "message": "恢复迷你播放器按钮"
   },
+  "restoreSidebarSubscriptionsLink": {
+    "message": "恢复侧边栏中的“订阅”链接"
+  },
   "revertGiantRelated": {
     "message": "恢复相关视频中的小缩略图"
   },
@@ -356,5 +359,8 @@
   },
   "videoPages": {
     "message": "视频页面"
+  },
+  "youtubeExperiments": {
+    "message": "YouTube 实验"
   }
 }

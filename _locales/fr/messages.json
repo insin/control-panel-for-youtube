@@ -321,6 +321,9 @@
   "restoreMiniplayerButton": {
     "message": "Restaurer le bouton du mini-lecteur"
   },
+  "restoreSidebarSubscriptionsLink": {
+    "message": "Restaurer le lien Abonnements dans la barre latérale"
+  },
   "revertGiantRelated": {
     "message": "Restaurer les petites miniatures dans les recommandations"
   },
@@ -359,5 +362,8 @@
   },
   "videoPages": {
     "message": "Pages de vidéo"
+  },
+  "youtubeExperiments": {
+    "message": "Expérimentations YouTube"
   }
 }

@@ -79,6 +79,7 @@ let defaultConfig = {
   playerRemoveDelhiExperimentFlags: false,
   redirectLogoToSubscriptions: false,
   restoreMiniplayerButton: false,
+  restoreSidebarSubscriptionsLink: false,
   revertGiantRelated: true,
   searchThumbnailSize: 'medium',
   snapshotFormat: 'jpeg',
@@ -2152,6 +2153,7 @@ const configureCss = (() => {
       }
       if (config.tidyGuideSidebar) {
         hideCssSelectors.push(
+          // Current sidebar
           // Logged in
           // Subscriptions (2nd of 5)
           '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(4)',
@@ -2165,8 +2167,6 @@ const configureCss = (() => {
           '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(1):nth-last-child(7) > #items > ytd-guide-entry-renderer:has(> a[href="/feed/subscriptions"])',
           // You (2nd of 7) - prompts you to log in
           '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(6)',
-          // Sign in prompt - already have one in the top corner
-          '#sections.ytd-guide-renderer > ytd-guide-signin-promo-renderer',
           */
           // Explore (4th of 7)
           '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(4):nth-last-child(4)',
@@ -2174,6 +2174,20 @@ const configureCss = (() => {
           '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(5):nth-last-child(3)',
           // More from YouTube (6th of 7)
           '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(6):nth-last-child(2)',
+          // New sidebar in A/B test
+          // Logged in
+          // Subscriptions (2nd of 6)
+          config.restoreSidebarSubscriptionsLink ? (
+            // Hide entire sidebar section if we're restoring the Subscriptions link
+            '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(5)'
+          ) : (
+            // Otherwise, only hide contents under the Subscriptions header
+            '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(5) #items.ytd-guide-section-renderer > :not(:first-child)'
+          ),
+          // Explore (4th of 6)
+          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(4):nth-last-child(3)',
+          // More from YouTube (5th of 6)
+          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(5):nth-last-child(2)',
           // Footer
           '#footer.ytd-guide-renderer',
         )
@@ -4076,6 +4090,39 @@ async function restoreMiniplayerButton() {
   })
 }
 
+async function restoreSidebarSubscriptionsLink() {
+  let $sidebarSectionsContainer = await getElement('ytd-guide-renderer > #sections', {
+    name: 'sidebar sections container (restoreSidebarSubscriptionsLink)',
+  })
+  observeElement($sidebarSectionsContainer, (_, observer) => {
+    let $sidebarSections = $sidebarSectionsContainer.querySelectorAll('#sections.ytd-guide-renderer > ytd-guide-section-renderer')
+    if ($sidebarSections.length < 2) return
+    if ($sidebarSections[0].querySelector('a[href="/feed/subscriptions"]')) {
+      log('restoreSidebarSubscriptionsLink: Subscriptions link already in first sidebar section')
+      observer.disconnect()
+      return
+    }
+    let $subscriptionsHeader = $sidebarSections[1].querySelector('ytd-guide-entry-renderer:has(> a[href="/feed/subscriptions"])')
+    if (!$subscriptionsHeader) {
+      warn('restoreSidebarSubscriptionsLink: Subscriptions section header not found')
+      return
+    }
+    $subscriptionsHeader.removeAttribute('is-header')
+    let $items = $sidebarSections[0].querySelector('#items')
+    if (!$items) {
+      warn('restoreSidebarSubscriptionsLink: first sidebar section #items not found')
+      return
+    }
+    $items.appendChild($subscriptionsHeader)
+    log ('restoreSidebarSubscriptionsLink: restored Subscriptions link')
+    observer.disconnect()
+  }, {
+    leading: true,
+    name: 'sidebar sections container (for sections being added)',
+    observers: globalObservers,
+  })
+}
+
 function takeSnapshot() {
   /** @type {HTMLVideoElement} */
   let $video
@@ -4498,6 +4545,9 @@ function main() {
         }
       })
     }
+    if (desktop && config.restoreSidebarSubscriptionsLink) {
+      restoreSidebarSubscriptionsLink()
+    }
     observeTitle()
     observePopups()
     document.addEventListener('click', onDocumentClick, true)
@@ -4518,6 +4568,9 @@ function configChanged(changes) {
     }
     configureCss()
     triggerVideoPageResize()
+    if (desktop && config.restoreSidebarSubscriptionsLink) {
+      restoreSidebarSubscriptionsLink()
+    }
     handleCurrentUrl()
     return
   }

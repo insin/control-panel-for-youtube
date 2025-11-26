@@ -82,6 +82,10 @@ ${messages.ads}:
 • ${messages.hideSponsored}
 • ${messages.hideMerchEtc}${messages.desktopVersion}
 
+${messages.youtubeExperiments}:
+• ${messages.restoreSidebarSubscriptionsLink}${messages.desktopVersion}
+• ${messages.revertGiantRelated}${messages.desktopVersion}
+
 ${messages.newVideoPlayerUI}:
 
 • ${messages.playerRemoveDelhiExperimentFlags}${messages.desktopVersion} - ${messages.playerRemoveDelhiExperimentFlagsNote}
@@ -101,7 +105,6 @@ ${messages.annoyances}:
 • ${messages.hideInfoPanels}
 • ${messages.hidePremiumUpsells}
 • ${messages.disableThemedHover}${messages.desktopVersion}
-• ${messages.revertGiantRelated}${messages.desktopVersion}
 • ${messages.pauseChannelTrailers}${messages.desktopVersion}
 • ${messages.allowBackgroundPlay}${messages.mobileVersion}
 • ${messages.hideOpenApp}${messages.mobileVersion}

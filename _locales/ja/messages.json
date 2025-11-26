@@ -320,6 +320,9 @@
   "restoreMiniplayerButton": {
     "message": "ミニプレーヤーボタンを復元する"
   },
+  "restoreSidebarSubscriptionsLink": {
+    "message": "サイドバーの「登録チャンネル」リンクを復元する"
+  },
   "revertGiantRelated": {
     "message": "関連動画のサムネイルを小さく復元する"
   },
@@ -358,5 +361,8 @@
   },
   "videoPages": {
     "message": "動画ページ"
+  },
+  "youtubeExperiments": {
+    "message": "YouTubeの実験"
   }
 }
