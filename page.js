@@ -4547,8 +4547,7 @@ function main() {
       }
     })
     if (desktop && config.playerRemoveDelhiExperimentFlags) {
-      // @ts-ignore
-      waitFor(() => window.yt, 'yt').then(() => {
+      function removeFlags() {
         // @ts-ignore
         let watchConfig = window.yt?.config_?.WEB_PLAYER_CONTEXT_CONFIGS?.WEB_PLAYER_CONTEXT_CONFIG_ID_KEVLAR_WATCH
         if (typeof watchConfig?.serializedExperimentFlags == 'string') {
@@ -4556,8 +4555,19 @@ function main() {
           watchConfig.serializedExperimentFlags = watchConfig.serializedExperimentFlags
             .replace(/&delhi_modern_web_player=true/g, '')
             .replace(/&delhi_modern_web_player_icons=true/g, '')
+          return true
         }
-      })
+      }
+      function waitForFlags(e) {
+        // Wait for the bootstrap <script> to init window.yt
+        if (e?.target?.tagName != 'SCRIPT') return
+        if (removeFlags()) {
+          document.documentElement.removeEventListener('load', waitForFlags, true)
+        }
+      }
+      if (!removeFlags()) {
+        document.documentElement.addEventListener('load', waitForFlags, true)
+      }
     }
     if (desktop && config.restoreSidebarSubscriptionsLink) {
       restoreSidebarSubscriptionsLink()
