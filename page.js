@@ -55,7 +55,9 @@ let defaultConfig = {
   alwaysUseOriginalAudio: false,
   alwaysUseTheaterMode: false,
   disableThemedHover: false,
+  disableVideoPreviews: false,
   downloadTranscript: true,
+  enforceTheme: 'default',
   fullSizeTheaterMode: false,
   fullSizeTheaterModeHideHeader: true,
   hideChat: false,
@@ -2610,6 +2612,16 @@ function downloadTranscript() {
   URL.revokeObjectURL(url)
 }
 
+async function enforceTheme() {
+  let ytdApp = await getElement('ytd-app', {name: 'ytd-app'})
+  log('enforceTheme: enforcing', config.enforceTheme)
+  ytdApp?.[`handleSignalActionToggleDark${{
+    device: 'ThemeDevice',
+    dark: 'ThemeOn',
+    light: 'ThemeOff',
+  }[config.enforceTheme]}`]?.()
+}
+
 function handleCurrentUrl() {
   log('handling', getCurrentUrl())
   disconnectObservers(pageObservers, 'page')
@@ -3232,6 +3244,10 @@ function onDesktopMenuAppeared($dropdown) {
 
   // YouTube currently has 2 menu components: <tp-yt-paper-listbox> and <yt-list-item-view-model>
   let $menu = $dropdown.querySelector('tp-yt-paper-listbox, yt-list-item-view-model')
+  if (!$menu) {
+    warn('menu not found in', $dropdown)
+    return
+  }
   let menuConfig = MenuConfigs[$menu.tagName]
 
   if (config.hideShareThanksClip) {
@@ -4413,7 +4429,8 @@ function waitForDesktopVideoOverlay($video, uniqueId) {
 //#endregion
 
 //#region Global patching
-let globalsPatched = false
+let adGlobalsPatched = false
+let getFlagDefnHooked = false
 
 let Request_clone = Request.prototype.clone
 let Response_clone = Response.prototype.clone
@@ -4421,10 +4438,10 @@ let ytInitialPlayerResponse
 let ytInitialReelWatchSequenceResponse
 
 function blockAds() {
-  if (globalsPatched) return
+  if (adGlobalsPatched) return
 
   log('blockAds: patching globals')
-  globalsPatched = true
+  adGlobalsPatched = true
 
   function filterShortsAd(entry) {
     return entry.command?.reelWatchEndpoint?.adClientParams?.isAd != true
@@ -4524,6 +4541,37 @@ function blockAds() {
     }
   }
 }
+
+function disableVideoPreviews() {
+  if (getFlagDefnHooked) return
+
+  log('disableVideoPreviews: hooking getFlag definition')
+  getFlagDefnHooked = true
+
+  let getFlagProp = crypto.randomUUID()
+
+  try {
+    Object.defineProperty(Object.prototype, 'getFlag', {
+      set(getFlag) {
+        this[getFlagProp] = getFlag
+      },
+      get() {
+        return function(code) {
+          // 186 maps to f7 in PREF cookie, result sets isInlinePreviewDisabled
+          if (code === 186) {
+            log('disableVideoPreviews: setting isInlinePreviewDisabled = true')
+            return true
+          }
+          return this[getFlagProp]?.apply(this, arguments)
+        }
+      }
+    })
+  } catch (error) {
+    if (config?.enabled && config.disableVideoPreviews) {
+      warn('disableVideoPreviews: error hooking getFlag definition:', error)
+    }
+  }
+}
 //#endregion
 
 //#region Main
@@ -4534,6 +4582,12 @@ function main() {
   if (config.enabled) {
     if (config.blockAds) {
       blockAds()
+    }
+    if (desktop && config.disableVideoPreviews) {
+      disableVideoPreviews()
+    }
+    if (desktop && config.enforceTheme != 'default') {
+      enforceTheme()
     }
     if (mobile && config.allowBackgroundPlay) {
       allowBackgroundPlay()
@@ -4589,6 +4643,9 @@ function configChanged(changes) {
     log('config changed', changes)
     if (config.blockAds) {
       blockAds()
+    }
+    if (desktop && changes.enforceTheme && config.enforceTheme != 'default') {
+      enforceTheme()
     }
     configureCss()
     triggerVideoPageResize()

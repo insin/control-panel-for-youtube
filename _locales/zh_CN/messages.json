@@ -32,8 +32,17 @@
   "blockAdsNote": {
     "message": "为避免与其他广告拦截工具冲突，请停用此项"
   },
+  "dark": {
+    "message": "深色"
+  },
+  "default": {
+    "message": "不强制"
+  },
   "desktopOnly": {
     "message": "仅限桌面"
+  },
+  "device": {
+    "message": "设备主题"
   },
   "disableAmbientMode": {
     "message": "停用环境光效"
@@ -56,6 +65,9 @@
   "disableThemedHoverNote": {
     "message": "在主页和视频简介中"
   },
+  "disableVideoPreviews": {
+    "message": "停用视频预览"
+  },
   "downloadTranscript": {
     "message": "使转录稿可下载"
   },
@@ -64,6 +76,9 @@
   },
   "enabled": {
     "message": "启用"
+  },
+  "enforceTheme": {
+    "message": "强制主题"
   },
   "experimentalFeatures": {
     "message": "实验性功能"
@@ -251,6 +266,9 @@
   },
   "large": {
     "message": "大号"
+  },
+  "light": {
+    "message": "浅色"
   },
   "medium": {
     "message": "中号"

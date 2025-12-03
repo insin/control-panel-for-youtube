@@ -32,8 +32,17 @@
   "blockAdsNote": {
     "message": "Disable to avoid conflicts with other adblockers"
   },
+  "dark": {
+    "message": "Dark"
+  },
+  "default": {
+    "message": "Don't enforce"
+  },
   "desktopOnly": {
     "message": "Desktop only"
+  },
+  "device": {
+    "message": "Device theme"
   },
   "disableAmbientMode": {
     "message": "Disable Ambient mode"
@@ -56,6 +65,9 @@
   "disableThemedHoverNote": {
     "message": "In Home and on video descriptions"
   },
+  "disableVideoPreviews": {
+    "message": "Disable video previews"
+  },
   "downloadTranscript": {
     "message": "Make Transcript downloadable"
   },
@@ -64,6 +76,9 @@
   },
   "enabled": {
     "message": "Enabled"
+  },
+  "enforceTheme": {
+    "message": "Enforce theme"
   },
   "experimentalFeatures": {
     "message": "Experimental features"
@@ -251,6 +266,9 @@
   },
   "large": {
     "message": "Large"
+  },
+  "light": {
+    "message": "Light"
   },
   "medium": {
     "message": "Medium"

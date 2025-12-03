@@ -98,7 +98,9 @@ export type SiteConfig = {
   alwaysUseOriginalAudio: boolean
   alwaysUseTheaterMode: boolean
   disableThemedHover: boolean
+  disableVideoPreviews: boolean
   downloadTranscript: boolean
+  enforceTheme: 'default' | 'device' | 'dark' | 'light',
   fullSizeTheaterMode: boolean
   fullSizeTheaterModeHideHeader: boolean
   hideChat: boolean

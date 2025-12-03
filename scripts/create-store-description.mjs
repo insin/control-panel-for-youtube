@@ -105,6 +105,7 @@ ${messages.annoyances}:
 • ${messages.removePink}
 • ${messages.hideInfoPanels}
 • ${messages.hidePremiumUpsells}
+• ${messages.disableVideoPreviews}${messages.desktopVersion}
 • ${messages.disableThemedHover}${messages.desktopVersion}
 • ${messages.pauseChannelTrailers}${messages.desktopVersion}
 • ${messages.allowBackgroundPlay}${messages.mobileVersion}
@@ -170,6 +171,7 @@ ${messages.uiTweaks}:
 • ${messages.hideHomeCategories}
 • ${messages.hideChannelBanner}
 • ${messages.hideVoiceSearch}
+• ${messages.enforceTheme}${messages.desktopVersion}
 • ${messages.redirectLogoToSubscriptions}${messages.desktopVersion}
 • ${messages.tidyGuideSidebar}${messages.desktopVersion}
 • ${messages.hideSubscriptionsLatestBar}${messages.desktopVersion}

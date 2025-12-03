@@ -32,8 +32,17 @@
   "blockAdsNote": {
     "message": "Désactiver pour éviter les conflits avec d'autres bloqueurs de publicités"
   },
+  "dark": {
+    "message": "Sombre"
+  },
+  "default": {
+    "message": "Ne pas forcer"
+  },
   "desktopOnly": {
     "message": "Bureau uniquement"
+  },
+  "device": {
+    "message": "Thème de l'appareil"
   },
   "disableAmbientMode": {
     "message": "Désactiver le Mode Ambient"
@@ -56,6 +65,9 @@
   "disableThemedHoverNote": {
     "message": "Dans l'accueil et sur les descriptions de vidéos"
   },
+  "disableVideoPreviews": {
+    "message": "Désactiver les aperçus vidéo"
+  },
   "downloadTranscript": {
     "message": "Rendre la transcription téléchargeable"
   },
@@ -64,6 +76,9 @@
   },
   "enabled": {
     "message": "Activé"
+  },
+  "enforceTheme": {
+    "message": "Forcer le thème"
   },
   "experimentalFeatures": {
     "message": "Fonctionnalités expérimentales"
@@ -251,6 +266,9 @@
   },
   "large": {
     "message": "Grand"
+  },
+  "light": {
+    "message": "Clair"
   },
   "medium": {
     "message": "Moyen"

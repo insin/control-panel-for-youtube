@@ -2,7 +2,11 @@ document.title = chrome.i18n.getMessage('extensionName')
 
 for (let optionValue of [
   'auto',
+  'dark',
+  'default',
+  'device',
   'large',
+  'light',
   'medium',
   'small',
 ]) {
@@ -30,9 +34,11 @@ for (let translationId of [
   'disableTheaterBigMode',
   'disableThemedHover',
   'disableThemedHoverNote',
+  'disableVideoPreviews',
   'downloadTranscript',
   'embeddedVideos',
   'enabled',
+  'enforceTheme',
   'fullSizeTheaterMode',
   'fullSizeTheaterModeHideHeader',
   'hideAI',
@@ -193,7 +199,9 @@ let defaultConfig = {
   alwaysUseOriginalAudio: false,
   alwaysUseTheaterMode: false,
   disableThemedHover: false,
+  disableVideoPreviews: false,
   downloadTranscript: true,
+  enforceTheme: 'default',
   fullSizeTheaterMode: false,
   fullSizeTheaterModeHideHeader: true,
   hideChat: false,

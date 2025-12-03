@@ -179,6 +179,13 @@
       </section>
       <section class="checkbox desktop">
         <label>
+          <span id="disableVideoPreviews">Disable video previews</span>
+          <input type="checkbox" name="disableVideoPreviews">
+          <span class="toggle"></span>
+        </label>
+      </section>
+      <section class="checkbox desktop">
+        <label>
           <span id="disableThemedHover">Disable themed hover effects</span>
           <input type="checkbox" name="disableThemedHover">
           <span class="toggle"></span>
@@ -643,6 +650,17 @@
         </svg>
         <span id="uiTweaks">UI tweaks</span>
       </label>
+      <section class="select desktop">
+        <label>
+          <span id="enforceTheme">Enforce theme</span>
+          <select name="enforceTheme">
+            <option value="default">Don't enforce</option>
+            <option value="device">Device theme</option>
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+          </select>
+        </label>
+      </section>
       <section class="checkbox">
         <label>
           <span id="showFullVideoTitles">Show full video titles</span>

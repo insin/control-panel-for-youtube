@@ -32,8 +32,17 @@
   "blockAdsNote": {
     "message": "他の広告ブロッカーとの競合を避けるため、無効にしてください"
   },
+  "dark": {
+    "message": "ダーク"
+  },
+  "default": {
+    "message": "強制しない"
+  },
   "desktopOnly": {
     "message": "デスクトップのみ"
+  },
+  "device": {
+    "message": "デバイスのテーマ"
   },
   "disableAmbientMode": {
     "message": "アンビエントモードを無効にする"
@@ -56,6 +65,9 @@
   "disableThemedHoverNote": {
     "message": "ホームと動画の概要欄"
   },
+  "disableVideoPreviews": {
+    "message": "動画のプレビューを無効にする"
+  },
   "downloadTranscript": {
     "message": "文字起こしをダウンロード可能にする"
   },
@@ -64,6 +76,9 @@
   },
   "enabled": {
     "message": "有効"
+  },
+  "enforceTheme": {
+    "message": "テーマを強制"
   },
   "experimentalFeatures": {
     "message": "実験的な機能"
@@ -250,6 +265,9 @@
   },
   "large": {
     "message": "大"
+  },
+  "light": {
+    "message": "ライト"
   },
   "medium": {
     "message": "中"
