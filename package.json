@@ -43,11 +43,10 @@
     ]
   },
   "devDependencies": {
-    "@types/chrome": "0.0.x",
-    "@types/greasemonkey": "4.x",
-    "@types/trusted-types": "^2.0.7",
-    "clipboardy": "4.x",
+    "@types/chrome": "0.1.x",
+    "@types/trusted-types": "2.x",
+    "clipboardy": "5.x",
     "semver": "7.x",
-    "web-ext": "8.x"
+    "web-ext": "9.x"
   }
 }
