@@ -1406,6 +1406,7 @@ const configureCss = (() => {
           'ytm-search lazy-list > ytm-reel-shelf-renderer',
           // Search
           'ytm-search ytm-video-with-context-renderer:has(a[href^="/shorts"])',
+          'ytm-search grid-shelf-view-model',
           // Under video
           'ytm-structured-description-content-renderer ytm-reel-shelf-renderer',
           // Related
