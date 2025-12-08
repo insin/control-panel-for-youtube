@@ -2146,20 +2146,20 @@ const configureCss = (() => {
       }
       if (config.revertSidebarOrder) {
         cssRules.push(`
-          #sections.ytd-guide-renderer {
+          #sections.ytd-guide-renderer[cpfyt-subscriptions-first] {
             display: flex;
             flex-direction: column;
           }
-          #sections.ytd-guide-renderer > :nth-child(1) {
+          #sections.ytd-guide-renderer[cpfyt-subscriptions-first] > :nth-child(1) {
             order: -3;
           }
-          /* Move Subscriptions down */
-          #sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):has(a[href="/feed/subscriptions"]) {
-            order: -1;
-          }
           /* Move You up */
-          #sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(3):has(a[href="/feed/you"]) {
+          #sections.ytd-guide-renderer[cpfyt-subscriptions-first] > ytd-guide-section-renderer[cpfyt-section="you"] {
             order: -2;
+          }
+          /* Move Subscriptions down */
+          #sections.ytd-guide-renderer[cpfyt-subscriptions-first] > ytd-guide-section-renderer[cpfyt-section="subscriptions"] {
+            order: -1;
           }
         `)
       }
@@ -2177,36 +2177,26 @@ const configureCss = (() => {
       }
       if (loggedIn && config.tidyGuideSidebar) {
         hideCssSelectors.push(
-          // Current sidebar
-          // Subscriptions (2nd of 5)
-          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(4)',
-          // Explore (3rd of 5)
-          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(3):nth-last-child(3)',
-          // More from YouTube (4th of 5)
-          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(4):nth-last-child(2)',
-          // New sidebar in A/B test
-          // Explore (4th of 6)
-          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(4):nth-last-child(3)',
-          // More from YouTube (5th of 6)
-          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(5):nth-last-child(2)',
+          // Explore (3rd last)
+          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-last-child(3)',
+          // More from YouTube (2nd last)
+          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-last-child(2)',
           // Footer
           '#footer.ytd-guide-renderer',
         )
         if (config.hideSidebarSubscriptions) {
-          hideCssSelectors.push(
-            // Current sidebar
-            // Subscriptions (2nd of 5)
-            '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(4)',
-            // New sidebar in A/B test
-            // Subscriptions (2nd of 6)
-            config.restoreSidebarSubscriptionsLink ? (
-              // Hide entire sidebar section if we're restoring the Subscriptions link
-              '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(5)'
-            ) : (
-              // Otherwise, only hide contents under the Subscriptions header
-              '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2):nth-last-child(5) #items.ytd-guide-section-renderer > :not(:first-child)'
-            ),
-          )
+          if (config.restoreSidebarSubscriptionsLink) {
+            hideCssSelectors.push(
+              '#sections.ytd-guide-renderer > ytd-guide-section-renderer[cpfyt-section="subscriptions"]',
+            )
+          } else {
+            hideCssSelectors.push(
+              // Old sidebar - hide entire section
+              '#sections.ytd-guide-renderer:not([cpfyt-subscriptions-first]) > ytd-guide-section-renderer[cpfyt-section="subscriptions"]',
+              // New sidebar - hide contents under the header
+              '#sections.ytd-guide-renderer[cpfyt-subscriptions-first] > ytd-guide-section-renderer[cpfyt-section="subscriptions"] #items.ytd-guide-section-renderer > :not(:first-child)',
+            )
+          }
         }
       }
     }
@@ -4121,31 +4111,39 @@ async function restoreMiniplayerButton() {
   })
 }
 
-async function restoreSidebarSubscriptionsLink() {
+async function handleDesktopGuideBar() {
   let $sidebarSectionsContainer = await getElement('ytd-guide-renderer > #sections', {
-    name: 'sidebar sections container (restoreSidebarSubscriptionsLink)',
+    name: 'sidebar sections container',
   })
   observeElement($sidebarSectionsContainer, (_, observer) => {
-    let $sidebarSections = $sidebarSectionsContainer.querySelectorAll('#sections.ytd-guide-renderer > ytd-guide-section-renderer')
-    if ($sidebarSections.length < 2) return
-    if ($sidebarSections[0].querySelector('a[href="/feed/subscriptions"]')) {
-      log('restoreSidebarSubscriptionsLink: Subscriptions link already in first sidebar section')
-      observer.disconnect()
-      return
-    }
-    let $subscriptionsHeader = $sidebarSections[1].querySelector('ytd-guide-entry-renderer:has(> a[href="/feed/subscriptions"])')
-    if (!$subscriptionsHeader) {
-      warn('restoreSidebarSubscriptionsLink: Subscriptions section header not found')
-      return
-    }
-    $subscriptionsHeader.removeAttribute('is-header')
-    let $items = $sidebarSections[0].querySelector('#items')
-    if (!$items) {
-      warn('restoreSidebarSubscriptionsLink: first sidebar section #items not found')
-      return
-    }
-    $items.appendChild($subscriptionsHeader)
-    log ('restoreSidebarSubscriptionsLink: restored Subscriptions link')
+    let $sections = $sidebarSectionsContainer.querySelectorAll('#sections.ytd-guide-renderer > ytd-guide-section-renderer')
+    if ($sections.length < 3) return
+    run(() => {
+      let $header = $sections[1].querySelector('#header ytd-guide-entry-renderer')
+      if (!$header) return
+      let $endpoint = /** @type {HTMLAnchorElement} */ ($header.querySelector('a#endpoint'))
+      let section = $endpoint?.href.split('/').pop()
+      if (!section) return
+      $sections[1].setAttribute('cpfyt-section', section)
+      if (section == 'subscriptions') {
+        $sidebarSectionsContainer.setAttribute('cpfyt-subscriptions-first', '')
+        if (config.restoreSidebarSubscriptionsLink && !$sections[0].querySelector('a[href="/feed/subscriptions"]')) {
+          $header.removeAttribute('is-header')
+          let $items = $sections[0].querySelector('#items')
+          if (!$items) return
+          $items.appendChild($header)
+          log ('restoreSidebarSubscriptionsLink: restored Subscriptions link')
+        }
+      }
+    })
+    run(() => {
+      let $header = $sections[2].querySelector('#header ytd-guide-entry-renderer')
+      if (!$header) return
+      let $endpoint = /** @type {HTMLAnchorElement} */ ($header.querySelector('a#endpoint'))
+      let section = $endpoint?.href.split('/').pop()
+      if (!section) return
+      $sections[2].setAttribute('cpfyt-section', section)
+    })
     observer.disconnect()
   }, {
     leading: true,
@@ -4624,8 +4622,8 @@ function main() {
         document.documentElement.addEventListener('load', waitForFlags, true)
       }
     }
-    if (desktop && config.restoreSidebarSubscriptionsLink) {
-      restoreSidebarSubscriptionsLink()
+    if (desktop) {
+      handleDesktopGuideBar()
     }
     observeTitle()
     observePopups()
@@ -4650,8 +4648,8 @@ function configChanged(changes) {
     }
     configureCss()
     triggerVideoPageResize()
-    if (desktop && config.restoreSidebarSubscriptionsLink) {
-      restoreSidebarSubscriptionsLink()
+    if (desktop) {
+      handleDesktopGuideBar()
     }
     handleCurrentUrl()
     return
