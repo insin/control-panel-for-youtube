@@ -2187,12 +2187,12 @@ const configureCss = (() => {
         if (config.hideSidebarSubscriptions) {
           if (config.restoreSidebarSubscriptionsLink) {
             hideCssSelectors.push(
-              '#sections.ytd-guide-renderer > ytd-guide-section-renderer[cpfyt-section="subscriptions"]',
+              '#sections.ytd-guide-renderer > ytd-guide-section-renderer:is([cpfyt-section="channels"], [cpfyt-section="subscriptions"])',
             )
           } else {
             hideCssSelectors.push(
               // Old sidebar - hide entire section
-              '#sections.ytd-guide-renderer:not([cpfyt-subscriptions-first]) > ytd-guide-section-renderer[cpfyt-section="subscriptions"]',
+              '#sections.ytd-guide-renderer:not([cpfyt-subscriptions-first]) > ytd-guide-section-renderer:is([cpfyt-section="channels"], [cpfyt-section="subscriptions"])',
               // New sidebar - hide contents under the header
               '#sections.ytd-guide-renderer[cpfyt-subscriptions-first] > ytd-guide-section-renderer[cpfyt-section="subscriptions"] #items.ytd-guide-section-renderer > :not(:first-child)',
             )
