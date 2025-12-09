@@ -114,6 +114,9 @@
   "hideAI": {
     "message": "Hide AI summaries"
   },
+  "hideAskButton": {
+    "message": "Hide Ask button"
+  },
   "hideAutoDubbed": {
     "message": "Hide Auto-dubbed videos in Related"
   },

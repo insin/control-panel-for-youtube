@@ -114,6 +114,9 @@
   "hideAI": {
     "message": "隐藏AI摘要"
   },
+  "hideAskButton": {
+    "message": "隐藏“提问”按钮"
+  },
   "hideAutoDubbed": {
     "message": "隐藏相关视频中的自动配音视频"
   },

@@ -114,6 +114,9 @@
   "hideAI": {
     "message": "Masquer les résumés IA"
   },
+  "hideAskButton": {
+    "message": "Masquer le bouton « Demander »"
+  },
   "hideAutoDubbed": {
     "message": "Masquer les vidéos doublées automatiquement dans les recommandations"
   },

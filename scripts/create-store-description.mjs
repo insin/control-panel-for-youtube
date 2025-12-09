@@ -139,6 +139,7 @@ ${messages.videoPages}:
 • ${messages.hideNextButton}
 • ${messages.hideChannelWatermark}
 • ${messages.hideShareThanksClip}
+• ${messages.hideAskButton}
 • ${messages.hideMetadata}
 • ${messages.hideComments}
 • ${messages.alwaysUseTheaterMode}${messages.desktopVersion}

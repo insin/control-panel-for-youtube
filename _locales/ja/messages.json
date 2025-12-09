@@ -113,6 +113,9 @@
   "hideAI": {
     "message": "AIによる概要を非表示"
   },
+  "hideAskButton": {
+    "message": "「質問する」ボタンを非表示にする"
+  },
   "hideAutoDubbed": {
     "message": "関連動画のオートダビング版を非表示にする"
   },

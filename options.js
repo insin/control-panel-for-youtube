@@ -158,6 +158,7 @@ let defaultConfig = {
   disableTheaterBigMode: true,
   hiddenChannels: [],
   hideAI: true,
+  hideAskButton: false,
   hideAutoDubbed: false,
   hideChannelBanner: false,
   hideChannelWatermark: false,
