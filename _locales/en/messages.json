@@ -174,6 +174,9 @@
   "hideInfoPanels": {
     "message": "Hide information panels"
   },
+  "hideJumpAheadButton": {
+    "message": "Hide Premium Jump ahead button"
+  },
   "hideLive": {
     "message": "Hide Live videos"
   },

@@ -66,6 +66,7 @@ let defaultConfig = {
   hideCollaborations: false,
   hideEndCards: false,
   hideEndVideos: true,
+  hideJumpAheadButton: false,
   hideMerchEtc: false,
   hideRelatedBelow: false,
   hideSidebarSubscriptions: true,
@@ -1886,6 +1887,9 @@ const configureCss = (() => {
           '#movie_player .ytp-endscreen-next',
           '#movie_player .ytp-fullscreen-grid-stills-container',
         )
+      }
+      if (config.hideJumpAheadButton) {
+        hideCssSelectors.push('#movie_player .ytp-timely-actions-content')
       }
       if (config.hideMerchEtc) {
         hideCssSelectors.push(

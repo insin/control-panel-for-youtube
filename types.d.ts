@@ -109,6 +109,7 @@ export type SiteConfig = {
   hideCollaborations: boolean
   hideEndCards: boolean
   hideEndVideos: boolean
+  hideJumpAheadButton: boolean
   hideMerchEtc: boolean
   hideRelatedBelow: boolean
   hideSidebarSubscriptions: boolean

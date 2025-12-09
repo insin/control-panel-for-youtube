@@ -148,10 +148,10 @@ ${messages.videoPages}:
 • ${messages.alwaysUseOriginalAudio}${messages.desktopVersion}
 • ${messages.hideEndCards}${messages.desktopVersion}
 • ${messages.hideEndVideos}${messages.desktopVersion}
+• ${messages.hideJumpAheadButton}${messages.desktopVersion}
 • ${messages.hideChat}${messages.desktopVersion}
 • ${messages.addTakeSnapshot} (JPEG / PNG) ${messages.desktopVersion}
 • ${messages.downloadTranscript}${messages.desktopVersion}
-• ${messages.hideHomePosts}${messages.mobileVersion}
 
 ${messages.shorts}:
 
