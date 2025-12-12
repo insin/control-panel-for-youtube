@@ -121,6 +121,7 @@ ${messages.videoLists}:
 • ${messages.hideMoviesAndTV}
 • ${messages.hideUpcoming}
 • ${messages.hideMembersOnly}
+• ${messages.hideCollaborations}
 • ${messages.hideAutoDubbed}
 • ${messages.hideWatched}
 • ${messages.hideHiddenVideos} - ${messages.hideHiddenVideosNote}
@@ -128,7 +129,6 @@ ${messages.videoLists}:
 • ${messages.disableHomeFeed}
 • ${messages.searchThumbnailSize}${messages.desktopVersion}
 • ${messages.minimumGridItemsPerRow}${messages.desktopVersion}
-• ${messages.hideCollaborations}${messages.desktopVersion}
 • ${messages.hideHomePosts}${messages.mobileVersion}
 
 ${messages.videoPages}:

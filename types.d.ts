@@ -27,6 +27,7 @@ export type Locale = {
 
 export type LocaleKey =
   | 'CLIP'
+  | 'COLLABORATORS'
   | 'HIDE_CHANNEL'
   | 'MIXES'
   | 'ORIGINAL'
@@ -62,6 +63,7 @@ export type SiteConfig = {
   hideChannelBanner: boolean
   hideChannelWatermark: boolean
   hideChannels: boolean
+  hideCollaborations: boolean
   hideComments: boolean
   hideHiddenVideos: boolean
   hideHomeCategories: boolean
@@ -106,7 +108,6 @@ export type SiteConfig = {
   fullSizeTheaterModeHideHeader: boolean
   hideChat: boolean
   hideChatFullScreen: boolean
-  hideCollaborations: boolean
   hideEndCards: boolean
   hideEndVideos: boolean
   hideJumpAheadButton: boolean

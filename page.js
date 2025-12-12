@@ -190,6 +190,7 @@ const locales = {
   },
   en: {
     CLIP: 'Clip',
+    COLLABORATORS: 'Collaborators',
     HIDE_CHANNEL: 'Hide channel',
     MIXES: 'Mixes',
     ORIGINAL: 'original',
@@ -235,6 +236,7 @@ const locales = {
     SHORTS: 'Shorts',
   },
   'fr-FR': {
+    COLLABORATORS: 'Collaborateurs',
     HIDE_CHANNEL: 'Masquer la chaîne',
     MIXES: 'Mix',
     ORIGINAL: 'original',
@@ -289,6 +291,7 @@ const locales = {
   },
   'ja-JP': {
     CLIP: 'クリップ',
+    COLLABORATORS: 'コラボレーター',
     HIDE_CHANNEL: 'チャンネルを隠す',
     MIXES: 'ミックス',
     ORIGINAL: 'オリジナル',
@@ -462,6 +465,7 @@ const locales = {
   },
   'zh-Hans-CN': {
     CLIP: '剪辑',
+    COLLABORATORS: '联合创作者',
     HIDE_CHANNEL: '隐藏频道',
     MIXES: '合辑',
     ORIGINAL: '原始',
@@ -520,6 +524,7 @@ const undoHideDelayMs = 5000
 
 const Classes = {
   HIDE_CHANNEL: 'cpfyt-hide-channel',
+  HIDE_COLLABORATIONS: 'cpfyt-hide-collaborations',
   HIDE_HIDDEN: 'cpfyt-hide-hidden',
   HIDE_OPEN_APP: 'cpfyt-hide-open-app',
   HIDE_STREAMED: 'cpfyt-hide-streamed',
@@ -908,6 +913,21 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push('.reel-player-overlay-actions > pivot-button-view-model')
+      }
+    }
+
+    if (config.hideCollaborations) {
+      if (desktop) {
+        hideCssSelectors.push(
+          'ytd-browse[page-subtype="subscriptions"] ytd-rich-item-renderer:has(yt-avatar-stack-view-model)'
+        )
+      }
+      if (mobile) {
+        if (debugManualHiding) {
+          cssRules.push(`.${Classes.HIDE_COLLABORATIONS} { outline: 2px solid aqua !important; }`)
+        } else {
+          hideCssSelectors.push(`.${Classes.HIDE_COLLABORATIONS}`)
+        }
       }
     }
 
@@ -1499,7 +1519,7 @@ const configureCss = (() => {
 
     if (config.hideStreamed) {
       if (debugManualHiding) {
-        cssRules.push(`.${Classes.HIDE_STREAMED} { outline: 2px solid blue; }`)
+        cssRules.push(`.${Classes.HIDE_STREAMED} { outline: 2px solid blue !important; }`)
       } else {
         hideCssSelectors.push(`.${Classes.HIDE_STREAMED}`)
       }
@@ -1578,7 +1598,7 @@ const configureCss = (() => {
 
     if (config.hideWatched) {
       if (debugManualHiding) {
-        cssRules.push(`.${Classes.HIDE_WATCHED} { outline: 2px solid green; }`)
+        cssRules.push(`.${Classes.HIDE_WATCHED} { outline: 2px solid green !important; }`)
       } else {
         hideCssSelectors.push(`.${Classes.HIDE_WATCHED}`)
       }
@@ -1867,11 +1887,6 @@ const configureCss = (() => {
             'ytd-watch-flexy[live-chat-present-and-expanded] #panels-full-bleed-container',
           )
         }
-      }
-      if (config.hideCollaborations) {
-        hideCssSelectors.push(
-          'ytd-browse[page-subtype="subscriptions"] ytd-rich-item-renderer:has(yt-avatar-stack-view-model)'
-        )
       }
       if (config.hideEndCards) {
         hideCssSelectors.push(
@@ -4066,6 +4081,14 @@ function manuallyHideVideo($video, {hideDismissed = false} = {}) {
       hide = isChannelHidden(channel)
     }
     $video.classList.toggle(Classes.HIDE_CHANNEL, hide)
+  }
+
+  if (mobile && config.hideCollaborations && isSubscriptionsPage()) {
+    $video.classList.toggle(
+      Classes.HIDE_COLLABORATIONS,
+      // @ts-ignore
+      $video.querySelector('ytm-video-with-context-renderer')?.data?.shortBylineText?.runs?.[0]?.navigationEndpoint?.showSheetCommand?.panelLoadingStrategy?.inlineContent?.sheetViewModel?.header?.panelHeaderViewModel?.title?.content == getString('COLLABORATORS')
+    )
   }
 }
 
