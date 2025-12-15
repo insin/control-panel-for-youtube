@@ -6,6 +6,7 @@ let defaultConfig = {
   enabled: true,
   debug: false,
   debugManualHiding: false,
+  defaultPlaybackSpeed: "1.0",
   alwaysShowShortsProgressBar: false,
   blockAds: true,
   disableAmbientMode: true,
@@ -2522,6 +2523,16 @@ async function alwaysUseTheaterMode() {
   }
 }
 
+async function defaultPlaybackSpeed() {
+  let $player = await getElement('#movie_player', {
+    name: 'player (defaultPlaybackSpeed)',
+    stopIf: currentUrlChanges(),
+  })
+  if (!$player) return
+  // @ts-ignore
+  $player.setPlaybackRate(parseFloat(config.defaultPlaybackSpeed))
+}
+
 async function disableAutoplay() {
   if (desktop) {
     let $autoplayButton = await getElement('button[data-tooltip-target-id="ytp-autonav-toggle-button"]', {
@@ -4399,6 +4410,9 @@ async function tweakSubscriptionsPage() {
 async function tweakVideoPage() {
   if (config.disableAutoplay) {
     disableAutoplay()
+  }
+  if (config.defaultPlaybackSpeed) {
+    defaultPlaybackSpeed()
   }
   if (desktop && config.alwaysUseTheaterMode) {
     alwaysUseTheaterMode()
