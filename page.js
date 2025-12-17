@@ -21,6 +21,7 @@ let defaultConfig = {
   hideChannels: true,
   hideComments: false,
   hideHiddenVideos: true,
+  preventScrollinShorts: false,
   hideHomeCategories: false,
   hideInfoPanels: false,
   hideLive: false,

@@ -17,6 +17,7 @@ for (let optionValue of [
 }
 
 for (let translationId of [
+  'preventScrollinShorts',
   'addTakeSnapshot',
   'ads',
   'allowBackgroundPlay',
