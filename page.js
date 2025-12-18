@@ -4367,14 +4367,12 @@ async function tweakShortsPage() {
         );
         navButtons.forEach((btn) => {
           btn.remove();
-          console.log("Removed:", btn.id);
           log("Removed:", btn.id);
         });
       };
 
       // Disable scrolling
       const disableScrolling = () => {
-        console.log("Scroll Disabled");
         log("Scroll Disabled");
         // Disable mouse, touch, and key scrolling
         document.addEventListener('wheel', blockEvent, { passive: false, capture: true });
@@ -4398,7 +4396,6 @@ async function tweakShortsPage() {
 
       // Restore scrolling
       const enableScrolling = () => {
-        console.log("Scroll Restored");
         log("Scroll Restored");
         // Remove event listeners to restore scrolling
         document.removeEventListener('wheel', blockEvent, true);
