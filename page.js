@@ -4352,6 +4352,69 @@ async function tweakShortsPage() {
     alwaysUseOriginalAudio('#shorts-player')
   }
 
+    if (config.preventScrollinShorts) {
+      // Function to block events
+      const blockEvent = (e) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return false;
+      };
+
+      // Remove navigation buttons
+      const removeNavButtons = () => {
+        const navButtons = document.querySelectorAll(
+          '#navigation-button-up, #navigation-button-down'
+        );
+        navButtons.forEach((btn) => {
+          btn.remove();
+          console.log("Removed:", btn.id);
+        });
+      };
+
+      // Disable scrolling
+      const disableScrolling = () => {
+        console.log("Scroll Disabled");
+        // Disable mouse, touch, and key scrolling
+        document.addEventListener('wheel', blockEvent, { passive: false, capture: true });
+        document.addEventListener('touchmove', blockEvent, { passive: false, capture: true });
+        document.addEventListener('keydown', (e) => {
+          const keysToBlock = [
+            'ArrowUp', 'ArrowDown',
+            'ArrowLeft', 'ArrowRight',
+            'Space', 'PageUp', 'PageDown',
+            'Home', 'End', 'Tab'
+          ];
+          if (keysToBlock.includes(e.code)) {
+            blockEvent(e);
+          }
+        }, { passive: false, capture: true });
+
+        // Disable scrollbar visibility
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+      };
+
+      // Restore scrolling
+      const enableScrolling = () => {
+        console.log("Scroll Restored");
+        // Remove event listeners to restore scrolling
+        document.removeEventListener('wheel', blockEvent, true);
+        document.removeEventListener('touchmove', blockEvent, true);
+        document.removeEventListener('keydown', blockEvent, true);
+
+        // Reset scroll styles
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+      };
+      removeNavButtons();
+      disableScrolling();
+      pageObservers.set('prevent-scroll-in-shorts', {
+        disconnect() {
+          enableScrolling();
+        }
+      });
+    }
+
   if (config.stopShortsLooping) {
     let $player = await getElement(desktop ? '#shorts-player' : '#movie_player', {
       name: 'shorts player',
