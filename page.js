@@ -1616,6 +1616,7 @@ const configureCss = (() => {
           .ytp-delhi-modern:is(.ytp-grid-scrolling, .ytp-fullscreen-grid-active) .ytp-chrome-bottom {
             bottom: 0 !important;
             opacity: 1 !important;
+            pointer-events: auto !important;
           }
           .ytp-delhi-modern.ytp-fullscreen-grid-active .ytp-chrome-bottom {
             display: block !important;
