@@ -1385,6 +1385,8 @@ const configureCss = (() => {
         hideCssSelectors.push(
           // Video button
           `ytm-slim-video-action-bar-renderer button-view-model:has(button[aria-label="${getString('SHARE')}"])`,
+          // Menu items
+          `.${Classes.HIDE_SHARE_THANKS_CLIP}`,
           // Shorts button
           '.reel-player-overlay-actions .icon-shorts_share',
           // Shorts button (new UI)
@@ -2694,7 +2696,7 @@ function handleCurrentUrl() {
 function addDownloadTranscriptToDesktopMenu($menu) {
   if (!isVideoPage()) return
 
-  let $transcript = $lastClickedElement.closest('[target-id="engagement-panel-searchable-transcript"]')
+  let $transcript = $lastClickedElement?.closest('[target-id="engagement-panel-searchable-transcript"]')
   if (!$transcript) return
 
   if ($menu.querySelector('.cpfyt-menu-item')) return
@@ -2727,7 +2729,7 @@ function addDownloadTranscriptToDesktopMenu($menu) {
 function handleDesktopWatchChannelMenu($menu) {
   if (!isVideoPage()) return
 
-  let $channelMenuRenderer = $lastClickedElement.closest('ytd-menu-renderer.ytd-watch-metadata')
+  let $channelMenuRenderer = $lastClickedElement?.closest('ytd-menu-renderer.ytd-watch-metadata')
   if (!$channelMenuRenderer) return
 
   let $channelLink = /** @type {HTMLAnchorElement} */ (document.querySelector('ytd-watch-flexy #channel-name a'))
@@ -2823,7 +2825,7 @@ function addHideChannelToDesktopVideoMenu($menu) {
 
   if (!videoContainerElementSelector) return
 
-  let $video = /** @type {HTMLElement} */ ($lastClickedElement.closest(videoContainerElementSelector))
+  let $video = /** @type {HTMLElement} */ ($lastClickedElement?.closest(videoContainerElementSelector))
   if (!$video) return
 
   log('found clicked video')
@@ -2877,7 +2879,7 @@ async function addHideChannelToMobileVideoMenu($menu) {
   if (!(isHomePage() || isSearchPage() || isVideoPage())) return
 
   /** @type {HTMLElement} */
-  let $video = $lastClickedElement.closest('ytm-video-with-context-renderer')
+  let $video = $lastClickedElement?.closest('ytm-video-with-context-renderer')
   if (!$video) return
 
   log('found clicked video')
@@ -3953,7 +3955,7 @@ async function observeMobileVideoList(options) {
 function onDocumentClick(e) {
   $lastClickedElement = /** @type {HTMLElement} */ (e.target)
   if (desktop && loggedIn && (config.disableHomeFeed || config.redirectLogoToSubscriptions)) {
-    let $logoLink = $lastClickedElement.closest('a#logo')
+    let $logoLink = $lastClickedElement?.closest('a#logo')
     if ($logoLink) {
       // @ts-ignore
       let browseEndpoint = $logoLink.data?.browseEndpoint
@@ -3967,7 +3969,7 @@ function onDocumentClick(e) {
     }
   }
   if (desktop && config.redirectShorts) {
-    let $shortsLink = /** @type {HTMLAnchorElement} */ ($lastClickedElement.closest('a[href^="/shorts/'))
+    let $shortsLink = /** @type {HTMLAnchorElement} */ ($lastClickedElement?.closest('a[href^="/shorts/'))
     if ($shortsLink) {
       // @ts-ignore
       let webCommandMetadata = $shortsLink._data?.commandMetadata?.webCommandMetadata
@@ -3984,19 +3986,27 @@ function onDocumentClick(e) {
 function onMobileMenuAppeared($menu) {
   log('menu appeared')
 
-  if (config.hideOpenApp) {
+  if (config.hideOpenApp || config.hideShareThanksClip) {
     let menuItems = $menu.querySelectorAll('ytm-menu-item')
     for (let $menuItem of menuItems) {
       let itemText = $menuItem.textContent
-      if (itemText == getYtString('OPEN_APP')) {
+      if (config.hideOpenApp && itemText == getYtString('OPEN_APP')) {
         log('tagging Open App menu item by text')
         $menuItem.classList.add(Classes.HIDE_OPEN_APP)
-        break
-      } else {
+      }
+      else if (config.hideShareThanksClip && itemText == getString('SHARE')) {
+        log('tagging Share menu item by text')
+        $menuItem.classList.add(Classes.HIDE_SHARE_THANKS_CLIP)
+      }
+      else {
         requestAnimationFrame(() => {
-          if ($menuItem.querySelector('path[d="M19 5H8a1 1 0 000 2h7.586L5.293 17.293a1 1 0 101.414 1.414L17 8.414V16a1 1 0 002 0V5Z"]')) {
+          if (config.hideOpenApp && $menuItem.querySelector('path[d="M19 5H8a1 1 0 000 2h7.586L5.293 17.293a1 1 0 101.414 1.414L17 8.414V16a1 1 0 002 0V5Z"]')) {
             log('tagging Open App menu item by icon')
             $menuItem.classList.add(Classes.HIDE_OPEN_APP)
+          }
+          else if (config.hideShareThanksClip && $menuItem.querySelector('path[d="M10 3.158V7.51c-5.428.223-8.27 3.75-8.875 11.199-.04.487-.07.975-.09 1.464l-.014.395c-.014.473.578.684.88.32.302-.368.61-.73.925-1.086l.244-.273c1.79-1.967 3-2.677 4.93-2.917a18.011 18.011 0 012-.112v4.346a1 1 0 001.646.763l9.805-8.297 1.55-1.31-1.55-1.31-9.805-8.297A1 1 0 0010 3.158Zm2 6.27v.002-4.116l7.904 6.688L12 18.689v-4.212l-2.023.024c-1.935.022-3.587.17-5.197 1.024a9 9 0 00-1.348.893c.355-1.947.916-3.39 1.63-4.425 1.062-1.541 2.607-2.385 5.02-2.485L12 9.428Z"]')) {
+            log('tagging Share menu item by icon')
+            $menuItem.classList.add(Classes.HIDE_SHARE_THANKS_CLIP)
           }
         })
       }

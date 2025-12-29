@@ -190,7 +190,7 @@ if (process.argv[3] == 'md') {
   storeDescription = storeDescription
     // Section titles
     .replace(/^([^:\n]+):$/gm, '**$1:**')
-    // List tiems
+    // List items
     // .replace(/•/g, '-')
 }
 
