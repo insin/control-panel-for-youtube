@@ -859,9 +859,15 @@ const configureCss = (() => {
     }
 
     if (config.hideAI) {
-      // e.g. https://www.youtube.com/results?search_query=howtobasic+wedges
       if (desktop) {
-        hideCssSelectors.push(`#expandable-metadata:has(path[d="${Svgs.GEMINI_PATH_DESKTOP}"])`)
+        hideCssSelectors.push(
+          // Summary in Search and under video
+          // e.g. https://www.youtube.com/results?search_query=howtobasic+wedges
+          `#expandable-metadata:has(path[d="${Svgs.GEMINI_PATH_DESKTOP}"])`,
+          // Summary in video description
+          // e.g. https://www.youtube.com/watch?v=9AI8IBaWbTc
+          '#video-summary.ytd-structured-description-content-renderer',
+        )
       }
       if (mobile) {
         hideCssSelectors.push(`ytm-expandable-metadata-renderer:has(path[d="${Svgs.GEMINI_PATH_MOBILE}"])`)
