@@ -116,6 +116,7 @@ let version = mobile ? 'mobile' : 'desktop'
 /** @type {string} */
 let lang = document.documentElement.lang || ''
 let loggedIn = /(^|; )SID=/.test(document.cookie)
+let animateHideDuration = 350
 
 function log(...args) {
   if (debug) {
@@ -1068,7 +1069,16 @@ const configureCss = (() => {
       return
     }
 
-    let cssRules = []
+    let cssRules = [`
+      .cpfyt-vanishing-flip {
+        transition: opacity ${animateHideDuration}ms ease-out, transform ${animateHideDuration}ms ease-out !important;
+        opacity: 0 !important;
+        transform: scale(0.6) !important;
+        transform-origin: center center !important;
+        pointer-events: none !important;
+        box-sizing: border-box !important;
+      }
+    `]
     let hideCssSelectors = []
 
     if (config.alwaysShowShortsProgressBar) {
@@ -3126,6 +3136,134 @@ function alwaysUseTheaterMode($player) {
   }
 }
 
+function animateHidingGridItems(itemsToHide, hideClass) {
+  function hideItem(item) {
+    item.classList.remove('cpfyt-vanishing-flip')
+    item.classList.add(hideClass)
+    item.style.position = ''
+    item.style.top = ''
+    item.style.left = ''
+    item.style.width = ''
+    item.style.height = ''
+    item.style.margin = ''
+  }
+
+  let parent = itemsToHide[0].parentElement
+  let itemsToHideSet = new Set(itemsToHide)
+
+  // FLIP (First, Last, Invert, Play) animate items
+  // 1. FIRST (Siblings)
+  let initialSiblingPositions = new Map()
+  let visibleSiblings = []
+  for (let child of parent.children) {
+    if (!itemsToHideSet.has(child) && child.offsetParent != null) {
+      visibleSiblings.push(child);
+      initialSiblingPositions.set(child, child.getBoundingClientRect())
+    }
+  }
+
+  // 2a. Record Geometry
+  let itemGeometries = new Map()
+  let parentRect = parent.getBoundingClientRect()
+  for (let item of itemsToHide) {
+    itemGeometries.set(item, item.getBoundingClientRect())
+  }
+
+  // 2b. Take Out of Flow & Animate
+  let parentPosition = window.getComputedStyle(parent).position
+  if (parentPosition == 'static') {
+    parent.style.position = 'relative'
+  }
+  for (let item of itemsToHide) {
+    let itemRect = itemGeometries.get(item)
+    if (!itemRect) continue
+    item.style.position = 'absolute'
+    item.style.top = `${itemRect.top - parentRect.top}px`
+    item.style.left = `${itemRect.left - parentRect.left}px`
+    item.style.width = `${itemRect.width}px`
+    item.style.height = `${itemRect.height}px`
+    item.style.margin = '0'
+    item.classList.add('cpfyt-vanishing-flip')
+  }
+
+  // Force reflow
+  parent.offsetHeight
+
+  let siblingCleanupTimeout = null
+  let siblingsToAnimate = []
+  let siblingTransitionCss = `transform ${animateHideDuration}ms cubic-bezier(0.25, 0.8, 0.25, 1)`
+  requestAnimationFrame(() => {
+    // 3. LAST (Siblings)
+    let finalSiblingPositions = new Map()
+    let currentVisibleSiblings = []
+    for (let sibling of visibleSiblings) {
+      if (sibling.offsetParent != null) {
+        finalSiblingPositions.set(sibling, sibling.getBoundingClientRect())
+        currentVisibleSiblings.push(sibling)
+      } else {
+        initialSiblingPositions.delete(sibling)
+      }
+    }
+
+    // 4. INVERT (Siblings)
+    for (let sibling of currentVisibleSiblings) {
+      let initial = initialSiblingPositions.get(sibling)
+      let final = finalSiblingPositions.get(sibling)
+      if (!initial || !final) continue
+      let deltaX = initial.left - final.left
+      let deltaY = initial.top - final.top
+      if (Math.abs(deltaX) > 0.5 || Math.abs(deltaY) > 0.5) {
+        siblingsToAnimate.push({ element: sibling, deltaX, deltaY })
+        sibling.style.transition = 'none'
+        sibling.style.transform = `translate(${deltaX}px, ${deltaY}px)`
+      }
+    }
+
+    // 5. PLAY (Siblings)
+    requestAnimationFrame(() => {
+      for (let anim of siblingsToAnimate) {
+        anim.element.style.transition = siblingTransitionCss
+        anim.element.style.transform = ''
+      }
+
+      if (siblingsToAnimate.length > 0) {
+        siblingCleanupTimeout = setTimeout(() => {
+          for (let anim of siblingsToAnimate) {
+            if (anim.element.style.transform == '' && anim.element.style.transition == siblingTransitionCss) {
+              anim.element.style.transition = ''
+            }
+          }
+          siblingCleanupTimeout = null
+        }, animateHideDuration + 50)
+      }
+    })
+  })
+
+  let itemCleanupTimeout = setTimeout(() => {
+    for (let item of itemsToHide) {
+      hideItem(item)
+    }
+    itemCleanupTimeout = null
+  }, animateHideDuration)
+
+  return function cleanup() {
+    if (itemCleanupTimeout) {
+      clearTimeout(itemCleanupTimeout)
+      for (let item of itemsToHide) {
+        hideItem(item)
+      }
+    }
+
+    if (siblingCleanupTimeout) {
+      clearTimeout(siblingCleanupTimeout)
+      for (let anim of siblingsToAnimate) {
+        anim.element.style.transition = ''
+        anim.element.style.transform = ''
+      }
+    }
+  }
+}
+
 async function disableAutoplay() {
   if (desktop) {
     let $autoplayButton = await getElement('button[data-tooltip-target-id="ytp-autonav-toggle-button"]', {
@@ -4577,7 +4715,8 @@ function observeVideoHiddenState() {
   function startTimer() {
     startTime = Date.now()
     timeout = setTimeout(() => {
-      $elementToHide?.classList.add(Classes.HIDE_HIDDEN)
+      // $elementToHide?.classList.add(Classes.HIDE_HIDDEN)
+      animateHidingGridItems([$elementToHide], Classes.HIDE_HIDDEN)
       cleanup()
       // Remove the class if the Undo button is clicked later, e.g. if
       // this feature is disabled after hiding a video.
