@@ -116,6 +116,7 @@ for (let translationId of [
   'removePink',
   'restoreMiniplayerButton',
   'restoreSidebarSubscriptionsLink',
+  'restoreSortByUploadDate',
   'revertGiantRelated',
   'revertSidebarOrder',
   'searchThumbnailSize',

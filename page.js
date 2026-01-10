@@ -3500,7 +3500,7 @@ async function restoreSortByUploadDate($dialog, $popupContainer) {
   let prioritiseFilterSelector = 'ytd-search-filter-options-dialog-renderer ytd-search-filter-group-renderer:last-of-type'
 
   let $prioritiseFilterGroup = await getElement(prioritiseFilterSelector, {
-    name: 'search filter sort options',
+    name: 'restoreSortByUploadDate: search filter sort options',
     context: $dialog,
     timeout: 2000,
     stopIf: () => !isSearchPage()
