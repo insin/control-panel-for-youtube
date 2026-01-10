@@ -2223,6 +2223,7 @@ const configureCss = (() => {
               color: var(--yt-spec-text-secondary);
               cursor: pointer;
               font-size: 14px;
+              text-decoration: none;
             }
           }
           .cpfyt-upload-date-selected {
@@ -3549,7 +3550,7 @@ async function restoreSortByUploadDate($dialog, $popupContainer) {
   }
 
   // Update the filter group and Upload Date link with current state
-  let $uploadDateLink = /** @type {HTMLAnchorElement} */ ($prioritiseFilterGroup.querySelector('#cpfyt-upload-date-filter'))
+  let $uploadDateLink = /** @type {HTMLAnchorElement} */ ($prioritiseFilterGroup.querySelector('#cpfyt-upload-date-filter a'))
   let {href, selected} = getUploadDateFilterState()
   if (selected) {
     $uploadDateLink.removeAttribute('href')
