@@ -1,127 +1,164 @@
 {
   "af-ZA": {
-    "ORIGINAL": "oorspronklike"
+    "ORIGINAL": "oorspronklike",
+    "UPLOAD_DATE": "Oplaaidatum"
   },
   "am-ET": {
-    "ORIGINAL": "የመጀመሪያ"
+    "ORIGINAL": "የመጀመሪያ",
+    "UPLOAD_DATE": "የተለቀቀበት ቀን"
   },
   "ar": {
-    "ORIGINAL": "أصلي"
+    "ORIGINAL": "أصلي",
+    "UPLOAD_DATE": "تاريخ التحميل"
   },
   "as-IN": {
-    "ORIGINAL": "মূল"
+    "ORIGINAL": "মূল",
+    "UPLOAD_DATE": "আপলোডৰ তাৰিখ"
   },
   "az-Latn-AZ": {
-    "ORIGINAL": "orijinal"
+    "ORIGINAL": "orijinal",
+    "UPLOAD_DATE": "Yüklənmə tarixi"
   },
   "be-BY": {
-    "ORIGINAL": "арыгінальны"
+    "ORIGINAL": "арыгінальны",
+    "UPLOAD_DATE": "Дата загрузкі"
   },
   "bg-BG": {
-    "ORIGINAL": "оригинален"
+    "ORIGINAL": "оригинален",
+    "UPLOAD_DATE": "Дата на качване"
   },
   "bn-BD": {
-    "ORIGINAL": "মূল"
+    "ORIGINAL": "মূল",
+    "UPLOAD_DATE": "আপলোডের তারিখ"
   },
   "bs-Latn-BA": {
-    "ORIGINAL": "original"
+    "ORIGINAL": "original",
+    "UPLOAD_DATE": "Datum otpremanja"
   },
   "ca-ES": {
-    "ORIGINAL": "original"
+    "ORIGINAL": "original",
+    "UPLOAD_DATE": "Data de pujada"
   },
   "cs-CZ": {
-    "ORIGINAL": "původní"
+    "ORIGINAL": "původní",
+    "UPLOAD_DATE": "Datum nahrání"
   },
   "da-DK": {
-    "ORIGINAL": "originalt"
+    "ORIGINAL": "originalt",
+    "UPLOAD_DATE": "Uploaddato"
   },
   "de-DE": {
-    "ORIGINAL": "Original"
+    "ORIGINAL": "Original",
+    "UPLOAD_DATE": "Uploaddatum"
   },
   "el-GR": {
-    "ORIGINAL": "πρωτότυπο"
+    "ORIGINAL": "πρωτότυπο",
+    "UPLOAD_DATE": "Ημερομηνία μεταφόρτωσης"
   },
   "en": {
     "CLIP": "Clip",
+    "COLLABORATORS": "Collaborators",
     "HIDE_CHANNEL": "Hide channel",
     "MIXES": "Mixes",
     "ORIGINAL": "original",
     "SHARE": "Share",
-    "STREAMED_METADATA_INNERTEXT_RE": "\\n\\s*Streamed",
+    "STREAMED_METADATA_INNERTEXT_RE": "(?:^|\\n)\\s*Streamed",
     "STREAMED_TITLE_ARIA_LABEL": "views Streamed",
     "TAKE_SNAPSHOT": "Take snapshot",
     "TELL_US_WHY": "Tell us why",
     "THANKS": "Thanks",
-    "UNHIDE_CHANNEL": "Unhide channel"
+    "UNHIDE_CHANNEL": "Unhide channel",
+    "UPLOAD_DATE": "Upload date"
   },
   "es-419": {
-    "ORIGINAL": "original"
+    "ORIGINAL": "original",
+    "UPLOAD_DATE": "Fecha de carga"
   },
   "es-ES": {
-    "ORIGINAL": "original"
+    "ORIGINAL": "original",
+    "UPLOAD_DATE": "Fecha de subida"
   },
   "es-US": {
-    "ORIGINAL": "original"
+    "ORIGINAL": "original",
+    "UPLOAD_DATE": "Fecha de carga"
   },
   "et-EE": {
-    "ORIGINAL": "algne"
+    "ORIGINAL": "algne",
+    "UPLOAD_DATE": "Üleslaadimise kuupäev"
   },
   "eu-ES": {
-    "ORIGINAL": "jatorrizkoa"
+    "ORIGINAL": "jatorrizkoa",
+    "UPLOAD_DATE": "Igotzeko data"
   },
   "fa-IR": {
-    "ORIGINAL": "اصلی"
+    "ORIGINAL": "اصلی",
+    "UPLOAD_DATE": "تاریخ بارگذاری"
   },
   "fil-PH": {
-    "ORIGINAL": "orihinal"
+    "ORIGINAL": "orihinal",
+    "UPLOAD_DATE": "Petsa ng pag-upload"
   },
   "fr-CA": {
-    "ORIGINAL": "originale"
+    "ORIGINAL": "originale",
+    "UPLOAD_DATE": "Date de mise en ligne"
   },
   "fr-FR": {
+    "COLLABORATORS": "Collaborateurs",
     "HIDE_CHANNEL": "Masquer la chaîne",
     "MIXES": "Mix",
     "ORIGINAL": "original",
     "SHARE": "Partager",
-    "STREAMED_METADATA_INNERTEXT_RE": "\\n\\s*Diffusé",
+    "STREAMED_METADATA_INNERTEXT_RE": "(?:^|\\n)\\s*Diffusé",
     "STREAMED_TITLE_ARIA_LABEL": "vues Diffusé",
     "TAKE_SNAPSHOT": "Prendre une capture",
     "TELL_US_WHY": "Dites-nous pourquoi",
     "THANKS": "Merci",
-    "UNHIDE_CHANNEL": "Afficher la chaîne"
+    "UNHIDE_CHANNEL": "Afficher la chaîne",
+    "UPLOAD_DATE": "Date de mise en ligne"
   },
   "gl-ES": {
-    "ORIGINAL": "orixinal"
+    "ORIGINAL": "orixinal",
+    "UPLOAD_DATE": "Data de subida"
   },
   "gu-IN": {
-    "ORIGINAL": "ઑરિજિનલ"
+    "ORIGINAL": "ઑરિજિનલ",
+    "UPLOAD_DATE": "અપલોડ કર્યાની તારીખ"
   },
   "he-IL": {
-    "ORIGINAL": "מקור"
+    "ORIGINAL": "מקור",
+    "UPLOAD_DATE": "תאריך העלאה"
   },
   "hi-IN": {
-    "ORIGINAL": "मूल"
+    "ORIGINAL": "मूल",
+    "UPLOAD_DATE": "अपलोड करने की तारीख"
   },
   "hr-HR": {
-    "ORIGINAL": "izvorno"
+    "ORIGINAL": "izvorno",
+    "UPLOAD_DATE": "Datum prijenosa"
   },
   "hu-HU": {
-    "ORIGINAL": "eredeti"
+    "ORIGINAL": "eredeti",
+    "UPLOAD_DATE": "Feltöltés dátuma"
   },
   "hy-AM": {
-    "ORIGINAL": "բնօրինակ"
+    "ORIGINAL": "բնօրինակ",
+    "UPLOAD_DATE": "Բեռնելու ամսաթիվ"
   },
   "id-ID": {
-    "ORIGINAL": "asli"
+    "ORIGINAL": "asli",
+    "UPLOAD_DATE": "Tanggal upload"
   },
   "is-IS": {
-    "ORIGINAL": "upprunalegt"
+    "ORIGINAL": "upprunalegt",
+    "UPLOAD_DATE": "Hleðsludagsetning"
   },
   "it-IT": {
-    "ORIGINAL": "originale"
+    "ORIGINAL": "originale",
+    "UPLOAD_DATE": "Data di caricamento"
   },
   "ja-JP": {
     "CLIP": "クリップ",
+    "COLLABORATORS": "コラボレーター",
     "HIDE_CHANNEL": "チャンネルを隠す",
     "MIXES": "ミックス",
     "ORIGINAL": "オリジナル",
@@ -130,130 +167,172 @@
     "STREAMED_TITLE_ARIA_LABEL": "前 に配信済み",
     "TAKE_SNAPSHOT": "スナップショットを撮る",
     "TELL_US_WHY": "理由を教えてください",
-    "UNHIDE_CHANNEL": "チャンネルの再表示"
+    "UNHIDE_CHANNEL": "チャンネルの再表示",
+    "UPLOAD_DATE": "アップロード日"
   },
   "ka-GE": {
-    "ORIGINAL": "ორიგინალია"
+    "ORIGINAL": "ორიგინალია",
+    "UPLOAD_DATE": "ატვირთვის თარიღი"
   },
   "kk-KZ": {
-    "ORIGINAL": "түпнұсқа"
+    "ORIGINAL": "түпнұсқа",
+    "UPLOAD_DATE": "Жүктелген күні"
   },
   "km-KH": {
-    "ORIGINAL": "ដើម"
+    "ORIGINAL": "ដើម",
+    "UPLOAD_DATE": "កាលបរិច្ឆេទ​បង្ហោះ"
   },
   "kn-IN": {
-    "ORIGINAL": "ಮೂಲ"
+    "ORIGINAL": "ಮೂಲ",
+    "UPLOAD_DATE": "ಅಪ್‌ಲೋಡ್ ದಿನಾಂಕ"
   },
   "ko-KR": {
-    "ORIGINAL": "원본"
+    "ORIGINAL": "원본",
+    "UPLOAD_DATE": "업로드 날짜"
   },
   "ky-KG": {
-    "ORIGINAL": "түпнуска"
+    "ORIGINAL": "түпнуска",
+    "UPLOAD_DATE": "Жүктөлгөн күнү"
   },
   "lo-LA": {
-    "ORIGINAL": "ຕົ້ນສະບັບ"
+    "ORIGINAL": "ຕົ້ນສະບັບ",
+    "UPLOAD_DATE": "ວັນທີອັບໂຫລດ"
   },
   "lt-LT": {
-    "ORIGINAL": "pradinis"
+    "ORIGINAL": "pradinis",
+    "UPLOAD_DATE": "Įkėlimo data"
   },
   "lv-LV": {
-    "ORIGINAL": "oriģināls"
+    "ORIGINAL": "oriģināls",
+    "UPLOAD_DATE": "Augšupielādes datums"
   },
   "mk-MK": {
-    "ORIGINAL": "оригинален"
+    "ORIGINAL": "оригинален",
+    "UPLOAD_DATE": "Датум на прикачување"
   },
   "ml-IN": {
-    "ORIGINAL": "ഒറിജിനൽ"
+    "ORIGINAL": "ഒറിജിനൽ",
+    "UPLOAD_DATE": "അപ്‌ലോഡ് തീയതി"
   },
   "mn-MN": {
-    "ORIGINAL": "эх хувь"
+    "ORIGINAL": "эх хувь",
+    "UPLOAD_DATE": "Байршуулсан огноо"
   },
   "mr-IN": {
-    "ORIGINAL": "मूळ"
+    "ORIGINAL": "मूळ",
+    "UPLOAD_DATE": "अपलोड केल्याची तारीख"
   },
   "ms-MY": {
-    "ORIGINAL": "asal"
+    "ORIGINAL": "asal",
+    "UPLOAD_DATE": "Tarikh muat naik"
   },
   "my-MM": {
-    "ORIGINAL": "မူရင်း"
+    "ORIGINAL": "မူရင်း",
+    "UPLOAD_DATE": "တင်ခဲ့သည့် နေ့စွဲ"
   },
   "nb-NO": {
-    "ORIGINAL": "original"
+    "ORIGINAL": "original",
+    "UPLOAD_DATE": "Opplastingsdato"
   },
   "ne-NP": {
-    "ORIGINAL": "मूल"
+    "ORIGINAL": "मूल",
+    "UPLOAD_DATE": "अपलोड गरिएको मिति"
   },
   "nl-NL": {
-    "ORIGINAL": "Originele"
+    "ORIGINAL": "Originele",
+    "UPLOAD_DATE": "Upload-datum"
   },
   "or-IN": {
-    "ORIGINAL": "ମୂଳ"
+    "ORIGINAL": "ମୂଳ",
+    "UPLOAD_DATE": "ଅପଲୋଡ୍ ତାରିଖ"
   },
   "pa-Guru-IN": {
-    "ORIGINAL": "ਮੂਲ"
+    "ORIGINAL": "ਮੂਲ",
+    "UPLOAD_DATE": "ਅੱਪਲੋਡ ਕਰਨ ਦੀ ਤਾਰੀਖ"
   },
   "pl-PL": {
-    "ORIGINAL": "oryginalny"
+    "ORIGINAL": "oryginalny",
+    "UPLOAD_DATE": "Data przesłania"
   },
   "pt-BR": {
-    "ORIGINAL": "original"
+    "ORIGINAL": "original",
+    "UPLOAD_DATE": "Data de envio"
   },
   "pt-PT": {
-    "ORIGINAL": "original"
+    "ORIGINAL": "original",
+    "UPLOAD_DATE": "Data de carregamento"
   },
   "ro-RO": {
-    "ORIGINAL": "original"
+    "ORIGINAL": "original",
+    "UPLOAD_DATE": "Data încărcării"
   },
   "ru-RU": {
-    "ORIGINAL": "оригинальная"
+    "ORIGINAL": "оригинальная",
+    "UPLOAD_DATE": "Дата загрузки"
   },
   "si-LK": {
-    "ORIGINAL": "මුල්"
+    "ORIGINAL": "මුල්",
+    "UPLOAD_DATE": "උඩුගත කළ දිනය"
   },
   "sk-SK": {
-    "ORIGINAL": "pôvodná"
+    "ORIGINAL": "pôvodná",
+    "UPLOAD_DATE": "Dátum nahrania"
   },
   "sl-SI": {
-    "ORIGINAL": "Izvirnik"
+    "ORIGINAL": "Izvirnik",
+    "UPLOAD_DATE": "Datum nalaganja"
   },
   "sq-AL": {
-    "ORIGINAL": "origjinale"
+    "ORIGINAL": "origjinale",
+    "UPLOAD_DATE": "Data e ngarkimit"
   },
   "sr-Cyrl-RS": {
-    "ORIGINAL": "оригинална"
+    "ORIGINAL": "оригинална",
+    "UPLOAD_DATE": "Датум отпремања"
   },
   "sr-Latn-RS": {
-    "ORIGINAL": "originalna"
+    "ORIGINAL": "originalna",
+    "UPLOAD_DATE": "Datum otpremanja"
   },
   "sw-TZ": {
-    "ORIGINAL": "halisi"
+    "ORIGINAL": "halisi",
+    "UPLOAD_DATE": "Tarehe ya kupakia"
   },
   "ta-IN": {
-    "ORIGINAL": "அசல்"
+    "ORIGINAL": "அசல்",
+    "UPLOAD_DATE": "பதிவேற்றிய தேதி"
   },
   "te-IN": {
-    "ORIGINAL": "అసలైనది"
+    "ORIGINAL": "అసలైనది",
+    "UPLOAD_DATE": "అప్‌లోడ్ తేదీ"
   },
   "th-TH": {
-    "ORIGINAL": "เสียงต้นฉบับ"
+    "ORIGINAL": "เสียงต้นฉบับ",
+    "UPLOAD_DATE": "วันที่อัปโหลด"
   },
   "tr-TR": {
-    "ORIGINAL": "orijinal"
+    "ORIGINAL": "orijinal",
+    "UPLOAD_DATE": "Yükleme tarihi"
   },
   "uk-UA": {
-    "ORIGINAL": "оригінал"
+    "ORIGINAL": "оригінал",
+    "UPLOAD_DATE": "Дата завантаження"
   },
   "ur-PK": {
-    "ORIGINAL": "اصل"
+    "ORIGINAL": "اصل",
+    "UPLOAD_DATE": "اپ لوڈ کرنے کی تاریخ"
   },
   "uz-Latn-UZ": {
-    "ORIGINAL": "original"
+    "ORIGINAL": "original",
+    "UPLOAD_DATE": "Yuklangan sana"
   },
   "vi-VN": {
-    "ORIGINAL": "gốc"
+    "ORIGINAL": "gốc",
+    "UPLOAD_DATE": "Ngày tải lên"
   },
   "zh-Hans-CN": {
     "CLIP": "剪辑",
+    "COLLABORATORS": "联合创作者",
     "HIDE_CHANNEL": "隐藏频道",
     "MIXES": "合辑",
     "ORIGINAL": "原始",
@@ -263,15 +342,19 @@
     "TAKE_SNAPSHOT": "截取快照",
     "TELL_US_WHY": "告诉我们原因",
     "THANKS": "感谢",
-    "UNHIDE_CHANNEL": "取消隐藏频道"
+    "UNHIDE_CHANNEL": "取消隐藏频道",
+    "UPLOAD_DATE": "上传日期"
   },
   "zh-Hant-HK": {
-    "ORIGINAL": "原聲"
+    "ORIGINAL": "原聲",
+    "UPLOAD_DATE": "上載日期"
   },
   "zh-Hant-TW": {
-    "ORIGINAL": "原文"
+    "ORIGINAL": "原文",
+    "UPLOAD_DATE": "上傳日期"
   },
   "zu-ZA": {
-    "ORIGINAL": "yokuqala"
+    "ORIGINAL": "yokuqala",
+    "UPLOAD_DATE": "Idethi yokulayisha"
   }
 }

@@ -86,6 +86,7 @@ ${messages.youtubeExperiments}:
 • ${messages.restoreSidebarSubscriptionsLink}${messages.desktopVersion}
 • ${messages.revertSidebarOrder}${messages.desktopVersion}
 • ${messages.revertGiantRelated}${messages.desktopVersion}
+• ${messages.restoreSortByUploadDate}${messages.desktopVersion}
 
 ${messages.newVideoPlayerUI}:
 

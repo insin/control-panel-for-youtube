@@ -351,6 +351,9 @@
   "restoreSidebarSubscriptionsLink": {
     "message": "Restaurer le lien Abonnements dans la barre latérale"
   },
+  "restoreSortByUploadDate": {
+    "message": "Restaurer le filtre de recherche « Date de mise en ligne »"
+  },
   "revertGiantRelated": {
     "message": "Restaurer les petites miniatures dans les recommandations"
   },

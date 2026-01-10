@@ -351,6 +351,9 @@
   "restoreSidebarSubscriptionsLink": {
     "message": "Restore Subscriptions link in sidebar"
   },
+  "restoreSortByUploadDate": {
+    "message": "Restore \"Upload date\" search filter"
+  },
   "revertGiantRelated": {
     "message": "Restore small thumbnails in Related"
   },

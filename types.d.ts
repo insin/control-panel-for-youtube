@@ -40,6 +40,7 @@ export type LocaleKey =
   | 'TELL_US_WHY'
   | 'THANKS'
   | 'UNHIDE_CHANNEL'
+  | 'UPLOAD_DATE'
 
 export type OptionsConfig = EmbedConfig & SiteConfig & {
   version?: Version
@@ -129,6 +130,7 @@ export type SiteConfig = {
   redirectLogoToSubscriptions: boolean
   restoreMiniplayerButton: boolean
   restoreSidebarSubscriptionsLink: boolean
+  restoreSortByUploadDate: boolean
   revertGiantRelated: boolean
   revertSidebarOrder: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small'

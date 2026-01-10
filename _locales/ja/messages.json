@@ -350,6 +350,9 @@
   "restoreSidebarSubscriptionsLink": {
     "message": "サイドバーの「登録チャンネル」リンクを復元する"
   },
+  "restoreSortByUploadDate": {
+    "message": "検索フィルタの「アップロード日」を復元する"
+  },
   "revertGiantRelated": {
     "message": "関連動画のサムネイルを小さく復元する"
   },

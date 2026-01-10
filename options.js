@@ -231,6 +231,7 @@ let defaultConfig = {
   redirectLogoToSubscriptions: false,
   restoreMiniplayerButton: false,
   restoreSidebarSubscriptionsLink: true,
+  restoreSortByUploadDate: true,
   revertGiantRelated: true,
   revertSidebarOrder: true,
   searchThumbnailSize: 'medium',

@@ -85,6 +85,7 @@ let defaultConfig = {
   redirectLogoToSubscriptions: false,
   restoreMiniplayerButton: false,
   restoreSidebarSubscriptionsLink: true,
+  restoreSortByUploadDate: true,
   revertGiantRelated: true,
   revertSidebarOrder: true,
   searchThumbnailSize: 'medium',
@@ -135,58 +136,72 @@ const locales = {
   'af-ZA': {
     ORIGINAL: 'oorspronklike',
     SHORTS: "Kortvideo's",
+    UPLOAD_DATE: 'Oplaaidatum',
   },
   'am-ET': {
     ORIGINAL: 'የመጀመሪያ',
     SHORTS: 'ቁምጣ',
+    UPLOAD_DATE: 'የተለቀቀበት ቀን',
   },
   ar: {
     ORIGINAL: 'أصلي',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'تاريخ التحميل',
   },
   'as-IN': {
     ORIGINAL: 'মূল',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'আপলোডৰ তাৰিখ',
   },
   'az-Latn-AZ': {
     ORIGINAL: 'orijinal',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Yüklənmə tarixi',
   },
   'be-BY': {
     ORIGINAL: 'арыгінальны',
     SHORTS: 'Кароткія відэа',
+    UPLOAD_DATE: 'Дата загрузкі',
   },
   'bg-BG': {
     ORIGINAL: 'оригинален',
     SHORTS: 'Кратки видеоклипове',
+    UPLOAD_DATE: 'Дата на качване',
   },
   'bn-BD': {
     ORIGINAL: 'মূল',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'আপলোডের তারিখ',
   },
   'bs-Latn-BA': {
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Datum otpremanja',
   },
   'ca-ES': {
     ORIGINAL: 'original',
     SHORTS: 'Curts',
+    UPLOAD_DATE: 'Data de pujada',
   },
   'cs-CZ': {
     ORIGINAL: 'původní',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Datum nahrání',
   },
   'da-DK': {
     ORIGINAL: 'originalt',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Uploaddato',
   },
   'de-DE': {
     ORIGINAL: 'Original',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Uploaddatum',
   },
   'el-GR': {
     ORIGINAL: 'πρωτότυπο',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Ημερομηνία μεταφόρτωσης',
   },
   en: {
     CLIP: 'Clip',
@@ -202,38 +217,47 @@ const locales = {
     TELL_US_WHY: 'Tell us why',
     THANKS: 'Thanks',
     UNHIDE_CHANNEL: 'Unhide channel',
+    UPLOAD_DATE: 'Upload date',
   },
   'es-419': {
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Fecha de carga',
   },
   'es-ES': {
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Fecha de subida',
   },
   'es-US': {
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Fecha de carga',
   },
   'et-EE': {
     ORIGINAL: 'algne',
     SHORTS: 'Lühivideod',
+    UPLOAD_DATE: 'Üleslaadimise kuupäev',
   },
   'eu-ES': {
     ORIGINAL: 'jatorrizkoa',
     SHORTS: 'Film laburrak',
+    UPLOAD_DATE: 'Igotzeko data',
   },
   'fa-IR': {
     ORIGINAL: 'اصلی',
     SHORTS: 'کوته‌ویدیوهای YouTube',
+    UPLOAD_DATE: 'تاریخ بارگذاری',
   },
   'fil-PH': {
     ORIGINAL: 'orihinal',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Petsa ng pag-upload',
   },
   'fr-CA': {
     ORIGINAL: 'originale',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Date de mise en ligne',
   },
   'fr-FR': {
     COLLABORATORS: 'Collaborateurs',
@@ -248,46 +272,57 @@ const locales = {
     TELL_US_WHY: 'Dites-nous pourquoi',
     THANKS: 'Merci',
     UNHIDE_CHANNEL: 'Afficher la chaîne',
+    UPLOAD_DATE: 'Date de mise en ligne',
   },
   'gl-ES': {
     ORIGINAL: 'orixinal',
     SHORTS: 'Curtas',
+    UPLOAD_DATE: 'Data de subida',
   },
   'gu-IN': {
     ORIGINAL: 'ઑરિજિનલ',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'અપલોડ કર્યાની તારીખ',
   },
   'he-IL': {
     ORIGINAL: 'מקור',
     SHORTS: 'סרטוני Shorts',
+    UPLOAD_DATE: 'תאריך העלאה',
   },
   'hi-IN': {
     ORIGINAL: 'मूल',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'अपलोड करने की तारीख',
   },
   'hr-HR': {
     ORIGINAL: 'izvorno',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Datum prijenosa',
   },
   'hu-HU': {
     ORIGINAL: 'eredeti',
     SHORTS: 'Rövid videók',
+    UPLOAD_DATE: 'Feltöltés dátuma',
   },
   'hy-AM': {
     ORIGINAL: 'բնօրինակ',
     SHORTS: 'Կարճ հոլովակներ',
+    UPLOAD_DATE: 'Բեռնելու ամսաթիվ',
   },
   'id-ID': {
     ORIGINAL: 'asli',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Tanggal upload',
   },
   'is-IS': {
     ORIGINAL: 'upprunalegt',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Hleðsludagsetning',
   },
   'it-IT': {
     ORIGINAL: 'originale',
     SHORTS: 'Short',
+    UPLOAD_DATE: 'Data di caricamento',
   },
   'ja-JP': {
     CLIP: 'クリップ',
@@ -302,166 +337,207 @@ const locales = {
     TAKE_SNAPSHOT: 'スナップショットを撮る',
     TELL_US_WHY: '理由を教えてください',
     UNHIDE_CHANNEL: 'チャンネルの再表示',
+    UPLOAD_DATE: 'アップロード日',
   },
   'ka-GE': {
     ORIGINAL: 'ორიგინალია',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'ატვირთვის თარიღი',
   },
   'kk-KZ': {
     ORIGINAL: 'түпнұсқа',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Жүктелген күні',
   },
   'km-KH': {
     ORIGINAL: 'ដើម',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'កាលបរិច្ឆេទ​បង្ហោះ',
   },
   'kn-IN': {
     ORIGINAL: 'ಮೂಲ',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'ಅಪ್‌ಲೋಡ್ ದಿನಾಂಕ',
   },
   'ko-KR': {
     ORIGINAL: '원본',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: '업로드 날짜',
   },
   'ky-KG': {
     ORIGINAL: 'түпнуска',
     SHORTS: 'Кыска видеолор',
+    UPLOAD_DATE: 'Жүктөлгөн күнү',
   },
   'lo-LA': {
     ORIGINAL: 'ຕົ້ນສະບັບ',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'ວັນທີອັບໂຫລດ',
   },
   'lt-LT': {
     ORIGINAL: 'pradinis',
     SHORTS: 'Klipukai',
+    UPLOAD_DATE: 'Įkėlimo data',
   },
   'lv-LV': {
     ORIGINAL: 'oriģināls',
     SHORTS: 'Īsie videoklipi',
+    UPLOAD_DATE: 'Augšupielādes datums',
   },
   'mk-MK': {
     ORIGINAL: 'оригинален',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Датум на прикачување',
   },
   'ml-IN': {
     ORIGINAL: 'ഒറിജിനൽ',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'അപ്‌ലോഡ് തീയതി',
   },
   'mn-MN': {
     ORIGINAL: 'эх хувь',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Байршуулсан огноо',
   },
   'mr-IN': {
     ORIGINAL: 'मूळ',
     SHORTS: 'शॉर्ट',
+    UPLOAD_DATE: 'अपलोड केल्याची तारीख',
   },
   'ms-MY': {
     ORIGINAL: 'asal',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Tarikh muat naik',
   },
   'my-MM': {
     ORIGINAL: 'မူရင်း',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'တင်ခဲ့သည့် နေ့စွဲ',
   },
   'nb-NO': {
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Opplastingsdato',
   },
   'ne-NP': {
     ORIGINAL: 'मूल',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'अपलोड गरिएको मिति',
   },
   'nl-NL': {
     ORIGINAL: 'Originele',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Upload-datum',
   },
   'or-IN': {
     ORIGINAL: 'ମୂଳ',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'ଅପଲୋଡ୍ ତାରିଖ',
   },
   'pa-Guru-IN': {
     ORIGINAL: 'ਮੂਲ',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'ਅੱਪਲੋਡ ਕਰਨ ਦੀ ਤਾਰੀਖ',
   },
   'pl-PL': {
     ORIGINAL: 'oryginalny',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Data przesłania',
   },
   'pt-BR': {
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Data de envio',
   },
   'pt-PT': {
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Data de carregamento',
   },
   'ro-RO': {
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Data încărcării',
   },
   'ru-RU': {
     ORIGINAL: 'оригинальная',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Дата загрузки',
   },
   'si-LK': {
     ORIGINAL: 'මුල්',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'උඩුගත කළ දිනය',
   },
   'sk-SK': {
     ORIGINAL: 'pôvodná',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Dátum nahrania',
   },
   'sl-SI': {
     ORIGINAL: 'Izvirnik',
     SHORTS: 'Kratki videoposnetki',
+    UPLOAD_DATE: 'Datum nalaganja',
   },
   'sq-AL': {
     ORIGINAL: 'origjinale',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Data e ngarkimit',
   },
   'sr-Cyrl-RS': {
     ORIGINAL: 'оригинална',
     SHORTS: 'Шортси',
+    UPLOAD_DATE: 'Датум отпремања',
   },
   'sr-Latn-RS': {
     ORIGINAL: 'originalna',
     SHORTS: 'Šortsi',
+    UPLOAD_DATE: 'Datum otpremanja',
   },
   'sw-TZ': {
     ORIGINAL: 'halisi',
     SHORTS: 'Video Fupi',
+    UPLOAD_DATE: 'Tarehe ya kupakia',
   },
   'ta-IN': {
     ORIGINAL: 'அசல்',
     SHORTS: 'Shorts வீடியோக்கள்',
+    UPLOAD_DATE: 'பதிவேற்றிய தேதி',
   },
   'te-IN': {
     ORIGINAL: 'అసలైనది',
     SHORTS: 'షార్ట్‌లు',
+    UPLOAD_DATE: 'అప్‌లోడ్ తేదీ',
   },
   'th-TH': {
     ORIGINAL: 'เสียงต้นฉบับ',
     SHORTS: 'วิดีโอสั้น',
+    UPLOAD_DATE: 'วันที่อัปโหลด',
   },
   'tr-TR': {
     ORIGINAL: 'orijinal',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Yükleme tarihi',
   },
   'uk-UA': {
     ORIGINAL: 'оригінал',
     SHORTS: 'Відео Shorts',
+    UPLOAD_DATE: 'Дата завантаження',
   },
   'ur-PK': {
     ORIGINAL: 'اصل',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'اپ لوڈ کرنے کی تاریخ',
   },
   'uz-Latn-UZ': {
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Yuklangan sana',
   },
   'vi-VN': {
     ORIGINAL: 'gốc',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: 'Ngày tải lên',
   },
   'zh-Hans-CN': {
     CLIP: '剪辑',
@@ -477,18 +553,22 @@ const locales = {
     TELL_US_WHY: '告诉我们原因',
     THANKS: '感谢',
     UNHIDE_CHANNEL: '取消隐藏频道',
+    UPLOAD_DATE: '上传日期',
   },
   'zh-Hant-HK': {
     ORIGINAL: '原聲',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: '上載日期',
   },
   'zh-Hant-TW': {
     ORIGINAL: '原文',
     SHORTS: 'Shorts',
+    UPLOAD_DATE: '上傳日期',
   },
   'zu-ZA': {
     ORIGINAL: 'yokuqala',
     SHORTS: 'Okufushane',
+    UPLOAD_DATE: 'Idethi yokulayisha',
   },
 }
 
@@ -511,7 +591,7 @@ function getString(code) {
 
 function getYtString(...keys) {
   for (let key of keys) {
-    // @ts-ignore
+    // @ts-expect-error
     let string = window.ytcfg?.msgs?.[key]
     if (string) return string
   }
@@ -680,7 +760,6 @@ function getElement(selector, {
  })
 }
 
-// @ts-ignore
 let policy = window.trustedTypes?.createPolicy?.('tagged-html-policy', {createHTML: (s) => s}) || {createHTML: (s) => s}
 function html(strings, ...values) {
   return /** @type {string} */ (policy.createHTML(strings.reduce((acc, str, i) => acc + str + (values[i] || ''), '')))
@@ -2136,6 +2215,30 @@ const configureCss = (() => {
       } else {
         hideCssSelectors.push('#cpfyt-miniplayer-button')
       }
+      if (config.restoreSortByUploadDate) {
+        cssRules.push(`
+          #cpfyt-upload-date-filter {
+            padding: 15px 0 0;
+            a {
+              color: var(--yt-spec-text-secondary);
+              cursor: pointer;
+              font-size: 14px;
+            }
+          }
+          .cpfyt-upload-date-selected {
+            #cpfyt-upload-date-filter a {
+              color: var(--yt-spec-text-primary);
+              font-weight: 500;
+            }
+            ytd-search-filter-renderer.selected yt-formatted-string.ytd-search-filter-renderer {
+              color: var(--yt-spec-text-secondary);
+              font-weight: 400;
+            }
+          }
+        `)
+      } else {
+        hideCssSelectors.push('#cpfyt-upload-date-filter')
+      }
       if (config.revertGiantRelated) {
         cssRules.push(`
           #secondary #related {
@@ -2433,7 +2536,7 @@ function allowBackgroundPlay() {
     if (!isVideoPage()) return
     let $player = document.querySelector('#movie_player')
     if (!$player) return
-    // @ts-ignore
+    // @ts-expect-error
     let playerState = $player.getPlayerState?.()
     if (!playerState || playerState < 1 || playerState == 2) return
     function activity() {
@@ -2461,7 +2564,7 @@ async function alwaysUseOriginalAudio(playerSelector) {
   })
   if (!$player) return
 
-  // @ts-ignore
+  // @ts-expect-error
   let playerState = $player.getPlayerState?.()
   if (playerState != null && playerState != 1) {
     log('alwaysUseOriginalAudio: waiting for video to start playing')
@@ -2476,7 +2579,7 @@ async function alwaysUseOriginalAudio(playerSelector) {
       $player.addEventListener('onStateChange', onStateChange)
     })
   }
-  // @ts-ignore
+  // @ts-expect-error
   let tracks = $player?.getAvailableAudioTracks?.()
   if (!tracks || tracks.length <= 1) {
     log('alwaysUseOriginalAudio: no alternative tracks available')
@@ -2500,7 +2603,7 @@ async function alwaysUseOriginalAudio(playerSelector) {
     return
   }
 
-  // @ts-ignore
+  // @ts-expect-error
   let activeTrack = $player.getAudioTrack?.()
   if (activeTrack && activeTrack.id == originalTrack.id) {
     log('alwaysUseOriginalAudio: already using original track')
@@ -2508,7 +2611,7 @@ async function alwaysUseOriginalAudio(playerSelector) {
   }
 
   log('alwaysUseOriginalAudio: switching to original audio track', originalTrackName)
-  // @ts-ignore
+  // @ts-expect-error
   $player.setAudioTrack?.(originalTrack)
 }
 
@@ -2719,7 +2822,7 @@ function addDownloadTranscriptToDesktopMenu($menu) {
   function download() {
     downloadTranscript()
     // Dismiss the menu
-    // @ts-ignore
+    // @ts-expect-error
     document.querySelector('#content')?.click()
   }
   $item.addEventListener('click', download)
@@ -3389,6 +3492,73 @@ function observeDesktopContextMenu($popupContainer) {
   }
 }
 
+/**
+ * @param {HTMLElement} $dialog
+ * @param {HTMLElement} $popupContainer
+ */
+async function restoreSortByUploadDate($dialog, $popupContainer) {
+  let prioritiseFilterSelector = 'ytd-search-filter-options-dialog-renderer ytd-search-filter-group-renderer:last-of-type'
+
+  let $prioritiseFilterGroup = await getElement(prioritiseFilterSelector, {
+    name: 'search filter sort options',
+    context: $dialog,
+    timeout: 2000,
+    stopIf: () => !isSearchPage()
+  })
+  if (!$prioritiseFilterGroup) return
+
+  function getUploadDateFilterState() {
+    // Upload Date + Videos
+    let sp = 'CAISAhAB'
+    // Upload Date should be selected if every other filter in its group is clickable
+    let filters = Array.from($popupContainer.querySelectorAll(`${prioritiseFilterSelector} a#endpoint`))
+    let selected = filters.length > 0 && filters.every($a => $a.hasAttribute('href'))
+    let url = new URL(location.href)
+    url.searchParams.set('sp', sp)
+    return {
+      href: url.pathname + url.search,
+      selected,
+      sp,
+    }
+  }
+
+  // Add the Upload Date filter the first time the dialog is opened
+  if (!$prioritiseFilterGroup.querySelector('#cpfyt-upload-date-filter')) {
+    $prioritiseFilterGroup.insertAdjacentHTML('beforeend', html`
+      <div id="cpfyt-upload-date-filter"><a>${getString('UPLOAD_DATE')}</a></div>
+    `)
+    let $uploadDateLink = /** @type {HTMLAnchorElement} */ ($prioritiseFilterGroup.querySelector('#cpfyt-upload-date-filter'))
+    $uploadDateLink.addEventListener('click', (e) => {
+      let {href, selected, sp} = getUploadDateFilterState()
+      if (selected) {
+        e.preventDefault()
+        return
+      }
+      // Either Relevance or Popularity should be clickable
+      let $filter = /** @type {HTMLElement} */ ($popupContainer.querySelector(`${prioritiseFilterSelector} a#endpoint[href]`))
+      if (!$filter) {
+        warn('restoreSortByUploadDate: could not find existing filter to click')
+        return
+      }
+      // @ts-expect-error
+      $filter.data.commandMetadata.webCommandMetadata.url = href
+      // @ts-expect-error
+      $filter.data.searchEndpoint.params = sp
+      $filter.click()
+    })
+  }
+
+  // Update the filter group and Upload Date link with current state
+  let $uploadDateLink = /** @type {HTMLAnchorElement} */ ($prioritiseFilterGroup.querySelector('#cpfyt-upload-date-filter'))
+  let {href, selected} = getUploadDateFilterState()
+  if (selected) {
+    $uploadDateLink.removeAttribute('href')
+  } else {
+    $uploadDateLink.href = href
+  }
+  $prioritiseFilterGroup.classList.toggle('cpfyt-upload-date-selected', selected)
+}
+
 async function observePopups() {
   if (desktop) {
     /** @param {HTMLElement} $dialog */
@@ -3399,6 +3569,11 @@ async function observePopups() {
           if (onDialogClosed) {
             onDialogClosed()
             onDialogClosed = null
+          }
+        } else {
+          log('dialog opened')
+          if (isSearchPage()) {
+            restoreSortByUploadDate($dialog, $popupContainer)
           }
         }
       }, {
@@ -3963,9 +4138,9 @@ function onDocumentClick(e) {
   if (desktop && loggedIn && (config.disableHomeFeed || config.redirectLogoToSubscriptions)) {
     let $logoLink = $lastClickedElement?.closest('a#logo')
     if ($logoLink) {
-      // @ts-ignore
+      // @ts-expect-error
       let browseEndpoint = $logoLink.data?.browseEndpoint
-      // @ts-ignore
+      // @ts-expect-error
       let webCommandMetadata = $logoLink.data?.commandMetadata?.webCommandMetadata
       if (browseEndpoint && webCommandMetadata) {
         log('redirecting YouTube logo click to Subscriptions')
@@ -3977,7 +4152,7 @@ function onDocumentClick(e) {
   if (desktop && config.redirectShorts) {
     let $shortsLink = /** @type {HTMLAnchorElement} */ ($lastClickedElement?.closest('a[href^="/shorts/'))
     if ($shortsLink) {
-      // @ts-ignore
+      // @ts-expect-error
       let webCommandMetadata = $shortsLink._data?.commandMetadata?.webCommandMetadata
       if (webCommandMetadata) {
         log('redirecting Shorts video click to normal player')
@@ -4103,7 +4278,7 @@ function manuallyHideVideo($video, {hideDismissed = false} = {}) {
   if (mobile && config.hideCollaborations && isSubscriptionsPage()) {
     $video.classList.toggle(
       Classes.HIDE_COLLABORATIONS,
-      // @ts-ignore
+      // @ts-expect-error
       $video.querySelector('ytm-video-with-context-renderer')?.data?.shortBylineText?.runs?.[0]?.navigationEndpoint?.showSheetCommand?.panelLoadingStrategy?.inlineContent?.sheetViewModel?.header?.panelHeaderViewModel?.title?.content == getString('COLLABORATORS')
     )
   }
@@ -4146,8 +4321,8 @@ async function restoreMiniplayerButton() {
     </svg>
   ` : `
     <svg height="100%" version="1.1" viewBox="0 0 36 36" width="100%">
-      <use xlink:href="#cpfty-id-1" class="ytp-svg-shadow"></use>
-      <path id="cpfty-id-1" d="${Svgs.MINIPLAYER_OLD_PATH}" fill="#fff" fill-rule="evenodd"></path>
+      <use xlink:href="#cpfyt-id-1" class="ytp-svg-shadow"></use>
+      <path id="cpfyt-id-1" d="${Svgs.MINIPLAYER_OLD_PATH}" fill="#fff" fill-rule="evenodd"></path>
     </svg>
   `}
 </button>
@@ -4377,14 +4552,14 @@ async function tweakShortsPage() {
 
     setTimeout(() => {
       log('stopShortsLooping: turning looping off')
-      // @ts-ignore
+      // @ts-expect-error
       $player.setLoopVideo?.(false)
     }, 500)
     function onStateChange(playerState) {
       if (playerState == 1) {
         setTimeout(() => {
           log('stopShortsLooping: turning looping off')
-          // @ts-ignore
+          // @ts-expect-error
           $player.setLoopVideo?.(false)
         }, 500)
       }
@@ -4647,7 +4822,7 @@ function main() {
       allowBackgroundPlay()
     }
     // CSS uses some of YouTube's own translations
-    // @ts-ignore
+    // @ts-expect-error
     waitFor(() => window.ytcfg?.msgs, 'ytcfg.msgs').then(() => {
       configureCss()
       if (desktop) {
@@ -4656,7 +4831,7 @@ function main() {
     })
     if (desktop && config.playerRemoveDelhiExperimentFlags) {
       function removeFlags() {
-        // @ts-ignore
+        // @ts-expect-error
         let watchConfig = window.yt?.config_?.WEB_PLAYER_CONTEXT_CONFIGS?.WEB_PLAYER_CONTEXT_CONFIG_ID_KEVLAR_WATCH
         if (typeof watchConfig?.serializedExperimentFlags == 'string') {
           log('playerDisableDelhiExperiments: removing delhi_modern_web_player experiment flags')
