@@ -134,71 +134,85 @@ let config
  */
 const locales = {
   'af-ZA': {
+    MINIPLAYER: 'Minispeler',
     ORIGINAL: 'oorspronklike',
     SHORTS: "Kortvideo's",
     UPLOAD_DATE: 'Oplaaidatum',
   },
   'am-ET': {
+    MINIPLAYER: 'ትንሽ አጫዋች',
     ORIGINAL: 'የመጀመሪያ',
     SHORTS: 'ቁምጣ',
     UPLOAD_DATE: 'የተለቀቀበት ቀን',
   },
   ar: {
+    MINIPLAYER: 'المشغّل المصغّر',
     ORIGINAL: 'أصلي',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'تاريخ التحميل',
   },
   'as-IN': {
+    MINIPLAYER: 'মিনিপ্লে’য়াৰ',
     ORIGINAL: 'মূল',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'আপলোডৰ তাৰিখ',
   },
   'az-Latn-AZ': {
+    MINIPLAYER: 'Minipleyer',
     ORIGINAL: 'orijinal',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Yüklənmə tarixi',
   },
   'be-BY': {
+    MINIPLAYER: 'Міні-прайгравальнік',
     ORIGINAL: 'арыгінальны',
     SHORTS: 'Кароткія відэа',
     UPLOAD_DATE: 'Дата загрузкі',
   },
   'bg-BG': {
+    MINIPLAYER: 'Миниплейър',
     ORIGINAL: 'оригинален',
     SHORTS: 'Кратки видеоклипове',
     UPLOAD_DATE: 'Дата на качване',
   },
   'bn-BD': {
+    MINIPLAYER: 'মিনিপ্লেয়ার',
     ORIGINAL: 'মূল',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'আপলোডের তারিখ',
   },
   'bs-Latn-BA': {
+    MINIPLAYER: 'Miniplejer',
     ORIGINAL: 'original',
-    SHORTS: 'Shorts',
+    SHORTS: 'Shortsi',
     UPLOAD_DATE: 'Datum otpremanja',
   },
   'ca-ES': {
+    MINIPLAYER: 'Minireproductor',
     ORIGINAL: 'original',
     SHORTS: 'Curts',
     UPLOAD_DATE: 'Data de pujada',
   },
   'cs-CZ': {
+    MINIPLAYER: 'Minipřehrávač',
     ORIGINAL: 'původní',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Datum nahrání',
   },
   'da-DK': {
+    MINIPLAYER: 'Miniafspiller',
     ORIGINAL: 'originalt',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Uploaddato',
   },
   'de-DE': {
+    MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'Original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Uploaddatum',
   },
   'el-GR': {
+    MINIPLAYER: 'Ελαχιστοποιημένο player',
     ORIGINAL: 'πρωτότυπο',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Ημερομηνία μεταφόρτωσης',
@@ -207,6 +221,7 @@ const locales = {
     CLIP: 'Clip',
     COLLABORATORS: 'Collaborators',
     HIDE_CHANNEL: 'Hide channel',
+    MINIPLAYER: 'Miniplayer',
     MIXES: 'Mixes',
     ORIGINAL: 'original',
     SHARE: 'Share',
@@ -220,41 +235,49 @@ const locales = {
     UPLOAD_DATE: 'Upload date',
   },
   'es-419': {
+    MINIPLAYER: 'Reproductor en miniatura',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Fecha de carga',
   },
   'es-ES': {
+    MINIPLAYER: 'Minirreproductor',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Fecha de subida',
   },
   'es-US': {
+    MINIPLAYER: 'Reproductor en miniatura',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Fecha de carga',
   },
   'et-EE': {
+    MINIPLAYER: 'Minipleier',
     ORIGINAL: 'algne',
     SHORTS: 'Lühivideod',
     UPLOAD_DATE: 'Üleslaadimise kuupäev',
   },
   'eu-ES': {
+    MINIPLAYER: 'Erreproduzigailu txikia',
     ORIGINAL: 'jatorrizkoa',
     SHORTS: 'Film laburrak',
     UPLOAD_DATE: 'Igotzeko data',
   },
   'fa-IR': {
+    MINIPLAYER: 'پخش‌کننده کوچک',
     ORIGINAL: 'اصلی',
     SHORTS: 'کوته‌ویدیوهای YouTube',
     UPLOAD_DATE: 'تاریخ بارگذاری',
   },
   'fil-PH': {
+    MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'orihinal',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Petsa ng pag-upload',
   },
   'fr-CA': {
+    MINIPLAYER: 'Minilecteur',
     ORIGINAL: 'originale',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Date de mise en ligne',
@@ -262,6 +285,7 @@ const locales = {
   'fr-FR': {
     COLLABORATORS: 'Collaborateurs',
     HIDE_CHANNEL: 'Masquer la chaîne',
+    MINIPLAYER: 'Lecteur réduit',
     MIXES: 'Mix',
     ORIGINAL: 'original',
     SHARE: 'Partager',
@@ -275,51 +299,61 @@ const locales = {
     UPLOAD_DATE: 'Date de mise en ligne',
   },
   'gl-ES': {
+    MINIPLAYER: 'Reprodutor minimizado',
     ORIGINAL: 'orixinal',
     SHORTS: 'Curtas',
     UPLOAD_DATE: 'Data de subida',
   },
   'gu-IN': {
+    MINIPLAYER: 'મીનીપ્લેયર',
     ORIGINAL: 'ઑરિજિનલ',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'અપલોડ કર્યાની તારીખ',
   },
   'he-IL': {
+    MINIPLAYER: 'מיני-נגן',
     ORIGINAL: 'מקור',
     SHORTS: 'סרטוני Shorts',
     UPLOAD_DATE: 'תאריך העלאה',
   },
   'hi-IN': {
+    MINIPLAYER: 'मिनी प्लेयर',
     ORIGINAL: 'मूल',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'अपलोड करने की तारीख',
   },
   'hr-HR': {
+    MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'izvorno',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Datum prijenosa',
   },
   'hu-HU': {
+    MINIPLAYER: 'Minilejátszó',
     ORIGINAL: 'eredeti',
     SHORTS: 'Rövid videók',
     UPLOAD_DATE: 'Feltöltés dátuma',
   },
   'hy-AM': {
+    MINIPLAYER: 'Մինի նվագարկիչ',
     ORIGINAL: 'բնօրինակ',
     SHORTS: 'Կարճ հոլովակներ',
     UPLOAD_DATE: 'Բեռնելու ամսաթիվ',
   },
   'id-ID': {
+    MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'asli',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Tanggal upload',
   },
   'is-IS': {
+    MINIPLAYER: 'Smáspilari',
     ORIGINAL: 'upprunalegt',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Hleðsludagsetning',
   },
   'it-IT': {
+    MINIPLAYER: 'Mini player',
     ORIGINAL: 'originale',
     SHORTS: 'Short',
     UPLOAD_DATE: 'Data di caricamento',
@@ -328,6 +362,7 @@ const locales = {
     CLIP: 'クリップ',
     COLLABORATORS: 'コラボレーター',
     HIDE_CHANNEL: 'チャンネルを隠す',
+    MINIPLAYER: 'ミニプレーヤー',
     MIXES: 'ミックス',
     ORIGINAL: 'オリジナル',
     SHARE: '共有',
@@ -340,201 +375,241 @@ const locales = {
     UPLOAD_DATE: 'アップロード日',
   },
   'ka-GE': {
+    MINIPLAYER: 'მინიდამკვრელი',
     ORIGINAL: 'ორიგინალია',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'ატვირთვის თარიღი',
   },
   'kk-KZ': {
+    MINIPLAYER: 'Шағын ойнатқыш',
     ORIGINAL: 'түпнұсқа',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Жүктелген күні',
   },
   'km-KH': {
+    MINIPLAYER: 'កម្មវិធី​ចាក់ខ្នាត​តូច',
     ORIGINAL: 'ដើម',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'កាលបរិច្ឆេទ​បង្ហោះ',
   },
   'kn-IN': {
+    MINIPLAYER: 'ಮಿನಿಪ್ಲೇಯರ್',
     ORIGINAL: 'ಮೂಲ',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'ಅಪ್‌ಲೋಡ್ ದಿನಾಂಕ',
   },
   'ko-KR': {
+    MINIPLAYER: '소형 플레이어',
     ORIGINAL: '원본',
     SHORTS: 'Shorts',
     UPLOAD_DATE: '업로드 날짜',
   },
   'ky-KG': {
+    MINIPLAYER: 'Мини ойноткуч',
     ORIGINAL: 'түпнуска',
     SHORTS: 'Кыска видеолор',
     UPLOAD_DATE: 'Жүктөлгөн күнү',
   },
   'lo-LA': {
+    MINIPLAYER: 'ຕົວຫຼິ້ນຂະໜາດນ້ອຍ',
     ORIGINAL: 'ຕົ້ນສະບັບ',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'ວັນທີອັບໂຫລດ',
   },
   'lt-LT': {
+    MINIPLAYER: 'Sumažinta leistuvė',
     ORIGINAL: 'pradinis',
     SHORTS: 'Klipukai',
     UPLOAD_DATE: 'Įkėlimo data',
   },
   'lv-LV': {
+    MINIPLAYER: 'Mini atskaņotājs',
     ORIGINAL: 'oriģināls',
     SHORTS: 'Īsie videoklipi',
     UPLOAD_DATE: 'Augšupielādes datums',
   },
   'mk-MK': {
+    MINIPLAYER: 'Миниплеер',
     ORIGINAL: 'оригинален',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Датум на прикачување',
   },
   'ml-IN': {
+    MINIPLAYER: 'മിനിപ്ലേയർ',
     ORIGINAL: 'ഒറിജിനൽ',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'അപ്‌ലോഡ് തീയതി',
   },
   'mn-MN': {
+    MINIPLAYER: 'Мини тоглуулагч',
     ORIGINAL: 'эх хувь',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Байршуулсан огноо',
   },
   'mr-IN': {
+    MINIPLAYER: 'मिनीप्लेअर',
     ORIGINAL: 'मूळ',
     SHORTS: 'शॉर्ट',
     UPLOAD_DATE: 'अपलोड केल्याची तारीख',
   },
   'ms-MY': {
+    MINIPLAYER: 'Pemain mini',
     ORIGINAL: 'asal',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Tarikh muat naik',
   },
   'my-MM': {
+    MINIPLAYER: 'မီနီပလေယာ',
     ORIGINAL: 'မူရင်း',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'တင်ခဲ့သည့် နေ့စွဲ',
   },
   'nb-NO': {
+    MINIPLAYER: 'Minispiller',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Opplastingsdato',
   },
   'ne-NP': {
+    MINIPLAYER: 'मिनिप्लेयर',
     ORIGINAL: 'मूल',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'अपलोड गरिएको मिति',
   },
   'nl-NL': {
+    MINIPLAYER: 'Minispeler',
     ORIGINAL: 'Originele',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Upload-datum',
   },
   'or-IN': {
+    MINIPLAYER: 'ମିନି ପ୍ଲେୟାର',
     ORIGINAL: 'ମୂଳ',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'ଅପଲୋଡ୍ ତାରିଖ',
   },
   'pa-Guru-IN': {
+    MINIPLAYER: 'ਮਿਨੀ ਪਲੇਅਰ',
     ORIGINAL: 'ਮੂਲ',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'ਅੱਪਲੋਡ ਕਰਨ ਦੀ ਤਾਰੀਖ',
   },
   'pl-PL': {
+    MINIPLAYER: 'Miniodtwarzacz',
     ORIGINAL: 'oryginalny',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Data przesłania',
   },
   'pt-BR': {
+    MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Data de envio',
   },
   'pt-PT': {
+    MINIPLAYER: 'Minileitor',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Data de carregamento',
   },
   'ro-RO': {
+    MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Data încărcării',
   },
   'ru-RU': {
+    MINIPLAYER: 'Мини-проигрыватель',
     ORIGINAL: 'оригинальная',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Дата загрузки',
   },
   'si-LK': {
+    MINIPLAYER: 'කුඩා වාදකය',
     ORIGINAL: 'මුල්',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'උඩුගත කළ දිනය',
   },
   'sk-SK': {
+    MINIPLAYER: 'Miniprehrávač',
     ORIGINAL: 'pôvodná',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Dátum nahrania',
   },
   'sl-SI': {
+    MINIPLAYER: 'Minipredvajalnik',
     ORIGINAL: 'Izvirnik',
     SHORTS: 'Kratki videoposnetki',
     UPLOAD_DATE: 'Datum nalaganja',
   },
   'sq-AL': {
+    MINIPLAYER: 'Miniluajtësi',
     ORIGINAL: 'origjinale',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Data e ngarkimit',
   },
   'sr-Cyrl-RS': {
+    MINIPLAYER: 'Мини-плејер',
     ORIGINAL: 'оригинална',
     SHORTS: 'Шортси',
     UPLOAD_DATE: 'Датум отпремања',
   },
   'sr-Latn-RS': {
+    MINIPLAYER: 'Mini-plejer',
     ORIGINAL: 'originalna',
     SHORTS: 'Šortsi',
     UPLOAD_DATE: 'Datum otpremanja',
   },
   'sw-TZ': {
+    MINIPLAYER: 'Kichezaji kidogo',
     ORIGINAL: 'halisi',
     SHORTS: 'Video Fupi',
     UPLOAD_DATE: 'Tarehe ya kupakia',
   },
   'ta-IN': {
+    MINIPLAYER: 'மினிபிளேயர்',
     ORIGINAL: 'அசல்',
     SHORTS: 'Shorts வீடியோக்கள்',
     UPLOAD_DATE: 'பதிவேற்றிய தேதி',
   },
   'te-IN': {
+    MINIPLAYER: 'మినీ ప్లేయర్',
     ORIGINAL: 'అసలైనది',
     SHORTS: 'షార్ట్‌లు',
     UPLOAD_DATE: 'అప్‌లోడ్ తేదీ',
   },
   'th-TH': {
+    MINIPLAYER: 'มินิเพลเยอร์',
     ORIGINAL: 'เสียงต้นฉบับ',
     SHORTS: 'วิดีโอสั้น',
     UPLOAD_DATE: 'วันที่อัปโหลด',
   },
   'tr-TR': {
+    MINIPLAYER: 'Mini oynatıcı',
     ORIGINAL: 'orijinal',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Yükleme tarihi',
   },
   'uk-UA': {
+    MINIPLAYER: 'Мініпрогравач',
     ORIGINAL: 'оригінал',
     SHORTS: 'Відео Shorts',
     UPLOAD_DATE: 'Дата завантаження',
   },
   'ur-PK': {
+    MINIPLAYER: 'مِنی پلیئر',
     ORIGINAL: 'اصل',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'اپ لوڈ کرنے کی تاریخ',
   },
   'uz-Latn-UZ': {
+    MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Yuklangan sana',
   },
   'vi-VN': {
+    MINIPLAYER: 'Trình phát thu nhỏ',
     ORIGINAL: 'gốc',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Ngày tải lên',
@@ -543,6 +618,7 @@ const locales = {
     CLIP: '剪辑',
     COLLABORATORS: '联合创作者',
     HIDE_CHANNEL: '隐藏频道',
+    MINIPLAYER: '迷你播放器',
     MIXES: '合辑',
     ORIGINAL: '原始',
     SHARE: '分享',
@@ -556,16 +632,19 @@ const locales = {
     UPLOAD_DATE: '上传日期',
   },
   'zh-Hant-HK': {
+    MINIPLAYER: '迷你播放器',
     ORIGINAL: '原聲',
     SHORTS: 'Shorts',
     UPLOAD_DATE: '上載日期',
   },
   'zh-Hant-TW': {
+    MINIPLAYER: '迷你播放器',
     ORIGINAL: '原文',
     SHORTS: 'Shorts',
     UPLOAD_DATE: '上傳日期',
   },
   'zu-ZA': {
+    MINIPLAYER: 'Isidlali Esincane',
     ORIGINAL: 'yokuqala',
     SHORTS: 'Okufushane',
     UPLOAD_DATE: 'Idethi yokulayisha',
@@ -2212,6 +2291,29 @@ const configureCss = (() => {
       }
       if (config.restoreMiniplayerButton) {
         hideCssSelectors.push('ytd-watch-flexy[fullscreen] #cpfyt-miniplayer-button')
+        cssRules.push(`
+          #cpfyt-miniplayer-button {
+            anchor-name: --cpfyt-miniplayer-anchor;
+          }
+          #cpfyt-miniplayer-button + .ytp-tooltip {
+            position: fixed;
+            position-anchor: --cpfyt-miniplayer-anchor;
+            bottom: anchor(top);
+            left: anchor(center);
+            translate: -50% -14px;
+            opacity: 0;
+          }
+          #cpfyt-miniplayer-button + .ytp-tooltip .ytp-tooltip-text {
+            font-size: 13px;
+            white-space: pre;
+          }
+          .ytp-delhi-modern #cpfyt-miniplayer-button + .ytp-tooltip {
+            translate: -50% -22px;
+          }
+          #cpfyt-miniplayer-button:hover + .ytp-tooltip {
+            opacity: 1;
+          }
+        `)
       } else {
         hideCssSelectors.push('#cpfyt-miniplayer-button')
       }
@@ -4312,10 +4414,11 @@ async function restoreMiniplayerButton() {
   })
   if (!$sizeButton) return
 
+  let supportsAnchorPositioning = 'anchorName' in document.documentElement.style
   let style = $sizeButton.parentElement.classList.contains('ytp-right-controls-right') ? 'new' : 'old'
   log('restoreMiniplayerButton:', style, 'style')
   $sizeButton.insertAdjacentHTML('beforebegin', html`
-<button id="cpfyt-miniplayer-button" class="ytp-button" title="(i)" aria-keyshortcuts="i">
+<button id="cpfyt-miniplayer-button" class="ytp-button" aria-keyshortcuts="i"${!supportsAnchorPositioning ? ` title="${getString('MINIPLAYER')} (i)"` : ''}>
   ${style == 'new' ? `
     <svg fill="none" height="24" viewBox="0 0 24 24" width="24">
       <path d="${Svgs.MINIPLAYER_NEW_PATH}" fill="white"></path>
@@ -4327,6 +4430,16 @@ async function restoreMiniplayerButton() {
     </svg>
   `}
 </button>
+${supportsAnchorPositioning ? `
+<div class="ytp-tooltip ytp-bottom">
+  <div class="ytp-tooltip-text-wrapper" aria-hidden="true">
+    <div class="ytp-tooltip-bottom-text${style == 'old' ? ' ytp-tooltip-text-no-title' : ''}">
+      <span class="ytp-tooltip-text">${getString('MINIPLAYER')}${style == 'old' ? ' (i)' : ''}</span>
+      ${style == 'new' ? '<div class="ytp-tooltip-keyboard-shortcut">I</div>' : ''}
+    </div>
+  </div>
+</div>
+` : ''}
   `)
   document.querySelector('#cpfyt-miniplayer-button')?.addEventListener('click', (e) => {
     e.preventDefault()

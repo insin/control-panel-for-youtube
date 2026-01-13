@@ -29,6 +29,7 @@ export type LocaleKey =
   | 'CLIP'
   | 'COLLABORATORS'
   | 'HIDE_CHANNEL'
+  | 'MINIPLAYER'
   | 'MIXES'
   | 'ORIGINAL'
   | 'SHARE'

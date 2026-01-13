@@ -3,6 +3,7 @@ TODO.md
 browser_action.html
 manifest.json
 node_modules/
+scripts/locales/desktop/*
 scripts/locales/locales.js
 scripts/locales/mobile/*
 scripts/translations.json
