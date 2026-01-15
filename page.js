@@ -1698,6 +1698,8 @@ const configureCss = (() => {
           'ytd-browse[page-subtype="home"] ytd-rich-section-renderer:not(:has(> #content > ytd-rich-shelf-renderer[is-shorts]))',
           // Looking for something different? tile in Home
           'ytd-browse[page-subtype="home"] ytd-rich-item-renderer:has(> #content > ytd-feed-nudge-renderer)',
+          // "Most relevant" shelf in Subscriptions
+          'ytd-browse[page-subtype="subscriptions"] ytd-rich-section-renderer:not(:first-child):not(:has(> #content > ytd-rich-shelf-renderer[is-shorts]))',
           // Suggested content shelves in Search
           `ytd-search #contents.ytd-item-section-renderer > ytd-shelf-renderer`,
           // People also search for in Search
@@ -2119,6 +2121,17 @@ const configureCss = (() => {
             --ytd-rich-grid-items-per-row: ${gridItemsPerRow} !important;
           }
         `)
+        if (!config.hideSuggestedSections) {
+          cssRules.push(`
+            ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer:not([is-shorts])${exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''} {
+              --ytd-rich-grid-items-per-row: ${gridItemsPerRow} !important;
+            }
+            /* Show "Most relevant" thumbnails beyond the ones YouTube thinks should be visible */
+            ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer:not([is-shorts]) ytd-rich-item-renderer:nth-child(-n+${gridItemsPerRow}) {
+              display: block !important;
+            }
+          `)
+        }
       }
       if (!config.hideShorts && config.minimumShortsPerRow != 'auto') {
         let shortsPerRow = Number(config.minimumShortsPerRow)
