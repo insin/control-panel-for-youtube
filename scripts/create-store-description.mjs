@@ -83,6 +83,7 @@ ${messages.ads}:
 • ${messages.hideMerchEtc}${messages.desktopVersion}
 
 ${messages.youtubeExperiments}:
+
 • ${messages.restoreSidebarSubscriptionsLink}${messages.desktopVersion}
 • ${messages.revertSidebarOrder}${messages.desktopVersion}
 • ${messages.revertGiantRelated}${messages.desktopVersion}

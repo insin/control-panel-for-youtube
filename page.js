@@ -1505,6 +1505,8 @@ const configureCss = (() => {
           'yt-download-list-item-view-model',
           // 1080p Premium quality menu item
           '.ytp-quality-menu .ytp-menuitem:has(.ytp-premium-label)',
+          // 4x Premium playback speed menu item
+          '.ytp-settings-menu .ytp-menuitem[role="menuitemradio"]:has(.ytp-menuitem-premium-badge)',
           // Download button
           'ytd-download-button-renderer',
         )
