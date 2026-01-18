@@ -1719,6 +1719,8 @@ const configureCss = (() => {
             '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer:not(:has(> div > ytm-backstage-post-thread-renderer))',
             // Looking for something different? tile in Home
             'ytm-rich-item-renderer:has(> .feed-nudge-wrapper)',
+            // "Most relevant" shelf in Subscriptions
+            '.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(> lazy-list > ytm-horizontal-card-list-renderer)',
           )
         } else {
           // Logged-out users can get "Try searching to get started" Home page
