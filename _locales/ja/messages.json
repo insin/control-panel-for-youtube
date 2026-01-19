@@ -117,7 +117,10 @@
     "message": "「質問する」ボタンを非表示にする"
   },
   "hideAutoDubbed": {
-    "message": "関連動画のオートダビング版を非表示にする"
+    "message": "オートダビング版を非表示にする"
+  },
+  "hideAutoDubbedNote": {
+    "message": "明示的にラベルが表示されている場合のみ"
   },
   "hideChannelBanner": {
     "message": "チャンネルバナー画像を非表示にする"

@@ -118,7 +118,10 @@
     "message": "Masquer le bouton « Demander »"
   },
   "hideAutoDubbed": {
-    "message": "Masquer les vidéos doublées automatiquement dans les recommandations"
+    "message": "Masquer les vidéos doublées automatiquement"
+  },
+  "hideAutoDubbedNote": {
+    "message": "Uniquement lorsqu'elles sont explicitement étiquetées"
   },
   "hideChannelBanner": {
     "message": "Masquer la bannière de la chaîne"

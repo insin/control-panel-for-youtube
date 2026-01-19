@@ -44,6 +44,7 @@ for (let translationId of [
   'hideAI',
   'hideAskButton',
   'hideAutoDubbed',
+  'hideAutoDubbedNote',
   'hideChannelBanner',
   'hideChannelWatermark',
   'hideChannels',

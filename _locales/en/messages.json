@@ -118,7 +118,10 @@
     "message": "Hide Ask button"
   },
   "hideAutoDubbed": {
-    "message": "Hide Auto-dubbed videos in Related"
+    "message": "Hide Auto-dubbed videos"
+  },
+  "hideAutoDubbedNote": {
+    "message": "Where explicitly labeled"
   },
   "hideChannelBanner": {
     "message": "Hide channel banner images"

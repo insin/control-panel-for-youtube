@@ -124,7 +124,7 @@ ${messages.videoLists}:
 • ${messages.hideUpcoming}
 • ${messages.hideMembersOnly}
 • ${messages.hideCollaborations}
-• ${messages.hideAutoDubbed}
+• ${messages.hideAutoDubbed} - ${messages.hideAutoDubbedNote}
 • ${messages.hideWatched}
 • ${messages.hideHiddenVideos} - ${messages.hideHiddenVideosNote}
 • ${messages.hideChannels} - ${messages.hideChannelsNote}

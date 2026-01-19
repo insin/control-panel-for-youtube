@@ -118,7 +118,10 @@
     "message": "隐藏“提问”按钮"
   },
   "hideAutoDubbed": {
-    "message": "隐藏相关视频中的自动配音视频"
+    "message": "隐藏自动配音视频"
+  },
+  "hideAutoDubbedNote": {
+    "message": "仅在有明确标记时"
   },
   "hideChannelBanner": {
     "message": "隐藏频道横幅图片"
