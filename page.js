@@ -3424,17 +3424,27 @@ async function observeDesktopRelatedVideos() {
 function observeDesktopYtLockupViewModelItemContent($gridItem, uniqueId) {
   let $content = $gridItem.querySelector(':scope > #content')
   observeElement($content, (mutations) => {
+    if (mutations.length == 0) {
+      let $lockupViewModel = $gridItem.querySelector('yt-lockup-view-model')
+      if ($lockupViewModel) {
+        log(uniqueId, 'has an initial yt-lockup-view-model')
+        requestAnimationFrame(() => manuallyHideVideo($gridItem, {hideDismissed: true}))
+      }
+      return
+    }
+
     for (let mutation of mutations) {
       for (let $addedNode of mutation.addedNodes) {
         if (!($addedNode instanceof HTMLElement)) continue
         if ($addedNode.nodeName == 'YT-LOCKUP-VIEW-MODEL') {
-          log('yt-lockup-view-model added to', uniqueId, $addedNode)
+          log('yt-lockup-view-model added to', uniqueId)
           // Let the new thumbnail finish rendering
           requestAnimationFrame(() => manuallyHideVideo($gridItem, {hideDismissed: true}))
         }
       }
     }
   }, {
+    leading: true,
     name: `${uniqueId} #content`,
     observers: pageObservers,
   })
