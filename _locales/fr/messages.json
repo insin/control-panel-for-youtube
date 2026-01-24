@@ -183,6 +183,9 @@
   "hideLive": {
     "message": "Masquer les vidéos en direct"
   },
+  "hideLowViews": {
+    "message": "Masquer les vidéos peu vues dans les recommandations"
+  },
   "hideMembersOnly": {
     "message": "Masquer les vidéos réservées aux membres"
   },

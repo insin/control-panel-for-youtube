@@ -182,6 +182,9 @@
   "hideLive": {
     "message": "ライブ動画を非表示"
   },
+  "hideLowViews": {
+    "message": "関連動画の再生数が少ない動画を非表示"
+  },
   "hideMembersOnly": {
     "message": "メンバー限定動画を非表示にする"
   },

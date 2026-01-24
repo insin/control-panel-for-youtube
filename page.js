@@ -24,6 +24,7 @@ let defaultConfig = {
   hideHomeCategories: false,
   hideInfoPanels: false,
   hideLive: false,
+  hideLowViews: false,
   hideMembersOnly: false,
   hideMetadata: false,
   hideMixes: false,
@@ -134,84 +135,98 @@ let config
  */
 const locales = {
   'af-ZA': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+kyke$',
     MINIPLAYER: 'Minispeler',
     ORIGINAL: 'oorspronklike',
     SHORTS: "Kortvideo's",
     UPLOAD_DATE: 'Oplaaidatum',
   },
   'am-ET': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+ዕይታዎች$',
     MINIPLAYER: 'ትንሽ አጫዋች',
     ORIGINAL: 'የመጀመሪያ',
     SHORTS: 'ቁምጣ',
     UPLOAD_DATE: 'የተለቀቀበት ቀን',
   },
   ar: {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+مشاهدات$',
     MINIPLAYER: 'المشغّل المصغّر',
     ORIGINAL: 'أصلي',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'تاريخ التحميل',
   },
   'as-IN': {
+    LOW_VIEWS_RE: '^(\\d{1,3})টা\\s+ভিউ$',
     MINIPLAYER: 'মিনিপ্লে’য়াৰ',
     ORIGINAL: 'মূল',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'আপলোডৰ তাৰিখ',
   },
   'az-Latn-AZ': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+baxış$',
     MINIPLAYER: 'Minipleyer',
     ORIGINAL: 'orijinal',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Yüklənmə tarixi',
   },
   'be-BY': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+праглядаў$',
     MINIPLAYER: 'Міні-прайгравальнік',
     ORIGINAL: 'арыгінальны',
     SHORTS: 'Кароткія відэа',
     UPLOAD_DATE: 'Дата загрузкі',
   },
   'bg-BG': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+показвания$',
     MINIPLAYER: 'Миниплейър',
     ORIGINAL: 'оригинален',
     SHORTS: 'Кратки видеоклипове',
     UPLOAD_DATE: 'Дата на качване',
   },
   'bn-BD': {
+    LOW_VIEWS_RE: '^(\\d{1,3})টি\\s+ভিউ$',
     MINIPLAYER: 'মিনিপ্লেয়ার',
     ORIGINAL: 'মূল',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'আপলোডের তারিখ',
   },
   'bs-Latn-BA': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+pregleda$',
     MINIPLAYER: 'Miniplejer',
     ORIGINAL: 'original',
     SHORTS: 'Shortsi',
     UPLOAD_DATE: 'Datum otpremanja',
   },
   'ca-ES': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+visualitzacions$',
     MINIPLAYER: 'Minireproductor',
     ORIGINAL: 'original',
     SHORTS: 'Curts',
     UPLOAD_DATE: 'Data de pujada',
   },
   'cs-CZ': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+zhlédnutí$',
     MINIPLAYER: 'Minipřehrávač',
     ORIGINAL: 'původní',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Datum nahrání',
   },
   'da-DK': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+visninger$',
     MINIPLAYER: 'Miniafspiller',
     ORIGINAL: 'originalt',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Uploaddato',
   },
   'de-DE': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+Aufrufe$',
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'Original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Uploaddatum',
   },
   'el-GR': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+προβολές$',
     MINIPLAYER: 'Ελαχιστοποιημένο player',
     ORIGINAL: 'πρωτότυπο',
     SHORTS: 'Shorts',
@@ -221,6 +236,7 @@ const locales = {
     CLIP: 'Clip',
     COLLABORATORS: 'Collaborators',
     HIDE_CHANNEL: 'Hide channel',
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+views$',
     MINIPLAYER: 'Miniplayer',
     MIXES: 'Mixes',
     ORIGINAL: 'original',
@@ -235,48 +251,56 @@ const locales = {
     UPLOAD_DATE: 'Upload date',
   },
   'es-419': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+vistas$',
     MINIPLAYER: 'Reproductor en miniatura',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Fecha de carga',
   },
   'es-ES': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+visualizaciones$',
     MINIPLAYER: 'Minirreproductor',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Fecha de subida',
   },
   'es-US': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+vistas$',
     MINIPLAYER: 'Reproductor en miniatura',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Fecha de carga',
   },
   'et-EE': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+vaatamist$',
     MINIPLAYER: 'Minipleier',
     ORIGINAL: 'algne',
     SHORTS: 'Lühivideod',
     UPLOAD_DATE: 'Üleslaadimise kuupäev',
   },
   'eu-ES': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+ikustaldi$',
     MINIPLAYER: 'Erreproduzigailu txikia',
     ORIGINAL: 'jatorrizkoa',
     SHORTS: 'Film laburrak',
     UPLOAD_DATE: 'Igotzeko data',
   },
   'fa-IR': {
+    LOW_VIEWS_RE: '^\\u200f(\\d{1,3})\\s+بازدید$',
     MINIPLAYER: 'پخش‌کننده کوچک',
     ORIGINAL: 'اصلی',
     SHORTS: 'کوته‌ویدیوهای YouTube',
     UPLOAD_DATE: 'تاریخ بارگذاری',
   },
   'fil-PH': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+panonood$',
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'orihinal',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Petsa ng pag-upload',
   },
   'fr-CA': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+visionnements$',
     MINIPLAYER: 'Minilecteur',
     ORIGINAL: 'originale',
     SHORTS: 'Shorts',
@@ -285,6 +309,7 @@ const locales = {
   'fr-FR': {
     COLLABORATORS: 'Collaborateurs',
     HIDE_CHANNEL: 'Masquer la chaîne',
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+vues$',
     MINIPLAYER: 'Lecteur réduit',
     MIXES: 'Mix',
     ORIGINAL: 'original',
@@ -299,60 +324,70 @@ const locales = {
     UPLOAD_DATE: 'Date de mise en ligne',
   },
   'gl-ES': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+reproducións$',
     MINIPLAYER: 'Reprodutor minimizado',
     ORIGINAL: 'orixinal',
     SHORTS: 'Curtas',
     UPLOAD_DATE: 'Data de subida',
   },
   'gu-IN': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+જોવાયાની\\s+સંખ્યા$',
     MINIPLAYER: 'મીનીપ્લેયર',
     ORIGINAL: 'ઑરિજિનલ',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'અપલોડ કર્યાની તારીખ',
   },
   'he-IL': {
+    LOW_VIEWS_RE: '^\\u202b(\\d{1,3})\\u202c\\s+צפיות$',
     MINIPLAYER: 'מיני-נגן',
     ORIGINAL: 'מקור',
     SHORTS: 'סרטוני Shorts',
     UPLOAD_DATE: 'תאריך העלאה',
   },
   'hi-IN': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+व्यू$',
     MINIPLAYER: 'मिनी प्लेयर',
     ORIGINAL: 'मूल',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'अपलोड करने की तारीख',
   },
   'hr-HR': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+pregleda$',
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'izvorno',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Datum prijenosa',
   },
   'hu-HU': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+megtekintés$',
     MINIPLAYER: 'Minilejátszó',
     ORIGINAL: 'eredeti',
     SHORTS: 'Rövid videók',
     UPLOAD_DATE: 'Feltöltés dátuma',
   },
   'hy-AM': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+դիտում$',
     MINIPLAYER: 'Մինի նվագարկիչ',
     ORIGINAL: 'բնօրինակ',
     SHORTS: 'Կարճ հոլովակներ',
     UPLOAD_DATE: 'Բեռնելու ամսաթիվ',
   },
   'id-ID': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+x\\s+ditonton$',
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'asli',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Tanggal upload',
   },
   'is-IS': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+áhorf$',
     MINIPLAYER: 'Smáspilari',
     ORIGINAL: 'upprunalegt',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Hleðsludagsetning',
   },
   'it-IT': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+visualizzazioni$',
     MINIPLAYER: 'Mini player',
     ORIGINAL: 'originale',
     SHORTS: 'Short',
@@ -362,6 +397,7 @@ const locales = {
     CLIP: 'クリップ',
     COLLABORATORS: 'コラボレーター',
     HIDE_CHANNEL: 'チャンネルを隠す',
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+回視聴$',
     MINIPLAYER: 'ミニプレーヤー',
     MIXES: 'ミックス',
     ORIGINAL: 'オリジナル',
@@ -375,240 +411,280 @@ const locales = {
     UPLOAD_DATE: 'アップロード日',
   },
   'ka-GE': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+ნახვა$',
     MINIPLAYER: 'მინიდამკვრელი',
     ORIGINAL: 'ორიგინალია',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'ატვირთვის თარიღი',
   },
   'kk-KZ': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+рет\\s+көрілді$',
     MINIPLAYER: 'Шағын ойнатқыш',
     ORIGINAL: 'түпнұсқа',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Жүктелген күні',
   },
   'km-KH': {
+    LOW_VIEWS_RE: '^ចំនួនមើល\\s+(\\d{1,3})$',
     MINIPLAYER: 'កម្មវិធី​ចាក់ខ្នាត​តូច',
     ORIGINAL: 'ដើម',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'កាលបរិច្ឆេទ​បង្ហោះ',
   },
   'kn-IN': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+ವೀಕ್ಷಣೆಗಳು$',
     MINIPLAYER: 'ಮಿನಿಪ್ಲೇಯರ್',
     ORIGINAL: 'ಮೂಲ',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'ಅಪ್‌ಲೋಡ್ ದಿನಾಂಕ',
   },
   'ko-KR': {
+    LOW_VIEWS_RE: '^조회수\\s+(\\d{1,3})회$',
     MINIPLAYER: '소형 플레이어',
     ORIGINAL: '원본',
     SHORTS: 'Shorts',
     UPLOAD_DATE: '업로드 날짜',
   },
   'ky-KG': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+жолу\\s+көрүлдү$',
     MINIPLAYER: 'Мини ойноткуч',
     ORIGINAL: 'түпнуска',
     SHORTS: 'Кыска видеолор',
     UPLOAD_DATE: 'Жүктөлгөн күнү',
   },
   'lo-LA': {
+    LOW_VIEWS_RE: '^ຍອດເບິ່ງ\\s+(\\d{1,3})\\s+ເທື່ອ$',
     MINIPLAYER: 'ຕົວຫຼິ້ນຂະໜາດນ້ອຍ',
     ORIGINAL: 'ຕົ້ນສະບັບ',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'ວັນທີອັບໂຫລດ',
   },
   'lt-LT': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+views$',
     MINIPLAYER: 'Sumažinta leistuvė',
     ORIGINAL: 'pradinis',
     SHORTS: 'Klipukai',
     UPLOAD_DATE: 'Įkėlimo data',
   },
   'lv-LV': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+skatījumi$',
     MINIPLAYER: 'Mini atskaņotājs',
     ORIGINAL: 'oriģināls',
     SHORTS: 'Īsie videoklipi',
     UPLOAD_DATE: 'Augšupielādes datums',
   },
   'mk-MK': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+прегледи$',
     MINIPLAYER: 'Миниплеер',
     ORIGINAL: 'оригинален',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Датум на прикачување',
   },
   'ml-IN': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+കാഴ്‌ച$',
     MINIPLAYER: 'മിനിപ്ലേയർ',
     ORIGINAL: 'ഒറിജിനൽ',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'അപ്‌ലോഡ് തീയതി',
   },
   'mn-MN': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+үзэлт$',
     MINIPLAYER: 'Мини тоглуулагч',
     ORIGINAL: 'эх хувь',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Байршуулсан огноо',
   },
   'mr-IN': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+व्ह्यू$',
     MINIPLAYER: 'मिनीप्लेअर',
     ORIGINAL: 'मूळ',
     SHORTS: 'शॉर्ट',
     UPLOAD_DATE: 'अपलोड केल्याची तारीख',
   },
   'ms-MY': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+tontonan$',
     MINIPLAYER: 'Pemain mini',
     ORIGINAL: 'asal',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Tarikh muat naik',
   },
   'my-MM': {
+    LOW_VIEWS_RE: '^ကြည့်ရှုမှု\\s+(\\d{1,3})$',
     MINIPLAYER: 'မီနီပလေယာ',
     ORIGINAL: 'မူရင်း',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'တင်ခဲ့သည့် နေ့စွဲ',
   },
   'nb-NO': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+avspillinger$',
     MINIPLAYER: 'Minispiller',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Opplastingsdato',
   },
   'ne-NP': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+भ्यु$',
     MINIPLAYER: 'मिनिप्लेयर',
     ORIGINAL: 'मूल',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'अपलोड गरिएको मिति',
   },
   'nl-NL': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+weergaven$',
     MINIPLAYER: 'Minispeler',
     ORIGINAL: 'Originele',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Upload-datum',
   },
   'or-IN': {
+    LOW_VIEWS_RE: '^(\\d{1,3})ଟି\\s+ଭ୍ୟୁ$',
     MINIPLAYER: 'ମିନି ପ୍ଲେୟାର',
     ORIGINAL: 'ମୂଳ',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'ଅପଲୋଡ୍ ତାରିଖ',
   },
   'pa-Guru-IN': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+ਵਾਰ\\s+ਦੇਖਿਆ$',
     MINIPLAYER: 'ਮਿਨੀ ਪਲੇਅਰ',
     ORIGINAL: 'ਮੂਲ',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'ਅੱਪਲੋਡ ਕਰਨ ਦੀ ਤਾਰੀਖ',
   },
   'pl-PL': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+wyświetleń$',
     MINIPLAYER: 'Miniodtwarzacz',
     ORIGINAL: 'oryginalny',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Data przesłania',
   },
   'pt-BR': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+visualizações$',
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Data de envio',
   },
   'pt-PT': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+visualizações$',
     MINIPLAYER: 'Minileitor',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Data de carregamento',
   },
   'ro-RO': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+vizionări$',
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Data încărcării',
   },
   'ru-RU': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+просмотров$',
     MINIPLAYER: 'Мини-проигрыватель',
     ORIGINAL: 'оригинальная',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Дата загрузки',
   },
   'si-LK': {
+    LOW_VIEWS_RE: '^බැලීම්\\s+(\\d{1,3})$',
     MINIPLAYER: 'කුඩා වාදකය',
     ORIGINAL: 'මුල්',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'උඩුගත කළ දිනය',
   },
   'sk-SK': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+zhliadnutí$',
     MINIPLAYER: 'Miniprehrávač',
     ORIGINAL: 'pôvodná',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Dátum nahrania',
   },
   'sl-SI': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+ogledov$',
     MINIPLAYER: 'Minipredvajalnik',
     ORIGINAL: 'Izvirnik',
     SHORTS: 'Kratki videoposnetki',
     UPLOAD_DATE: 'Datum nalaganja',
   },
   'sq-AL': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+shikime$',
     MINIPLAYER: 'Miniluajtësi',
     ORIGINAL: 'origjinale',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Data e ngarkimit',
   },
   'sr-Cyrl-RS': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+прегледа$',
     MINIPLAYER: 'Мини-плејер',
     ORIGINAL: 'оригинална',
     SHORTS: 'Шортси',
     UPLOAD_DATE: 'Датум отпремања',
   },
   'sr-Latn-RS': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+pregleda$',
     MINIPLAYER: 'Mini-plejer',
     ORIGINAL: 'originalna',
     SHORTS: 'Šortsi',
     UPLOAD_DATE: 'Datum otpremanja',
   },
   'sw-TZ': {
+    LOW_VIEWS_RE: '^Kutazamwa:\\s+(\\d{1,3})$',
     MINIPLAYER: 'Kichezaji kidogo',
     ORIGINAL: 'halisi',
     SHORTS: 'Video Fupi',
     UPLOAD_DATE: 'Tarehe ya kupakia',
   },
   'ta-IN': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+பார்வைகள்$',
     MINIPLAYER: 'மினிபிளேயர்',
     ORIGINAL: 'அசல்',
     SHORTS: 'Shorts வீடியோக்கள்',
     UPLOAD_DATE: 'பதிவேற்றிய தேதி',
   },
   'te-IN': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+వీక్షణలు$',
     MINIPLAYER: 'మినీ ప్లేయర్',
     ORIGINAL: 'అసలైనది',
     SHORTS: 'షార్ట్‌లు',
     UPLOAD_DATE: 'అప్‌లోడ్ తేదీ',
   },
   'th-TH': {
+    LOW_VIEWS_RE: '^การดู\\s+(\\d{1,3})\\s+ครั้ง$',
     MINIPLAYER: 'มินิเพลเยอร์',
     ORIGINAL: 'เสียงต้นฉบับ',
     SHORTS: 'วิดีโอสั้น',
     UPLOAD_DATE: 'วันที่อัปโหลด',
   },
   'tr-TR': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+görüntüleme$',
     MINIPLAYER: 'Mini oynatıcı',
     ORIGINAL: 'orijinal',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Yükleme tarihi',
   },
   'uk-UA': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+переглядів$',
     MINIPLAYER: 'Мініпрогравач',
     ORIGINAL: 'оригінал',
     SHORTS: 'Відео Shorts',
     UPLOAD_DATE: 'Дата завантаження',
   },
   'ur-PK': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+ملاحظات$',
     MINIPLAYER: 'مِنی پلیئر',
     ORIGINAL: 'اصل',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'اپ لوڈ کرنے کی تاریخ',
   },
   'uz-Latn-UZ': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+marta$',
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
     UPLOAD_DATE: 'Yuklangan sana',
   },
   'vi-VN': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+lượt\\s+xem$',
     MINIPLAYER: 'Trình phát thu nhỏ',
     ORIGINAL: 'gốc',
     SHORTS: 'Shorts',
@@ -618,6 +694,7 @@ const locales = {
     CLIP: '剪辑',
     COLLABORATORS: '联合创作者',
     HIDE_CHANNEL: '隐藏频道',
+    LOW_VIEWS_RE: '^(\\d{1,3})次观看$',
     MINIPLAYER: '迷你播放器',
     MIXES: '合辑',
     ORIGINAL: '原始',
@@ -632,18 +709,21 @@ const locales = {
     UPLOAD_DATE: '上传日期',
   },
   'zh-Hant-HK': {
+    LOW_VIEWS_RE: '^收看次數：(\\d{1,3})\\s+次$',
     MINIPLAYER: '迷你播放器',
     ORIGINAL: '原聲',
     SHORTS: 'Shorts',
     UPLOAD_DATE: '上載日期',
   },
   'zh-Hant-TW': {
+    LOW_VIEWS_RE: '^觀看次數：(\\d{1,3})次$',
     MINIPLAYER: '迷你播放器',
     ORIGINAL: '原文',
     SHORTS: 'Shorts',
     UPLOAD_DATE: '上傳日期',
   },
   'zu-ZA': {
+    LOW_VIEWS_RE: '^(\\d{1,3})\\s+ukubukwa$',
     MINIPLAYER: 'Isidlali Esincane',
     ORIGINAL: 'yokuqala',
     SHORTS: 'Okufushane',
@@ -685,6 +765,7 @@ const Classes = {
   HIDE_CHANNEL: 'cpfyt-hide-channel',
   HIDE_COLLABORATIONS: 'cpfyt-hide-collaborations',
   HIDE_HIDDEN: 'cpfyt-hide-hidden',
+  HIDE_LOW_VIEWS: 'cpfyt-hide-low-views',
   HIDE_OPEN_APP: 'cpfyt-hide-open-app',
   HIDE_STREAMED: 'cpfyt-hide-streamed',
   HIDE_WATCHED: 'cpfyt-hide-watched',
@@ -1333,6 +1414,14 @@ const configureCss = (() => {
           // Related
           'ytm-item-section-renderer[section-identifier="related-items"] > lazy-list > ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
         )
+      }
+    }
+
+    if (config.hideLowViews) {
+      if (debugManualHiding) {
+        cssRules.push(`.${Classes.HIDE_LOW_VIEWS} { outline: 2px solid hotpink !important; }`)
+      } else {
+        hideCssSelectors.push(`.${Classes.HIDE_LOW_VIEWS}`)
       }
     }
 
@@ -4423,6 +4512,21 @@ function manuallyHideVideo($video, {hideDismissed = false} = {}) {
       $video.querySelector('ytm-video-with-context-renderer')?.data?.shortBylineText?.runs?.[0]?.navigationEndpoint?.showSheetCommand?.panelLoadingStrategy?.inlineContent?.sheetViewModel?.header?.panelHeaderViewModel?.title?.content == getString('COLLABORATORS')
     )
   }
+
+  if (config.hideLowViews && isVideoPage()) {
+    let hide = false
+    let $views
+    if (desktop) {
+      $views = $video.querySelector('.yt-content-metadata-view-model__metadata-row:nth-of-type(2) .yt-content-metadata-view-model__metadata-text')
+    }
+    if (mobile) {
+      $views = $video.querySelector('ytm-badge-and-byline-renderer [role="text"][aria-label]')
+    }
+    if ($views) {
+      hide = Boolean($views.textContent.match(getString('LOW_VIEWS_RE')))
+    }
+    $video.classList.toggle(Classes.HIDE_LOW_VIEWS, hide)
+  }
 }
 
 async function redirectFromHome() {
@@ -4744,36 +4848,37 @@ async function tweakVideoPage() {
   if (config.disableAutoplay) {
     disableAutoplay()
   }
-  if (desktop && config.alwaysUseTheaterMode) {
-    alwaysUseTheaterMode()
-  }
-  if (desktop && config.alwaysUseOriginalAudio) {
-    alwaysUseOriginalAudio('#movie_player')
-  }
-  if (desktop && config.disableTheaterBigMode) {
-    disableTheaterBigMode()
-  }
-  if (desktop && config.hideChannels && !config.hideEndVideos && config.hiddenChannels.length > 0) {
-    observeDesktopEndscreenVideos()
-  }
-  if (desktop && config.restoreMiniplayerButton) {
-    restoreMiniplayerButton()
-  }
-
-  if (!config.hideWatched && !config.hideStreamed && !config.hideChannels) return
-
   if (desktop) {
-    observeDesktopRelatedVideos()
+    if (config.alwaysUseTheaterMode) {
+      alwaysUseTheaterMode()
+    }
+    if (config.alwaysUseOriginalAudio) {
+      alwaysUseOriginalAudio('#movie_player')
+    }
+    if (config.disableTheaterBigMode) {
+      disableTheaterBigMode()
+    }
+    if (config.hideChannels && !config.hideEndVideos && config.hiddenChannels.length > 0) {
+      observeDesktopEndscreenVideos()
+    }
+    if (config.restoreMiniplayerButton) {
+      restoreMiniplayerButton()
+    }
   }
-  if (mobile) {
-    // If the video changes on mobile, related videos are rendered from scratch
-    observeMobileVideoList({
-      name: 'related <lazy-list>',
-      selector: 'ytm-item-section-renderer[section-identifier="related-items"] > lazy-list',
-      page: 'related',
-      // <ytm-compact-autoplay-renderer> displays as a large item on bigger mobile screens
-      videoElements: new Set(['ytm-video-with-context-renderer', 'ytm-compact-autoplay-renderer']),
-    })
+  if (config.hideWatched || config.hideStreamed || config.hideChannels || config.hideLowViews) {
+    if (desktop) {
+      observeDesktopRelatedVideos()
+    }
+    if (mobile) {
+      // If the video changes on mobile, related videos are rendered from scratch
+      observeMobileVideoList({
+        name: 'related <lazy-list>',
+        selector: 'ytm-item-section-renderer[section-identifier="related-items"] > lazy-list',
+        page: 'related',
+        // <ytm-compact-autoplay-renderer> displays as a large item on bigger mobile screens
+        videoElements: new Set(['ytm-video-with-context-renderer', 'ytm-compact-autoplay-renderer']),
+      })
+    }
   }
 }
 

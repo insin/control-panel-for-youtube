@@ -29,6 +29,7 @@ export type LocaleKey =
   | 'CLIP'
   | 'COLLABORATORS'
   | 'HIDE_CHANNEL'
+  | 'LOW_VIEWS_RE'
   | 'MINIPLAYER'
   | 'MIXES'
   | 'ORIGINAL'
@@ -71,6 +72,7 @@ export type SiteConfig = {
   hideHomeCategories: boolean
   hideInfoPanels: boolean
   hideLive: boolean
+  hideLowViews: boolean
   hideMembersOnly: boolean
   hideMetadata: boolean
   hideMixes: boolean

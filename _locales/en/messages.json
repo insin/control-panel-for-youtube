@@ -183,6 +183,9 @@
   "hideLive": {
     "message": "Hide Live videos"
   },
+  "hideLowViews": {
+    "message": "Hide low view videos in Related"
+  },
   "hideMembersOnly": {
     "message": "Hide Members only videos"
   },

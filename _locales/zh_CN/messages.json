@@ -183,6 +183,9 @@
   "hideLive": {
     "message": "隐藏视频直播"
   },
+  "hideLowViews": {
+    "message": "隐藏相关视频中的低播放量视频"
+  },
   "hideMembersOnly": {
     "message": "隐藏会员专属视频"
   },

@@ -124,6 +124,7 @@ ${messages.videoLists}:
 • ${messages.hideUpcoming}
 • ${messages.hideMembersOnly}
 • ${messages.hideCollaborations}
+• ${messages.hideLowViews}
 • ${messages.hideAutoDubbed} - ${messages.hideAutoDubbedNote}
 • ${messages.hideWatched}
 • ${messages.hideHiddenVideos} - ${messages.hideHiddenVideosNote}
