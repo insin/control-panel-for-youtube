@@ -1885,6 +1885,7 @@ const configureCss = (() => {
           .rich-thumbnail.ytd-ghost-grid-renderer,
           /* Players */
           ytd-watch-flexy[rounded-player] #ytd-player.ytd-watch-flexy,
+          ytd-channel-video-player-renderer[rounded] #player.ytd-channel-video-player-renderer,
           .ytdMiniplayerComponentContent,
           .ytp-miniplayer-scrim,
           /* Under video */
