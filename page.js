@@ -719,7 +719,8 @@ const Svgs = {
 }
 
 // YouTube channel URLs: https://support.google.com/youtube/answer/6180214
-const URL_CHANNEL_RE = /\/(?:@[^\/]+|(?:c|channel|user)\/[^\/]+)(?:\/(featured|videos|shorts|streams|playlists|community|posts|membership|search))?\/?$/
+const URL_CHANNEL_RE = /\/(?:@[^\/]+|(?:c|channel|user)\/[^\/]+)(?:\/(featured|videos|shorts|streams|podcasts|playlists|community|posts|membership|search))?\/?$/
+const URL_CHANNEL_TAB_RE = /\/(featured|videos|shorts|streams|podcasts|playlists|community|posts|membership|search)\/?$/
 //#endregion
 
 //#region State
@@ -2629,10 +2630,6 @@ function isHomePage() {
   return location.pathname == '/'
 }
 
-function isChannelPage() {
-  return URL_CHANNEL_RE.test(location.pathname)
-}
-
 function isSearchPage() {
   return location.pathname == '/results'
 }
@@ -2894,8 +2891,6 @@ function handleCurrentUrl() {
   log('handling', getCurrentUrl())
   disconnectObservers(pageObservers, 'page')
 
-  let page = ''
-  let channelTab = ''
   if (isHomePage()) {
     tweakHomePage()
   }
@@ -2910,23 +2905,6 @@ function handleCurrentUrl() {
   }
   else if (isShortsPage()) {
     tweakShortsPage()
-  }
-  else if (isChannelPage()) {
-    page = 'channel'
-    channelTab = location.pathname.match(URL_CHANNEL_RE)[1] || 'featured'
-    tweakChannelPage()
-  }
-  // Add a current page indicator to html[cpfyt-page] when we need a CSS hook
-  if (mobile && document.documentElement.getAttribute('cpfyt-page') != page) {
-    document.documentElement.setAttribute('cpfyt-page', page)
-  }
-  if (desktop) {
-    if (channelTab) {
-      document.documentElement.setAttribute('cpfyt-channel-tab', channelTab)
-    }
-    else if (document.documentElement.hasAttribute('cpfyt-channel-tab')) {
-      document.documentElement.removeAttribute('cpfyt-channel-tab')
-    }
   }
 
   if (location.pathname.startsWith('/shorts/')) {
@@ -3637,6 +3615,27 @@ function observeDesktopContextMenu($popupContainer) {
   }
 }
 
+async function pauseChannelTrailer() {
+  let $channelTrailer = /** @type {HTMLVideoElement} */ (
+    await getElement('ytd-channel-video-player-renderer video', {
+      name: `channel trailer`,
+      stopIf: currentUrlChanges(),
+      timeout: 2000,
+    })
+  )
+  if (!$channelTrailer) return
+  function pauseTrailer() {
+    log(`pauseChannelTrailers: pausing channel trailer`, {readyState: $channelTrailer.readyState})
+    $channelTrailer.pause()
+  }
+  // Prevent the next play attempt if the trailer hasn't started yet
+  if ($channelTrailer.paused && $channelTrailer.readyState == 0) {
+    $channelTrailer.addEventListener('play', pauseTrailer, {once: true})
+  } else {
+    pauseTrailer()
+  }
+}
+
 /**
  * @param {HTMLElement} $dialog
  * @param {HTMLElement} $popupContainer
@@ -4272,6 +4271,74 @@ async function observeMobileVideoList(options) {
   log(initialItemCount, `initial ${page} video${s(initialItemCount)}`)
 }
 
+// We can't reliabily detect navigation to a channel due to legacy handles, so
+// we use alternative means of detecting nagivation.
+async function observeYouTubeNavigation() {
+  if (desktop) {
+    function handleChannelPage(isChannelPage) {
+      if (isChannelPage) {
+        log('handling', getCurrentUrl(), 'via yt-navigate-finish')
+        let channelTab = location.pathname.match(URL_CHANNEL_TAB_RE)?.[1] ?? 'featured'
+        document.documentElement.setAttribute('cpfyt-channel-tab', channelTab)
+        tweakChannelPage()
+      } else {
+        document.documentElement.removeAttribute('cpfyt-channel-tab')
+      }
+    }
+
+    function onYtNavigateFinish(e) {
+      let pageType = e.detail?.pageType
+      log('yt-navigate-finish pageType', pageType)
+      // Default (i.e. Featured): EgC4AQCSAwDyBgQKAjIA
+      // Featured: EghmZWF0dXJlZPIGBAoCMgA%3D
+      // let browseEndpointParams = e.detail?.endpoint?.browseEndpoint?.params
+      handleChannelPage(pageType == 'channel')
+    }
+
+    handleChannelPage(Boolean(document.querySelector('ytd-browse[page-subtype="channels"][role="main"]')))
+
+    window.addEventListener('yt-navigate-finish', onYtNavigateFinish)
+    globalObservers.set('youtube events', {
+      disconnect() {
+        window.removeEventListener('yt-navigate-finish', onYtNavigateFinish)
+      }
+    })
+  }
+
+  if (mobile) {
+    let $ytmBrowse = await getElement('ytm-browse')
+    observeElement($ytmBrowse, (mutations) => {
+      if (mutations.length == 0) {
+        if ($ytmBrowse.querySelector(':scope > ytm-channel-metadata-renderer')) {
+          document.documentElement.setAttribute('cpfyt-page', 'channel')
+        } else {
+          document.documentElement.removeAttribute('cpfyt-page')
+        }
+        return
+      }
+
+      for (let mutation of mutations) {
+        for (let addedNode of mutation.addedNodes) {
+          if (addedNode.nodeName == 'YTM-CHANNEL-METADATA-RENDERER') {
+            document.documentElement.setAttribute('cpfyt-page', 'channel')
+            return
+          }
+        }
+        for (let removedNode of mutation.removedNodes) {
+          if (removedNode.nodeName == 'YTM-CHANNEL-METADATA-RENDERER') {
+            document.documentElement.removeAttribute('cpfyt-page')
+            return
+          }
+        }
+      }
+    }, {
+      leading: true,
+      name: 'ytm-browse',
+      observers: globalObservers,
+    })
+  }
+}
+
 /** @param {MouseEvent} e */
 function onDocumentClick(e) {
   $lastClickedElement = /** @type {HTMLElement} */ (e.target)
@@ -4614,35 +4681,8 @@ async function tweakHomePage() {
 }
 
 async function tweakChannelPage() {
-  let seen = new Map()
-  function isOnFeaturedTab() {
-    if (!seen.has(location.pathname)) {
-      let section = location.pathname.match(URL_CHANNEL_RE)[1]
-      seen.set(location.pathname, section == undefined || section == 'featured')
-    }
-    return seen.get(location.pathname)
-  }
-
-  if (desktop && config.pauseChannelTrailers && isOnFeaturedTab()) {
-    let $channelTrailer = /** @type {HTMLVideoElement} */ (
-      await getElement('ytd-channel-video-player-renderer video', {
-        name: `channel trailer`,
-        stopIf: () => !isOnFeaturedTab(),
-        timeout: 2000,
-      })
-    )
-    if ($channelTrailer) {
-      function pauseTrailer() {
-        log(`pauseChannelTrailers: pausing channel trailer`, {readyState: $channelTrailer.readyState})
-        $channelTrailer.pause()
-      }
-      // Prevent the next play attempt if the trailer hasn't started yet
-      if ($channelTrailer.paused && $channelTrailer.readyState == 0) {
-        $channelTrailer.addEventListener('play', pauseTrailer, {once: true})
-      } else {
-        pauseTrailer()
-      }
-    }
+  if (desktop && config.pauseChannelTrailers && document.documentElement.getAttribute('cpfyt-channel-tab') == 'featured') {
+    pauseChannelTrailer()
   }
 }
 
@@ -5017,6 +5057,7 @@ function main() {
     }
     observeTitle()
     observePopups()
+    observeYouTubeNavigation()
     document.addEventListener('click', onDocumentClick, true)
     globalObservers.set('document clicks', {
       disconnect() {
