@@ -4827,6 +4827,14 @@ function blockAds() {
       delete data.adPlacements
       delete data.adSlots
       delete data.playerAds
+      log('blockAds: patched /player response format')
+    }
+    else if (Array.isArray(data) && data[0]?.playerResponse?.videoDetails) {
+      let playerResponse = data[0].playerResponse
+      delete playerResponse.adPlacements
+      delete playerResponse.adSlots
+      delete playerResponse.playerAds
+      log('blockAds: patched /get_watch response format')
     }
   }
 
@@ -4846,7 +4854,7 @@ function blockAds() {
     if (
       (config && !(config.enabled && config.blockAds)) ||
       !(request instanceof Request) ||
-      !url || !url.includes('/player') && !url.includes('/reel_watch_sequence') ||
+      !url || !url.includes('/player') && !url.includes('watch?') && !url.includes('/reel_watch_sequence') ||
       // Ignore adblock detection requests with data: URL payloads
       !Request_clone.call(request).url.startsWith('https://')
     ) {
@@ -4857,7 +4865,8 @@ function blockAds() {
       return Response_clone.call(response).text().then(responseText => {
         try {
           let data = JSON.parse(responseText)
-          if (url.includes('/player')) {
+          if (url.includes('/player') || url.includes('watch?')) {
+            log('blockAds: patching', url, 'response')
             processPlayerResponse(data)
           }
           else if (url.includes('/reel_watch_sequence')) {
