@@ -719,7 +719,8 @@ const Svgs = {
 }
 
 // YouTube channel URLs: https://support.google.com/youtube/answer/6180214
-const URL_CHANNEL_RE = /\/(?:@[^\/]+|(?:c|channel|user)\/[^\/]+)(?:\/(featured|videos|shorts|streams|playlists|community|posts|membership|search))?\/?$/
+const URL_CHANNEL_RE = /\/(?:@[^\/]+|(?:c|channel|user)\/[^\/]+)(?:\/(featured|videos|shorts|streams|podcasts|playlists|community|posts|membership|search))?\/?$/
+const URL_CHANNEL_TAB_RE = /\/(featured|videos|shorts|streams|podcasts|playlists|community|posts|membership|search)\/?$/
 //#endregion
 
 //#region State
@@ -2913,7 +2914,7 @@ function handleCurrentUrl() {
   }
   else if (isChannelPage()) {
     page = 'channel'
-    channelTab = location.pathname.match(URL_CHANNEL_RE)[1] || 'featured'
+    channelTab = location.pathname.match(URL_CHANNEL_TAB_RE)?.[1] ?? 'featured'
     tweakChannelPage()
   }
   // Add a current page indicator to html[cpfyt-page] when we need a CSS hook
