@@ -401,5 +401,8 @@
   },
   "videoPages": {
     "message": "Pages de vidéo"
+  },
+  "xsmall": {
+    "message": "Très petit"
   }
 }

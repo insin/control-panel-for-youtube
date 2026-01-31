@@ -134,7 +134,7 @@ export type SiteConfig = {
   restoreSortByUploadDate: boolean
   revertGiantRelated: boolean
   revertSidebarOrder: boolean
-  searchThumbnailSize: 'large' | 'medium' | 'small'
+  searchThumbnailSize: 'large' | 'medium' | 'small' | 'xsmall'
   snapshotFormat: 'jpeg' | 'png'
   snapshotQuality: string
   tidyGuideSidebar: boolean

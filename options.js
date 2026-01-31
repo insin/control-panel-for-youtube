@@ -9,6 +9,7 @@ for (let optionValue of [
   'light',
   'medium',
   'small',
+  'xsmall',
 ]) {
   let label = chrome.i18n.getMessage(optionValue)
   for (let $option of document.querySelectorAll(`option[value="${optionValue}"]`)) {

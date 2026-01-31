@@ -2447,6 +2447,7 @@ const configureCss = (() => {
             max-width: ${{
               medium: 420,
               small: 360,
+              xsmall: 280,
             }[config.searchThumbnailSize]}px !important;
           }
         `)

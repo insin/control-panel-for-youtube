@@ -398,5 +398,8 @@
   },
   "videoPages": {
     "message": "视频页面"
+  },
+  "xsmall": {
+    "message": "极小"
   }
 }

@@ -400,5 +400,8 @@
   },
   "videoPages": {
     "message": "動画ページ"
+  },
+  "xsmall": {
+    "message": "極小"
   }
 }
