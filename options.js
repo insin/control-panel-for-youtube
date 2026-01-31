@@ -112,6 +112,7 @@ for (let translationId of [
   'qualityHigh',
   'qualityLow',
   'qualityMedium',
+  'recentChanges',
   'redirectLogoToSubscriptions',
   'redirectShorts',
   'removePink',
@@ -131,9 +132,13 @@ for (let translationId of [
   'useSquareCorners',
   'videoLists',
   'videoPages',
-  'youtubeExperiments',
 ]) {
-  document.getElementById(translationId).textContent = chrome.i18n.getMessage(translationId)
+  let $el = document.getElementById(translationId)
+  if ($el) {
+    $el.textContent = chrome.i18n.getMessage(translationId)
+  } else {
+    console.warn('could not find element for translationId', translationId)
+  }
 }
 
 let $body = document.body

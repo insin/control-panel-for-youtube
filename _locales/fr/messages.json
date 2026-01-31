@@ -339,6 +339,9 @@
   "qualityMedium": {
     "message": "Moyenne"
   },
+  "recentChanges": {
+    "message": "Changements récents sur YouTube"
+  },
   "redirectLogoToSubscriptions": {
     "message": "Rediriger le logo YouTube vers les Abonnements"
   },
@@ -398,8 +401,5 @@
   },
   "videoPages": {
     "message": "Pages de vidéo"
-  },
-  "youtubeExperiments": {
-    "message": "Expérimentations YouTube"
   }
 }

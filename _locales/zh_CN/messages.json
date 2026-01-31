@@ -339,6 +339,9 @@
   "qualityMedium": {
     "message": "中"
   },
+  "recentChanges": {
+    "message": "YouTube 近期更改"
+  },
   "redirectLogoToSubscriptions": {
     "message": "点击Logo跳转至订阅"
   },
@@ -395,8 +398,5 @@
   },
   "videoPages": {
     "message": "视频页面"
-  },
-  "youtubeExperiments": {
-    "message": "YouTube 实验"
   }
 }

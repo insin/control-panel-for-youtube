@@ -338,6 +338,9 @@
   "qualityMedium": {
     "message": "中"
   },
+  "recentChanges": {
+    "message": "最近のYouTubeの変更"
+  },
   "redirectLogoToSubscriptions": {
     "message": "ロゴのリンク先を登録チャンネルにする"
   },
@@ -397,8 +400,5 @@
   },
   "videoPages": {
     "message": "動画ページ"
-  },
-  "youtubeExperiments": {
-    "message": "YouTubeの実験"
   }
 }

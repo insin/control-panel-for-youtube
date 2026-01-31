@@ -82,7 +82,7 @@ ${messages.ads}:
 • ${messages.hideSponsored}
 • ${messages.hideMerchEtc}${messages.desktopVersion}
 
-${messages.youtubeExperiments}:
+${messages.recentChanges}:
 
 • ${messages.restoreSidebarSubscriptionsLink}${messages.desktopVersion}
 • ${messages.revertSidebarOrder}${messages.desktopVersion}
