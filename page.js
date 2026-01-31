@@ -2366,8 +2366,12 @@ const configureCss = (() => {
       }
       if (config.revertGiantRelated) {
         cssRules.push(`
+          /* Reduce width of secondary sidebar (from 550px when 2 column grid is being used) */
+          ytd-watch-flexy #secondary {
+            max-width: 402px;
+          }
           #secondary #related {
-            /* .yt-lockup-view-model--horizontal styles */
+            /* Apply --horizontal styles when --vertical is used */
             .yt-lockup-view-model--vertical {
               -moz-box-orient:vertical;
               -moz-box-direction:normal;
@@ -2407,6 +2411,11 @@ const configureCss = (() => {
             .yt-lockup-view-model--vertical .yt-lockup-view-model__content-image {
               width:160px;
               padding-bottom:0;
+            }
+
+            /* When 2 column grid is being used, force it to be 1 column */
+            ytd-watch-next-secondary-results-renderer[use-dynamic-secondary-columns] #items.ytd-watch-next-secondary-results-renderer {
+              grid-template-columns:1fr;
             }
           }
         `)

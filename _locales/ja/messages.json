@@ -357,7 +357,7 @@
     "message": "検索フィルタの「アップロード日」を復元する"
   },
   "revertGiantRelated": {
-    "message": "関連動画のサムネイルを小さく復元する"
+    "message": "関連動画のサイドバーレイアウトを復元する"
   },
   "revertSidebarOrder": {
     "message": "サイドバーの項目の並び順を復元する"

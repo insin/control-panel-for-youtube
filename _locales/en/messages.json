@@ -358,7 +358,7 @@
     "message": "Restore \"Upload date\" search filter"
   },
   "revertGiantRelated": {
-    "message": "Restore small thumbnails in Related"
+    "message": "Restore Related sidebar layout"
   },
   "revertSidebarOrder": {
     "message": "Restore order of sidebar items"

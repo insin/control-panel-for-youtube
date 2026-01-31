@@ -358,7 +358,7 @@
     "message": "恢复“上传日期”搜索筛选"
   },
   "revertGiantRelated": {
-    "message": "恢复相关视频中的小缩略图"
+    "message": "恢复相关视频侧边栏布局"
   },
   "revertSidebarOrder": {
     "message": "恢复侧边栏项目的顺序"

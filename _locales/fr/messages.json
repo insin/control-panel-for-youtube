@@ -358,7 +358,7 @@
     "message": "Restaurer le filtre de recherche « Date de mise en ligne »"
   },
   "revertGiantRelated": {
-    "message": "Restaurer les petites miniatures dans les recommandations"
+    "message": "Restaurer la disposition de la barre latérale des recommandations"
   },
   "revertSidebarOrder": {
     "message": "Restaurer l'ordre des éléments de la barre latérale"
