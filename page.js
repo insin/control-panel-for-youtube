@@ -3651,6 +3651,11 @@ async function restoreSortByUploadDate($dialog, $popupContainer) {
   })
   if (!$prioritiseFilterGroup) return
 
+  if ($prioritiseFilterGroup.querySelectorAll('a#endpoint').length == 4) {
+    log('restoreSortByUploadDate: sort by filters still present')
+    return
+  }
+
   function getUploadDateFilterState() {
     // Upload Date + Videos
     let sp = 'CAISAhAB'
@@ -3671,15 +3676,12 @@ async function restoreSortByUploadDate($dialog, $popupContainer) {
     $prioritiseFilterGroup.insertAdjacentHTML('beforeend', html`
       <div id="cpfyt-upload-date-filter"><a>${getString('UPLOAD_DATE')}</a></div>
     `)
-    let $uploadDateLink = /** @type {HTMLAnchorElement} */ ($prioritiseFilterGroup.querySelector('#cpfyt-upload-date-filter'))
-    $uploadDateLink.addEventListener('click', (e) => {
+    let $uploadDate = $prioritiseFilterGroup.querySelector('#cpfyt-upload-date-filter')
+    $uploadDate.addEventListener('click', () => {
       let {href, selected, sp} = getUploadDateFilterState()
-      if (selected) {
-        e.preventDefault()
-        return
-      }
+      if (selected) return
       // Either Relevance or Popularity should be clickable
-      let $filter = /** @type {HTMLElement} */ ($popupContainer.querySelector(`${prioritiseFilterSelector} a#endpoint[href]`))
+      let $filter = /** @type {HTMLAnchorElement} */ ($popupContainer.querySelector(`${prioritiseFilterSelector} a#endpoint[href]`))
       if (!$filter) {
         warn('restoreSortByUploadDate: could not find existing filter to click')
         return
@@ -3692,14 +3694,7 @@ async function restoreSortByUploadDate($dialog, $popupContainer) {
     })
   }
 
-  // Update the filter group and Upload Date link with current state
-  let $uploadDateLink = /** @type {HTMLAnchorElement} */ ($prioritiseFilterGroup.querySelector('#cpfyt-upload-date-filter a'))
-  let {href, selected} = getUploadDateFilterState()
-  if (selected) {
-    $uploadDateLink.removeAttribute('href')
-  } else {
-    $uploadDateLink.href = href
-  }
+  let {selected} = getUploadDateFilterState()
   $prioritiseFilterGroup.classList.toggle('cpfyt-upload-date-selected', selected)
 }
 
