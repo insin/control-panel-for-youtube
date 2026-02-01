@@ -3832,6 +3832,46 @@ async function observePopups() {
       })
     }
 
+    /** @param {HTMLElement} $notifications */
+    function observeNotifications($notifications) {
+      observeElement($notifications, (mutations, observer) => {
+        let $toast
+        if (mutations.length == 0) {
+          $toast = $notifications.querySelector('tp-yt-paper-toast')
+        } else {
+          for (let mutation of mutations) {
+            for (let $addedNode of mutation.addedNodes) {
+              if (!($addedNode instanceof HTMLElement)) return
+              if ($addedNode.nodeName == 'TP-YT-PAPER-TOAST') {
+                $toast = $addedNode
+              }
+            }
+          }
+        }
+        if (!$toast) return
+        observer.disconnect()
+        observeElement($toast, () => {
+          if ($toast.getAttribute('aria-hidden') == 'true') return
+          let $text = $toast.querySelector('#text-container #text')
+          if (!$text) return
+          if ($text.textContent == 'Experiencing interruptions?') {
+            $text.textContent = 'Successfully blocked pre-roll ads!'
+          }
+        }, {
+          leading: true,
+          name: `<tp-yt-paper-toast> (for [aria-hidden] being removed)`,
+          observers: globalObservers,
+        }, {
+          attributes: true,
+          attributeFilter: ['aria-hidden'],
+        })
+      }, {
+        leading: true,
+        name: `<yt-notification-action-renderer> (for notifications being added)`,
+        observers: globalObservers,
+      })
+    }
+
     // Desktop dialogs and menus appear in <ytd-popup-container>. Once created,
     // the same elements are reused.
     let $popupContainer = await getElement('ytd-popup-container', {name: 'popup container'})
@@ -3852,6 +3892,9 @@ async function observePopups() {
           switch($el.nodeName) {
             case 'TP-YT-IRON-DROPDOWN':
               observeDropdown($el)
+              break
+            case 'YT-NOTIFICATION-ACTION-RENDERER':
+              observeNotifications($el)
               break
             case 'TP-YT-PAPER-DIALOG':
               observeDialog($el)
