@@ -2499,8 +2499,10 @@ const configureCss = (() => {
 
             /* Fix display of images */
             .yt-lockup-view-model--vertical .yt-lockup-view-model__content-image {
-              width:160px;
               padding-bottom:0;
+            }
+            .yt-lockup-view-model__content-image {
+              max-width: 168px;
             }
 
             /* When 2 column grid is being used, force it to be 1 column */
