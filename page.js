@@ -2784,13 +2784,18 @@ function allowBackgroundPlay() {
   }, true)
 }
 
-async function alwaysUseOriginalAudio(playerSelector) {
-  let $player = await getElement(playerSelector, {
-    name: `${playerSelector} (alwaysUseOriginalAudio)`,
-    stopIf: currentUrlChanges(),
-  })
+/**
+ * @param {string} playerSelector
+ * @param {HTMLElement} [$player]
+ */
+async function alwaysUseOriginalAudio(playerSelector, $player = null) {
+  if (!$player) {
+    $player = await getElement(playerSelector, {
+      name: `${playerSelector} (alwaysUseOriginalAudio)`,
+      stopIf: currentUrlChanges(),
+    })
+  }
   if (!$player) return
-
   // @ts-expect-error
   let playerState = $player.getPlayerState?.()
   if (playerState != null && playerState != 1) {
@@ -2842,12 +2847,8 @@ async function alwaysUseOriginalAudio(playerSelector) {
   $player.setAudioTrack?.(originalTrack)
 }
 
-async function alwaysUseTheaterMode() {
-  let $player = await getElement('#movie_player', {
-    name: 'player (alwaysUseTheaterMode)',
-    stopIf: currentUrlChanges(),
-  })
-  if (!$player) return
+/**@param {HTMLElement} $player */
+function alwaysUseTheaterMode($player) {
   if (!$player.closest('#player-full-bleed-container')) {
     let $sizeButton = /** @type {HTMLButtonElement} */ ($player.querySelector('button.ytp-size-button'))
     if ($sizeButton) {
@@ -2920,12 +2921,8 @@ async function disableAutoplay() {
   }
 }
 
-async function disableTheaterBigMode() {
-  let $player = await getElement('#movie_player', {
-    name: 'player (disableTheaterBigMode)',
-    stopIf: currentUrlChanges(),
-  })
-  if (!$player) return
+/** @param {HTMLElement} $player */
+function disableTheaterBigMode($player) {
   observeElement($player, () => {
     if ($player.classList.contains('ytp-big-mode') &&
         $player.closest('ytd-watch-flexy[role="main"][theater]:not([fullscreen])')) {
@@ -4851,15 +4848,22 @@ async function tweakVideoPage() {
     disableAutoplay()
   }
   if (desktop) {
-    if (config.alwaysUseTheaterMode) {
-      alwaysUseTheaterMode()
-    }
-    if (config.alwaysUseOriginalAudio) {
-      alwaysUseOriginalAudio('#movie_player')
-    }
-    if (config.disableTheaterBigMode) {
-      disableTheaterBigMode()
-    }
+    run(async () => {
+      let $player = await getElement('#movie_player', {
+        name: 'player (tweakVideoPage)',
+        stopIf: currentUrlChanges(),
+      })
+      if (!$player) return
+      if (config.alwaysUseTheaterMode) {
+        alwaysUseTheaterMode($player)
+      }
+      if (config.alwaysUseOriginalAudio) {
+        alwaysUseOriginalAudio('#movie_player', $player)
+      }
+      if (config.disableTheaterBigMode) {
+        disableTheaterBigMode($player)
+      }
+    })
     if (config.hideChannels && !config.hideEndVideos && config.hiddenChannels.length > 0) {
       observeDesktopEndscreenVideos()
     }
@@ -4935,19 +4939,20 @@ function blockAds() {
     return entry.command?.reelWatchEndpoint?.adClientParams?.isAd != true
   }
 
-  function processPlayerResponse(data) {
+  function patchPlayerResponse(playerResponse) {
+    delete playerResponse.adPlacements
+    delete playerResponse.adSlots
+    delete playerResponse.playerAds
+  }
+
+  function processPlayerResponse(data, source) {
     if (data.videoDetails) {
-      delete data.adPlacements
-      delete data.adSlots
-      delete data.playerAds
-      log('blockAds: patched /player response format')
+      patchPlayerResponse(data)
+      log(`blockAds: patched /player response format (${source})`)
     }
     else if (Array.isArray(data) && data[0]?.playerResponse?.videoDetails) {
-      let playerResponse = data[0].playerResponse
-      delete playerResponse.adPlacements
-      delete playerResponse.adSlots
-      delete playerResponse.playerAds
-      log('blockAds: patched /get_watch response format')
+      patchPlayerResponse(data[0].playerResponse)
+      log(`blockAds: patched /get_watch response format (${source})`)
     }
   }
 
@@ -4980,14 +4985,14 @@ function blockAds() {
           let data = JSON.parse(responseText)
           if (url.includes('/player') || url.includes('watch?')) {
             log('blockAds: patching', url, 'response')
-            processPlayerResponse(data)
+            processPlayerResponse(data, 'fetch')
           }
           else if (url.includes('/reel_watch_sequence')) {
             processReelWatchSequenceResponse(data)
           }
           return new Response(JSON.stringify(data))
         } catch (error) {
-          warn('blockAds: error parsing', new URL(url).pathname, 'response:', error, responseText)
+          warn('blockAds: error patching', url, 'fetch response:', error, responseText)
         }
         return response
       })
@@ -4999,7 +5004,7 @@ function blockAds() {
       set(data) {
         ytInitialPlayerResponse = data
         if (ytInitialPlayerResponse != null && config?.enabled && config.blockAds) {
-          processPlayerResponse(ytInitialPlayerResponse)
+          processPlayerResponse(ytInitialPlayerResponse, 'ytInitialPlayerResponse')
         }
       },
       get() {
