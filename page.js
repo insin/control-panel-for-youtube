@@ -2497,16 +2497,20 @@ const configureCss = (() => {
               display:none;
             }
 
-            /* Fix display of images */
+            /* Fix --vertical version images */
             .yt-lockup-view-model--vertical .yt-lockup-view-model__content-image {
+              width:168px;
               padding-bottom:0;
             }
+
+            /* Constrain width of wide % width version */
             .yt-lockup-view-model__content-image {
-              max-width: 168px;
+              max-width:168px;
             }
 
             /* When 2 column grid is being used, force it to be 1 column */
-            ytd-watch-next-secondary-results-renderer[use-dynamic-secondary-columns] #items.ytd-watch-next-secondary-results-renderer {
+            ytd-watch-next-secondary-results-renderer[use-dynamic-secondary-columns]:not(:has(ytd-item-section-renderer)) #items.ytd-watch-next-secondary-results-renderer,
+            ytd-watch-next-secondary-results-renderer[use-dynamic-secondary-columns] #contents.ytd-item-section-renderer {
               grid-template-columns:1fr;
             }
           }
