@@ -2513,6 +2513,9 @@ const configureCss = (() => {
             ytd-watch-next-secondary-results-renderer[use-dynamic-secondary-columns] #contents.ytd-item-section-renderer {
               grid-template-columns:1fr;
             }
+            ytd-watch-next-secondary-results-renderer[use-dynamic-secondary-columns] .lockup.ytd-watch-next-secondary-results-renderer {
+              margin-bottom:0;
+            }
           }
         `)
       }
