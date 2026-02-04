@@ -195,6 +195,9 @@
   "hideEndVideos": {
     "message": "Hide video endscreen content"
   },
+  "hideExperiencingInterruptions": {
+    "message": "Hide \"Experiencing interruptions?\" popup"
+  },
   "hideExploreButton": {
     "message": "Hide Explore button in Home"
   },

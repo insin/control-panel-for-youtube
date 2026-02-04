@@ -26,6 +26,7 @@ export type Locale = {
 }
 
 export type LocaleKey =
+  | 'ADS_BLOCKED'
   | 'CLIP'
   | 'COLLABORATORS'
   | 'HIDE_CHANNEL'
@@ -118,6 +119,7 @@ export type SiteConfig = {
   hideChatFullScreen: boolean
   hideEndCards: boolean
   hideEndVideos: boolean
+  hideExperiencingInterruptions: boolean
   hideJumpAheadButton: boolean
   hideMerchEtc: boolean
   hideRelatedBelow: boolean

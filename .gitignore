@@ -6,6 +6,6 @@ node_modules/
 scripts/locales/desktop/*
 scripts/locales/locales.js
 scripts/locales/mobile/*
-scripts/translations.json
+scripts/**/translations.json
 web-ext-artifacts/
 wip/

@@ -108,6 +108,7 @@ ${messages.annoyances}:
 • ${messages.removePink}
 • ${messages.hideInfoPanels}
 • ${messages.hidePremiumUpsells}
+• ${messages.hideExperiencingInterruptions}${messages.desktopVersion}
 • ${messages.disableVideoPreviews}${messages.desktopVersion}
 • ${messages.disableThemedHover}${messages.desktopVersion}
 • ${messages.pauseChannelTrailers}${messages.desktopVersion}

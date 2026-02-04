@@ -195,6 +195,9 @@
   "hideEndVideos": {
     "message": "隐藏视频片尾画面内容"
   },
+  "hideExperiencingInterruptions": {
+    "message": "隐藏“有中断问题？”弹窗"
+  },
   "hideExploreButton": {
     "message": "在主页中隐藏“探索”按钮"
   },

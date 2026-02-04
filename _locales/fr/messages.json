@@ -195,6 +195,9 @@
   "hideEndVideos": {
     "message": "Masquer le contenu des écrans de fin"
   },
+  "hideExperiencingInterruptions": {
+    "message": "Masquer le popup \"La lecture de votre vidéo se bloque ?\""
+  },
   "hideExploreButton": {
     "message": "Masquer le bouton « Explorer » sur la page d'accueil"
   },

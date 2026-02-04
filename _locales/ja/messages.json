@@ -194,6 +194,9 @@
   "hideEndVideos": {
     "message": "動画の終了画面を非表示"
   },
+  "hideExperiencingInterruptions": {
+    "message": "「再生が中断されていますか？」ポップアップを非表示"
+  },
   "hideExploreButton": {
     "message": "ホームで検索ボタンを非表示"
   },
