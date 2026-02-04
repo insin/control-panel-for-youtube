@@ -1049,7 +1049,7 @@ const configureCss = (() => {
     }
 
     let cssRules = []
-    let hideCssSelectors = []
+    let hideCssSelectors = ['.HiddenNotification']
 
     if (config.alwaysShowShortsProgressBar) {
       if (desktop) {
@@ -3835,6 +3835,38 @@ async function observePopups() {
       })
     }
 
+    function observeNotificationRenderer($notificationRenderer) {
+      observeElement($notificationRenderer, (_, observer)  => {
+        let $toast = $notificationRenderer.querySelector('tp-yt-paper-toast')
+        if (!$toast) return
+        observer.disconnect()
+        observeElement($toast, () => {
+          if ($toast.getAttribute('aria-hidden') == 'true') return
+          let $text = $toast.querySelector('#text-container #text')
+          let $link = $toast.querySelector('#action-button a[href^="https://support.google.com/youtube/answer/3037019"]')
+          if (!($link && $text)) return
+          log('Experiencing interruptions? notification displayed')
+          if (false /* config.hideExperiencingInterruptions */) {
+            $toast.classList.add('HiddenNotification')
+          } else {
+            $text.textContent = 'Pre-roll ads blocked'
+            $toast.querySelector('#action-button')?.classList.add('HiddenNotification')
+          }
+        }, {
+          name: '<tp-yt-paper-toast> (for "Experiencing interruptions?" message)',
+          observers: globalObservers,
+        },{
+          attributes: true,
+          attributeFilter: ['aria-hidden'] ,
+          childList: true,
+        })
+      }, {
+        leading: true,
+        name: '<yt-notification-action-renderer> (for <tp-yt-paper-toast> being added)',
+        observers: globalObservers,
+      })
+    }
+
     // Desktop dialogs and menus appear in <ytd-popup-container>. Once created,
     // the same elements are reused.
     let $popupContainer = await getElement('ytd-popup-container', {name: 'popup container'})
@@ -3847,6 +3879,8 @@ async function observePopups() {
         observeDropdown($dropdown)
       }
     }
+    let $notificationRenderer = $popupContainer.querySelector('yt-notification-action-renderer')
+    if ($notificationRenderer) observeNotificationRenderer($notificationRenderer)
 
     observeElement($popupContainer, (mutations) => {
       for (let mutation of mutations) {
@@ -3859,11 +3893,14 @@ async function observePopups() {
             case 'TP-YT-PAPER-DIALOG':
               observeDialog($el)
               break
+            case 'YT-NOTIFICATION-ACTION-RENDERER':
+              observeNotificationRenderer($el)
+              break
           }
         }
       }
     }, {
-      name: '<ytd-popup-container> (for <tp-yt-iron-dropdown> and <tp-yt-paper-dialog> being added)',
+      name: '<ytd-popup-container> (for popup elements being added)',
       observers: globalObservers,
     })
 
