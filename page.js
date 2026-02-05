@@ -2029,23 +2029,22 @@ const configureCss = (() => {
 
     //#region Desktop-only
     if (desktop) {
-      if (!config.displaySubscriptionsGridAsList) {
-        // Fix spaces & gaps caused by left gutter margin on first column items
-        cssRules.push(`
-          /* Remove left gutter margin from first column items */
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="channels"]) ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
-            margin-left: calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
-          }
-          /* Apply the left gutter as padding in the grid contents instead */
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="channels"]) #contents.ytd-rich-grid-renderer {
-            padding-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * 2) !important;
-          }
-          /* Adjust non-grid items so they don't double the gutter */
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) #contents.ytd-rich-grid-renderer > :not(ytd-rich-item-renderer) {
-            margin-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * -1) !important;
-          }
-        `)
-      }
+      // Fix spaces & gaps caused by left gutter margin on first column items
+      let subsGridFix = !config.displaySubscriptionsGridAsList ? ', [page-subtype="subscriptions"]' : ''
+      cssRules.push(`
+        /* Remove left gutter margin from first column items */
+        ytd-browse:is([page-subtype="home"], [page-subtype="channels"]${subsGridFix}) ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
+          margin-left: calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
+        }
+        /* Apply the left gutter as padding in the grid contents instead */
+        ytd-browse:is([page-subtype="home"], [page-subtype="channels"]${subsGridFix}) #contents.ytd-rich-grid-renderer {
+          padding-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * 2) !important;
+        }
+        /* Adjust non-grid items so they don't double the gutter */
+        ytd-browse:is([page-subtype="home"]${subsGridFix}) #contents.ytd-rich-grid-renderer > :not(ytd-rich-item-renderer) {
+          margin-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * -1) !important;
+        }
+      `)
       if (!config.addTakeSnapshot) {
         hideCssSelectors.push('#cpfyt-snaphot-menu-item')
       }
