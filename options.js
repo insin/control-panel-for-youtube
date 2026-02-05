@@ -36,6 +36,7 @@ for (let translationId of [
   'disableThemedHover',
   'disableThemedHoverNote',
   'disableVideoPreviews',
+  'displaySubscriptionsGridAsList',
   'downloadTranscript',
   'embeddedVideos',
   'enabled',
@@ -124,6 +125,7 @@ for (let translationId of [
   'revertSidebarOrder',
   'searchThumbnailSize',
   'shorts',
+  'showChannelHeadersInListView',
   'showFullVideoTitles',
   'snapshotFormat',
   'snapshotQuality',
@@ -212,6 +214,7 @@ let defaultConfig = {
   alwaysUseTheaterMode: false,
   disableThemedHover: false,
   disableVideoPreviews: false,
+  displaySubscriptionsGridAsList: false,
   downloadTranscript: true,
   enforceTheme: 'default',
   fullSizeTheaterMode: false,
@@ -245,6 +248,7 @@ let defaultConfig = {
   searchThumbnailSize: 'medium',
   snapshotFormat: 'jpeg',
   snapshotQuality: '0.92',
+  showChannelHeadersInListView: true,
   tidyGuideSidebar: false,
   // Mobile only
   allowBackgroundPlay: true,
@@ -364,6 +368,7 @@ function shouldDisplayHiddenChannels() {
 function updateDisplay() {
   $body.classList.toggle('desktop', optionsConfig.version == 'desktop')
   $body.classList.toggle('disabled', !optionsConfig.enabled)
+  $body.classList.toggle('displayingSubscriptionsGridAsList', optionsConfig.displaySubscriptionsGridAsList)
   $body.classList.toggle('fullSizeTheaterMode', optionsConfig.fullSizeTheaterMode)
   $body.classList.toggle('hiddenChannels', shouldDisplayHiddenChannels())
   $body.classList.toggle('hidingWatched', optionsConfig.hideWatched)

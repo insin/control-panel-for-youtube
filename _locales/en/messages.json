@@ -68,6 +68,9 @@
   "disableVideoPreviews": {
     "message": "Disable video previews"
   },
+  "displaySubscriptionsGridAsList": {
+    "message": "Display Subscriptions grid as list"
+  },
   "downloadTranscript": {
     "message": "Make Transcript downloadable"
   },
@@ -371,6 +374,9 @@
   },
   "shorts": {
     "message": "Shorts"
+  },
+  "showChannelHeadersInListView": {
+    "message": "Show channel headers in list view"
   },
   "showFullVideoTitles": {
     "message": "Show full video titles"

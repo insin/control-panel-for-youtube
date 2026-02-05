@@ -106,6 +106,7 @@ export type SiteConfig = {
   alwaysUseTheaterMode: boolean
   disableThemedHover: boolean
   disableVideoPreviews: boolean
+  displaySubscriptionsGridAsList: boolean
   downloadTranscript: boolean
   enforceTheme: 'default' | 'device' | 'dark' | 'light',
   fullSizeTheaterMode: boolean
@@ -136,6 +137,7 @@ export type SiteConfig = {
   revertGiantRelated: boolean
   revertSidebarOrder: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small' | 'xsmall'
+  showChannelHeadersInListView: boolean
   snapshotFormat: 'jpeg' | 'png'
   snapshotQuality: string
   tidyGuideSidebar: boolean

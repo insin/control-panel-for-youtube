@@ -68,6 +68,9 @@
   "disableVideoPreviews": {
     "message": "Désactiver les aperçus vidéo"
   },
+  "displaySubscriptionsGridAsList": {
+    "message": "Afficher la grille des abonnements en liste"
+  },
   "downloadTranscript": {
     "message": "Rendre la transcription téléchargeable"
   },
@@ -371,6 +374,9 @@
   },
   "shorts": {
     "message": "Shorts"
+  },
+  "showChannelHeadersInListView": {
+    "message": "Afficher les en-têtes de chaîne en vue liste"
   },
   "showFullVideoTitles": {
     "message": "Afficher les titres complets des vidéos"

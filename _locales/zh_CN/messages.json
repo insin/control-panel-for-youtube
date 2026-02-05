@@ -68,6 +68,9 @@
   "disableVideoPreviews": {
     "message": "停用视频预览"
   },
+  "displaySubscriptionsGridAsList": {
+    "message": "将订阅网格显示为列表"
+  },
   "downloadTranscript": {
     "message": "使转录稿可下载"
   },
@@ -368,6 +371,9 @@
   },
   "searchThumbnailSize": {
     "message": "搜索缩略图大小"
+  },
+  "showChannelHeadersInListView": {
+    "message": "在列表视图中显示频道标题"
   },
   "showFullVideoTitles": {
     "message": "显示完整视频标题"

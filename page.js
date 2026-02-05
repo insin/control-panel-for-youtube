@@ -58,6 +58,7 @@ let defaultConfig = {
   alwaysUseTheaterMode: false,
   disableThemedHover: false,
   disableVideoPreviews: false,
+  displaySubscriptionsGridAsList: false,
   downloadTranscript: true,
   enforceTheme: 'default',
   fullSizeTheaterMode: false,
@@ -91,6 +92,7 @@ let defaultConfig = {
   searchThumbnailSize: 'medium',
   snapshotFormat: 'jpeg',
   snapshotQuality: '0.92',
+  showChannelHeadersInListView: true,
   tidyGuideSidebar: false,
   // Mobile only
   allowBackgroundPlay: true,
@@ -2027,21 +2029,23 @@ const configureCss = (() => {
 
     //#region Desktop-only
     if (desktop) {
-      // Fix spaces & gaps caused by left gutter margin on first column items
-      cssRules.push(`
-        /* Remove left gutter margin from first column items */
-        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="channels"]) ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
-          margin-left: calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
-        }
-        /* Apply the left gutter as padding in the grid contents instead */
-        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="channels"]) #contents.ytd-rich-grid-renderer {
-          padding-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * 2) !important;
-        }
-        /* Adjust non-grid items so they don't double the gutter */
-        ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) #contents.ytd-rich-grid-renderer > :not(ytd-rich-item-renderer) {
-          margin-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * -1) !important;
-        }
-      `)
+      if (!config.displaySubscriptionsGridAsList) {
+        // Fix spaces & gaps caused by left gutter margin on first column items
+        cssRules.push(`
+          /* Remove left gutter margin from first column items */
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="channels"]) ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
+            margin-left: calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
+          }
+          /* Apply the left gutter as padding in the grid contents instead */
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="channels"]) #contents.ytd-rich-grid-renderer {
+            padding-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * 2) !important;
+          }
+          /* Adjust non-grid items so they don't double the gutter */
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) #contents.ytd-rich-grid-renderer > :not(ytd-rich-item-renderer) {
+            margin-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * -1) !important;
+          }
+        `)
+      }
       if (!config.addTakeSnapshot) {
         hideCssSelectors.push('#cpfyt-snaphot-menu-item')
       }
@@ -2098,6 +2102,100 @@ const configureCss = (() => {
             color: var(--yt-spec-call-to-action);
           }
         `)
+      }
+      if (config.displaySubscriptionsGridAsList) {
+        cssRules.push(`
+          ytd-browse:is([page-subtype="subscriptions"]) {
+            /* Turn Subscriptions Grid view into a List-like view */
+            ytd-two-column-browse-results-renderer {
+              max-width: var(--ytd-grid-max-width); /* 1284px */
+            }
+            #contents.ytd-rich-grid-renderer {
+              padding-left: 0 !important;
+              padding-top: 0 !important;
+            }
+            ytd-rich-item-renderer.ytd-rich-grid-renderer {
+              width: 100%;
+              border-bottom: 1px solid var(--yt-spec-outline);
+              margin-left: 24px;
+              margin-right: 24px;
+              margin-bottom: 0;
+            }
+            #content.ytd-rich-item-renderer {
+              max-width: 862px;
+              padding-bottom: 10px;
+              padding-top: 20px;
+              .yt-lockup-view-model {
+                flex-direction: row;
+              }
+              .yt-lockup-view-model__content-image {
+                flex: none;
+                width: 246px;
+                height: 138px;
+                margin-right: 16px;
+              }
+              .yt-lockup-view-model__metadata {
+                width: 100%;
+                max-width: 600px;
+              }
+              .yt-content-metadata-view-model {
+                display: flex;
+                flex-direction: row;
+                gap: 1rem;
+              }
+            }
+            /* Only display the spinner when loading new content */
+            #ghost-cards {
+              display: none;
+            }
+          }
+        `)
+        if (config.showChannelHeadersInListView) {
+          cssRules.push(`
+            ytd-browse:is([page-subtype="subscriptions"]) {
+              /* Move channel avatar up */
+              ytd-rich-item-renderer.ytd-rich-grid-renderer {
+                position: relative;
+              }
+              #content.ytd-rich-item-renderer {
+                padding-top: 60px;
+                .yt-lockup-view-model__metadata,
+                .yt-lockup-metadata-view-model {
+                  position: static;
+                }
+                .yt-lockup-metadata-view-model__avatar {
+                  position: absolute;
+                  top: -50px;
+                  left: 0;
+                }
+              }
+
+              /* Move channel name up */
+              .yt-content-metadata-view-model__metadata-row:first-child {
+                position: absolute;
+                top: -48px;
+                left: 50px;
+                /* #title.ytd-shelf-renderer styles */
+                a {
+                  color: var(--yt-spec-text-primary);
+                  font-family: "Roboto","Arial",sans-serif;
+                  font-size: 2rem;
+                  line-height: 2.8rem;
+                  font-weight: 700;
+                  overflow: hidden;
+                  display: block;
+                  max-height: 2.8rem;
+                  -webkit-line-clamp: 1;
+                  display: box;
+                  display: -webkit-box;
+                  -webkit-box-orient: vertical;
+                  text-overflow: ellipsis;
+                  white-space: normal;
+                }
+              }
+            }
+          `)
+        }
       }
       if (config.fullSizeTheaterMode) {
         // TODO Observe current theater mode state to get rid of these :has()

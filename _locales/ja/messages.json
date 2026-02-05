@@ -68,6 +68,9 @@
   "disableVideoPreviews": {
     "message": "動画のプレビューを無効にする"
   },
+  "displaySubscriptionsGridAsList": {
+    "message": "登録チャンネルのグリッドをリスト形式で表示"
+  },
   "downloadTranscript": {
     "message": "文字起こしをダウンロード可能にする"
   },
@@ -370,6 +373,9 @@
   },
   "shorts": {
     "message": "ショート"
+  },
+  "showChannelHeadersInListView": {
+    "message": "リスト表示でチャンネルヘッダーを表示"
   },
   "showFullVideoTitles": {
     "message": "動画のタイトルを全文表示する"
