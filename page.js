@@ -3168,6 +3168,10 @@ function handleDesktopWatchChannelMenu($menu) {
   let $channelMenuRenderer = $lastClickedElement?.closest('ytd-menu-renderer.ytd-watch-metadata')
   if (!$channelMenuRenderer) return
 
+  // Other menus can be displayed from the menu renderer, e.g. Save
+  let $menuItems = $menu.querySelector('#items')
+  if (!$menuItems) return
+
   let $channelLink = /** @type {HTMLAnchorElement} */ (document.querySelector('ytd-watch-flexy #channel-name a'))
   if (!$channelLink) {
     warn('channel link not found in video page')
@@ -3219,7 +3223,6 @@ function handleDesktopWatchChannelMenu($menu) {
       }
     }
 
-    let $menuItems = $menu.querySelector('#items')
     $menuItems.insertAdjacentHTML('beforeend', html`
 <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
   <div class="cpfyt-menu-icon">
