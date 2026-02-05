@@ -2524,9 +2524,11 @@ const configureCss = (() => {
         hideCssSelectors.push('ytd-watch-flexy[fullscreen] #cpfyt-miniplayer-button')
         cssRules.push(`
           #cpfyt-miniplayer-button {
+            display: block !important;
             anchor-name: --cpfyt-miniplayer-anchor;
           }
           #cpfyt-miniplayer-button + .ytp-tooltip {
+            display: block !important;
             position: fixed;
             position-anchor: --cpfyt-miniplayer-anchor;
             bottom: anchor(top);
@@ -4595,7 +4597,7 @@ async function restoreMiniplayerButton() {
   let style = $sizeButton.parentElement.classList.contains('ytp-right-controls-right') ? 'new' : 'old'
   log('restoreMiniplayerButton:', style, 'style')
   $sizeButton.insertAdjacentHTML('beforebegin', html`
-<button id="cpfyt-miniplayer-button" class="ytp-button" aria-keyshortcuts="i"${!supportsAnchorPositioning ? ` title="${getString('MINIPLAYER')} (i)"` : ''}>
+<button id="cpfyt-miniplayer-button" class="ytp-button" style="display: none" aria-keyshortcuts="i"${!supportsAnchorPositioning ? ` title="${getString('MINIPLAYER')} (i)"` : ''}>
   ${style == 'new' ? `
     <svg fill="none" height="24" viewBox="0 0 24 24" width="24">
       <path d="${Svgs.MINIPLAYER_NEW_PATH}" fill="white"></path>
@@ -4608,7 +4610,7 @@ async function restoreMiniplayerButton() {
   `}
 </button>
 ${supportsAnchorPositioning ? `
-<div class="ytp-tooltip ytp-bottom">
+<div class="ytp-tooltip ytp-bottom" style="display: none">
   <div class="ytp-tooltip-text-wrapper" aria-hidden="true">
     <div class="ytp-tooltip-bottom-text${style == 'old' ? ' ytp-tooltip-text-no-title' : ''}">
       <span class="ytp-tooltip-text">${getString('MINIPLAYER')}${style == 'old' ? ' (i)' : ''}</span>
