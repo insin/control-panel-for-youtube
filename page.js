@@ -2524,7 +2524,7 @@ const configureCss = (() => {
         hideCssSelectors.push('ytd-watch-flexy[fullscreen] #cpfyt-miniplayer-button')
         cssRules.push(`
           #cpfyt-miniplayer-button {
-            display: block !important;
+            display: inline-block !important;
             anchor-name: --cpfyt-miniplayer-anchor;
           }
           #cpfyt-miniplayer-button + .ytp-tooltip {
