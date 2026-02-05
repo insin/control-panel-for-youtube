@@ -4,7 +4,7 @@
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
   "homepage_url": "https://soitis.dev/control-panel-for-youtube",
-  "version": "1.30.1",
+  "version": "1.30.2",
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
