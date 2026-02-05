@@ -79,10 +79,10 @@ let defaultConfig = {
   minimumShortsPerRow: 'auto',
   pauseChannelTrailers: true,
   playerCompactPlayButton: true,
+  playerControlsBg: 'default',
   playerFixFullScreenButton: true,
   playerHideFullScreenTitle: false,
   playerHideFullScreenVoting: false,
-  playerRemoveControlsBg: false,
   playerRemoveDelhiExperimentFlags: false,
   redirectLogoToSubscriptions: false,
   restoreMiniplayerButton: false,
@@ -2443,6 +2443,34 @@ const configureCss = (() => {
           }
         `)
       }
+      if (config.playerControlsBg == 'transparent') {
+        cssRules.push(`
+          .ytp-delhi-modern {
+            .ytp-left-controls > :is(button, a, .ytp-volume-area),
+            .ytp-time-wrapper,
+            .ytp-chapter-title,
+            .ytp-right-controls {
+              background: transparent !important;
+            }
+          }
+          .ytp-big-mode .ytp-fullscreen-grid-expand-button {
+            background: transparent !important;
+          }
+          .ytPlayerQuickActionButtonsHost {
+            background: transparent !important;
+          }
+        `)
+      }
+      if (config.playerControlsBg == 'blur') {
+        cssRules.push(`
+          #movie_player {
+            --yt-frosted-glass-backdrop-filter-override: unset !important;
+          }
+          .ytPlayerQuickActionButtonsHost {
+            backdrop-filter: blur(16px) !important;
+          }
+        `)
+      }
       if (config.playerFixFullScreenButton) {
         cssRules.push(`
           .ytp-delhi-modern {
@@ -2465,24 +2493,6 @@ const configureCss = (() => {
       }
       if (config.playerHideFullScreenVoting) {
         hideCssSelectors.push('yt-player-quick-action-buttons :is(like-button-view-model, dislike-button-view-model)')
-      }
-      if (config.playerRemoveControlsBg) {
-        cssRules.push(`
-          .ytp-delhi-modern {
-            .ytp-left-controls > :is(button, a, .ytp-volume-area),
-            .ytp-time-wrapper,
-            .ytp-chapter-title,
-            .ytp-right-controls {
-              background: transparent !important;
-            }
-          }
-          .ytp-big-mode .ytp-fullscreen-grid-expand-button {
-            background: transparent !important;
-          }
-          .ytPlayerQuickActionButtonsHost {
-            background: transparent !important;
-          }
-        `)
       }
       if (config.removePink) {
         cssRules.push(`

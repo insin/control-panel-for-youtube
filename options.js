@@ -2,6 +2,7 @@ document.title = chrome.i18n.getMessage('extensionName')
 
 for (let optionValue of [
   'auto',
+  'blur',
   'dark',
   'default',
   'device',
@@ -9,6 +10,7 @@ for (let optionValue of [
   'light',
   'medium',
   'small',
+  'transparent',
   'xsmall',
 ]) {
   let label = chrome.i18n.getMessage(optionValue)
@@ -103,12 +105,12 @@ for (let translationId of [
   'newVideoPlayerUI',
   'pauseChannelTrailers',
   'playerCompactPlayButton',
+  'playerControlsBg',
   'playerFixFullScreenButton',
   'playerHideFullScreenControls',
   'playerHideFullScreenMoreVideos',
   'playerHideFullScreenTitle',
   'playerHideFullScreenVoting',
-  'playerRemoveControlsBg',
   'playerRemoveDelhiExperimentFlags',
   'playerRemoveDelhiExperimentFlagsNote',
   'qualityFull',
@@ -235,10 +237,10 @@ let defaultConfig = {
   minimumShortsPerRow: 'auto',
   pauseChannelTrailers: true,
   playerCompactPlayButton: true,
+  playerControlsBg: 'default',
   playerFixFullScreenButton: true,
   playerHideFullScreenTitle: false,
   playerHideFullScreenVoting: false,
-  playerRemoveControlsBg: false,
   playerRemoveDelhiExperimentFlags: false,
   redirectLogoToSubscriptions: false,
   restoreMiniplayerButton: false,

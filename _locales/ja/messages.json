@@ -32,11 +32,14 @@
   "blockAdsNote": {
     "message": "他の広告ブロッカーとの競合を避けるため、無効にしてください"
   },
+  "blur": {
+    "message": "ぼかし"
+  },
   "dark": {
     "message": "ダーク"
   },
   "default": {
-    "message": "強制しない"
+    "message": "デフォルト"
   },
   "desktopOnly": {
     "message": "デスクトップのみ"
@@ -308,6 +311,9 @@
   "playerCompactPlayButton": {
     "message": "常にコンパクトな再生ボタンを使用する"
   },
+  "playerControlsBg": {
+    "message": "プレーヤーコントロールの背景"
+  },
   "playerFixFullScreenButton": {
     "message": "隅のクリックで全画面を切り替える機能を復元"
   },
@@ -322,9 +328,6 @@
   },
   "playerHideFullScreenVoting": {
     "message": "全画面の高評価/低評価ボタンを非表示にする"
-  },
-  "playerRemoveControlsBg": {
-    "message": "コントロールから背景を削除する"
   },
   "playerRemoveDelhiExperimentFlags": {
     "message": "新しいプログレスバーとコントロールを無効にする"
@@ -394,6 +397,9 @@
   },
   "tidyGuideSidebar": {
     "message": "サイドバーを整理する"
+  },
+  "transparent": {
+    "message": "透明"
   },
   "uiTweaks": {
     "message": "UIの微調整"

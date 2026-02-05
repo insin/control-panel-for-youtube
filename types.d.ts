@@ -129,7 +129,7 @@ export type SiteConfig = {
   playerFixFullScreenButton: boolean
   playerHideFullScreenTitle: boolean
   playerHideFullScreenVoting: boolean
-  playerRemoveControlsBg: boolean
+  playerControlsBg: 'default' | 'blur' | 'transparent'
   playerRemoveDelhiExperimentFlags: boolean
   redirectLogoToSubscriptions: boolean
   restoreMiniplayerButton: boolean

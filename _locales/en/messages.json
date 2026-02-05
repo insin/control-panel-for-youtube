@@ -32,11 +32,14 @@
   "blockAdsNote": {
     "message": "Disable to avoid conflicts with other adblockers"
   },
+  "blur": {
+    "message": "Blur"
+  },
   "dark": {
     "message": "Dark"
   },
   "default": {
-    "message": "Don't enforce"
+    "message": "Default"
   },
   "desktopOnly": {
     "message": "Desktop only"
@@ -309,6 +312,9 @@
   "playerCompactPlayButton": {
     "message": "Always use compact Play button"
   },
+  "playerControlsBg": {
+    "message": "Player controls background"
+  },
   "playerFixFullScreenButton": {
     "message": "Restore corner click to toggle full screen"
   },
@@ -323,9 +329,6 @@
   },
   "playerHideFullScreenVoting": {
     "message": "Hide full screen like/dislike buttons"
-  },
-  "playerRemoveControlsBg": {
-    "message": "Remove background from controls"
   },
   "playerRemoveDelhiExperimentFlags": {
     "message": "Disable new progress bar and controls"
@@ -395,6 +398,9 @@
   },
   "tidyGuideSidebar": {
     "message": "Tidy Guide sidebar"
+  },
+  "transparent": {
+    "message": "Transparent"
   },
   "uiTweaks": {
     "message": "UI tweaks"

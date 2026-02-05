@@ -32,11 +32,14 @@
   "blockAdsNote": {
     "message": "Désactiver pour éviter les conflits avec d'autres bloqueurs de publicités"
   },
+  "blur": {
+    "message": "Flou"
+  },
   "dark": {
     "message": "Sombre"
   },
   "default": {
-    "message": "Ne pas forcer"
+    "message": "Par défaut"
   },
   "desktopOnly": {
     "message": "Bureau uniquement"
@@ -309,6 +312,9 @@
   "playerCompactPlayButton": {
     "message": "Toujours utiliser le bouton Lecture compact"
   },
+  "playerControlsBg": {
+    "message": "Arrière-plan des contrôles du lecteur"
+  },
   "playerFixFullScreenButton": {
     "message": "Restaurer le clic dans le coin pour basculer le mode plein écran"
   },
@@ -323,9 +329,6 @@
   },
   "playerHideFullScreenVoting": {
     "message": "Masquer les boutons J'aime/Je n'aime pas en plein écran"
-  },
-  "playerRemoveControlsBg": {
-    "message": "Supprimer l'arrière-plan des contrôles"
   },
   "playerRemoveDelhiExperimentFlags": {
     "message": "Désactiver les nouveaux contrôles et barre de progression"
@@ -395,6 +398,9 @@
   },
   "tidyGuideSidebar": {
     "message": "Nettoyer la barre latérale du guide"
+  },
+  "transparent": {
+    "message": "Transparent"
   },
   "uiTweaks": {
     "message": "Amélioration de l'interface utilisateur"
