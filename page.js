@@ -86,7 +86,6 @@ let defaultConfig = {
   redirectLogoToSubscriptions: false,
   restoreMiniplayerButton: false,
   restoreSidebarSubscriptionsLink: true,
-  restoreSortByUploadDate: true,
   revertGiantRelated: true,
   revertSidebarOrder: true,
   searchThumbnailSize: 'medium',
@@ -2429,31 +2428,6 @@ const configureCss = (() => {
       } else {
         hideCssSelectors.push('#cpfyt-miniplayer-button')
       }
-      if (config.restoreSortByUploadDate) {
-        cssRules.push(`
-          #cpfyt-upload-date-filter {
-            padding: 15px 0 0;
-            a {
-              color: var(--yt-spec-text-secondary);
-              cursor: pointer;
-              font-size: 14px;
-              text-decoration: none;
-            }
-          }
-          .cpfyt-upload-date-selected {
-            #cpfyt-upload-date-filter a {
-              color: var(--yt-spec-text-primary);
-              font-weight: 500;
-            }
-            ytd-search-filter-renderer.selected yt-formatted-string.ytd-search-filter-renderer {
-              color: var(--yt-spec-text-secondary);
-              font-weight: 400;
-            }
-          }
-        `)
-      } else {
-        hideCssSelectors.push('#cpfyt-upload-date-filter')
-      }
       if (config.revertGiantRelated) {
         cssRules.push(`
           /* Reduce width of secondary sidebar (from 550px when 2 column grid is being used) */
@@ -3733,68 +3707,6 @@ function observeDesktopContextMenu($popupContainer) {
   }
 }
 
-/**
- * @param {HTMLElement} $dialog
- * @param {HTMLElement} $popupContainer
- */
-async function restoreSortByUploadDate($dialog, $popupContainer) {
-  let prioritiseFilterSelector = 'ytd-search-filter-options-dialog-renderer ytd-search-filter-group-renderer:last-of-type'
-
-  let $prioritiseFilterGroup = await getElement(prioritiseFilterSelector, {
-    name: 'restoreSortByUploadDate: search filter sort options',
-    context: $dialog,
-    timeout: 2000,
-    stopIf: () => !isSearchPage()
-  })
-  if (!$prioritiseFilterGroup) return
-
-  if ($prioritiseFilterGroup.querySelectorAll('a#endpoint').length == 4) {
-    log('restoreSortByUploadDate: sort by filters still present')
-    return
-  }
-
-  function getUploadDateFilterState() {
-    // Upload Date + Videos
-    let sp = 'CAISAhAB'
-    // Upload Date should be selected if every other filter in its group is clickable
-    let filters = Array.from($popupContainer.querySelectorAll(`${prioritiseFilterSelector} a#endpoint`))
-    let selected = filters.length > 0 && filters.every($a => $a.hasAttribute('href'))
-    let url = new URL(location.href)
-    url.searchParams.set('sp', sp)
-    return {
-      href: url.pathname + url.search,
-      selected,
-      sp,
-    }
-  }
-
-  // Add the Upload Date filter the first time the dialog is opened
-  if (!$prioritiseFilterGroup.querySelector('#cpfyt-upload-date-filter')) {
-    $prioritiseFilterGroup.insertAdjacentHTML('beforeend', html`
-      <div id="cpfyt-upload-date-filter"><a>${getString('UPLOAD_DATE')}</a></div>
-    `)
-    let $uploadDate = $prioritiseFilterGroup.querySelector('#cpfyt-upload-date-filter')
-    $uploadDate.addEventListener('click', () => {
-      let {href, selected, sp} = getUploadDateFilterState()
-      if (selected) return
-      // Either Relevance or Popularity should be clickable
-      let $filter = /** @type {HTMLAnchorElement} */ ($popupContainer.querySelector(`${prioritiseFilterSelector} a#endpoint[href]`))
-      if (!$filter) {
-        warn('restoreSortByUploadDate: could not find existing filter to click')
-        return
-      }
-      // @ts-expect-error
-      $filter.data.commandMetadata.webCommandMetadata.url = href
-      // @ts-expect-error
-      $filter.data.searchEndpoint.params = sp
-      $filter.click()
-    })
-  }
-
-  let {selected} = getUploadDateFilterState()
-  $prioritiseFilterGroup.classList.toggle('cpfyt-upload-date-selected', selected)
-}
-
 async function observePopups() {
   if (desktop) {
     /** @param {HTMLElement} $dialog */
@@ -3808,9 +3720,6 @@ async function observePopups() {
           }
         } else {
           log('dialog opened')
-          if (isSearchPage()) {
-            restoreSortByUploadDate($dialog, $popupContainer)
-          }
         }
       }, {
         name: '<tp-yt-paper-dialog> (for [aria-hidden] being added)',

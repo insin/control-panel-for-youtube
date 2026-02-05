@@ -133,7 +133,6 @@ export type SiteConfig = {
   redirectLogoToSubscriptions: boolean
   restoreMiniplayerButton: boolean
   restoreSidebarSubscriptionsLink: boolean
-  restoreSortByUploadDate: boolean
   revertGiantRelated: boolean
   revertSidebarOrder: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small' | 'xsmall'
