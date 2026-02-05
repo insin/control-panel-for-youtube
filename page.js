@@ -2125,6 +2125,9 @@ const configureCss = (() => {
               max-width: 862px;
               padding-bottom: 10px;
               padding-top: 20px;
+              &:has(.ytDismissibleItemReplacedContent) {
+                padding-bottom: 20px;
+              }
               .yt-lockup-view-model {
                 flex-direction: row;
               }
@@ -2143,7 +2146,12 @@ const configureCss = (() => {
                 flex-direction: row;
                 gap: 1rem;
               }
+              .ytDismissibleItemAspectRatio16By9 {
+                padding-top: 0;
+                min-height: 140px;
+              }
             }
+
             /* Only display the spinner when loading new content */
             #ghost-cards {
               display: none;
@@ -2153,44 +2161,49 @@ const configureCss = (() => {
         if (config.showChannelHeadersInListView) {
           cssRules.push(`
             ytd-browse:is([page-subtype="subscriptions"]) {
-              /* Move channel avatar up */
               ytd-rich-item-renderer.ytd-rich-grid-renderer {
                 position: relative;
               }
               #content.ytd-rich-item-renderer {
-                padding-top: 60px;
+                &:not(:has(.ytDismissibleItemReplacedContent)) {
+                  padding-top: 60px;
+                }
                 .yt-lockup-view-model__metadata,
                 .yt-lockup-metadata-view-model {
                   position: static;
                 }
+                /* Move channel avatar up */
                 .yt-lockup-metadata-view-model__avatar {
                   position: absolute;
                   top: -50px;
                   left: 0;
                 }
-              }
-
-              /* Move channel name up */
-              .yt-content-metadata-view-model__metadata-row:first-child {
-                position: absolute;
-                top: -48px;
-                left: 50px;
-                /* #title.ytd-shelf-renderer styles */
-                a {
-                  color: var(--yt-spec-text-primary);
-                  font-family: "Roboto","Arial",sans-serif;
-                  font-size: 2rem;
-                  line-height: 2.8rem;
-                  font-weight: 700;
-                  overflow: hidden;
-                  display: block;
-                  max-height: 2.8rem;
-                  -webkit-line-clamp: 1;
-                  display: box;
-                  display: -webkit-box;
-                  -webkit-box-orient: vertical;
-                  text-overflow: ellipsis;
-                  white-space: normal;
+                /* Move channel name up */
+                .yt-content-metadata-view-model__metadata-row:first-child {
+                  position: absolute;
+                  top: -48px;
+                  left: 50px;
+                  /* #title.ytd-shelf-renderer styles */
+                  a {
+                    color: var(--yt-spec-text-primary);
+                    font-family: "Roboto","Arial",sans-serif;
+                    font-size: 2rem;
+                    line-height: 2.8rem;
+                    font-weight: 700;
+                    overflow: hidden;
+                    display: block;
+                    max-height: 2.8rem;
+                    -webkit-line-clamp: 1;
+                    display: box;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    text-overflow: ellipsis;
+                    white-space: normal;
+                  }
+                }
+                /* Adjust for header height */
+                .ytDismissibleItemAspectRatio16By9 {
+                  min-height: 180px;
                 }
               }
             }

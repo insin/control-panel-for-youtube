@@ -95,7 +95,7 @@ ${messages.newVideoPlayerUI}:
 • ${messages.playerHideFullScreenControls}
 • ${messages.playerHideFullScreenMoreVideos}
 • ${messages.playerCompactPlayButton}${messages.desktopVersion}
-• ${messages.playerControlsBg}${messages.desktopVersion}
+• ${messages.playerControlsBg}${messages.desktopVersion} - ${messages.blur} / ${messages.transparent}
 • ${messages.restoreMiniplayerButton}${messages.desktopVersion}
 • ${messages.playerFixFullScreenButton}${messages.desktopVersion}
 • ${messages.playerHideFullScreenTitle}${messages.desktopVersion}
