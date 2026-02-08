@@ -2048,11 +2048,59 @@ const configureCss = (() => {
             padding-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * 2) !important;
           }
           /* Adjust non-grid items so they don't double the gutter */
-          #contents.ytd-rich-grid-renderer > :not(ytd-rich-item-renderer) {
+          #contents.ytd-rich-grid-renderer > :not(ytd-rich-item-renderer, ytd-continuation-item-renderer) {
             margin-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * -1) !important;
           }
         }
       `)
+
+      let gridGhostCardsToFix = [
+        !config.displayHomeGridAsList && 'home',
+        !config.displaySubscriptionsGridAsList && 'subscriptions',
+      ].filter(Boolean)
+      if (gridGhostCardsToFix.length > 0) {
+        cssRules.push(`
+          ytd-browse:is(${gridGhostCardsToFix.map(page => `[page-subtype="${page}"]`).join(', ')}) {
+            /* Make continuation item renderer retain position but take up no space */
+            ytd-continuation-item-renderer {
+              height: 1px;
+              margin-left: -1px;
+              max-width: 1px;
+              opacity: 0;
+              overflow: hidden;
+              pointer-events: none;
+            }
+            /* Fix display of cloned ghost cards */
+            .ghost-grid {
+              display: contents;
+            }
+            .ghost-card {
+              --ytd-rich-item-row-usable-width: calc(100% - var(--ytd-rich-grid-gutter-margin)*2);
+              margin-bottom: var(--ytd-rich-grid-row-margin);
+              width: calc(var(--ytd-rich-item-row-usable-width)/var(--ytd-rich-grid-items-per-row) - var(--ytd-rich-grid-item-margin) - .01px);
+            }
+          }
+          /* Container for cloned loading spinner */
+          .cpfyt-grid-spinner {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+          }
+        `)
+        if (config.minimumGridItemsPerRow != 'auto') {
+          let gridItemsPerRow = Number(config.minimumGridItemsPerRow)
+          cssRules.push(`
+            ytd-browse:is(${gridGhostCardsToFix.map(page => `[page-subtype="${page}"]`).join(', ')}) {
+              /* Only show one row's worth of ghost cards */
+              .ghost-card:nth-child(n+${gridItemsPerRow + 1}) {
+                display: none;
+              }
+            }
+          `)
+        }
+      }
+
       if (!config.addTakeSnapshot) {
         hideCssSelectors.push('#cpfyt-snaphot-menu-item')
       }
@@ -3711,15 +3759,74 @@ async function observeDesktopRichGridItems(options) {
     }
   }
 
-  // Process new videos as they're added
+  let fixGhostCards = {
+    home: !config.displayHomeGridAsList,
+    subscriptions: !config.displaySubscriptionsGridAsList,
+  }[page]
+  /** @type {HTMLElement} */
+  let $lastGhostGridClone = null
+  /** @type {WeakMap<HTMLElement, HTMLElement>} */
+  let ghostGridClones = new WeakMap()
+  /** @type {HTMLElement} */
+  let $lastSpinnerClone = null
+  /** @type {WeakMap<HTMLElement, HTMLElement>} */
+  let spinnerClones = new WeakMap()
+
   observeElement($gridContents, (mutations) => {
     let videosAdded = 0
     for (let mutation of mutations) {
+      if (fixGhostCards) {
+        for (let $removedNode of mutation.removedNodes) {
+          if (!($removedNode instanceof HTMLElement)) continue
+          if ($removedNode.nodeName == 'YTD-CONTINUATION-ITEM-RENDERER') {
+            let $ghostGridClone = ghostGridClones.get($removedNode)
+            if ($ghostGridClone) {
+              ghostGridClones.delete($removedNode)
+              if ($ghostGridClone.isConnected) $ghostGridClone.remove()
+              if ($ghostGridClone === $lastGhostGridClone) $lastGhostGridClone = null
+            }
+            let $spinnerClone = spinnerClones.get($removedNode)
+            if ($spinnerClone) {
+              spinnerClones.delete($removedNode)
+              if ($spinnerClone.isConnected) $spinnerClone.remove()
+              if ($spinnerClone === $lastSpinnerClone) $lastSpinnerClone = null
+            }
+          }
+        }
+      }
       for (let $addedNode of mutation.addedNodes) {
         if (!($addedNode instanceof HTMLElement)) continue
         if ($addedNode.nodeName == 'YTD-RICH-ITEM-RENDERER') {
           processGridItem($addedNode, `grid item ${++itemCount}`)
           videosAdded++
+        }
+        if (fixGhostCards && $addedNode.nodeName == 'YTD-CONTINUATION-ITEM-RENDERER') {
+          if ($lastGhostGridClone?.isConnected) $lastGhostGridClone.remove()
+          if ($lastSpinnerClone?.isConnected) $lastSpinnerClone.remove()
+          $lastGhostGridClone = /** @type {HTMLElement} */ ($addedNode.querySelector('.ghost-grid.ytd-ghost-grid-renderer')?.cloneNode(true))
+          if ($lastGhostGridClone) {
+            ghostGridClones.set($addedNode, $lastGhostGridClone)
+            $addedNode.insertAdjacentElement('afterend', $lastGhostGridClone)
+          } else {
+            warn('fixGhostCards: .ghost-grid.ytd-ghost-grid-renderer not found')
+          }
+          let $spinner = $addedNode.querySelector('tp-yt-paper-spinner')
+          observeElement($spinner, (_, observer) => {
+            if (!$spinner.hasAttribute('active')) return
+            observer.disconnect()
+            $lastSpinnerClone = document.createElement('div')
+            $lastSpinnerClone.className = 'cpfyt-grid-spinner'
+            $lastSpinnerClone.append($spinner.cloneNode(true))
+            spinnerClones.set($addedNode, $lastSpinnerClone)
+            $gridContents.append($lastSpinnerClone)
+          }, {
+            leading: true,
+            name: '<ytd-continuation-item-renderer> spinner',
+            observers: pageObservers,
+          }, {
+            attributes: true,
+            attributeFilter: ['active'],
+          })
         }
       }
     }
