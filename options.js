@@ -38,6 +38,7 @@ for (let translationId of [
   'disableThemedHover',
   'disableThemedHoverNote',
   'disableVideoPreviews',
+  'displayHomeGridAsList',
   'displaySubscriptionsGridAsList',
   'downloadTranscript',
   'embeddedVideos',
@@ -216,6 +217,7 @@ let defaultConfig = {
   alwaysUseTheaterMode: false,
   disableThemedHover: false,
   disableVideoPreviews: false,
+  displayHomeGridAsList: false,
   displaySubscriptionsGridAsList: false,
   downloadTranscript: true,
   enforceTheme: 'default',
@@ -370,7 +372,7 @@ function shouldDisplayHiddenChannels() {
 function updateDisplay() {
   $body.classList.toggle('desktop', optionsConfig.version == 'desktop')
   $body.classList.toggle('disabled', !optionsConfig.enabled)
-  $body.classList.toggle('displayingSubscriptionsGridAsList', optionsConfig.displaySubscriptionsGridAsList)
+  $body.classList.toggle('displayingGridAsList',  optionsConfig.displayHomeGridAsList || optionsConfig.displaySubscriptionsGridAsList)
   $body.classList.toggle('fullSizeTheaterMode', optionsConfig.fullSizeTheaterMode)
   $body.classList.toggle('hiddenChannels', shouldDisplayHiddenChannels())
   $body.classList.toggle('hidingWatched', optionsConfig.hideWatched)

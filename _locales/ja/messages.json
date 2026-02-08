@@ -71,6 +71,9 @@
   "disableVideoPreviews": {
     "message": "動画のプレビューを無効にする"
   },
+  "displayHomeGridAsList": {
+    "message": "ホームのグリッドをリスト形式で表示"
+  },
   "displaySubscriptionsGridAsList": {
     "message": "登録チャンネルのグリッドをリスト形式で表示"
   },

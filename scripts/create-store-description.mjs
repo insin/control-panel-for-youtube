@@ -88,6 +88,7 @@ ${messages.recentChanges}:
 • ${messages.revertSidebarOrder}${messages.desktopVersion}
 • ${messages.revertGiantRelated}${messages.desktopVersion}
 • ${messages.displaySubscriptionsGridAsList}${messages.desktopVersion}
+• ${messages.displayHomeGridAsList}${messages.desktopVersion}
 
 ${messages.newVideoPlayerUI}:
 

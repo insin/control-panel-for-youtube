@@ -25,7 +25,7 @@ body.macOS.browserAction {
 body.desktop .mobile,
 body.mobile .desktop,
 body:not(.debug) .debug,
-body:not(.displayingSubscriptionsGridAsList) .displayingSubscriptionsGridAsList,
+body:not(.displayingGridAsList) .displayingGridAsList,
 body:not(.fullSizeTheaterMode) .fullSizeTheaterMode,
 body:not(.hiddenChannels) #hiddenChannelsDetails,
 body:not(.hidingWatched) .hidingWatched,

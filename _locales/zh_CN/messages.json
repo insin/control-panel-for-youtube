@@ -71,6 +71,9 @@
   "disableVideoPreviews": {
     "message": "停用视频预览"
   },
+  "displayHomeGridAsList": {
+    "message": "将主页网格显示为列表"
+  },
   "displaySubscriptionsGridAsList": {
     "message": "将订阅网格显示为列表"
   },

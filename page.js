@@ -58,6 +58,7 @@ let defaultConfig = {
   alwaysUseTheaterMode: false,
   disableThemedHover: false,
   disableVideoPreviews: false,
+  displayHomeGridAsList: false,
   displaySubscriptionsGridAsList: false,
   downloadTranscript: true,
   enforceTheme: 'default',
@@ -2030,19 +2031,26 @@ const configureCss = (() => {
     //#region Desktop-only
     if (desktop) {
       // Fix spaces & gaps caused by left gutter margin on first column items
-      let subsGridFix = !config.displaySubscriptionsGridAsList ? ', [page-subtype="subscriptions"]' : ''
+      // when we hide videos in grids.
+      let gridsToFix = [
+        'channels',
+        !config.displayHomeGridAsList && 'home',
+        !config.displaySubscriptionsGridAsList && 'subscriptions',
+      ].filter(Boolean)
       cssRules.push(`
-        /* Remove left gutter margin from first column items */
-        ytd-browse:is([page-subtype="home"], [page-subtype="channels"]${subsGridFix}) ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
-          margin-left: calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
-        }
-        /* Apply the left gutter as padding in the grid contents instead */
-        ytd-browse:is([page-subtype="home"], [page-subtype="channels"]${subsGridFix}) #contents.ytd-rich-grid-renderer {
-          padding-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * 2) !important;
-        }
-        /* Adjust non-grid items so they don't double the gutter */
-        ytd-browse:is([page-subtype="home"]${subsGridFix}) #contents.ytd-rich-grid-renderer > :not(ytd-rich-item-renderer) {
-          margin-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * -1) !important;
+        ytd-browse:is(${gridsToFix.map(page => `[page-subtype="${page}"]`).join(', ')}) {
+          /* Remove left gutter margin from first column items */
+          ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
+            margin-left: calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
+          }
+          /* Apply the left gutter as padding in the grid contents instead */
+          #contents.ytd-rich-grid-renderer {
+            padding-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * 2) !important;
+          }
+          /* Adjust non-grid items so they don't double the gutter */
+          #contents.ytd-rich-grid-renderer > :not(ytd-rich-item-renderer) {
+            margin-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * -1) !important;
+          }
         }
       `)
       if (!config.addTakeSnapshot) {
@@ -2102,10 +2110,15 @@ const configureCss = (() => {
           }
         `)
       }
-      if (config.displaySubscriptionsGridAsList) {
+      if (config.displayHomeGridAsList || config.displaySubscriptionsGridAsList) {
+        let gridsToList = [
+          config.displayHomeGridAsList && 'home',
+          config.displaySubscriptionsGridAsList && 'subscriptions',
+        ].filter(Boolean)
+        let gridAsListPageSelector = `ytd-browse:is(${gridsToList.map(page => `[page-subtype="${page}"]`).join(', ')})`
         cssRules.push(`
-          ytd-browse:is([page-subtype="subscriptions"]) {
-            /* Turn Subscriptions Grid view into a List-like view */
+          ${gridAsListPageSelector} {
+            /* Turn Grid view into a List-like view */
             ytd-two-column-browse-results-renderer {
               max-width: var(--ytd-grid-max-width); /* 1284px */
             }
@@ -2157,9 +2170,19 @@ const configureCss = (() => {
             }
           }
         `)
+        if (config.displayHomeGridAsList) {
+          cssRules.push(`
+            ytd-browse:is([page-subtype="home"]) {
+              /* Align chips with list items */
+              #chips-content {
+                padding-left: 8px;
+              }
+            }
+          `)
+        }
         if (config.showChannelHeadersInListView) {
           cssRules.push(`
-            ytd-browse:is([page-subtype="subscriptions"]) {
+            ${gridAsListPageSelector} {
               ytd-rich-item-renderer.ytd-rich-grid-renderer {
                 position: relative;
               }

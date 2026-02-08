@@ -71,6 +71,9 @@
   "disableVideoPreviews": {
     "message": "Disable video previews"
   },
+  "displayHomeGridAsList": {
+    "message": "Display Home grid as a list"
+  },
   "displaySubscriptionsGridAsList": {
     "message": "Display Subscriptions grid as a list"
   },

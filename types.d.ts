@@ -106,6 +106,7 @@ export type SiteConfig = {
   alwaysUseTheaterMode: boolean
   disableThemedHover: boolean
   disableVideoPreviews: boolean
+  displayHomeGridAsList: boolean
   displaySubscriptionsGridAsList: boolean
   downloadTranscript: boolean
   enforceTheme: 'default' | 'device' | 'dark' | 'light',

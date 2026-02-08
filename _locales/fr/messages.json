@@ -71,6 +71,9 @@
   "disableVideoPreviews": {
     "message": "Désactiver les aperçus vidéo"
   },
+  "displayHomeGridAsList": {
+    "message": "Afficher la grille de l'accueil en liste"
+  },
   "displaySubscriptionsGridAsList": {
     "message": "Afficher la grille des abonnements en liste"
   },
