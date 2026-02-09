@@ -5331,7 +5331,7 @@ function blockAds() {
     if (
       (config && !(config.enabled && config.blockAds)) ||
       !(request instanceof Request) ||
-      !url || !url.includes('/player') && !url.includes('watch?') && !url.includes('/reel_watch_sequence') ||
+      !url || !url.includes('/player') && !url.includes('/get_watch') && !url.includes('/reel_watch_sequence') ||
       // Ignore adblock detection requests with data: URL payloads
       !Request_clone.call(request).url.startsWith('https://')
     ) {
@@ -5342,14 +5342,18 @@ function blockAds() {
       return Response_clone.call(response).text().then(responseText => {
         try {
           let data = JSON.parse(responseText)
-          if (url.includes('/player') || url.includes('watch?')) {
+          if (url.includes('/player') || url.includes('/get_watch')) {
             log('blockAds: patching', url, 'response')
             processPlayerResponse(data, 'fetch')
           }
           else if (url.includes('/reel_watch_sequence')) {
             processReelWatchSequenceResponse(data)
           }
-          return new Response(JSON.stringify(data))
+          return new Response(JSON.stringify(data), {
+            status: response.status,
+            statusText: response.statusText,
+            headers: response.headers,
+          })
         } catch (error) {
           warn('blockAds: error patching', url, 'fetch response:', error, responseText)
         }
@@ -5400,6 +5404,47 @@ function blockAds() {
     if (config?.enabled && config.blockAds) {
       warn('blockAds: error proxying fetch:', error)
     }
+  }
+
+  let urlProp = crypto.randomUUID()
+  let XMLHttpRequest_open = XMLHttpRequest.prototype.open
+  XMLHttpRequest.prototype.open = function(_, url, __, ___, ____) {
+    if (config?.enabled && config?.blockAds && (url?.includes('/player') || url?.includes('/get_watch'))) {
+      this[urlProp] = url
+    }
+    return XMLHttpRequest_open.apply(this, arguments)
+  }
+
+  let onloadProp = crypto.randomUUID()
+  let XMLHttpRequest_send = XMLHttpRequest.prototype.send
+  XMLHttpRequest.prototype.send = function(body) {
+    if (this[urlProp] && this.onload) {
+      this[onloadProp] = this.onload
+      this.onload = (...args) => {
+        if (typeof this.response == 'string') {
+          try {
+            let prefix = this.response.match(/^(\)\]\}'\n?)/)?.[1] ?? ''
+            let data = JSON.parse(this.response.slice(prefix.length))
+            processPlayerResponse(data, 'XHR')
+            let patched = prefix + JSON.stringify(data)
+            Object.defineProperty(this, 'response', {
+              configurable: true,
+              writable: false,
+              value: patched,
+            })
+            Object.defineProperty(this, 'responseText', {
+              configurable: true,
+              writable: false,
+              value: patched,
+            })
+          } catch (error) {
+            warn('blockAds: error patching', this[urlProp], 'XHR response:', error, this.response)
+          }
+        }
+        this[onloadProp]?.apply(this, args)
+      }
+    }
+    return XMLHttpRequest_send.call(this, body)
   }
 }
 
