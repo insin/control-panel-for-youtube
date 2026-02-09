@@ -5014,17 +5014,26 @@ async function tweakChannelPage() {
         timeout: 2000,
       })
     )
-    if ($channelTrailer) {
-      function pauseTrailer() {
-        log(`pauseChannelTrailers: pausing channel trailer`, {readyState: $channelTrailer.readyState})
-        $channelTrailer.pause()
+    if (!$channelTrailer) return
+
+    let timeoutId
+    function pauseTrailer() {
+      log(`pauseChannelTrailers: pausing channel trailer`, {readyState: $channelTrailer.readyState})
+      $channelTrailer.pause()
+      if (timeoutId) {
+        clearTimeout(timeoutId)
       }
-      // Prevent the next play attempt if the trailer hasn't started yet
-      if ($channelTrailer.paused && $channelTrailer.readyState == 0) {
-        $channelTrailer.addEventListener('play', pauseTrailer, {once: true})
-      } else {
-        pauseTrailer()
-      }
+    }
+
+    // Prevent the next play attempt if the trailer hasn't started yet
+    if ($channelTrailer.paused && $channelTrailer.readyState == 0) {
+      $channelTrailer.addEventListener('play', pauseTrailer, {once: true})
+      timeoutId = setTimeout(() => {
+        log("pauseChannelTrailers: trailer didn't start playing after 1 second")
+        $channelTrailer.removeEventListener('play', pauseTrailer)
+      }, 1000)
+    } else {
+      pauseTrailer()
     }
   }
 }
