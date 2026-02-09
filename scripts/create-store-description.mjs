@@ -183,6 +183,7 @@ ${messages.uiTweaks}:
 • ${messages.mobileGridView}${messages.mobileVersion}
 • ${messages.hideExploreButton}${messages.mobileVersion}
 • ${messages.hideSubscriptionsChannelList}${messages.mobileVersion}
+• ${messages.fixGhostCards}${messages.mobileVersion}
 
 ${messages.embeddedVideos}:
 

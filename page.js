@@ -3286,7 +3286,7 @@ function handleCurrentUrl() {
 }
 
 /** @param {HTMLElement} $menu */
-async function addDownloadTranscriptToDesktopMenu($menu) {
+function addDownloadTranscriptToDesktopMenu($menu) {
   if (!isVideoPage()) return
 
   let $transcript = $lastClickedElement?.closest('[target-id="engagement-panel-searchable-transcript"]')
@@ -3886,12 +3886,72 @@ async function observeDesktopRichGridItems(options) {
   }[page]
   /** @type {HTMLElement} */
   let $lastGhostGridClone = null
-  /** @type {WeakMap<HTMLElement, HTMLElement>} */
-  let ghostGridClones = new WeakMap()
   /** @type {HTMLElement} */
   let $lastSpinnerClone = null
   /** @type {WeakMap<HTMLElement, HTMLElement>} */
+  let ghostGridClones = new WeakMap()
+  /** @type {WeakMap<HTMLElement, HTMLElement>} */
   let spinnerClones = new WeakMap()
+
+  /** @param {HTMLElement} $continuationRenderer */
+  function onContinuationRendererAdded($continuationRenderer) {
+    if ($lastGhostGridClone?.isConnected) $lastGhostGridClone.remove()
+    if ($lastSpinnerClone?.isConnected) $lastSpinnerClone.remove()
+    $lastGhostGridClone = document.createElement('div')
+    $lastGhostGridClone.className = 'cpfyt-ghost-cards'
+    let $cards = $continuationRenderer.querySelectorAll('.ghost-grid .ghost-card')
+    if ($cards.length > 0) {
+      $lastGhostGridClone.append(...$cards)
+      // Add more cards if YouTube didn't generate enough
+      if (effectiveGridItemsPerRow && effectiveGridItemsPerRow > $lastGhostGridClone.childElementCount) {
+        let extra = effectiveGridItemsPerRow - $lastGhostGridClone.childElementCount
+        for (let i = 0; i < extra; i++) {
+          $lastGhostGridClone.append($lastGhostGridClone.lastElementChild.cloneNode(true))
+        }
+      }
+      ghostGridClones.set($continuationRenderer, $lastGhostGridClone)
+      $continuationRenderer.insertAdjacentElement('afterend', $lastGhostGridClone)
+    } else {
+      warn('fixGhostCards: no .ghost-cards found in <ytd-continuation-item-renderer>')
+    }
+    let $spinner = $continuationRenderer.querySelector('tp-yt-paper-spinner')
+    if ($spinner) {
+      observeElement($spinner, (_, observer) => {
+        if (!$spinner.hasAttribute('active')) return
+        observer.disconnect()
+        $lastSpinnerClone = document.createElement('div')
+        $lastSpinnerClone.className = 'cpfyt-grid-spinner'
+        $lastSpinnerClone.append($spinner.cloneNode(true))
+        spinnerClones.set($continuationRenderer, $lastSpinnerClone)
+        $gridContents.append($lastSpinnerClone)
+      }, {
+        leading: true,
+        name: '<ytd-continuation-item-renderer> spinner',
+        observers: pageObservers,
+      }, {
+        attributes: true,
+        attributeFilter: ['active'],
+      })
+    } else {
+      warn('fixGhostCards: <tp-yt-paper-spinner> not found in <ytd-continuation-item-renderer>')
+    }
+  }
+
+  /** @param {HTMLElement} $continuationRenderer */
+  function onContinuationRendererRemoved($continuationRenderer) {
+    let $ghostGridClone = ghostGridClones.get($continuationRenderer)
+    if ($ghostGridClone) {
+      ghostGridClones.delete($continuationRenderer)
+      if ($ghostGridClone.isConnected) $ghostGridClone.remove()
+      if ($ghostGridClone === $lastGhostGridClone) $lastGhostGridClone = null
+    }
+    let $spinnerClone = spinnerClones.get($continuationRenderer)
+    if ($spinnerClone) {
+      spinnerClones.delete($continuationRenderer)
+      if ($spinnerClone.isConnected) $spinnerClone.remove()
+      if ($spinnerClone === $lastSpinnerClone) $lastSpinnerClone = null
+    }
+  }
 
   observeElement($gridContents, (mutations) => {
     let videosAdded = 0
@@ -3900,18 +3960,7 @@ async function observeDesktopRichGridItems(options) {
         for (let $removedNode of mutation.removedNodes) {
           if (!($removedNode instanceof HTMLElement)) continue
           if ($removedNode.nodeName == 'YTD-CONTINUATION-ITEM-RENDERER') {
-            let $ghostGridClone = ghostGridClones.get($removedNode)
-            if ($ghostGridClone) {
-              ghostGridClones.delete($removedNode)
-              if ($ghostGridClone.isConnected) $ghostGridClone.remove()
-              if ($ghostGridClone === $lastGhostGridClone) $lastGhostGridClone = null
-            }
-            let $spinnerClone = spinnerClones.get($removedNode)
-            if ($spinnerClone) {
-              spinnerClones.delete($removedNode)
-              if ($spinnerClone.isConnected) $spinnerClone.remove()
-              if ($spinnerClone === $lastSpinnerClone) $lastSpinnerClone = null
-            }
+            onContinuationRendererRemoved($removedNode)
           }
         }
       }
@@ -3922,46 +3971,7 @@ async function observeDesktopRichGridItems(options) {
           videosAdded++
         }
         if (fixGhostCards && $addedNode.nodeName == 'YTD-CONTINUATION-ITEM-RENDERER') {
-          if ($lastGhostGridClone?.isConnected) $lastGhostGridClone.remove()
-          if ($lastSpinnerClone?.isConnected) $lastSpinnerClone.remove()
-          $lastGhostGridClone = document.createElement('div')
-          $lastGhostGridClone.className = 'cpfyt-ghost-cards'
-          let $cards = $addedNode.querySelectorAll('.ghost-grid .ghost-card')
-          if ($cards.length > 0) {
-            $lastGhostGridClone.append(...$cards)
-            // Add more cards if YouTube didn't generate enough
-            if (effectiveGridItemsPerRow && effectiveGridItemsPerRow > $lastGhostGridClone.childElementCount) {
-              let extra = effectiveGridItemsPerRow - $lastGhostGridClone.childElementCount
-              for (let i = 0; i < extra; i++) {
-                $lastGhostGridClone.append($lastGhostGridClone.lastElementChild.cloneNode(true))
-              }
-            }
-            ghostGridClones.set($addedNode, $lastGhostGridClone)
-            $addedNode.insertAdjacentElement('afterend', $lastGhostGridClone)
-          } else {
-            warn('fixGhostCards: no .ghost-cards found in <ytd-continuation-item-renderer>')
-          }
-          let $spinner = $addedNode.querySelector('tp-yt-paper-spinner')
-          if ($spinner) {
-            observeElement($spinner, (_, observer) => {
-              if (!$spinner.hasAttribute('active')) return
-              observer.disconnect()
-              $lastSpinnerClone = document.createElement('div')
-              $lastSpinnerClone.className = 'cpfyt-grid-spinner'
-              $lastSpinnerClone.append($spinner.cloneNode(true))
-              spinnerClones.set($addedNode, $lastSpinnerClone)
-              $gridContents.append($lastSpinnerClone)
-            }, {
-              leading: true,
-              name: '<ytd-continuation-item-renderer> spinner',
-              observers: pageObservers,
-            }, {
-              attributes: true,
-              attributeFilter: ['active'],
-            })
-          } else {
-            warn('fixGhostCards: <tp-yt-paper-spinner> not found in <ytd-continuation-item-renderer>')
-          }
+          onContinuationRendererAdded($addedNode)
         }
       }
     }
