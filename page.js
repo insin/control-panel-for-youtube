@@ -4794,7 +4794,9 @@ function hideWatched($video) {
   let hide = false
   if ($progressBar) {
     let progress = parseInt(/** @type {HTMLElement} */ ($progressBar).style.width)
-    hide = progress >= Number(config.hideWatchedThreshold)
+    if (!Number.isNaN(progress)) {
+      hide = progress >= Number(config.hideWatchedThreshold)
+    }
   }
   $video.classList.toggle(Classes.HIDE_WATCHED, hide)
   return hide
