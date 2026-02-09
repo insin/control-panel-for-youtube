@@ -123,6 +123,9 @@
   "features": {
     "message": "Features"
   },
+  "fixGhostCards": {
+    "message": "Fix grid loading placeholders"
+  },
   "fullSizeTheaterMode": {
     "message": "Full size theater mode"
   },

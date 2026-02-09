@@ -123,6 +123,9 @@
   "features": {
     "message": "Fonctionnalités"
   },
+  "fixGhostCards": {
+    "message": "Corriger les espaces réservés de chargement"
+  },
   "fullSizeTheaterMode": {
     "message": "Mode cinéma grand écran"
   },

@@ -110,6 +110,7 @@ export type SiteConfig = {
   displaySubscriptionsGridAsList: boolean
   downloadTranscript: boolean
   enforceTheme: 'default' | 'device' | 'dark' | 'light',
+  fixGhostCards: boolean
   fullSizeTheaterMode: boolean
   fullSizeTheaterModeHideHeader: boolean
   hideChat: boolean

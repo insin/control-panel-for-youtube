@@ -123,6 +123,9 @@
   "features": {
     "message": "特点"
   },
+  "fixGhostCards": {
+    "message": "修复网格加载占位符"
+  },
   "fullSizeTheaterMode": {
     "message": "全屏影院模式"
   },

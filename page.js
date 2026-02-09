@@ -62,6 +62,7 @@ let defaultConfig = {
   displaySubscriptionsGridAsList: false,
   downloadTranscript: true,
   enforceTheme: 'default',
+  fixGhostCards: true,
   fullSizeTheaterMode: false,
   fullSizeTheaterModeHideHeader: true,
   hideChat: false,
@@ -2072,7 +2073,7 @@ const configureCss = (() => {
       `)
 
       let gridPagesNeedingGhostCardFix = getGridPagesNeedingGhostCardFix()
-      if (gridPagesNeedingGhostCardFix.length > 0) {
+      if (config.fixGhostCards && gridPagesNeedingGhostCardFix.length > 0) {
         cssRules.push(`
           ytd-browse:is(${gridPagesNeedingGhostCardFix .map(page => `[page-subtype="${page}"]`).join(', ')}) {
             /* Make continuation item renderer retain position but take up no space */
@@ -2872,7 +2873,8 @@ const configureCss = (() => {
 const configureGridCss = (() => {
   /** @type {HTMLStyleElement} */
   let $style
-
+  /** @type {boolean} */
+  let fixingGhostCards
   return function configureGridCss() {
     if (!config.enabled) {
       log('removing grid stylesheet')
@@ -2905,12 +2907,15 @@ const configureGridCss = (() => {
       }
     }
 
-    if (gridItemsPerRow == effectiveGridItemsPerRow && gridMode == effectiveGridMode) {
+    if (gridItemsPerRow == effectiveGridItemsPerRow &&
+        gridMode == effectiveGridMode &&
+        config.fixGhostCards == fixingGhostCards) {
       return
     }
 
     effectiveGridItemsPerRow = gridItemsPerRow
     effectiveGridMode = gridMode
+    fixingGhostCards = config.fixGhostCards
 
     if (gridMode == 'auto')
       log(`gridItemsPerRow: auto`)
@@ -2949,7 +2954,7 @@ const configureGridCss = (() => {
 
     if (gridItemsPerRow) {
       let gridPagesNeedingGhostCardFix = getGridPagesNeedingGhostCardFix()
-      if (gridPagesNeedingGhostCardFix.length > 0) {
+      if (config.fixGhostCards && gridPagesNeedingGhostCardFix.length > 0) {
         cssRules.push(`
           ytd-browse:is(${gridPagesNeedingGhostCardFix.map(page => `[page-subtype="${page}"]`).join(', ')}) {
             /* Only show one row's worth of ghost cards */
@@ -3875,7 +3880,7 @@ async function observeDesktopRichGridItems(options) {
     }
   }
 
-  let fixGhostCards = {
+  let fixGhostCards = config.fixGhostCards && {
     home: !config.displayHomeGridAsList,
     subscriptions: !config.displaySubscriptionsGridAsList,
   }[page]
@@ -3967,6 +3972,15 @@ async function observeDesktopRichGridItems(options) {
     name: `${page} <ytd-rich-grid-renderer> #contents (for new videos being added)`,
     observers: pageObservers,
   })
+
+  if (fixGhostCards) {
+    pageObservers.set('grid loading placeholder clones', {
+      disconnect() {
+        if ($lastGhostGridClone?.isConnected) $lastGhostGridClone.remove()
+        if ($lastSpinnerClone?.isConnected) $lastSpinnerClone.remove()
+      }
+    })
+  }
 
   processAllVideos()
 }
@@ -5479,7 +5493,9 @@ function configChanged(changes) {
     if (desktop && changes.enforceTheme && config.enforceTheme != 'default') {
       enforceTheme()
     }
-    if (desktop && Object.hasOwn(changes, 'minimumGridItemsPerRow')) {
+    if (desktop && (
+      Object.hasOwn(changes, 'fixGhostCards') || Object.hasOwn(changes, 'minimumGridItemsPerRow')
+    )) {
       configureGridCss()
     }
     configureCss()
@@ -5496,6 +5512,7 @@ function configChanged(changes) {
     main()
   } else {
     configureCss()
+    configureGridCss()
     triggerVideoPageResize()
     disconnectObservers(pageObservers, 'page')
     disconnectObservers(globalObservers,' global')

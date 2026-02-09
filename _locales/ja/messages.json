@@ -122,6 +122,9 @@
   "features": {
     "message": "機能"
   },
+  "fixGhostCards": {
+    "message": "グリッドの読み込みプレースホルダーを修正"
+  },
   "fullSizeTheaterMode": {
     "message": "フルサイズシアターモード"
   },
