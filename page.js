@@ -2903,7 +2903,11 @@ const configureGridCss = (() => {
     else {
       gridMode = 'relative'
       if (lastElementsPerRow) {
-        gridItemsPerRow = lastElementsPerRow + Number(config.minimumGridItemsPerRow)
+        if (lastElementsPerRow > 2) {
+          gridItemsPerRow = lastElementsPerRow + Number(config.minimumGridItemsPerRow)
+        } else {
+          gridItemsPerRow = lastElementsPerRow + 1
+        }
       }
     }
 
