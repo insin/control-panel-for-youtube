@@ -3286,6 +3286,10 @@ function addDownloadTranscriptToDesktopMenu($menu) {
   if ($menu.querySelector('.cpfyt-menu-item')) return
 
   let $menuItems = $menu.querySelector('#items')
+  if (!$menuItems) {
+    warn('menu #items not found')
+    return
+  }
   $menuItems.insertAdjacentHTML('beforeend', html`
 <div class="cpfyt-menu-item" tabindex="0" style="display: none">
   <div class="cpfyt-menu-text">
@@ -3425,6 +3429,10 @@ function addHideChannelToDesktopVideoMenu($menu) {
     'tp-yt-paper-listbox',
     'yt-list-view-model',
   ].join(', '))
+  if (!$menuItems) {
+    warn('menu items not found')
+    return
+  }
   // Insert before last menu item, which should be Report
   $menuItems.lastElementChild.insertAdjacentHTML('beforebegin', html`
 <div class="cpfyt-menu-item" tabindex="0" id="cpfyt-hide-channel-menu-item" style="display: none">
@@ -3475,6 +3483,8 @@ async function addHideChannelToMobileVideoMenu($menu) {
   lastClickedChannel = channel
 
   let $menuItems = $menu.querySelector($menu.id == 'menu' ? '.menu-content' : '.bottom-sheet-media-menu-item')
+  if (!$menuItems) return
+
   let hasIcon = Boolean($menuItems.querySelector('c3-icon'))
   let hideChannelMenuItemHTML = html`
     <ytm-menu-item id="cpfyt-hide-channel-menu-item">
@@ -3699,6 +3709,10 @@ async function observeDesktopRelatedVideos() {
             log('#related categories appeared')
             $canShowMoreElement = $addedNode
             $contents = $addedNode.querySelector('#contents')
+            if (!$contents) {
+              warn('#contents not found in <ytd-item-section-renderer>')
+              return
+            }
             init()
           }
         }
@@ -3777,6 +3791,10 @@ async function observeDesktopRelatedVideos() {
  */
 function observeDesktopYtLockupViewModelItemContent($gridItem, uniqueId) {
   let $content = $gridItem.querySelector(':scope > #content')
+  if (!$content) {
+    warn('#content not found in <yt-lockup-view-model>')
+    return
+  }
   observeElement($content, (mutations) => {
     if (mutations.length == 0) {
       let $lockupViewModel = $gridItem.querySelector('yt-lockup-view-model')
@@ -4004,6 +4022,10 @@ function observeDesktopContextMenu($popupContainer) {
 
   function addTakeShapshotMenuItem() {
     let $insertAfter = $contextMenu.querySelector('.ytp-menuitem:last-child')
+    if (!$insertAfter) {
+      warn('addTakeSnapshot: menu item to insert after not found')
+      return
+    }
     $insertAfter.insertAdjacentHTML('afterend', html`
 <div id="cpfyt-snaphot-menu-item" class="ytp-menuitem" role="menuitem" tabindex="0">
   <div class="ytp-menuitem-icon">
@@ -4271,6 +4293,11 @@ async function observeSearchResultSections(options) {
    */
   function processSection($section, sectionNum, isInitialSection = false) {
     let $contents = /** @type {HTMLElement} */ ($section.querySelector(sectionContentsSelector))
+    if (!$contents) {
+      warn(sectionContentsSelector, 'not found in search results section', sectionNum, $section)
+      return
+    }
+
     let itemCount = 0
     let suggestedSectionCount = 0
     /** @type {Map<string, import("./types").Disconnectable>} */
@@ -4305,6 +4332,10 @@ async function observeSearchResultSections(options) {
     function processSuggestedSection($suggestedSection) {
       let uniqueId = `section ${sectionNum} suggested section ${++suggestedSectionCount}`
       let $items = $suggestedSection.querySelector('#items')
+      if (!$items) {
+        warn('#items not found in suggested section')
+        return
+      }
       for (let $video of $items.children) {
         if ($video.nodeName == videoNodeName) {
           manuallyHideVideo($video)
@@ -4512,7 +4543,7 @@ function observeVideoHiddenState() {
       cleanup()
       // Remove the class if the Undo button is clicked later, e.g. if
       // this feature is disabled after hiding a video.
-      $undoButton.addEventListener('click', () => {
+      $undoButton?.addEventListener('click', () => {
         $elementToHide?.classList.remove(Classes.HIDE_HIDDEN)
       })
     }, undoHideDelayMs)
