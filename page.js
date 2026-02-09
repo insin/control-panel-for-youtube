@@ -865,6 +865,10 @@ function disconnectObservers(observers, scope) {
   logObserverDisconnects = true
 }
 
+function frame() {
+  return new Promise((resolve) => requestAnimationFrame(resolve))
+}
+
 function getCurrentUrl() {
   return location.origin + location.pathname + location.search
 }
@@ -3277,7 +3281,7 @@ function handleCurrentUrl() {
 }
 
 /** @param {HTMLElement} $menu */
-function addDownloadTranscriptToDesktopMenu($menu) {
+async function addDownloadTranscriptToDesktopMenu($menu) {
   if (!isVideoPage()) return
 
   let $transcript = $lastClickedElement?.closest('[target-id="engagement-panel-searchable-transcript"]')
@@ -3968,15 +3972,21 @@ async function observeDesktopRichGridItems(options) {
 }
 
 /** @param {HTMLElement} $dropdown */
-function onDesktopMenuAppeared($dropdown) {
+async function onDesktopMenuAppeared($dropdown) {
   log('menu appeared', $dropdown)
+
 
   // YouTube currently has 2 menu components: <tp-yt-paper-listbox> and <yt-list-item-view-model>
   let $menu = $dropdown.querySelector('tp-yt-paper-listbox, yt-list-item-view-model')
   if (!$menu) {
-    warn('menu not found in', $dropdown)
-    return
+    await frame()
+    $menu = $dropdown.querySelector('tp-yt-paper-listbox, yt-list-item-view-model')
+    if (!$menu) {
+      warn('menu not found in', $dropdown)
+      return
+    }
   }
+
   let menuConfig = MenuConfigs[$menu.tagName]
 
   if (config.hideShareThanksClip) {
