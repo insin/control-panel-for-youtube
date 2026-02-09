@@ -123,8 +123,8 @@ export type SiteConfig = {
   hideShortsMetadataUntilHover: boolean
   hideShortsRemixButton: boolean
   hideSubscriptionsLatestBar: boolean
-  minimumGridItemsPerRow: 'auto' | '3' | '4' | '5' | '6'
-  minimumShortsPerRow: 'auto' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12'
+  minimumGridItemsPerRow: 'auto' | '+1' | '+2' | '+3' | '3' | '4' | '5' | '6'
+  minimumShortsPerRow: 'auto' | '4' | '5' | '6' | '7' | '8' | '9'
   pauseChannelTrailers: boolean
   playerCompactPlayButton: boolean
   playerFixFullScreenButton: boolean

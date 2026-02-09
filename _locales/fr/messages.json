@@ -23,8 +23,26 @@
   "anyPercent": {
     "message": "Quel que soit le pourcentage"
   },
+  "atLeastX": {
+    "message": "Au moins $AMOUNT$",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
   "auto": {
     "message": "Automatique"
+  },
+  "autoPlusX": {
+    "message": "Auto +$AMOUNT$",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
   },
   "blockAds": {
     "message": "Bloquer les publicités"
@@ -110,6 +128,9 @@
   },
   "fullSizeTheaterModeHideHeader": {
     "message": "Masquer l'en-tête"
+  },
+  "gridItemsPerRow": {
+    "message": "Éléments de grille par ligne"
   },
   "hiddenChannelsSummary": {
     "message": "Chaîne(s) masquée(s) ($COUNT$)",
@@ -293,9 +314,6 @@
   },
   "medium": {
     "message": "Moyen"
-  },
-  "minimumGridItemsPerRow": {
-    "message": "Nombre minimum d'éléments par ligne de la grille"
   },
   "minimumShortsPerRow": {
     "message": "Nombre minimum de Shorts par rangée"

@@ -807,18 +807,24 @@ const URL_CHANNEL_TAB_RE = /\/(featured|videos|shorts|streams|podcasts|playlists
 //#endregion
 
 //#region State
-/** @type {boolean} */
-let realDocumentHidden
+/** @type {HTMLElement} */
+let $lastClickedElement
+/** @type {number} */
+let effectiveGridItemsPerRow
+/** @type {'auto' | 'minimum' | 'relative'} */
+let effectiveGridMode
 /** @type {Map<string, import("./types").Disconnectable>} */
 let globalObservers = new Map()
 /** @type {import("./types").Channel} */
 let lastClickedChannel
-/** @type {HTMLElement} */
-let $lastClickedElement
+/** @type {number} */
+let lastElementsPerRow
 /** @type {() => void} */
 let onDialogClosed
 /** @type {Map<string, import("./types").Disconnectable>} */
 let pageObservers = new Map()
+/** @type {boolean} */
+let realDocumentHidden
 //#endregion
 
 //#region Utilities
@@ -921,6 +927,13 @@ function getElement(selector, {
 
    queryElement()
  })
+}
+
+function getGridPagesNeedingGhostCardFix() {
+  return [
+    !config.displayHomeGridAsList && 'home',
+    !config.displaySubscriptionsGridAsList && 'subscriptions',
+  ].filter(Boolean)
 }
 
 let policy = window.trustedTypes?.createPolicy?.('tagged-html-policy', {createHTML: (s) => s}) || {createHTML: (s) => s}
@@ -1044,7 +1057,7 @@ const configureCss = (() => {
 
   return function configureCss() {
     if (!config.enabled) {
-      log('removing stylesheet')
+      log('removing main stylesheet')
       $style?.remove()
       $style = null
       return
@@ -2032,13 +2045,13 @@ const configureCss = (() => {
     if (desktop) {
       // Fix spaces & gaps caused by left gutter margin on first column items
       // when we hide videos in grids.
-      let gridsToFix = [
+      let gridPagesToFix = [
         'channels',
         !config.displayHomeGridAsList && 'home',
         !config.displaySubscriptionsGridAsList && 'subscriptions',
       ].filter(Boolean)
       cssRules.push(`
-        ytd-browse:is(${gridsToFix.map(page => `[page-subtype="${page}"]`).join(', ')}) {
+        ytd-browse:is(${gridPagesToFix.map(page => `[page-subtype="${page}"]`).join(', ')}) {
           /* Remove left gutter margin from first column items */
           ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
             margin-left: calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
@@ -2054,13 +2067,10 @@ const configureCss = (() => {
         }
       `)
 
-      let gridGhostCardsToFix = [
-        !config.displayHomeGridAsList && 'home',
-        !config.displaySubscriptionsGridAsList && 'subscriptions',
-      ].filter(Boolean)
-      if (gridGhostCardsToFix.length > 0) {
+      let gridPagesNeedingGhostCardFix = getGridPagesNeedingGhostCardFix()
+      if (gridPagesNeedingGhostCardFix.length > 0) {
         cssRules.push(`
-          ytd-browse:is(${gridGhostCardsToFix.map(page => `[page-subtype="${page}"]`).join(', ')}) {
+          ytd-browse:is(${gridPagesNeedingGhostCardFix .map(page => `[page-subtype="${page}"]`).join(', ')}) {
             /* Make continuation item renderer retain position but take up no space */
             ytd-continuation-item-renderer {
               height: 1px;
@@ -2070,8 +2080,7 @@ const configureCss = (() => {
               overflow: hidden;
               pointer-events: none;
             }
-            /* Fix display of cloned ghost cards */
-            .ghost-grid {
+            .cpfyt-ghost-cards {
               display: contents;
             }
             .ghost-card {
@@ -2088,17 +2097,6 @@ const configureCss = (() => {
             width: 100%;
           }
         `)
-        if (config.minimumGridItemsPerRow != 'auto') {
-          let gridItemsPerRow = Number(config.minimumGridItemsPerRow)
-          cssRules.push(`
-            ytd-browse:is(${gridGhostCardsToFix.map(page => `[page-subtype="${page}"]`).join(', ')}) {
-              /* Only show one row's worth of ghost cards */
-              .ghost-card:nth-child(n+${gridItemsPerRow + 1}) {
-                display: none;
-              }
-            }
-          `)
-        }
       }
 
       if (!config.addTakeSnapshot) {
@@ -2158,17 +2156,17 @@ const configureCss = (() => {
           }
         `)
       }
-      if (config.displayHomeGridAsList || config.displaySubscriptionsGridAsList) {
-        let gridsToList = [
-          config.displayHomeGridAsList && 'home',
-          config.displaySubscriptionsGridAsList && 'subscriptions',
-        ].filter(Boolean)
+      let gridsToList = [
+        config.displayHomeGridAsList && 'home',
+        config.displaySubscriptionsGridAsList && 'subscriptions',
+      ].filter(Boolean)
+      if (gridsToList.length > 0) {
         let gridAsListPageSelector = `ytd-browse:is(${gridsToList.map(page => `[page-subtype="${page}"]`).join(', ')})`
+        // Turn Grid view into a List-like view
         cssRules.push(`
           ${gridAsListPageSelector} {
-            /* Turn Grid view into a List-like view */
             ytd-two-column-browse-results-renderer {
-              max-width: var(--ytd-grid-max-width); /* 1284px */
+              max-width: var(--ytd-grid-max-width, 1284px);
             }
             #contents.ytd-rich-grid-renderer {
               padding-left: 0 !important;
@@ -2211,17 +2209,16 @@ const configureCss = (() => {
                 min-height: 140px;
               }
             }
-
             /* Only display the spinner when loading new content */
-            #ghost-cards {
+            #ghost-cards, .cpfyt-ghost-cards {
               display: none;
             }
           }
         `)
         if (config.displayHomeGridAsList) {
+          // Align chips with list items
           cssRules.push(`
             ytd-browse:is([page-subtype="home"]) {
-              /* Align chips with list items */
               #chips-content {
                 padding-left: 8px;
               }
@@ -2229,6 +2226,7 @@ const configureCss = (() => {
           `)
         }
         if (config.showChannelHeadersInListView) {
+          // Move channel avatar and name up above the thumbnail
           cssRules.push(`
             ${gridAsListPageSelector} {
               ytd-rich-item-renderer.ytd-rich-grid-renderer {
@@ -2242,13 +2240,13 @@ const configureCss = (() => {
                 .yt-lockup-metadata-view-model {
                   position: static;
                 }
-                /* Move channel avatar up */
+                /* Channel avatar */
                 .yt-lockup-metadata-view-model__avatar {
                   position: absolute;
                   top: -50px;
                   left: 0;
                 }
-                /* Move channel name up */
+                /* Channel name */
                 .yt-content-metadata-view-model__metadata-row:first-child {
                   position: absolute;
                   top: -48px;
@@ -2387,30 +2385,6 @@ const configureCss = (() => {
         hideCssSelectors.push(
           'ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child'
         )
-      }
-      if (config.minimumGridItemsPerRow != 'auto') {
-        let gridItemsPerRow = Number(config.minimumGridItemsPerRow)
-        // Don't override the number of items if YouTube wants to show more
-        let exclude = []
-        for (let i = 6; i > gridItemsPerRow; i--) {
-          exclude.push(`[elements-per-row="${i}"]`)
-        }
-        cssRules.push(`
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-renderer${exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''} {
-            --ytd-rich-grid-items-per-row: ${gridItemsPerRow} !important;
-          }
-        `)
-        if (!config.hideSuggestedSections) {
-          cssRules.push(`
-            ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer:not([is-shorts])${exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''} {
-              --ytd-rich-grid-items-per-row: ${gridItemsPerRow} !important;
-            }
-            /* Show "Most relevant" thumbnails beyond the ones YouTube thinks should be visible */
-            ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer:not([is-shorts]) ytd-rich-item-renderer:nth-child(-n+${gridItemsPerRow}) {
-              display: block !important;
-            }
-          `)
-        }
       }
       if (!config.hideShorts && config.minimumShortsPerRow != 'auto') {
         let shortsPerRow = Number(config.minimumShortsPerRow)
@@ -2889,6 +2863,109 @@ const configureCss = (() => {
     }
   }
 })()
+
+//#region Grid CSS
+const configureGridCss = (() => {
+  /** @type {HTMLStyleElement} */
+  let $style
+
+  return function configureGridCss() {
+    if (!config.enabled) {
+      log('removing grid stylesheet')
+      $style?.remove()
+      $style = null
+      effectiveGridItemsPerRow = null
+      effectiveGridMode = null
+      return
+    }
+
+    /** @type {typeof effectiveGridItemsPerRow} */
+    let gridItemsPerRow
+    /** @type {typeof effectiveGridMode} */
+    let gridMode
+
+    if (config.minimumGridItemsPerRow == 'auto') {
+      gridMode = 'auto'
+      if (lastElementsPerRow) {
+        gridItemsPerRow = lastElementsPerRow
+      }
+    }
+    else if (!config.minimumGridItemsPerRow.startsWith('+')) {
+      gridMode = 'minimum'
+      gridItemsPerRow = Number(config.minimumGridItemsPerRow)
+    }
+    else {
+      gridMode = 'relative'
+      if (lastElementsPerRow) {
+        gridItemsPerRow = lastElementsPerRow + Number(config.minimumGridItemsPerRow)
+      }
+    }
+
+    if (gridItemsPerRow == effectiveGridItemsPerRow && gridMode == effectiveGridMode) {
+      return
+    }
+
+    effectiveGridItemsPerRow = gridItemsPerRow
+    effectiveGridMode = gridMode
+
+    if (gridMode == 'auto')
+      log(`gridItemsPerRow: auto`)
+    else if (gridMode == 'minimum')
+      log(`gridItemsPerRow: minimum of ${gridItemsPerRow}`)
+    else if (gridMode == 'relative' && lastElementsPerRow)
+      log(`gridItemsPerRow: ${config.minimumGridItemsPerRow} (${lastElementsPerRow} → ${gridItemsPerRow})`)
+
+    let cssRules = []
+
+    if (gridMode != 'auto' && gridItemsPerRow) {
+      let ytOverMinimum = gridMode == 'minimum' && lastElementsPerRow && lastElementsPerRow > gridItemsPerRow
+      if (!ytOverMinimum) {
+        cssRules.push(`
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-renderer {
+            --ytd-rich-grid-items-per-row: ${gridItemsPerRow} !important;
+          }
+        `)
+      }
+      if (!config.hideSuggestedSections) {
+        if (!ytOverMinimum) {
+          cssRules.push(`
+            ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer:not([is-shorts]) {
+              --ytd-rich-grid-items-per-row: ${gridItemsPerRow} !important;
+            }
+          `)
+        }
+        // Show "Most relevant" thumbnails beyond the ones YouTube thinks should be visible
+        cssRules.push(`
+          ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer:not([is-shorts]) ytd-rich-item-renderer:nth-child(-n+${gridItemsPerRow}) {
+            display: block !important;
+          }
+        `)
+      }
+    }
+
+    if (gridItemsPerRow) {
+      let gridPagesNeedingGhostCardFix = getGridPagesNeedingGhostCardFix()
+      if (gridPagesNeedingGhostCardFix.length > 0) {
+        cssRules.push(`
+          ytd-browse:is(${gridPagesNeedingGhostCardFix.map(page => `[page-subtype="${page}"]`).join(', ')}) {
+            /* Only show one row's worth of ghost cards */
+            .ghost-card:nth-child(n+${gridItemsPerRow + 1}) {
+              display: none;
+            }
+          }
+        `)
+      }
+    }
+
+    let css = cssRules.map(dedent).join('\n')
+    if ($style == null) {
+      $style = addStyle(css)
+    } else {
+      $style.textContent = css
+    }
+  }
+})()
+//#endregion
 //#endregion
 
 function isHomePage() {
@@ -3738,6 +3815,23 @@ async function observeDesktopRichGridItems(options) {
   })
   if (!$renderer) return
 
+  observeElement($renderer, () => {
+    let elementsPerRowValue = $renderer.getAttribute('elements-per-row')
+    if (!elementsPerRowValue) return
+    let elementsPerRow = Number(elementsPerRowValue)
+    if (!Number.isNaN(elementsPerRow) && elementsPerRow != lastElementsPerRow) {
+      lastElementsPerRow = elementsPerRow
+      configureGridCss()
+    }
+  }, {
+    leading: true,
+    name: '<ytd-rich-grid-renderer> elements-per-row',
+    observers: pageObservers,
+  }, {
+    attributes: true,
+    attributeFilter: ['elements-per-row'],
+  })
+
   let $gridContents = $renderer.querySelector(':scope > #contents')
 
   /**
@@ -3803,30 +3897,44 @@ async function observeDesktopRichGridItems(options) {
         if (fixGhostCards && $addedNode.nodeName == 'YTD-CONTINUATION-ITEM-RENDERER') {
           if ($lastGhostGridClone?.isConnected) $lastGhostGridClone.remove()
           if ($lastSpinnerClone?.isConnected) $lastSpinnerClone.remove()
-          $lastGhostGridClone = /** @type {HTMLElement} */ ($addedNode.querySelector('.ghost-grid.ytd-ghost-grid-renderer')?.cloneNode(true))
-          if ($lastGhostGridClone) {
+          $lastGhostGridClone = document.createElement('div')
+          $lastGhostGridClone.className = 'cpfyt-ghost-cards'
+          let $cards = $addedNode.querySelectorAll('.ghost-grid .ghost-card')
+          if ($cards.length > 0) {
+            $lastGhostGridClone.append(...$cards)
+            // Add more cards if YouTube didn't generate enough
+            if (effectiveGridItemsPerRow && effectiveGridItemsPerRow > $lastGhostGridClone.childElementCount) {
+              let extra = effectiveGridItemsPerRow - $lastGhostGridClone.childElementCount
+              for (let i = 0; i < extra; i++) {
+                $lastGhostGridClone.append($lastGhostGridClone.lastElementChild.cloneNode(true))
+              }
+            }
             ghostGridClones.set($addedNode, $lastGhostGridClone)
             $addedNode.insertAdjacentElement('afterend', $lastGhostGridClone)
           } else {
-            warn('fixGhostCards: .ghost-grid.ytd-ghost-grid-renderer not found')
+            warn('fixGhostCards: no .ghost-cards found in <ytd-continuation-item-renderer>')
           }
           let $spinner = $addedNode.querySelector('tp-yt-paper-spinner')
-          observeElement($spinner, (_, observer) => {
-            if (!$spinner.hasAttribute('active')) return
-            observer.disconnect()
-            $lastSpinnerClone = document.createElement('div')
-            $lastSpinnerClone.className = 'cpfyt-grid-spinner'
-            $lastSpinnerClone.append($spinner.cloneNode(true))
-            spinnerClones.set($addedNode, $lastSpinnerClone)
-            $gridContents.append($lastSpinnerClone)
-          }, {
-            leading: true,
-            name: '<ytd-continuation-item-renderer> spinner',
-            observers: pageObservers,
-          }, {
-            attributes: true,
-            attributeFilter: ['active'],
-          })
+          if ($spinner) {
+            observeElement($spinner, (_, observer) => {
+              if (!$spinner.hasAttribute('active')) return
+              observer.disconnect()
+              $lastSpinnerClone = document.createElement('div')
+              $lastSpinnerClone.className = 'cpfyt-grid-spinner'
+              $lastSpinnerClone.append($spinner.cloneNode(true))
+              spinnerClones.set($addedNode, $lastSpinnerClone)
+              $gridContents.append($lastSpinnerClone)
+            }, {
+              leading: true,
+              name: '<ytd-continuation-item-renderer> spinner',
+              observers: pageObservers,
+            }, {
+              attributes: true,
+              attributeFilter: ['active'],
+            })
+          } else {
+            warn('fixGhostCards: <tp-yt-paper-spinner> not found in <ytd-continuation-item-renderer>')
+          }
         }
       }
     }
@@ -5297,6 +5405,7 @@ function main() {
       }
     }
     if (desktop) {
+      configureGridCss()
       handleDesktopGuideBar()
     }
     observeTitle()
@@ -5312,13 +5421,16 @@ function main() {
 
 /** @param {Partial<import("./types").SiteConfig>} changes */
 function configChanged(changes) {
-  if (!changes.hasOwnProperty('enabled')) {
+  if (!Object.hasOwn(changes, 'enabled')) {
     log('config changed', changes)
     if (config.blockAds) {
       blockAds()
     }
     if (desktop && changes.enforceTheme && config.enforceTheme != 'default') {
       enforceTheme()
+    }
+    if (desktop && Object.hasOwn(changes, 'minimumGridItemsPerRow')) {
+      configureGridCss()
     }
     configureCss()
     triggerVideoPageResize()

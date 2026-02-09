@@ -23,8 +23,26 @@
   "anyPercent": {
     "message": "any %"
   },
+  "atLeastX": {
+    "message": "At least $AMOUNT$",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
   "auto": {
     "message": "Auto"
+  },
+  "autoPlusX": {
+    "message": "Auto +$AMOUNT$",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
   },
   "blockAds": {
     "message": "Block ads"
@@ -110,6 +128,9 @@
   },
   "fullSizeTheaterModeHideHeader": {
     "message": "Hide header"
+  },
+  "gridItemsPerRow": {
+    "message": "Grid items per row"
   },
   "hiddenChannelsSummary": {
     "message": "Hidden channels ($COUNT$)",
@@ -293,9 +314,6 @@
   },
   "medium": {
     "message": "Medium"
-  },
-  "minimumGridItemsPerRow": {
-    "message": "Minimum grid items per row"
   },
   "minimumShortsPerRow": {
     "message": "Minimum Shorts per row"

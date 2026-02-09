@@ -19,6 +19,24 @@ for (let optionValue of [
   }
 }
 
+for (let gridItemsRelative of [1, 2, 3]) {
+  let $option = document.querySelector(`select[name="minimumGridItemsPerRow"] option[value="${gridItemsRelative}"]`)
+  if ($option) {
+    $option.textContent = chrome.i18n.getMessage('autoPlusX', [gridItemsRelative])
+  } else {
+    console.warn('could not find <option> for gridItemsRelative', gridItemsRelative)
+  }
+}
+
+for (let gridItemsMinimum of [3, 4, 5, 6]) {
+  let $option = document.querySelector(`select[name="minimumGridItemsPerRow"] option[value="${gridItemsMinimum}"]`)
+  if ($option) {
+    $option.textContent = chrome.i18n.getMessage('atLeastX', [gridItemsMinimum])
+  } else {
+    console.warn('could not find <option> for gridItemsMinimum', gridItemsMinimum)
+  }
+}
+
 for (let translationId of [
   'addTakeSnapshot',
   'ads',
@@ -46,6 +64,7 @@ for (let translationId of [
   'enforceTheme',
   'fullSizeTheaterMode',
   'fullSizeTheaterModeHideHeader',
+  'gridItemsPerRow',
   'hideAI',
   'hideAskButton',
   'hideAutoDubbed',
@@ -101,7 +120,6 @@ for (let translationId of [
   'hideWatched',
   'hideWatchedThreshold',
   'inHomeAndSubscriptionsNote',
-  'minimumGridItemsPerRow',
   'mobileGridView',
   'newVideoPlayerUI',
   'pauseChannelTrailers',

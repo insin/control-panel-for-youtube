@@ -1,5 +1,7 @@
 const fs = require('fs')
 
+const {sortProperties} = require('./lib')
+
 if (process.argv.some(arg => /^-h|--help$/.test(arg))) {
   console.log(`
 Updates ../_locales/**/messages.json with translations from ./scripts/translations.json
@@ -17,16 +19,6 @@ Where translations.json is in the format:
   process.exit()
 }
 
-function sortProperties(locale) {
-  let entries = Object.entries(locale)
-  entries.sort(([a], [b]) => {
-    if (a < b) return -1
-    if (a > b) return 1
-    return 0
-  })
-  return Object.fromEntries(entries)
-}
-
 let translationsJson = JSON.parse(fs.readFileSync('./translations.json', 'utf-8'))
 let localeMessagesJson = new Map()
 
@@ -41,7 +33,8 @@ for (let [messageProp, translations] of Object.entries(translationsJson)) {
       )
     }
     let messagesJson = localeMessagesJson.get(localeCode)
-    messagesJson[messageProp] = {...messagesJson[messageProp], message}
+    let update = typeof message == 'string' ? {message} : message
+    messagesJson[messageProp] = {...messagesJson[messageProp], ...update}
   }
 }
 

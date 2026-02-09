@@ -23,8 +23,26 @@
   "anyPercent": {
     "message": "任何 %"
   },
+  "atLeastX": {
+    "message": "至少 $AMOUNT$",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
   "auto": {
     "message": "自动"
+  },
+  "autoPlusX": {
+    "message": "自动 +$AMOUNT$",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
   },
   "blockAds": {
     "message": "拦截广告"
@@ -110,6 +128,9 @@
   },
   "fullSizeTheaterModeHideHeader": {
     "message": "隐藏标题栏"
+  },
+  "gridItemsPerRow": {
+    "message": "每行网格项目数"
   },
   "hiddenChannelsSummary": {
     "message": "隐藏频道 ($COUNT$)",
@@ -293,9 +314,6 @@
   },
   "medium": {
     "message": "中号"
-  },
-  "minimumGridItemsPerRow": {
-    "message": "每行最小缩略图个数"
   },
   "minimumShortsPerRow": {
     "message": "每行最少 Shorts 数量"
