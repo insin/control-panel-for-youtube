@@ -115,10 +115,10 @@
     "description": "<= 112 characters"
   },
   "extensionName": {
-    "message": "YouTube 控制面板"
+    "message": "适用于 YouTube 的控制面板"
   },
   "extensionNameDisabled": {
-    "message": "YouTube 控制面板 (已停用)"
+    "message": "适用于 YouTube 的控制面板 (已停用)"
   },
   "features": {
     "message": "特点"
