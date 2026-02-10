@@ -763,7 +763,7 @@ function getYtString(...keys) {
 //#endregion
 
 //#region Constants
-const undoHideDelayMs = 5000
+const UNDO_HIDE_DELAY_MS = 5000
 
 const Classes = {
   HIDE_CHANNEL: 'cpfyt-hide-channel',
@@ -817,6 +817,8 @@ let effectiveGridItemsPerRow
 let effectiveGridMode
 /** @type {Map<string, import("./types").Disconnectable>} */
 let globalObservers = new Map()
+/** @type {ReturnType<createHideAnimationController>} */
+let hideAnimationController
 /** @type {import("./types").Channel} */
 let lastClickedChannel
 /** @type {number} */
@@ -837,6 +839,93 @@ function addStyle(css = '') {
   }
   document.documentElement.appendChild($style)
   return $style
+}
+
+function createHideAnimationController() {
+  const COMMIT_DEBOUNCE_MS = 75
+
+  /** @type {Set<Element>} */
+  let pendingHideElements = new Set()
+
+  let activeAnimations = 0
+  let commitScheduled = false
+  let commitTimeout
+  let animationDoneTimeout
+  let destroyed = false
+  /** @type {() => void} */
+  let cleanupActiveFlush
+
+  function scheduleCommit() {
+    if (destroyed) return
+    if (commitScheduled) return
+
+    commitScheduled = true
+
+    if (activeAnimations > 0) return
+
+    commitTimeout = setTimeout(() => {
+      commitScheduled = false
+      if (destroyed) return
+      cleanupActiveFlush = flush()
+    }, COMMIT_DEBOUNCE_MS)
+  }
+
+  function flush() {
+    if (destroyed) return
+    if (activeAnimations > 0) return
+    if (pendingHideElements.size === 0) return
+
+    let itemsToHide = Array.from(pendingHideElements)
+    pendingHideElements.clear()
+
+    activeAnimations++
+
+    let cleanupAnimation = animateHidingGridItems(
+      itemsToHide,
+      Classes.HIDE_HIDDEN
+    )
+
+    animationDoneTimeout = setTimeout(() => {
+      activeAnimations--
+      if (destroyed) return
+      if (pendingHideElements.size > 0) {
+        scheduleCommit()
+      }
+    }, animateHideDuration)
+
+    return () => {
+      cleanupAnimation?.()
+      clearTimeout(animationDoneTimeout)
+      activeAnimations = 0
+    }
+  }
+
+  function disconnect() {
+    destroyed = true
+    clearTimeout(commitTimeout)
+    clearTimeout(animationDoneTimeout)
+    pendingHideElements.clear()
+    activeAnimations = 0
+    cleanupActiveFlush?.()
+  }
+
+  pageObservers.set('hide animation controller', {disconnect})
+
+  return {
+    /**
+     * @param {Element} element
+     * @param {Element} undoButton
+     */
+    enqueue(element, undoButton) {
+      if (destroyed || !element) return
+
+      pendingHideElements.add(element)
+      scheduleCommit()
+
+      // Undo after expiry but before commit
+      undoButton?.addEventListener('click', () => pendingHideElements.delete(element), {once: true})
+    },
+  }
 }
 
 function currentUrlChanges() {
@@ -1341,7 +1430,7 @@ const configureCss = (() => {
         .cpfyt-pie {
           --cpfyt-pie-delay: 0ms;
           --cpfyt-pie-direction: normal;
-          --cpfyt-pie-duration: ${undoHideDelayMs}ms;
+          --cpfyt-pie-duration: ${UNDO_HIDE_DELAY_MS}ms;
           --cpfyt-pie-fontSize: 200%;
           width: 1em;
           height: 1em;
@@ -4695,8 +4784,8 @@ function observeVideoHiddenState() {
     // Rapidly unwind the pie timer from its current time
     displayPie({
       direction: 'reverse',
-      delay: Math.round((elapsedTime - undoHideDelayMs) / 4),
-      duration: undoHideDelayMs / 4,
+      delay: Math.round((elapsedTime - UNDO_HIDE_DELAY_MS) / 4),
+      duration: UNDO_HIDE_DELAY_MS / 4,
     })
     // Restart the timer when the Tell us why dialog is closed
     onDialogClosed = () => {
@@ -4715,15 +4804,14 @@ function observeVideoHiddenState() {
   function startTimer() {
     startTime = Date.now()
     timeout = setTimeout(() => {
-      // $elementToHide?.classList.add(Classes.HIDE_HIDDEN)
-      animateHidingGridItems([$elementToHide], Classes.HIDE_HIDDEN)
       cleanup()
+      hideAnimationController?.enqueue($elementToHide, $undoButton)
       // Remove the class if the Undo button is clicked later, e.g. if
       // this feature is disabled after hiding a video.
       $undoButton?.addEventListener('click', () => {
         $elementToHide?.classList.remove(Classes.HIDE_HIDDEN)
       })
-    }, undoHideDelayMs)
+    }, UNDO_HIDE_DELAY_MS)
   }
 
   function stopTimer() {
@@ -5187,6 +5275,7 @@ async function tweakHomePage() {
     redirectFromHome()
     return
   }
+  hideAnimationController = createHideAnimationController()
   if (
     // Videos need to be manually hidden
     !config.hideWatched && !config.hideStreamed && !config.hideChannels &&
@@ -5327,6 +5416,7 @@ async function tweakShortsPage() {
 }
 
 async function tweakSubscriptionsPage() {
+  hideAnimationController = createHideAnimationController()
   if (!config.hideWatched && !config.hideStreamed) return
   if (desktop) {
     observeDesktopRichGridItems({page: 'subscriptions'})
