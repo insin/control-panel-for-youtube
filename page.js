@@ -116,7 +116,6 @@ let version = mobile ? 'mobile' : 'desktop'
 /** @type {string} */
 let lang = document.documentElement.lang || ''
 let loggedIn = /(^|; )SID=/.test(document.cookie)
-let animateHideDuration = 350
 
 function log(...args) {
   if (debug) {
@@ -763,6 +762,7 @@ function getYtString(...keys) {
 //#endregion
 
 //#region Constants
+const ANIMATE_HIDE_DURATION_MS = 350
 const UNDO_HIDE_DELAY_MS = 5000
 
 const Classes = {
@@ -842,89 +842,55 @@ function addStyle(css = '') {
 }
 
 function createHideAnimationController() {
-  const COMMIT_DEBOUNCE_MS = 75
-
+  /** @type {() => void} */
+  let cleanupActiveAnimation = null
+  let disconnected = false
   /** @type {Set<Element>} */
   let pendingHideElements = new Set()
-
-  let activeAnimations = 0
-  let commitScheduled = false
-  let commitTimeout
-  let animationDoneTimeout
-  let destroyed = false
-  /** @type {() => void} */
-  let cleanupActiveFlush
-
-  function scheduleCommit() {
-    if (destroyed) return
-    if (commitScheduled) return
-
-    commitScheduled = true
-
-    if (activeAnimations > 0) return
-
-    commitTimeout = setTimeout(() => {
-      commitScheduled = false
-      if (destroyed) return
-      cleanupActiveFlush = flush()
-    }, COMMIT_DEBOUNCE_MS)
-  }
+  let pendingTimers = 0
 
   function flush() {
-    if (destroyed) return
-    if (activeAnimations > 0) return
-    if (pendingHideElements.size === 0) return
-
+    if (disconnected) return
     let itemsToHide = Array.from(pendingHideElements)
     pendingHideElements.clear()
+    cleanupActiveAnimation = animateHidingHiddenItems(itemsToHide)
+  }
 
-    activeAnimations++
-
-    let cleanupAnimation = animateHidingGridItems(
-      itemsToHide,
-      Classes.HIDE_HIDDEN
-    )
-
-    animationDoneTimeout = setTimeout(() => {
-      activeAnimations--
-      if (destroyed) return
-      if (pendingHideElements.size > 0) {
-        scheduleCommit()
-      }
-    }, animateHideDuration)
-
-    return () => {
-      cleanupAnimation?.()
-      clearTimeout(animationDoneTimeout)
-      activeAnimations = 0
+  function maybeFlush() {
+    if (disconnected) return
+    if (--pendingTimers <= 0) {
+      flush()
     }
   }
 
-  function disconnect() {
-    destroyed = true
-    clearTimeout(commitTimeout)
-    clearTimeout(animationDoneTimeout)
-    pendingHideElements.clear()
-    activeAnimations = 0
-    cleanupActiveFlush?.()
-  }
-
-  pageObservers.set('hide animation controller', {disconnect})
+  pageObservers.set('hide animation controller', {
+    disconnect() {
+      disconnected = true
+      cleanupActiveAnimation?.()
+    }
+  })
 
   return {
-    /**
-     * @param {Element} element
-     * @param {Element} undoButton
-     */
-    enqueue(element, undoButton) {
-      if (destroyed || !element) return
-
+    enqueue(element) {
+      if (disconnected || !element) return
       pendingHideElements.add(element)
-      scheduleCommit()
-
-      // Undo after expiry but before commit
-      undoButton?.addEventListener('click', () => pendingHideElements.delete(element), {once: true})
+      pendingTimers++
+      log('enqueued', {pendingTimers})
     },
+    dequeue(element) {
+      if (disconnected || !element) return
+      if (pendingHideElements.delete(element)) {
+        maybeFlush()
+      }
+    },
+    expire() {
+      if (disconnected) return
+      maybeFlush()
+    },
+    remove(element) {
+      if (disconnected || !element) return
+      pendingHideElements.delete(element)
+    }
   }
 }
 
@@ -1160,7 +1126,7 @@ const configureCss = (() => {
 
     let cssRules = [`
       .cpfyt-vanishing-flip {
-        transition: opacity ${animateHideDuration}ms ease-out, transform ${animateHideDuration}ms ease-out !important;
+        transition: opacity ${ANIMATE_HIDE_DURATION_MS}ms ease-out, transform ${ANIMATE_HIDE_DURATION_MS}ms ease-out !important;
         opacity: 0 !important;
         transform: scale(0.6) !important;
         transform-origin: center center !important;
@@ -3225,10 +3191,10 @@ function alwaysUseTheaterMode($player) {
   }
 }
 
-function animateHidingGridItems(itemsToHide, hideClass) {
+function animateHidingHiddenItems(itemsToHide) {
   function hideItem(item) {
     item.classList.remove('cpfyt-vanishing-flip')
-    item.classList.add(hideClass)
+    item.classList.add(Classes.HIDE_HIDDEN)
     item.style.position = ''
     item.style.top = ''
     item.style.left = ''
@@ -3240,8 +3206,7 @@ function animateHidingGridItems(itemsToHide, hideClass) {
   let parent = itemsToHide[0].parentElement
   let itemsToHideSet = new Set(itemsToHide)
 
-  // FLIP (First, Last, Invert, Play) animate items
-  // 1. FIRST (Siblings)
+  // First
   let initialSiblingPositions = new Map()
   let visibleSiblings = []
   for (let child of parent.children) {
@@ -3251,14 +3216,12 @@ function animateHidingGridItems(itemsToHide, hideClass) {
     }
   }
 
-  // 2a. Record Geometry
   let itemGeometries = new Map()
   let parentRect = parent.getBoundingClientRect()
   for (let item of itemsToHide) {
     itemGeometries.set(item, item.getBoundingClientRect())
   }
 
-  // 2b. Take Out of Flow & Animate
   let parentPosition = window.getComputedStyle(parent).position
   if (parentPosition == 'static') {
     parent.style.position = 'relative'
@@ -3280,9 +3243,9 @@ function animateHidingGridItems(itemsToHide, hideClass) {
 
   let siblingCleanupTimeout = null
   let siblingsToAnimate = []
-  let siblingTransitionCss = `transform ${animateHideDuration}ms cubic-bezier(0.25, 0.8, 0.25, 1)`
+  let siblingTransitionCss = `transform ${ANIMATE_HIDE_DURATION_MS}ms cubic-bezier(0.25, 0.8, 0.25, 1)`
   requestAnimationFrame(() => {
-    // 3. LAST (Siblings)
+    // Last
     let finalSiblingPositions = new Map()
     let currentVisibleSiblings = []
     for (let sibling of visibleSiblings) {
@@ -3294,7 +3257,7 @@ function animateHidingGridItems(itemsToHide, hideClass) {
       }
     }
 
-    // 4. INVERT (Siblings)
+    // Invert
     for (let sibling of currentVisibleSiblings) {
       let initial = initialSiblingPositions.get(sibling)
       let final = finalSiblingPositions.get(sibling)
@@ -3308,7 +3271,7 @@ function animateHidingGridItems(itemsToHide, hideClass) {
       }
     }
 
-    // 5. PLAY (Siblings)
+    // Play
     requestAnimationFrame(() => {
       for (let anim of siblingsToAnimate) {
         anim.element.style.transition = siblingTransitionCss
@@ -3323,7 +3286,7 @@ function animateHidingGridItems(itemsToHide, hideClass) {
             }
           }
           siblingCleanupTimeout = null
-        }, animateHideDuration + 50)
+        }, ANIMATE_HIDE_DURATION_MS + 50)
       }
     })
   })
@@ -3333,7 +3296,7 @@ function animateHidingGridItems(itemsToHide, hideClass) {
       hideItem(item)
     }
     itemCleanupTimeout = null
-  }, animateHideDuration)
+  }, ANIMATE_HIDE_DURATION_MS)
 
   return function cleanup() {
     if (itemCleanupTimeout) {
@@ -4803,19 +4766,31 @@ function observeVideoHiddenState() {
 
   function startTimer() {
     startTime = Date.now()
+    hideAnimationController?.enqueue($elementToHide)
     timeout = setTimeout(() => {
+      timeout = null
       cleanup()
-      hideAnimationController?.enqueue($elementToHide, $undoButton)
-      // Remove the class if the Undo button is clicked later, e.g. if
-      // this feature is disabled after hiding a video.
+      if (hideAnimationController) {
+        hideAnimationController.expire()
+      } else {
+        $elementToHide?.classList.add(Classes.HIDE_HIDDEN)
+      }
       $undoButton?.addEventListener('click', () => {
+        // Don't hide the video if Undo is clicked after its timer expires but
+        // before it's hidden (due to other videos being hidden).
+        hideAnimationController?.remove($elementToHide)
+        // Remove the class if Undo is clicked later, e.g. if this feature is
+        // disabled after hiding a video.
         $elementToHide?.classList.remove(Classes.HIDE_HIDDEN)
       })
     }, UNDO_HIDE_DELAY_MS)
   }
 
   function stopTimer() {
-    clearTimeout(timeout)
+    if (timeout) {
+      hideAnimationController?.dequeue($elementToHide)
+      clearTimeout(timeout)
+    }
   }
 
   if (desktop) {
