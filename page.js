@@ -2671,7 +2671,9 @@ const configureCss = (() => {
         cssRules.push(`
           /* Reduce width of secondary sidebar (from 550px when 2 column grid is being used) */
           ytd-watch-flexy #secondary {
-            max-width: 402px;
+            --ytd-watch-flexy-sidebar-width: 402px;
+            --ytd-watch-flexy-sidebar-min-width: 300px;
+            max-width: var(--ytd-watch-flexy-sidebar-width);
           }
           #secondary #related {
             /* Apply --horizontal styles when --vertical is used */
