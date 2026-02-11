@@ -17,6 +17,9 @@
   "alwaysUseTheaterMode": {
     "message": "常にシアターモードを使用する"
   },
+  "animateHiding": {
+    "message": "アニメーション付きで非表示"
+  },
   "annoyances": {
     "message": "煩わしい項目"
   },

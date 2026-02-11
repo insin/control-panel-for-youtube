@@ -20,7 +20,7 @@ for (let optionValue of [
 }
 
 for (let gridItemsRelative of [1, 2, 3]) {
-  let $option = document.querySelector(`select[name="minimumGridItemsPerRow"] option[value="${gridItemsRelative}"]`)
+  let $option = document.querySelector(`select[name="minimumGridItemsPerRow"] option[value="+${gridItemsRelative}"]`)
   if ($option) {
     $option.textContent = chrome.i18n.getMessage('autoPlusX', [gridItemsRelative])
   } else {
@@ -44,6 +44,7 @@ for (let translationId of [
   'alwaysShowShortsProgressBar',
   'alwaysUseOriginalAudio',
   'alwaysUseTheaterMode',
+  'animateHiding',
   'annoyances',
   'anyPercent',
   'blockAds',
@@ -120,7 +121,6 @@ for (let translationId of [
   'hideVoiceSearch',
   'hideWatched',
   'hideWatchedThreshold',
-  'inHomeAndSubscriptionsNote',
   'mobileGridView',
   'newVideoPlayerUI',
   'pauseChannelTrailers',
@@ -163,6 +163,15 @@ for (let translationId of [
     $el.textContent = chrome.i18n.getMessage(translationId)
   } else {
     console.warn('could not find element for translationId', translationId)
+  }
+}
+
+for (let translationClass of [
+  'inHomeAndSubscriptionsNote',
+]) {
+  let translation = chrome.i18n.getMessage(translationClass)
+  for (let $el of document.querySelectorAll(`.${translationClass}`)) {
+    $el.textContent = translation
   }
 }
 
@@ -234,6 +243,7 @@ let defaultConfig = {
   addTakeSnapshot: true,
   alwaysUseOriginalAudio: false,
   alwaysUseTheaterMode: false,
+  animateHiding: true,
   disableThemedHover: false,
   disableVideoPreviews: false,
   displayHomeGridAsList: false,
@@ -395,6 +405,7 @@ function updateDisplay() {
   $body.classList.toggle('displayingGridAsList',  optionsConfig.displayHomeGridAsList || optionsConfig.displaySubscriptionsGridAsList)
   $body.classList.toggle('fullSizeTheaterMode', optionsConfig.fullSizeTheaterMode)
   $body.classList.toggle('hiddenChannels', shouldDisplayHiddenChannels())
+  $body.classList.toggle('hidingHiddenVideos', optionsConfig.hideHiddenVideos)
   $body.classList.toggle('hidingWatched', optionsConfig.hideWatched)
   $body.classList.toggle('jpegSnapshot', optionsConfig.snapshotFormat == 'jpeg')
   $body.classList.toggle('mobile', optionsConfig.version == 'mobile')

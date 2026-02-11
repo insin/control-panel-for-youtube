@@ -17,6 +17,9 @@
   "alwaysUseTheaterMode": {
     "message": "始终剧院模式"
   },
+  "animateHiding": {
+    "message": "隐藏时显示动画"
+  },
   "annoyances": {
     "message": "干扰项"
   },

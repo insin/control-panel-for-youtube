@@ -17,6 +17,9 @@
   "alwaysUseTheaterMode": {
     "message": "Toujours utiliser le mode cinéma"
   },
+  "animateHiding": {
+    "message": "Masquer avec une animation"
+  },
   "annoyances": {
     "message": "Nuisances"
   },

@@ -104,6 +104,7 @@ export type SiteConfig = {
   addTakeSnapshot: boolean
   alwaysUseOriginalAudio: boolean
   alwaysUseTheaterMode: boolean
+  animateHiding: boolean
   disableThemedHover: boolean
   disableVideoPreviews: boolean
   displayHomeGridAsList: boolean

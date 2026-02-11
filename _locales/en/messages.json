@@ -17,6 +17,9 @@
   "alwaysUseTheaterMode": {
     "message": "Always use theater mode"
   },
+  "animateHiding": {
+    "message": "Animate hiding"
+  },
   "annoyances": {
     "message": "Annoyances"
   },

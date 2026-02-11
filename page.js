@@ -56,6 +56,7 @@ let defaultConfig = {
   addTakeSnapshot: true,
   alwaysUseOriginalAudio: false,
   alwaysUseTheaterMode: false,
+  animateHiding: true,
   disableThemedHover: false,
   disableVideoPreviews: false,
   displayHomeGridAsList: false,
@@ -762,7 +763,8 @@ function getYtString(...keys) {
 //#endregion
 
 //#region Constants
-const undoHideDelayMs = 5000
+const ANIMATE_HIDE_DURATION_MS = 350
+const UNDO_HIDE_DELAY_MS = 5000
 
 const Classes = {
   HIDE_CHANNEL: 'cpfyt-hide-channel',
@@ -816,6 +818,8 @@ let effectiveGridItemsPerRow
 let effectiveGridMode
 /** @type {Map<string, import("./types").Disconnectable>} */
 let globalObservers = new Map()
+/** @type {ReturnType<createHideAnimationController>} */
+let hideAnimationController
 /** @type {import("./types").Channel} */
 let lastClickedChannel
 /** @type {number} */
@@ -836,6 +840,60 @@ function addStyle(css = '') {
   }
   document.documentElement.appendChild($style)
   return $style
+}
+
+function createHideAnimationController() {
+  /** @type {() => void} */
+  let cleanupActiveAnimation = null
+  let disconnected = false
+  /** @type {Set<Element>} */
+  let pendingHideElements = new Set()
+  let pendingTimers = 0
+
+  function flush() {
+    if (disconnected) return
+    let itemsToHide = Array.from(pendingHideElements)
+    pendingHideElements.clear()
+    cleanupActiveAnimation = animateHidingHiddenItems(itemsToHide)
+  }
+
+  function maybeFlush() {
+    if (disconnected) return
+    if (--pendingTimers <= 0) {
+      flush()
+    }
+  }
+
+  pageObservers.set('hide animation controller', {
+    disconnect() {
+      disconnected = true
+      hideAnimationController = null
+      cleanupActiveAnimation?.()
+    }
+  })
+
+  return {
+    enqueue(element) {
+      if (disconnected || !element) return
+      pendingHideElements.add(element)
+      pendingTimers++
+      log('enqueued', {pendingTimers})
+    },
+    dequeue(element) {
+      if (disconnected || !element) return
+      if (pendingHideElements.delete(element)) {
+        maybeFlush()
+      }
+    },
+    expire() {
+      if (disconnected) return
+      maybeFlush()
+    },
+    remove(element) {
+      if (disconnected || !element) return
+      pendingHideElements.delete(element)
+    }
+  }
 }
 
 function currentUrlChanges() {
@@ -1068,7 +1126,16 @@ const configureCss = (() => {
       return
     }
 
-    let cssRules = []
+    let cssRules = [`
+      .cpfyt-vanishing-flip {
+        transition: opacity ${ANIMATE_HIDE_DURATION_MS}ms ease-out, transform ${ANIMATE_HIDE_DURATION_MS}ms ease-out !important;
+        opacity: 0 !important;
+        transform: scale(0.6) !important;
+        transform-origin: center center !important;
+        pointer-events: none !important;
+        box-sizing: border-box !important;
+      }
+    `]
     let hideCssSelectors = []
 
     if (config.alwaysShowShortsProgressBar) {
@@ -1331,7 +1398,7 @@ const configureCss = (() => {
         .cpfyt-pie {
           --cpfyt-pie-delay: 0ms;
           --cpfyt-pie-direction: normal;
-          --cpfyt-pie-duration: ${undoHideDelayMs}ms;
+          --cpfyt-pie-duration: ${UNDO_HIDE_DELAY_MS}ms;
           --cpfyt-pie-fontSize: 200%;
           width: 1em;
           height: 1em;
@@ -3126,6 +3193,131 @@ function alwaysUseTheaterMode($player) {
   }
 }
 
+function animateHidingHiddenItems(itemsToHide) {
+  function hideItem(item) {
+    item.classList.remove('cpfyt-vanishing-flip')
+    item.classList.add(Classes.HIDE_HIDDEN)
+    item.style.position = ''
+    item.style.top = ''
+    item.style.left = ''
+    item.style.width = ''
+    item.style.height = ''
+    item.style.margin = ''
+  }
+
+  let parent = itemsToHide[0].parentElement
+  let itemsToHideSet = new Set(itemsToHide)
+
+  // First
+  let initialSiblingPositions = new Map()
+  let visibleSiblings = []
+  for (let child of parent.children) {
+    if (!itemsToHideSet.has(child) && child.offsetParent != null) {
+      visibleSiblings.push(child);
+      initialSiblingPositions.set(child, child.getBoundingClientRect())
+    }
+  }
+
+  let itemGeometries = new Map()
+  let parentRect = parent.getBoundingClientRect()
+  for (let item of itemsToHide) {
+    itemGeometries.set(item, item.getBoundingClientRect())
+  }
+
+  let parentPosition = window.getComputedStyle(parent).position
+  if (parentPosition == 'static') {
+    parent.style.position = 'relative'
+  }
+  for (let item of itemsToHide) {
+    let itemRect = itemGeometries.get(item)
+    if (!itemRect) continue
+    item.style.position = 'absolute'
+    item.style.top = `${itemRect.top - parentRect.top}px`
+    item.style.left = `${itemRect.left - parentRect.left}px`
+    item.style.width = `${itemRect.width}px`
+    item.style.height = `${itemRect.height}px`
+    item.style.margin = '0'
+    item.classList.add('cpfyt-vanishing-flip')
+  }
+
+  // Force reflow
+  parent.offsetHeight
+
+  let siblingCleanupTimeout = null
+  let siblingsToAnimate = []
+  let siblingTransitionCss = `transform ${ANIMATE_HIDE_DURATION_MS}ms cubic-bezier(0.25, 0.8, 0.25, 1)`
+  requestAnimationFrame(() => {
+    // Last
+    let finalSiblingPositions = new Map()
+    let currentVisibleSiblings = []
+    for (let sibling of visibleSiblings) {
+      if (sibling.offsetParent != null) {
+        finalSiblingPositions.set(sibling, sibling.getBoundingClientRect())
+        currentVisibleSiblings.push(sibling)
+      } else {
+        initialSiblingPositions.delete(sibling)
+      }
+    }
+
+    // Invert
+    for (let sibling of currentVisibleSiblings) {
+      let initial = initialSiblingPositions.get(sibling)
+      let final = finalSiblingPositions.get(sibling)
+      if (!initial || !final) continue
+      let deltaX = initial.left - final.left
+      let deltaY = initial.top - final.top
+      if (Math.abs(deltaX) > 0.5 || Math.abs(deltaY) > 0.5) {
+        siblingsToAnimate.push({ element: sibling, deltaX, deltaY })
+        sibling.style.transition = 'none'
+        sibling.style.transform = `translate(${deltaX}px, ${deltaY}px)`
+      }
+    }
+
+    // Play
+    requestAnimationFrame(() => {
+      for (let anim of siblingsToAnimate) {
+        anim.element.style.transition = siblingTransitionCss
+        anim.element.style.transform = ''
+      }
+
+      if (siblingsToAnimate.length > 0) {
+        siblingCleanupTimeout = setTimeout(() => {
+          for (let anim of siblingsToAnimate) {
+            if (anim.element.style.transform == '' && anim.element.style.transition == siblingTransitionCss) {
+              anim.element.style.transition = ''
+            }
+          }
+          siblingCleanupTimeout = null
+        }, ANIMATE_HIDE_DURATION_MS + 50)
+      }
+    })
+  })
+
+  let itemCleanupTimeout = setTimeout(() => {
+    for (let item of itemsToHide) {
+      hideItem(item)
+    }
+    itemCleanupTimeout = null
+  }, ANIMATE_HIDE_DURATION_MS)
+
+  return function cleanup() {
+    if (itemCleanupTimeout) {
+      clearTimeout(itemCleanupTimeout)
+      for (let item of itemsToHide) {
+        hideItem(item)
+      }
+    }
+
+    if (siblingCleanupTimeout) {
+      clearTimeout(siblingCleanupTimeout)
+      for (let anim of siblingsToAnimate) {
+        anim.element.style.transition = ''
+        anim.element.style.transform = ''
+      }
+    }
+  }
+}
+
 async function disableAutoplay() {
   if (desktop) {
     let $autoplayButton = await getElement('button[data-tooltip-target-id="ytp-autonav-toggle-button"]', {
@@ -4507,6 +4699,7 @@ async function observeTitle() {
  * When dismissed, display a timer and hide the dismissed video when it elapses.
  */
 function observeVideoHiddenState() {
+  let animateHiding
   /** @type {Element} */
   let $elementToHide
   /** @type {HTMLElement} */
@@ -4557,8 +4750,8 @@ function observeVideoHiddenState() {
     // Rapidly unwind the pie timer from its current time
     displayPie({
       direction: 'reverse',
-      delay: Math.round((elapsedTime - undoHideDelayMs) / 4),
-      duration: undoHideDelayMs / 4,
+      delay: Math.round((elapsedTime - UNDO_HIDE_DELAY_MS) / 4),
+      duration: UNDO_HIDE_DELAY_MS / 4,
     })
     // Restart the timer when the Tell us why dialog is closed
     onDialogClosed = () => {
@@ -4568,6 +4761,7 @@ function observeVideoHiddenState() {
   }
 
   function setup() {
+    animateHiding = desktop && config.animateHiding && hideAnimationController != null
     $undoButton?.addEventListener('click', cleanup)
     $tellUsWhyButton?.addEventListener('click', onTellUsWhyClick)
     startTimer()
@@ -4576,19 +4770,35 @@ function observeVideoHiddenState() {
 
   function startTimer() {
     startTime = Date.now()
+    if (animateHiding) {
+      hideAnimationController?.enqueue($elementToHide)
+    }
     timeout = setTimeout(() => {
-      $elementToHide?.classList.add(Classes.HIDE_HIDDEN)
+      timeout = null
       cleanup()
-      // Remove the class if the Undo button is clicked later, e.g. if
-      // this feature is disabled after hiding a video.
+      if (animateHiding && hideAnimationController) {
+        hideAnimationController.expire()
+      } else {
+        $elementToHide?.classList.add(Classes.HIDE_HIDDEN)
+      }
       $undoButton?.addEventListener('click', () => {
+        // Don't hide the video if Undo is clicked after its timer expires but
+        // before it's hidden (due to other videos being hidden).
+        hideAnimationController?.remove($elementToHide)
+        // Remove the class if Undo is clicked later, e.g. if this feature is
+        // disabled after hiding a video.
         $elementToHide?.classList.remove(Classes.HIDE_HIDDEN)
       })
-    }, undoHideDelayMs)
+    }, UNDO_HIDE_DELAY_MS)
   }
 
   function stopTimer() {
-    clearTimeout(timeout)
+    if (timeout) {
+      if (animateHiding) {
+        hideAnimationController?.dequeue($elementToHide)
+      }
+      clearTimeout(timeout)
+    }
   }
 
   if (desktop) {
@@ -5048,6 +5258,7 @@ async function tweakHomePage() {
     redirectFromHome()
     return
   }
+  hideAnimationController = createHideAnimationController()
   if (
     // Videos need to be manually hidden
     !config.hideWatched && !config.hideStreamed && !config.hideChannels &&
@@ -5188,6 +5399,7 @@ async function tweakShortsPage() {
 }
 
 async function tweakSubscriptionsPage() {
+  hideAnimationController = createHideAnimationController()
   if (!config.hideWatched && !config.hideStreamed) return
   if (desktop) {
     observeDesktopRichGridItems({page: 'subscriptions'})

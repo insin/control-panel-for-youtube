@@ -28,6 +28,7 @@ body:not(.debug) .debug,
 body:not(.displayingGridAsList) .displayingGridAsList,
 body:not(.fullSizeTheaterMode) .fullSizeTheaterMode,
 body:not(.hiddenChannels) #hiddenChannelsDetails,
+body:not(.hidingHiddenVideos) .hidingHiddenVideos,
 body:not(.hidingWatched) .hidingWatched,
 body:not(.jpegSnapshot) .jpegSnapshot,
 body:not(.snapshot) .snapshot,
@@ -90,6 +91,11 @@ section.group > p {
 
 section.group > section > p {
   margin: 0 40px 12px 0;
+  font-size: 12px;
+}
+
+.sub-note {
+  margin: 0 40px 12px 12px;
   font-size: 12px;
 }
 
@@ -233,7 +239,7 @@ body.macOS.safari section.group > section {
   margin-left: 32px;
 }
 /* Align option group help text with options */
-body.macOS.safari form > section.group > p {
+body.macOS.safari form > section.group > p, .sub-note {
   margin: 12px 12px 12px 32px;
 }
 /* Don't display dividing lines between option groups or options */
@@ -364,6 +370,9 @@ body.iOS.safari form > section.labelled > label + p {
 /* A checkbox options with nested options should indent their names */
 body.iOS.safari section.checkbox > section:not(.group) > label {
   padding-left: 18px
+}
+body.iOS.safari .sub-note {
+  margin-left: 18px;
 }
 /* A checkbox option with nested group should indent it */
 body.iOS.safari section.checkbox > section.group {
