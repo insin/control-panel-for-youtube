@@ -59,6 +59,7 @@ export type SiteConfig = {
   disableAmbientMode: boolean
   disableAutoplay: boolean
   disableHomeFeed: boolean
+  // XXX This doesn't seem to happen any more in the old player UI
   disableTheaterBigMode: boolean
   hiddenChannels: Channel[]
   hideAI: boolean
@@ -80,6 +81,7 @@ export type SiteConfig = {
   hideMoviesAndTV: boolean
   hideNextButton: boolean
   hidePlaylists: boolean
+  // TODO Default to true if we can detect the user doesn't have premium
   hidePremiumUpsells: boolean
   hideRelated: boolean
   hideShareThanksClip: boolean
@@ -130,6 +132,7 @@ export type SiteConfig = {
   minimumGridItemsPerRow: 'auto' | '+1' | '+2' | '+3' | '3' | '4' | '5' | '6'
   minimumShortsPerRow: 'auto' | '4' | '5' | '6' | '7' | '8' | '9'
   pauseChannelTrailers: boolean
+  // XXX The giant play button seems to have been removed
   playerCompactPlayButton: boolean
   playerFixFullScreenButton: boolean
   playerHideFullScreenTitle: boolean

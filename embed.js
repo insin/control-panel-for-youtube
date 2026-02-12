@@ -12,10 +12,10 @@ let config = {
   debug: false,
   enabled: true,
   hideEmbedPauseOverlay: true,
-  hideEmbedShareButton: false,
-  hideEndCards: false,
+  hideEmbedShareButton: true,
+  hideEndCards: true,
   hideEndVideos: true,
-  hideInfoPanels: false,
+  hideInfoPanels: true,
   removePink: false,
 }
 //#endregion
