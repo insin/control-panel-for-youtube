@@ -239,7 +239,8 @@ body.macOS.safari section.group > section {
   margin-left: 32px;
 }
 /* Align option group help text with options */
-body.macOS.safari form > section.group > p, .sub-note {
+body.macOS.safari form > section.group > p,
+body.macOS.safari .sub-note {
   margin: 12px 12px 12px 32px;
 }
 /* Don't display dividing lines between option groups or options */
