@@ -1,6 +1,7 @@
 void function() {
 
 //#region Default config
+let prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 /** @type {import("./types").SiteConfig} */
 let defaultConfig = {
   enabled: true,
@@ -56,7 +57,7 @@ let defaultConfig = {
   addTakeSnapshot: true,
   alwaysUseOriginalAudio: false,
   alwaysUseTheaterMode: false,
-  animateHiding: true,
+  animateHiding: !prefersReducedMotion,
   disableThemedHover: false,
   disableVideoPreviews: false,
   displayHomeGridAsList: false,
