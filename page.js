@@ -933,7 +933,7 @@ function createHideAnimationController() {
   let pendingTimers = 0
 
   function flush() {
-    if (disconnected) return
+    if (disconnected || pendingHideElements.size == 0) return
     let itemsToHide = Array.from(pendingHideElements)
     pendingHideElements.clear()
     cleanupActiveAnimation = animateHidingHiddenItems(itemsToHide)
