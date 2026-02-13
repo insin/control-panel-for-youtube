@@ -2258,18 +2258,26 @@ const configureCss = (() => {
       }
       if (config.disableThemedHover) {
         cssRules.push(`
-          /* Home thumbnails */
+          /* Videos */
           html {
             --cpfyt-title-color: #0f0f0f;
             --cpfyt-metadata-color: #606060;
+            --cpfyt-touch-response-color: #000;
           }
           html[dark] {
             --cpfyt-title-color: #f1f1f1;
             --cpfyt-metadata-color: #aaa;
+            --cpfyt-touch-response-color: #fff;
           }
-          ytd-browse[page-subtype="home"] {
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) {
             .yt-spec-touch-feedback-shape__hover-effect {
               display: none !important;
+            }
+            .yt-spec-touch-feedback-shape__stroke {
+              border-color: var(--yt-spec-touch-response, --cpfyt-touch-response-color) !important;
+            }
+            .yt-spec-touch-feedback-shape__fill {
+              background-color: var(--yt-spec-touch-response, --cpfyt-touch-response-color) !important;
             }
             .yt-lockup-metadata-view-model__title {
               color: var(--cpfyt-title-color) !important;
@@ -2278,8 +2286,8 @@ const configureCss = (() => {
               color: var(--cpfyt-metadata-color) !important;
             }
           }
-          /* Home Shorts */
-          ytd-browse[page-subtype="home"] ytd-rich-item-renderer[rich-grid-hover-highlight] {
+          /* Shorts */
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-item-renderer[rich-grid-hover-highlight] {
             background: none !important;
             box-shadow: none !important;
           }
