@@ -2372,6 +2372,10 @@ const configureCss = (() => {
                 padding-top: 0;
                 min-height: 140px;
               }
+              /* Shrink "Notify me" button */
+              .ytLockupAttachmentsViewModelHost {
+                flex-direction: row;
+              }
             }
             /* Only display the spinner when loading new content */
             #ghost-cards, .cpfyt-ghost-cards {
