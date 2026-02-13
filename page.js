@@ -32,7 +32,7 @@ let defaultConfig = {
   hideMoviesAndTV: false,
   hideNextButton: true,
   hidePlaylists: false,
-  hidePremiumUpsells: false,
+  hidePremiumUpsells: true,
   hideRelated: true,
   hideShareThanksClip: true,
   hideShorts: true,
@@ -1759,7 +1759,7 @@ const configureCss = (() => {
     }
 
     if (config.hidePremiumUpsells) {
-      if (desktop) {
+      if (desktop && !isDesktopPremium()) {
         hideCssSelectors.push(
           // Sidebar item
           '#endpoint.ytd-guide-entry-renderer[href="/premium"]',
@@ -3154,6 +3154,11 @@ function isChannelPage() {
   return URL_CHANNEL_RE.test(location.pathname)
 }
 
+function isDesktopPremium() {
+  // @ts-expect-error
+  return typeof ytInitialData == 'object' && ytInitialData?.topbar?.desktopTopbarRenderer?.logo?.topbarLogoRenderer?.iconImage?.iconType == 'YOUTUBE_PREMIUM_LOGO'
+}
+
 function isSearchPage() {
   return location.pathname == '/results'
 }
@@ -4318,7 +4323,7 @@ async function onDesktopMenuAppeared($dropdown) {
         // Separator on the Download item is <tp-yt-paper-listbox> menu-specific
         if ($menuItem.hasAttribute('has-separator')) {
           let $newSeparatorItem = $menuItem.previousElementSibling
-          if (config.hidePremiumUpsells && $newSeparatorItem.tagName == 'YTD-MENU-SERVICE-ITEM-DOWNLOAD-RENDERER') {
+          if (config.hidePremiumUpsells && !isDesktopPremium() && $newSeparatorItem.tagName == 'YTD-MENU-SERVICE-ITEM-DOWNLOAD-RENDERER') {
             $newSeparatorItem = $newSeparatorItem.previousElementSibling
           }
           log('hideShareThanksClip: moving has-separator to', $newSeparatorItem)

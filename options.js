@@ -220,7 +220,7 @@ let defaultConfig = {
   hideMoviesAndTV: false,
   hideNextButton: true,
   hidePlaylists: false,
-  hidePremiumUpsells: false,
+  hidePremiumUpsells: true,
   hideRelated: true,
   hideShareThanksClip: true,
   hideShorts: true,
