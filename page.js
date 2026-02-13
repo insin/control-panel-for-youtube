@@ -2423,6 +2423,9 @@ const configureCss = (() => {
               }
             }
             /* Shorts shelf */
+            #dismissible.ytd-rich-shelf-renderer {
+              padding-top: 10px;
+            }
             #dismissible.ytd-rich-shelf-renderer:not(:has(.button-container:not([hidden]) > .expand-collapse-button)) {
               margin-bottom: 0 !important;
               padding-bottom: 20px;
@@ -2639,10 +2642,11 @@ const configureCss = (() => {
             display: block !important;
           }
         `)
-        if (shortsPerRow >= 6) {
-          // Hide the Show more/Show less button if we're showing everything
-          hideCssSelectors.push('ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer[is-shorts] .expand-collapse-button')
-        }
+        // TODO Add a count of the shorts in a shelf to the ytd-rich-shelf-renderer for this
+        // if (shortsPerRow >= 6) {
+        //   // Hide the Show more/Show less button if we're showing everything
+        //   hideCssSelectors.push('ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer[is-shorts] .expand-collapse-button')
+        // }
       }
       if (config.playerCompactPlayButton) {
         cssRules.push(`
