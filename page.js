@@ -2418,7 +2418,7 @@ const configureCss = (() => {
                   top: -48px;
                   left: 50px;
                   /* #title.ytd-shelf-renderer styles */
-                  a {
+                  a, span {
                     color: var(--yt-spec-text-primary);
                     font-family: "Roboto","Arial",sans-serif;
                     font-size: 2rem;
