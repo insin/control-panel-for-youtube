@@ -1481,10 +1481,8 @@ const configureCss = (() => {
           --cpfyt-pie-delay: 0ms;
           --cpfyt-pie-direction: normal;
           --cpfyt-pie-duration: ${UNDO_HIDE_DELAY_MS}ms;
-          --cpfyt-pie-fontSize: 200%;
           width: 1em;
           height: 1em;
-          font-size: var(--cpfyt-pie-fontSize);
           position: relative;
           border-radius: 50%;
           margin: 0.5em;
@@ -1529,6 +1527,24 @@ const configureCss = (() => {
           }
         }
       `)
+      if (desktop) {
+        cssRules.push(`
+          #text.ytd-notification-multi-action-renderer {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+          }
+        `)
+      }
+      if (mobile) {
+        cssRules.push(`
+          ytm-notification-multi-action-renderer .notification-multi-action-text-wrapper {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+          }
+        `)
+      }
       if (debugManualHiding) {
         cssRules.push(`.${Classes.HIDE_HIDDEN} { outline: 2px solid magenta !important; }`)
       } else {
@@ -2339,14 +2355,19 @@ const configureCss = (() => {
             ytd-rich-item-renderer.ytd-rich-grid-renderer {
               width: 100%;
               border-bottom: 1px solid var(--yt-spec-outline);
+              /* For <ytd-rich-grid-media> */
+              border-radius: 0 !important;
               margin-left: 24px;
               margin-right: 24px;
               margin-bottom: 0;
             }
-            #content.ytd-rich-item-renderer {
+            ytd-rich-item-renderer.ytd-rich-grid-renderer #content.ytd-rich-item-renderer {
               max-width: 862px;
-              padding-bottom: 20px;
-              padding-top: 20px;
+              /* <yt-lockup-view-model> */
+              &:not(:has(> ytd-rich-grid-media)) {
+                padding-bottom: 20px;
+                padding-top: 20px;
+              }
               .yt-lockup-view-model {
                 flex-direction: row;
               }
@@ -2374,6 +2395,32 @@ const configureCss = (() => {
               .ytLockupAttachmentsViewModelHost {
                 flex-direction: row;
               }
+              /* Movies & TV still uses <ytd-rich-grid-media> */
+              ytd-rich-grid-media.ytd-rich-item-renderer {
+                max-width: unset;
+                padding-bottom: 20px;
+                padding-top: 20px;
+              }
+              #dismissible.ytd-rich-grid-media {
+                flex-direction: row !important;
+              }
+              #thumbnail.ytd-rich-grid-media {
+                flex: none;
+                width: 246px;
+                height: 138px;
+                margin-right: 16px;
+                padding-bottom: 0;
+              }
+              h3.ytd-rich-grid-media {
+                margin-top: 0 !important;
+              }
+              #attached-survey.ytd-rich-grid-media {
+                display: none;
+              }
+              #dismissed.ytd-rich-grid-media {
+                padding-bottom: 0;
+                min-height: 136px;
+              }
             }
             /* Only display the spinner when loading new content */
             #ghost-cards, .cpfyt-ghost-cards {
@@ -2398,7 +2445,7 @@ const configureCss = (() => {
               ytd-rich-item-renderer.ytd-rich-grid-renderer {
                 position: relative;
               }
-              #content.ytd-rich-item-renderer {
+              ytd-rich-item-renderer.ytd-rich-grid-renderer #content.ytd-rich-item-renderer:not(:has(> ytd-rich-grid-media)) {
                 &:not(:has(.ytDismissibleItemReplacedContent)) {
                   padding-top: 60px;
                 }
@@ -4856,7 +4903,7 @@ function observeVideoHiddenState() {
   let $tellUsWhyButton
   /** @type {HTMLButtonElement} */
   let $undoButton
-  /** @type {{$container: Element, small?: boolean}} */
+  /** @type {{$container: Element}} */
   let pieConfig
   let startTime
   let timeout
@@ -4887,7 +4934,6 @@ function observeVideoHiddenState() {
     if (delay) $pie.style.setProperty('--cpfyt-pie-delay', `${delay}ms`)
     if (direction) $pie.style.setProperty('--cpfyt-pie-direction', direction)
     if (duration) $pie.style.setProperty('--cpfyt-pie-duration', `${duration}ms`)
-    if (pieConfig.small) $pie.style.setProperty('--cpfyt-pie-fontSize', '100%')
     $pie.addEventListener('click', cleanup)
     pieConfig.$container?.append($pie)
   }
@@ -4969,10 +5015,9 @@ function observeVideoHiddenState() {
       let $buttons = $actions.querySelectorAll('button')
       $undoButton = $buttons[0]
       $tellUsWhyButton = $buttons[1]
-      // Display a small pie timer after "Video removed" in yt-lockup-view-model
+      // Display a small pie timer after "Video removed"
       pieConfig = {
-        $container: $actions.querySelector('.ytNotificationMultiActionRendererTextContainer') || $actions,
-        small: Boolean($ytLockupDismissedContent),
+        $container: $actions.querySelector('.ytNotificationMultiActionRendererTextContainer, #text') || $actions,
       }
       setup()
     }, {
@@ -5012,7 +5057,9 @@ function observeVideoHiddenState() {
         $elementToHide = $video.closest('ytm-item-section-renderer')
       }
       $undoButton = $dismissedContent.querySelector('button')
-      pieConfig = {$container: $dismissedContent.firstElementChild}
+      pieConfig = {
+        $container: $dismissedContent.querySelector('ytm-notification-multi-action-renderer .notification-multi-action-text-wrapper') || $dismissedContent.firstElementChild,
+      }
       setup()
     }, {
       name: `context menu video (hideHiddenVideos)`,
