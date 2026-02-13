@@ -1640,10 +1640,12 @@ const configureCss = (() => {
     if (config.hideMetadata) {
       if (desktop) {
         hideCssSelectors.push(
-          // Channel name / Videos / About (but not Transcript or their mutual container)
+          // Channel name / Videos / About below video
           '#structured-description .ytd-structured-description-content-renderer:not(#items, ytd-video-description-transcript-section-renderer)',
-          // Game name and Gaming link
+          // Game below video
           '#above-the-fold + ytd-metadata-row-container-renderer',
+          // Game / Infocards in full screen description panel
+          'ytd-structured-description-content-renderer[panel-target-id="engagement-panel-structured-description"] .ytd-structured-description-content-renderer:not(#items, ytd-video-description-header-renderer, ytd-expandable-video-description-body-renderer, ytd-video-description-transcript-section-renderer)',
         )
       }
       if (mobile) {
