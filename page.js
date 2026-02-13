@@ -2435,6 +2435,9 @@ const configureCss = (() => {
                     white-space: normal;
                   }
                 }
+                &:not(:has(.yt-lockup-metadata-view-model__avatar)) .yt-content-metadata-view-model__metadata-row:first-child {
+                  left: 0;
+                }
                 /* Adjust for header height */
                 .ytDismissibleItemAspectRatio16By9 {
                   min-height: 178px;
