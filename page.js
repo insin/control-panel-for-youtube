@@ -2422,6 +2422,16 @@ const configureCss = (() => {
                 min-height: 136px;
               }
             }
+            /* Shorts shelf */
+            #dismissible.ytd-rich-shelf-renderer:not(:has(.button-container:not([hidden]) > .expand-collapse-button)) {
+              margin-bottom: 0 !important;
+              padding-bottom: 20px;
+              border-bottom: 1px solid var(--yt-spec-outline);
+            }
+            #dismissible.ytd-rich-shelf-renderer:has(.button-container:not([hidden]) > .expand-collapse-button) {
+              margin-bottom: 10px !important;
+              padding-bottom: 20px;
+            }
             /* Only display the spinner when loading new content */
             #ghost-cards, .cpfyt-ghost-cards {
               display: none;
