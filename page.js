@@ -2345,11 +2345,8 @@ const configureCss = (() => {
             }
             #content.ytd-rich-item-renderer {
               max-width: 862px;
-              padding-bottom: 10px;
+              padding-bottom: 20px;
               padding-top: 20px;
-              &:has(.ytDismissibleItemReplacedContent) {
-                padding-bottom: 20px;
-              }
               .yt-lockup-view-model {
                 flex-direction: row;
               }
@@ -2358,6 +2355,7 @@ const configureCss = (() => {
                 width: 246px;
                 height: 138px;
                 margin-right: 16px;
+                padding-bottom: 0;
               }
               .yt-lockup-view-model__metadata {
                 width: 100%;
@@ -2370,7 +2368,7 @@ const configureCss = (() => {
               }
               .ytDismissibleItemAspectRatio16By9 {
                 padding-top: 0;
-                min-height: 140px;
+                min-height: 138px;
               }
               /* Shrink "Notify me" button */
               .ytLockupAttachmentsViewModelHost {
@@ -2439,7 +2437,7 @@ const configureCss = (() => {
                 }
                 /* Adjust for header height */
                 .ytDismissibleItemAspectRatio16By9 {
-                  min-height: 180px;
+                  min-height: 178px;
                 }
               }
             }
