@@ -76,12 +76,12 @@ chrome.runtime.onInstalled.addListener((details) => {
   else if (details.reason == 'update') {
     let previous = details.previousVersion
     let current = chrome.runtime.getManifest().version
-    let reasons = [
-      crossesVersionThreshold(previous, current, '1.32.0') && 'big-defaults-change',
+    let significantVersions = [
+      crossesVersionThreshold(previous, current, '1.31') && '1.31',
     ].filter(Boolean)
-    if (reasons.length > 0) {
+    if (significantVersions.length > 0) {
       chrome.tabs.create({
-        url: `https://soitis.dev/control-panel-for-youtube/updated?reason=${reasons[0]}`,
+        url: `https://soitis.dev/control-panel-for-youtube/updated?version=${significantVersions[0]}`,
       })
     }
   }
