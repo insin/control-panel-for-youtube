@@ -181,10 +181,10 @@ ${messages.uiTweaks}:
 • ${messages.redirectLogoToSubscriptions}${messages.desktopVersion}
 • ${messages.tidyGuideSidebar}${messages.desktopVersion}
 • ${messages.hideSubscriptionsLatestBar}${messages.desktopVersion}
+• ${messages.fixGhostCards}${messages.desktopVersion}
 • ${messages.mobileGridView}${messages.mobileVersion}
 • ${messages.hideExploreButton}${messages.mobileVersion}
 • ${messages.hideSubscriptionsChannelList}${messages.mobileVersion}
-• ${messages.fixGhostCards}${messages.mobileVersion}
 
 ${messages.embeddedVideos}:
 
