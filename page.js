@@ -76,7 +76,7 @@ let defaultConfig = {
   hideJumpAheadButton: false,
   hideMerchEtc: true,
   hideRelatedBelow: true,
-  hideSidebarSubscriptions: true,
+  hideSidebarSubscriptions: false,
   hideShortsMetadataUntilHover: true,
   hideShortsRemixButton: true,
   hideSubscriptionsLatestBar: true,
