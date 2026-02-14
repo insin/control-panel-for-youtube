@@ -38,6 +38,7 @@ for (let gridItemsMinimum of [3, 4, 5, 6]) {
 }
 
 for (let translationId of [
+  'preventScrollinShorts',
   'addTakeSnapshot',
   'ads',
   'allowBackgroundPlay',
