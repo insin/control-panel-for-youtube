@@ -272,7 +272,7 @@ let defaultConfig = {
   minimumShortsPerRow: '8',
   pauseChannelTrailers: true,
   playerCompactPlayButton: true,
-  playerControlsBg: 'blur',
+  playerControlsBg: 'default',
   playerFixFullScreenButton: true,
   playerHideFullScreenTitle: true,
   playerHideFullScreenVoting: true,
