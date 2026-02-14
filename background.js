@@ -82,6 +82,7 @@ chrome.runtime.onInstalled.addListener((details) => {
     if (significantVersions.length > 0) {
       chrome.tabs.create({
         url: `https://soitis.dev/control-panel-for-youtube/updated?version=${significantVersions[0]}`,
+        active: false,
       })
     }
   }
