@@ -357,9 +357,6 @@
   "pauseChannelTrailers": {
     "message": "Mettre en pause automatiquement les bandes-annonces de chaîne"
   },
-  "playerCompactPlayButton": {
-    "message": "Toujours utiliser le bouton Lecture compact"
-  },
   "playerControlsBg": {
     "message": "Arrière-plan des contrôles du lecteur"
   },

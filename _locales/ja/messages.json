@@ -356,9 +356,6 @@
   "pauseChannelTrailers": {
     "message": "チャンネルのトレーラーを自動的に一時停止"
   },
-  "playerCompactPlayButton": {
-    "message": "常にコンパクトな再生ボタンを使用する"
-  },
   "playerControlsBg": {
     "message": "プレーヤーコントロールの背景"
   },

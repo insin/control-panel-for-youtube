@@ -84,7 +84,6 @@ let defaultConfig = {
   minimumGridItemsPerRow: '+1',
   minimumShortsPerRow: '8',
   pauseChannelTrailers: true,
-  playerCompactPlayButton: true,
   playerControlsBg: 'default',
   playerFixFullScreenButton: true,
   playerHideFullScreenTitle: true,
@@ -2655,94 +2654,6 @@ const configureCss = (() => {
         //   // Hide the Show more/Show less button if we're showing everything
         //   hideCssSelectors.push('ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer[is-shorts] .expand-collapse-button')
         // }
-      }
-      if (config.playerCompactPlayButton) {
-        cssRules.push(`
-          /* Make normal mode Play/Pause the same size as other buttons */
-          ytd-watch-flexy .ytp-delhi-modern:not(.ytp-delhi-modern-compact-controls):not(.ytp-big-mode) {
-            .ytp-play-button {
-              width: 48px;
-              height: 48px;
-              margin-top: 12px;
-            }
-            .ytp-play-button > svg {
-              width: 24px;
-              height: 24px;
-              padding: 12px;
-            }
-            /* Move progress bar and full screen elements down */
-            .ytp-chrome-bottom {
-              --yt-delhi-bottom-controls-height: 56px;
-            }
-            &.ytp-fullscreen-grid-peeking .ytp-overlays-container {
-              bottom: 76px !important;
-            }
-            .ytp-fullscreen-grid-expand-button {
-              margin-top: -52px !important;
-            }
-            /* Prevent jumping when the progress bar is dragged */
-            .ytp-chrome-bottom:has(> .ytp-drag) {
-              height: var(--yt-delhi-bottom-controls-height) !important;
-            }
-            /* Adjust position of controls */
-            .ytp-left-controls > :is(button, a, .ytp-volume-area),
-            .ytp-right-controls {
-              margin-top: 4px !important;
-            }
-            /* Make time display and chapters smaller */
-            .ytp-time-wrapper, button.ytp-chapter-title {
-              height: 40px !important;
-            }
-            .ytp-time-contents, .ytp-chapter-container {
-              line-height: 40px !important;
-            }
-            .ytp-time-display, .ytp-chapter-container {
-              padding: 8px !important;
-            }
-          }
-          /* Make big mode Play/Pause the same size as other buttons */
-          ytd-watch-flexy .ytp-delhi-modern.ytp-big-mode {
-            .ytp-play-button {
-              width: 56px !important;
-              height: 56px !important;
-              margin-top: 4px !important;
-            }
-            .ytp-play-button > svg {
-              width: 24px;
-              height: 24px;
-              padding: 16px !important;
-            }
-            /* Move progress bar and full screen elements down */
-            .ytp-chrome-bottom {
-              --yt-delhi-big-mode-bottom-controls-height: 64px;
-            }
-            &.ytp-fullscreen-grid-peeking .ytp-overlays-container {
-              bottom: 84px !important;
-            }
-            .ytp-fullscreen-grid-expand-button {
-              margin-top: -60px !important;
-            }
-            /* Prevent jumping when the progress bar is dragged */
-            .ytp-chrome-bottom:has(> .ytp-drag) {
-              height: var(--yt-delhi-big-mode-bottom-controls-height) !important;
-            }
-            /* Adjust position of controls */
-            .ytp-left-controls > :is(button, a, .ytp-volume-area),
-            .ytp-right-controls {
-              margin-top: 4px !important;
-            }
-            /* Make time display and chapters smaller */
-            .ytp-time-wrapper, button.ytp-chapter-title {
-              height: 40px !important;
-            }
-            .ytp-time-contents, .ytp-chapter-container {
-              line-height: 40px !important;
-            }
-            .ytp-time-display, .ytp-chapter-container {
-              padding: 12px !important;
-            }
-          }
-        `)
       }
       if (config.playerControlsBg == 'transparent') {
         cssRules.push(`

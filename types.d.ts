@@ -133,8 +133,6 @@ export type SiteConfig = {
   minimumGridItemsPerRow: 'auto' | '+1' | '+2' | '+3' | '3' | '4' | '5' | '6'
   minimumShortsPerRow: 'auto' | '4' | '5' | '6' | '7' | '8' | '9'
   pauseChannelTrailers: boolean
-  // XXX The giant play button seems to have been removed
-  playerCompactPlayButton: boolean
   playerFixFullScreenButton: boolean
   playerHideFullScreenTitle: boolean
   playerHideFullScreenVoting: boolean

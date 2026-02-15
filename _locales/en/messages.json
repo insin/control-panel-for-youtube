@@ -357,9 +357,6 @@
   "pauseChannelTrailers": {
     "message": "Automatically pause channel trailers"
   },
-  "playerCompactPlayButton": {
-    "message": "Always use compact Play button"
-  },
   "playerControlsBg": {
     "message": "Player controls background"
   },

@@ -95,7 +95,6 @@ ${messages.newVideoPlayerUI}:
 • ${messages.playerRemoveDelhiExperimentFlags}${messages.desktopVersion} - ${messages.playerRemoveDelhiExperimentFlagsNote}
 • ${messages.playerHideFullScreenControls}
 • ${messages.playerHideFullScreenMoreVideos}
-• ${messages.playerCompactPlayButton}${messages.desktopVersion}
 • ${messages.playerControlsBg}${messages.desktopVersion} - ${messages.blur} / ${messages.transparent}
 • ${messages.restoreMiniplayerButton}${messages.desktopVersion}
 • ${messages.playerFixFullScreenButton}${messages.desktopVersion}

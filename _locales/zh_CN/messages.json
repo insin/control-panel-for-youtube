@@ -357,9 +357,6 @@
   "pauseChannelTrailers": {
     "message": "自动暂停频道预告片"
   },
-  "playerCompactPlayButton": {
-    "message": "始终使用紧凑的播放按钮"
-  },
   "playerControlsBg": {
     "message": "播放器控件背景"
   },
