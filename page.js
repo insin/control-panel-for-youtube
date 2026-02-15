@@ -2065,28 +2065,6 @@ const configureCss = (() => {
     }
 
     if (config.playerHideFullScreenMoreVideos) {
-      if (desktop) {
-        hideCssSelectors.push('.ytp-fullscreen-grid')
-        cssRules.push(`
-          /* Prevent full screen player from visually scrolling */
-          #movie_player.ytp-delhi-modern {
-            --ytp-grid-scroll-percentage: 0 !important;
-          }
-          /* Prevent controls moving and hiding when full screen is scrolled */
-          .ytp-delhi-modern:is(.ytp-grid-scrolling, .ytp-fullscreen-grid-active) .ytp-chrome-bottom {
-            bottom: 0 !important;
-            opacity: 1 !important;
-            pointer-events: auto !important;
-          }
-          .ytp-delhi-modern.ytp-fullscreen-grid-active .ytp-chrome-bottom {
-            display: block !important;
-          }
-          /* Hide full screen scrolling gradient */
-          .ytp-delhi-modern .ytp-gradient-bottom {
-            display: none !important;
-          }
-        `)
-      }
       if (mobile) {
         hideCssSelectors.push('.fullscreen-watch-next-entrypoint-wrapper')
       }
@@ -2582,7 +2560,7 @@ const configureCss = (() => {
           '#movie_player .ytp-endscreen-content',
           '#movie_player .ytp-endscreen-previous',
           '#movie_player .ytp-endscreen-next',
-          '#movie_player .ytp-fullscreen-grid-stills-container',
+          '#movie_player.ended-mode .ytp-fullscreen-grid-stills-container',
         )
       }
       if (config.hideExperiencingInterruptions) {
@@ -3477,7 +3455,32 @@ function disableTheaterBigMode($player) {
     }
   }, {
     leading: true,
-    name: 'disableTheaterBigMode: player',
+    name: 'disableTheaterBigMode: player class',
+    observers: pageObservers,
+  }, {
+    attributes: true,
+    attributeFilter: ['class'],
+  })
+}
+
+/** @param {HTMLElement} $player */
+function hideFullScreenMoreVideos($player) {
+  observeElement($player, () => {
+    let remove = false
+    if ($player.classList.contains('ytp-fullscreen-grid-peeking')) {
+      log('playerHideFullScreenMoreVideos: removing .ytp-fullscreen-grid-peeking from player')
+      remove = true
+    }
+    if ($player.classList.contains('ytp-fullscreen-grid-active')) {
+      log('playerHideFullScreenMoreVideos: removing .ytp-fullscreen-grid-active from player')
+      remove = true
+    }
+    if (remove) {
+      $player.classList.remove('ytp-fullscreen-grid-peeking', 'ytp-fullscreen-grid-active')
+    }
+  }, {
+    leading: true,
+    name: 'playerHideFullScreenMoreVideos: player class',
     observers: pageObservers,
   }, {
     attributes: true,
@@ -5567,6 +5570,9 @@ async function tweakVideoPage() {
       }
       if (config.disableTheaterBigMode) {
         disableTheaterBigMode($player)
+      }
+      if (config.playerHideFullScreenMoreVideos) {
+        hideFullScreenMoreVideos($player)
       }
     })
     if (config.hideChannels && !config.hideEndVideos && config.hiddenChannels.length > 0) {
