@@ -59,6 +59,24 @@
   "dark": {
     "message": "Sombre"
   },
+  "debug": {
+    "message": "Mode débogage"
+  },
+  "debugLogGridObservers": {
+    "message": "Logs des observateurs de grille"
+  },
+  "debugManualHiding": {
+    "message": "Déboguer le masquage manuel"
+  },
+  "debugManualHidingNote": {
+    "message": "Met en évidence les éléments au lieu de les masquer"
+  },
+  "debugNote": {
+    "message": "Active les logs de débogage"
+  },
+  "debugOptions": {
+    "message": "Options de débogage"
+  },
   "default": {
     "message": "Par défaut"
   },

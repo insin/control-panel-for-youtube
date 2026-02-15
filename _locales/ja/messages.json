@@ -59,6 +59,24 @@
   "dark": {
     "message": "ダーク"
   },
+  "debug": {
+    "message": "デバッグモード"
+  },
+  "debugLogGridObservers": {
+    "message": "グリッドオブザーバーのログ出力"
+  },
+  "debugManualHiding": {
+    "message": "手動非表示のデバッグ"
+  },
+  "debugManualHidingNote": {
+    "message": "非表示にせず、要素をハイライト表示する"
+  },
+  "debugNote": {
+    "message": "デバッグログを有効にする"
+  },
+  "debugOptions": {
+    "message": "デバッグオプション"
+  },
   "default": {
     "message": "デフォルト"
   },

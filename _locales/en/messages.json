@@ -59,6 +59,24 @@
   "dark": {
     "message": "Dark"
   },
+  "debug": {
+    "message": "Debug mode"
+  },
+  "debugLogGridObservers": {
+    "message": "Log grid observers"
+  },
+  "debugManualHiding": {
+    "message": "Debug manual hiding"
+  },
+  "debugManualHidingNote": {
+    "message": "Highlights elements instead of hiding them"
+  },
+  "debugNote": {
+    "message": "Enables debug logging"
+  },
+  "debugOptions": {
+    "message": "Debug options"
+  },
   "default": {
     "message": "Default"
   },

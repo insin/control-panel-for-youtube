@@ -49,6 +49,12 @@ for (let translationId of [
   'anyPercent',
   'blockAds',
   'blockAdsNote',
+  'debug',
+  'debugLogGridObservers',
+  'debugManualHiding',
+  'debugManualHidingNote',
+  'debugNote',
+  'debugOptions',
   'disableAmbientMode',
   'disableAutoplay',
   'disableHomeFeed',
@@ -403,6 +409,7 @@ function shouldDisplayHiddenChannels() {
 }
 
 function updateDisplay() {
+  $body.classList.toggle('debugging', optionsConfig.debug)
   $body.classList.toggle('desktop', optionsConfig.version == 'desktop')
   $body.classList.toggle('disabled', !optionsConfig.enabled)
   $body.classList.toggle('displayingGridAsList',  optionsConfig.displayHomeGridAsList || optionsConfig.displaySubscriptionsGridAsList)

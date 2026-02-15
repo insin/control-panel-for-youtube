@@ -6,6 +6,7 @@ let prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
 let defaultConfig = {
   enabled: true,
   debug: false,
+  debugLogGridObservers: false,
   debugManualHiding: false,
   alwaysShowShortsProgressBar: true,
   blockAds: true,
@@ -110,6 +111,7 @@ let defaultConfig = {
 //#endregion
 
 let debug = false
+let debugLogGridObservers = false
 let debugManualHiding = false
 
 let mobile = location.hostname == 'm.youtube.com'
@@ -1109,7 +1111,9 @@ let logObserverDisconnects = true
  * @param {MutationCallback} callback
  * @param {{
  *   leading?: boolean
+ *   logDisconnect?: boolean
  *   logElement?: boolean
+ *   logObserve?: boolean
  *   name: string
  *   observers: Map<string, import("./types").Disconnectable> | Map<string, import("./types").Disconnectable>[]
  *   onDisconnect?: () => void
@@ -1118,7 +1122,7 @@ let logObserverDisconnects = true
  * @return {import("./types").CustomMutationObserver}
  */
 function observeElement($target, callback, options, mutationObserverOptions = {childList: true}) {
-  let {leading, logElement, name, observers, onDisconnect} = options
+  let {leading, logDisconnect = true, logElement, logObserve = true, name, observers, onDisconnect} = options
   let observerMaps = Array.isArray(observers) ? observers : [observers]
 
   /** @type {import("./types").CustomMutationObserver} */
@@ -1131,23 +1135,27 @@ function observeElement($target, callback, options, mutationObserverOptions = {c
     disconnect()
     for (let map of observerMaps) map.delete(name)
     onDisconnect?.()
-    if (logObserverDisconnects) {
+    if (logDisconnect && logObserverDisconnects) {
       log(`disconnected ${name} observer`)
     }
   }
 
   if (observerMaps[0].has(name)) {
-    log(`disconnecting existing ${name} observer`)
+    if (logDisconnect) {
+      log(`disconnecting existing ${name} observer`)
+    }
     logObserverDisconnects = false
     observerMaps[0].get(name).disconnect()
     logObserverDisconnects = true
   }
 
   for (let map of observerMaps) map.set(name, observer)
-  if (logElement) {
-    log(`observing ${name}`, $target)
-  } else {
-    log(`observing ${name}`)
+  if (logObserve) {
+    if (logElement) {
+      log(`observing ${name}`, $target)
+    } else {
+      log(`observing ${name}`)
+    }
   }
   observer.observe($target, mutationObserverOptions)
   if (leading) {
@@ -4168,14 +4176,13 @@ async function observeDesktopRelatedVideos() {
 function observeDesktopYtLockupViewModelItemContent($gridItem, uniqueId) {
   let $content = $gridItem.querySelector(':scope > #content')
   if (!$content) {
-    warn('#content not found in <yt-lockup-view-model>')
+    warn('#content not found in <yt-lockup-view-model>', $gridItem)
     return
   }
   observeElement($content, (mutations) => {
     if (mutations.length == 0) {
       let $lockupViewModel = $gridItem.querySelector('yt-lockup-view-model')
       if ($lockupViewModel) {
-        log(uniqueId, 'has an initial yt-lockup-view-model')
         requestAnimationFrame(() => manuallyHideVideo($gridItem, {hideDismissed: true}))
       }
       return
@@ -4185,7 +4192,9 @@ function observeDesktopYtLockupViewModelItemContent($gridItem, uniqueId) {
       for (let $addedNode of mutation.addedNodes) {
         if (!($addedNode instanceof HTMLElement)) continue
         if ($addedNode.nodeName == 'YT-LOCKUP-VIEW-MODEL') {
-          log('yt-lockup-view-model added to', uniqueId)
+          if (debugLogGridObservers) {
+            log('yt-lockup-view-model added to', uniqueId)
+          }
           // Let the new thumbnail finish rendering
           requestAnimationFrame(() => manuallyHideVideo($gridItem, {hideDismissed: true}))
         }
@@ -4193,6 +4202,7 @@ function observeDesktopYtLockupViewModelItemContent($gridItem, uniqueId) {
     }
   }, {
     leading: true,
+    logObserve: debugLogGridObservers,
     name: `${uniqueId} #content`,
     observers: pageObservers,
   })
@@ -4272,6 +4282,7 @@ async function observeDesktopRichGridItems(options) {
       // Add more cards if YouTube didn't generate enough
       if (effectiveGridItemsPerRow && effectiveGridItemsPerRow > $lastGhostGridClone.childElementCount) {
         let extra = effectiveGridItemsPerRow - $lastGhostGridClone.childElementCount
+        log('fixGhostCards: adding', extra, `ghost card${s(extra)}`)
         for (let i = 0; i < extra; i++) {
           $lastGhostGridClone.append($lastGhostGridClone.lastElementChild.cloneNode(true))
         }
@@ -4279,7 +4290,7 @@ async function observeDesktopRichGridItems(options) {
       ghostGridClones.set($continuationRenderer, $lastGhostGridClone)
       $continuationRenderer.insertAdjacentElement('afterend', $lastGhostGridClone)
     } else {
-      warn('fixGhostCards: no .ghost-cards found in <ytd-continuation-item-renderer>')
+      warn('fixGhostCards: no ghost cards found in continuation renderer')
     }
     let $spinner = $continuationRenderer.querySelector('tp-yt-paper-spinner')
     if ($spinner) {
@@ -4288,19 +4299,22 @@ async function observeDesktopRichGridItems(options) {
         observer.disconnect()
         $lastSpinnerClone = document.createElement('div')
         $lastSpinnerClone.className = 'cpfyt-grid-spinner'
+        log('fixGhostCards: moving active loading spinner')
         $lastSpinnerClone.append($spinner.cloneNode(true))
         spinnerClones.set($continuationRenderer, $lastSpinnerClone)
         $gridContents.append($lastSpinnerClone)
       }, {
         leading: true,
-        name: '<ytd-continuation-item-renderer> spinner',
+        logObserve: debugLogGridObservers,
+        logDisconnect: debugLogGridObservers,
+        name: 'fixGhostCards: loading spinner',
         observers: pageObservers,
       }, {
         attributes: true,
         attributeFilter: ['active'],
       })
     } else {
-      warn('fixGhostCards: <tp-yt-paper-spinner> not found in <ytd-continuation-item-renderer>')
+      warn('fixGhostCards: loading spinner not found in ghost cards')
     }
   }
 
@@ -6018,14 +6032,20 @@ function receiveConfigFromContentScript({data: {type, siteConfig}}) {
     return
   }
 
-  if ('debug' in siteConfig) {
+  if (Object.hasOwn(siteConfig, 'debug')) {
     log('disabling debug mode')
     debug = siteConfig.debug
     log('enabled debug mode')
     return
   }
 
-  if ('debugManualHiding' in siteConfig) {
+  if (Object.hasOwn(siteConfig, 'debugLogGridObservers')) {
+    debugLogGridObservers = siteConfig.debugLogGridObservers
+    log(`${debugLogGridObservers ? 'en' : 'dis'}abled logging of grid observers`)
+    return
+  }
+
+  if (Object.hasOwn(siteConfig, 'debugManualHiding')) {
     debugManualHiding = siteConfig.debugManualHiding
     log(`${debugManualHiding ? 'en' : 'dis'}abled debugging manual hiding`)
     configureCss()

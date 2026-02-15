@@ -59,6 +59,24 @@
   "dark": {
     "message": "深色"
   },
+  "debug": {
+    "message": "调试模式"
+  },
+  "debugLogGridObservers": {
+    "message": "记录网格观察器日志"
+  },
+  "debugManualHiding": {
+    "message": "调试手动隐藏"
+  },
+  "debugManualHidingNote": {
+    "message": "高亮显示元素而非隐藏"
+  },
+  "debugNote": {
+    "message": "启用调试日志"
+  },
+  "debugOptions": {
+    "message": "调试选项"
+  },
   "default": {
     "message": "默认"
   },

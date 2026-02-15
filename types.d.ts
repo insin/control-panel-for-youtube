@@ -53,6 +53,7 @@ export type SiteConfig = {
   enabled: boolean
   collapsedOptions?: string[]
   debug?: boolean
+  debugLogGridObservers?: boolean
   debugManualHiding?: boolean
   alwaysShowShortsProgressBar: boolean
   blockAds: boolean
