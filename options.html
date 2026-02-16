@@ -9,15 +9,18 @@
 <body>
   <form>
     <section class="group">
-      <label class="checkbox">
-        <span style="display: flex; align-items: center; gap: .5em;">
-          <img src="options-icon.png" class="icon">
-          <span id="enabled">Enabled</span>
-        </span>
-        <input type="checkbox" name="enabled">
-        <span class="toggle"></span>
-      </label>
+      <section class="checkbox enabled">
+        <label>
+          <span class="label">
+            <img id="optionsIcon" src="options-icon.png" class="icon">
+            <span id="enabled">Enabled</span>
+          </span>
+          <input type="checkbox" name="enabled">
+          <span class="toggle"></span>
+        </label>
+      </section>
     </section>
+
     <section class="group labelled collapsible">
       <label data-collapse-id="ads">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
@@ -25,29 +28,32 @@
         </svg>
         <span id="ads">Ads</span>
       </label>
-      <section class="checkbox">
-        <label>
-          <span id="blockAds">Block ads</span>
-          <input type="checkbox" name="blockAds">
-          <span class="toggle"></span>
-        </label>
-        <p id="blockAdsNote">Disable to avoid conflicts with other adblockers</p>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideSponsored">Hide Sponsored videos & Promos</span>
-          <input type="checkbox" name="hideSponsored">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="hideMerchEtc">Hide Merch, Offers etc.</span>
-          <input type="checkbox" name="hideMerchEtc">
-          <span class="toggle"></span>
-        </label>
-      </section>
+      <div class="options">
+        <section class="checkbox">
+          <label>
+            <span id="blockAds">Block ads</span>
+            <input type="checkbox" name="blockAds">
+            <span class="toggle"></span>
+          </label>
+          <p id="blockAdsNote">Disable to avoid conflicts with other adblockers</p>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideSponsored">Hide Sponsored videos & Promos</span>
+            <input type="checkbox" name="hideSponsored">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="hideMerchEtc">Hide Merch, Offers etc.</span>
+            <input type="checkbox" name="hideMerchEtc">
+            <span class="toggle"></span>
+          </label>
+        </section>
+      </div>
     </section>
+
     <section class="group labelled collapsible desktop">
       <label data-collapse-id="recentChanges">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
@@ -55,47 +61,52 @@
         </svg>
         <span id="recentChanges">Recent YouTube changes</span>
       </label>
-      <section class="checkbox">
-        <label>
-          <span id="restoreSidebarSubscriptionsLink">Restore Subscriptions link in sidebar</span>
-          <input type="checkbox" name="restoreSidebarSubscriptionsLink">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="revertSidebarOrder">Restore order of sidebar items</span>
-          <input type="checkbox" name="revertSidebarOrder">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="revertGiantRelated">Restore small thumbnails in Related</span>
-          <input type="checkbox" name="revertGiantRelated">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="displaySubscriptionsGridAsList">Display Subscriptions grid as a list</span>
-          <input type="checkbox" name="displaySubscriptionsGridAsList">
-          <span class="toggle"></span>
-        </label>
-        <label>
-          <span id="displayHomeGridAsList">Display Home grid as a list</span>
-          <input type="checkbox" name="displayHomeGridAsList">
-          <span class="toggle"></span>
-        </label>
-        <section class="checkbox displayingGridAsList">
+      <div class="options">
+        <section class="checkbox">
           <label>
-            <span id="showChannelHeadersInListView">Show channel headers in list view</span>
-            <input type="checkbox" name="showChannelHeadersInListView">
+            <span id="restoreSidebarSubscriptionsLink">Restore Subscriptions link in sidebar</span>
+            <input type="checkbox" name="restoreSidebarSubscriptionsLink">
             <span class="toggle"></span>
           </label>
         </section>
-      </section>
+        <section class="checkbox">
+          <label>
+            <span id="revertSidebarOrder">Restore order of sidebar items</span>
+            <input type="checkbox" name="revertSidebarOrder">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="revertGiantRelated">Restore small thumbnails in Related</span>
+            <input type="checkbox" name="revertGiantRelated">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="displaySubscriptionsGridAsList">Display Subscriptions grid as a list</span>
+            <input type="checkbox" name="displaySubscriptionsGridAsList">
+            <span class="toggle"></span>
+          </label>
+          <label>
+            <span id="displayHomeGridAsList">Display Home grid as a list</span>
+            <input type="checkbox" name="displayHomeGridAsList">
+            <span class="toggle"></span>
+          </label>
+          <div class="sub-options">
+            <section class="checkbox displayingGridAsList">
+              <label>
+                <span id="showChannelHeadersInListView">Show channel headers in list view</span>
+                <input type="checkbox" name="showChannelHeadersInListView">
+                <span class="toggle"></span>
+              </label>
+            </section>
+          </div>
+        </section>
+      </div>
     </section>
+
     <section class="group labelled collapsible">
       <label data-collapse-id="new-player">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
@@ -103,67 +114,70 @@
         </svg>
         <span id="newVideoPlayerUI">New video player UI</span>
       </label>
-      <section class="checkbox desktop">
-        <label>
-          <span id="playerRemoveDelhiExperimentFlags">Disable new progress bar and controls</span>
-          <input type="checkbox" name="playerRemoveDelhiExperimentFlags">
-          <span class="toggle"></span>
-        </label>
-        <p id="playerRemoveDelhiExperimentFlagsNote">Note: this will stop working when YouTube removes the old player UI</p>
-      </section>
-      <section class="select desktop">
-        <label>
-          <span id="playerControlsBg">Player controls background</span>
-          <select name="playerControlsBg">
-            <option value="default">Default</option>
-            <option value="blur">Blur</option>
-            <option value="transparent">Transparent</option>
-          </select>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="restoreMiniplayerButton">Restore Miniplayer button</span>
-          <input type="checkbox" name="restoreMiniplayerButton">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="playerFixFullScreenButton">Restore corner click to toggle full screen</span>
-          <input type="checkbox" name="playerFixFullScreenButton">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="playerHideFullScreenControls">Hide new full screen controls</span>
-          <input type="checkbox" name="playerHideFullScreenControls">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="playerHideFullScreenTitle">Hide full screen title</span>
-          <input type="checkbox" name="playerHideFullScreenTitle">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="playerHideFullScreenVoting">Hide full screen like/dislike buttons</span>
-          <input type="checkbox" name="playerHideFullScreenVoting">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="playerHideFullScreenMoreVideos">Hide "More videos" in full screen</span>
-          <input type="checkbox" name="playerHideFullScreenMoreVideos">
-          <span class="toggle"></span>
-        </label>
-      </section>
+      <div class="options">
+        <section class="checkbox desktop">
+          <label>
+            <span id="playerRemoveDelhiExperimentFlags">Disable new progress bar and controls</span>
+            <input type="checkbox" name="playerRemoveDelhiExperimentFlags">
+            <span class="toggle"></span>
+          </label>
+          <p id="playerRemoveDelhiExperimentFlagsNote">Note: this will stop working when YouTube removes the old player UI</p>
+        </section>
+        <section class="select desktop">
+          <label>
+            <span id="playerControlsBg">Player controls background</span>
+            <select name="playerControlsBg">
+              <option value="default">Default</option>
+              <option value="blur">Blur</option>
+              <option value="transparent">Transparent</option>
+            </select>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="restoreMiniplayerButton">Restore Miniplayer button</span>
+            <input type="checkbox" name="restoreMiniplayerButton">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="playerFixFullScreenButton">Restore corner click to toggle full screen</span>
+            <input type="checkbox" name="playerFixFullScreenButton">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="playerHideFullScreenControls">Hide new full screen controls</span>
+            <input type="checkbox" name="playerHideFullScreenControls">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="playerHideFullScreenTitle">Hide full screen title</span>
+            <input type="checkbox" name="playerHideFullScreenTitle">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="playerHideFullScreenVoting">Hide full screen like/dislike buttons</span>
+            <input type="checkbox" name="playerHideFullScreenVoting">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="playerHideFullScreenMoreVideos">Hide "More videos" in full screen</span>
+            <input type="checkbox" name="playerHideFullScreenMoreVideos">
+            <span class="toggle"></span>
+          </label>
+        </section>
+      </div>
     </section>
+
     <section class="group labelled collapsible">
       <label data-collapse-id="annoyances">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
@@ -171,78 +185,81 @@
         </svg>
         <span id="annoyances">Annoyances</span>
       </label>
-      <section class="checkbox">
-        <label>
-          <span id="hideAI">Hide AI summaries</span>
-          <input type="checkbox" name="hideAI">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="hideExperiencingInterruptions">Hide "Experiencing interruptions?" popup</span>
-          <input type="checkbox" name="hideExperiencingInterruptions">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox mobile">
-        <label>
-          <span id="allowBackgroundPlay">Allow background playback</span>
-          <input type="checkbox" name="allowBackgroundPlay">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="removePink">Remove pink gradient from progress bars</span>
-          <input type="checkbox" name="removePink">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="disableVideoPreviews">Disable video previews</span>
-          <input type="checkbox" name="disableVideoPreviews">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="disableThemedHover">Disable themed hover effects</span>
-          <input type="checkbox" name="disableThemedHover">
-          <span class="toggle"></span>
-        </label>
-        <p id="disableThemedHoverNote">In Home and on video descriptions</p>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="pauseChannelTrailers">Automatically pause channel trailers</span>
-          <input type="checkbox" name="pauseChannelTrailers">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hidePremiumUpsells">Hide Premium upsells</span>
-          <input type="checkbox" name="hidePremiumUpsells">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox mobile">
-        <label>
-          <span id="hideOpenApp">Hide Open App links</span>
-          <input type="checkbox" name="hideOpenApp">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideInfoPanels">Hide information panels</span>
-          <input type="checkbox" name="hideInfoPanels">
-          <span class="toggle"></span>
-        </label>
-      </section>
+      <div class="options">
+        <section class="checkbox">
+          <label>
+            <span id="hideAI">Hide AI summaries</span>
+            <input type="checkbox" name="hideAI">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="hideExperiencingInterruptions">Hide "Experiencing interruptions?" popup</span>
+            <input type="checkbox" name="hideExperiencingInterruptions">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox mobile">
+          <label>
+            <span id="allowBackgroundPlay">Allow background playback</span>
+            <input type="checkbox" name="allowBackgroundPlay">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="removePink">Remove pink gradient from progress bars</span>
+            <input type="checkbox" name="removePink">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="disableVideoPreviews">Disable video previews</span>
+            <input type="checkbox" name="disableVideoPreviews">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="disableThemedHover">Disable themed hover effects</span>
+            <input type="checkbox" name="disableThemedHover">
+            <span class="toggle"></span>
+          </label>
+          <p id="disableThemedHoverNote">In Home and on video descriptions</p>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="pauseChannelTrailers">Automatically pause channel trailers</span>
+            <input type="checkbox" name="pauseChannelTrailers">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hidePremiumUpsells">Hide Premium upsells</span>
+            <input type="checkbox" name="hidePremiumUpsells">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox mobile">
+          <label>
+            <span id="hideOpenApp">Hide Open App links</span>
+            <input type="checkbox" name="hideOpenApp">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideInfoPanels">Hide information panels</span>
+            <input type="checkbox" name="hideInfoPanels">
+            <span class="toggle"></span>
+          </label>
+        </section>
+      </div>
     </section>
+
     <section class="group labelled collapsible">
       <label data-collapse-id="videoLists">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
@@ -250,185 +267,192 @@
         </svg>
         <span id="videoLists">Video lists</span>
       </label>
-      <section class="checkbox">
-        <label>
-          <span id="hideSuggestedSections">Hide suggested sections</span>
-          <input type="checkbox" name="hideSuggestedSections">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="select desktop">
-        <label>
-          <span id="searchThumbnailSize">Search thumbnail size</span>
-          <select name="searchThumbnailSize">
-            <option value="large">Large</option>
-            <option value="medium">Medium</option>
-            <option value="small">Small</option>
-            <option value="xsmall">Extra small</option>
-          </select>
-        </label>
-      </section>
-      <section class="select desktop">
-        <label>
-          <span id="gridItemsPerRow">Grid items per row</span>
-          <select name="minimumGridItemsPerRow">
-            <option value="auto">Auto</option>
-            <option value="+1">Auto +1</option>
-            <option value="+2">Auto +2</option>
-            <option value="+3">Auto +3</option>
-            <option value="3">At least 3</option>
-            <option value="4">At least 4</option>
-            <option value="5">At least 5</option>
-            <option value="6">At least 6</option>
-          </select>
-        </label>
-        <p class="inHomeAndSubscriptionsNote">In Home and Subscriptions</p>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideMixes">Hide Mixes</span>
-          <input type="checkbox" name="hideMixes">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hidePlaylists">Hide Playlists</span>
-          <input type="checkbox" name="hidePlaylists">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideMoviesAndTV">Hide Movies and TV</span>
-          <input type="checkbox" name="hideMoviesAndTV">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideUpcoming">Hide Upcoming videos</span>
-          <input type="checkbox" name="hideUpcoming">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideMembersOnly">Hide Members only videos</span>
-          <input type="checkbox" name="hideMembersOnly">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideLive">Hide Live videos</span>
-          <input type="checkbox" name="hideLive">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideStreamed">Hide Streamed videos</span>
-          <input type="checkbox" name="hideStreamed">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox mobile">
-        <label>
-          <span id="hideHomePosts">Hide Posts in Home</span>
-          <input type="checkbox" name="hideHomePosts">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideCollaborations">Hide Collaborations in Subscriptions</span>
-          <input type="checkbox" name="hideCollaborations">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideLowViews">Hide low view videos in Related</span>
-          <input type="checkbox" name="hideLowViews">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideAutoDubbed">Hide Auto-dubbed videos</span>
-          <input type="checkbox" name="hideAutoDubbed">
-          <span class="toggle"></span>
-        </label>
-        <p id="hideAutoDubbedNote">Where explicitly labeled</p>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideWatched">Hide Watched videos</span>
-          <input type="checkbox" name="hideWatched">
-          <span class="toggle"></span>
-        </label>
-        <section class="select hidingWatched">
+      <div class="options">
+        <section class="checkbox">
           <label>
-            <span id="hideWatchedThreshold">Watched %</span>
-            <select name="hideWatchedThreshold">
-              <option value="0" id="anyPercent">any %</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="75">75</option>
-              <option value="80">80</option>
-              <option value="85">85</option>
-              <option value="90">90</option>
-              <option value="95">95</option>
-              <option value="100">100</option>
+            <span id="hideSuggestedSections">Hide suggested sections</span>
+            <input type="checkbox" name="hideSuggestedSections">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="select desktop">
+          <label>
+            <span id="searchThumbnailSize">Search thumbnail size</span>
+            <select name="searchThumbnailSize">
+              <option value="large">Large</option>
+              <option value="medium">Medium</option>
+              <option value="small">Small</option>
+              <option value="xsmall">Extra small</option>
             </select>
           </label>
         </section>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideHiddenVideos">Hide hidden videos</span>
-          <input type="checkbox" name="hideHiddenVideos">
-          <span class="toggle"></span>
-        </label>
-        <p id="hideHiddenVideosNote">Hides the "Undo" button after 5 seconds</p>
-        <section class="checkbox desktop hidingHiddenVideos">
+        <section class="select desktop">
           <label>
-            <span id="animateHiding">Animate hiding</span>
-            <input type="checkbox" name="animateHiding">
+            <span id="gridItemsPerRow">Grid items per row</span>
+            <select name="minimumGridItemsPerRow">
+              <option value="auto">Auto</option>
+              <option value="+1">Auto +1</option>
+              <option value="+2">Auto +2</option>
+              <option value="+3">Auto +3</option>
+              <option value="3">At least 3</option>
+              <option value="4">At least 4</option>
+              <option value="5">At least 5</option>
+              <option value="6">At least 6</option>
+            </select>
+          </label>
+          <p class="inHomeAndSubscriptionsNote">In Home and Subscriptions</p>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideMixes">Hide Mixes</span>
+            <input type="checkbox" name="hideMixes">
             <span class="toggle"></span>
           </label>
-          <p class="inHomeAndSubscriptionsNote sub-note">In Home and Subscriptions</p>
         </section>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideChannels">Hide channels</span>
-          <input type="checkbox" name="hideChannels">
-          <span class="toggle"></span>
-        </label>
-        <p id="hideChannelsNote">Adds "Hide channel" to video menus</p>
-        <details id="hiddenChannelsDetails">
-          <summary id="hiddenChannelsSummary">Hidden channels</summary>
-          <div id="hiddenChannels"></div>
-        </details>
-      </section>
-      <section class="checkbox mobile">
-        <label>
-          <span id="mobileGridView">Use grid view for Subcriptions & Search (portrait only)</span>
-          <input type="checkbox" name="mobileGridView">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="disableHomeFeed">Disable Home feed</span>
-          <input type="checkbox" name="disableHomeFeed">
-          <span class="toggle"></span>
-        </label>
-        <p id="disableHomeFeedNote">Only when logged in - redirects to Subscriptions</p>
-      </section>
+        <section class="checkbox">
+          <label>
+            <span id="hidePlaylists">Hide Playlists</span>
+            <input type="checkbox" name="hidePlaylists">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideMoviesAndTV">Hide Movies and TV</span>
+            <input type="checkbox" name="hideMoviesAndTV">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideUpcoming">Hide Upcoming videos</span>
+            <input type="checkbox" name="hideUpcoming">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideMembersOnly">Hide Members only videos</span>
+            <input type="checkbox" name="hideMembersOnly">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideLive">Hide Live videos</span>
+            <input type="checkbox" name="hideLive">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideStreamed">Hide Streamed videos</span>
+            <input type="checkbox" name="hideStreamed">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox mobile">
+          <label>
+            <span id="hideHomePosts">Hide Posts in Home</span>
+            <input type="checkbox" name="hideHomePosts">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideCollaborations">Hide Collaborations in Subscriptions</span>
+            <input type="checkbox" name="hideCollaborations">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideLowViews">Hide low view videos in Related</span>
+            <input type="checkbox" name="hideLowViews">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideAutoDubbed">Hide Auto-dubbed videos</span>
+            <input type="checkbox" name="hideAutoDubbed">
+            <span class="toggle"></span>
+          </label>
+          <p id="hideAutoDubbedNote">Where explicitly labeled</p>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideWatched">Hide Watched videos</span>
+            <input type="checkbox" name="hideWatched">
+            <span class="toggle"></span>
+          </label>
+          <div class="sub-options">
+            <section class="select hidingWatched">
+              <label>
+                <span id="hideWatchedThreshold">Watched %</span>
+                <select name="hideWatchedThreshold">
+                  <option value="0" id="anyPercent">any %</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="75">75</option>
+                  <option value="80">80</option>
+                  <option value="85">85</option>
+                  <option value="90">90</option>
+                  <option value="95">95</option>
+                  <option value="100">100</option>
+                </select>
+              </label>
+            </section>
+          </div>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideHiddenVideos">Hide hidden videos</span>
+            <input type="checkbox" name="hideHiddenVideos">
+            <span class="toggle"></span>
+          </label>
+          <p id="hideHiddenVideosNote">Hides the "Undo" button after 5 seconds</p>
+          <div class="sub-options">
+            <section class="checkbox desktop hidingHiddenVideos">
+              <label>
+                <span id="animateHiding">Animate hiding</span>
+                <input type="checkbox" name="animateHiding">
+                <span class="toggle"></span>
+              </label>
+              <p class="inHomeAndSubscriptionsNote sub-note">In Home and Subscriptions</p>
+            </section>
+          </div>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideChannels">Hide channels</span>
+            <input type="checkbox" name="hideChannels">
+            <span class="toggle"></span>
+          </label>
+          <p id="hideChannelsNote">Adds "Hide channel" to video menus</p>
+          <details id="hiddenChannelsDetails">
+            <summary id="hiddenChannelsSummary">Hidden channels</summary>
+            <div id="hiddenChannels"></div>
+          </details>
+        </section>
+        <section class="checkbox mobile">
+          <label>
+            <span id="mobileGridView">Use grid view for Subcriptions & Search (portrait only)</span>
+            <input type="checkbox" name="mobileGridView">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="disableHomeFeed">Disable Home feed</span>
+            <input type="checkbox" name="disableHomeFeed">
+            <span class="toggle"></span>
+          </label>
+          <p id="disableHomeFeedNote">Only when logged in - redirects to Subscriptions</p>
+        </section>
+      </div>
     </section>
+
     <section class="group labelled collapsible">
       <label data-collapse-id="videoPages">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
@@ -436,184 +460,195 @@
         </svg>
         <span id="videoPages">Video pages</span>
       </label>
-      <section class="checkbox">
-        <label>
-          <span id="disableAutoplay">Disable Autoplay</span>
-          <input type="checkbox" name="disableAutoplay">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="disableAmbientMode">Disable Ambient mode</span>
-          <input type="checkbox" name="disableAmbientMode">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="alwaysUseTheaterMode">Always use theater mode</span>
-          <input type="checkbox" name="alwaysUseTheaterMode">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="fullSizeTheaterMode">Full size theater mode</span>
-          <input type="checkbox" name="fullSizeTheaterMode">
-          <span class="toggle"></span>
-        </label>
-        <section class="checkbox fullSizeTheaterMode">
-          <label>
-            <span id="fullSizeTheaterModeHideHeader">Hide header</span>
-            <input type="checkbox" name="fullSizeTheaterModeHideHeader">
-            <span class="toggle"></span>
-          </label>
-        </section>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="disableTheaterBigMode">Disable enlarged UI in theater mode</span>
-          <input type="checkbox" name="disableTheaterBigMode">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="alwaysUseOriginalAudio">Always use original audio</span>
-          <input type="checkbox" name="alwaysUseOriginalAudio">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideRelated">Hide Related videos</span>
-          <input type="checkbox" name="hideRelated">
-          <span class="toggle"></span>
-        </label>
-        <section class="checkbox desktop">
-          <label>
-            <span id="hideRelatedBelow">Only when they appear below the video</span>
-            <input type="checkbox" name="hideRelatedBelow">
-            <span class="toggle"></span>
-          </label>
-        </section>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="hideEndCards">Hide video end cards</span>
-          <input type="checkbox" name="hideEndCards">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="hideEndVideos">Hide video endscreen content</span>
-          <input type="checkbox" name="hideEndVideos">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideChannelWatermark">Hide channel watermark</span>
-          <input type="checkbox" name="hideChannelWatermark">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="hideJumpAheadButton">Hide Premium Jump ahead button</span>
-          <input type="checkbox" name="hideJumpAheadButton">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideNextButton">Hide the Next button</span>
-          <input type="checkbox" name="hideNextButton">
-          <span class="toggle"></span>
-        </label>
-        <p class="desktop" id="hideNextButtonNote">
-          When not watching a video in a playlist
-        </p>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideShareThanksClip">Hide Share/Thanks/Clip buttons</span>
-          <input type="checkbox" name="hideShareThanksClip">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideAskButton">Hide Ask button</span>
-          <input type="checkbox" name="hideAskButton">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideMetadata">Hide video metadata</span>
-          <input type="checkbox" name="hideMetadata">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideComments">Hide Comments</span>
-          <input type="checkbox" name="hideComments">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="hideChat">Hide Chat</span>
-          <input type="checkbox" name="hideChat">
-          <span class="toggle"></span>
-        </label>
+      <div class="options">
         <section class="checkbox">
           <label>
-            <span id="hideChatFullScreen">Only hide in full screen</span>
-            <input type="checkbox" name="hideChatFullScreen">
+            <span id="disableAutoplay">Disable Autoplay</span>
+            <input type="checkbox" name="disableAutoplay">
             <span class="toggle"></span>
           </label>
         </section>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="addTakeSnapshot">Add Take snaphot to video menu</span>
-          <input type="checkbox" name="addTakeSnapshot">
-          <span class="toggle"></span>
-        </label>
-        <section class="select snapshot">
+        <section class="checkbox">
           <label>
-            <span id="snapshotFormat">Snapshot format</span>
-            <select name="snapshotFormat">
-              <option value="jpeg">JPEG</option>
-              <option value="png">PNG</option>
-            </select>
+            <span id="disableAmbientMode">Disable Ambient mode</span>
+            <input type="checkbox" name="disableAmbientMode">
+            <span class="toggle"></span>
           </label>
         </section>
-        <section class="select snapshot jpegSnapshot">
+        <section class="checkbox desktop">
           <label>
-            <span id="snapshotQuality">Quality</span>
-            <select name="snapshotQuality">
-              <option id="qualityFull" value="1.0">Full</option>
-              <option id="qualityHigh" value="0.92">High</option>
-              <option id="qualityMedium" value="0.75">Medium</option>
-              <option id="qualityLow" value="0.5">Low</option>
-            </select>
+            <span id="alwaysUseTheaterMode">Always use theater mode</span>
+            <input type="checkbox" name="alwaysUseTheaterMode">
+            <span class="toggle"></span>
           </label>
         </section>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="downloadTranscript">Make Transcript downloadable</span>
-          <input type="checkbox" name="downloadTranscript">
-          <span class="toggle"></span>
-        </label>
-      </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="fullSizeTheaterMode">Full size theater mode</span>
+            <input type="checkbox" name="fullSizeTheaterMode">
+            <span class="toggle"></span>
+          </label>
+          <div class="sub-options">
+            <section class="checkbox fullSizeTheaterMode">
+              <label>
+                <span id="fullSizeTheaterModeHideHeader">Hide header</span>
+                <input type="checkbox" name="fullSizeTheaterModeHideHeader">
+                <span class="toggle"></span>
+              </label>
+            </section>
+          </div>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="disableTheaterBigMode">Disable enlarged UI in theater mode</span>
+            <input type="checkbox" name="disableTheaterBigMode">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="alwaysUseOriginalAudio">Always use original audio</span>
+            <input type="checkbox" name="alwaysUseOriginalAudio">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideRelated">Hide Related videos</span>
+            <input type="checkbox" name="hideRelated">
+            <span class="toggle"></span>
+          </label>
+          <div class="sub-options">
+            <section class="checkbox desktop">
+              <label>
+                <span id="hideRelatedBelow">Only when they appear below the video</span>
+                <input type="checkbox" name="hideRelatedBelow">
+                <span class="toggle"></span>
+              </label>
+            </section>
+          </div>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="hideEndCards">Hide video end cards</span>
+            <input type="checkbox" name="hideEndCards">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="hideEndVideos">Hide video endscreen content</span>
+            <input type="checkbox" name="hideEndVideos">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideChannelWatermark">Hide channel watermark</span>
+            <input type="checkbox" name="hideChannelWatermark">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="hideJumpAheadButton">Hide Premium Jump ahead button</span>
+            <input type="checkbox" name="hideJumpAheadButton">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideNextButton">Hide the Next button</span>
+            <input type="checkbox" name="hideNextButton">
+            <span class="toggle"></span>
+          </label>
+          <p class="desktop" id="hideNextButtonNote">
+            When not watching a video in a playlist
+          </p>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideShareThanksClip">Hide Share/Thanks/Clip buttons</span>
+            <input type="checkbox" name="hideShareThanksClip">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideAskButton">Hide Ask button</span>
+            <input type="checkbox" name="hideAskButton">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideMetadata">Hide video metadata</span>
+            <input type="checkbox" name="hideMetadata">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideComments">Hide Comments</span>
+            <input type="checkbox" name="hideComments">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="hideChat">Hide Chat</span>
+            <input type="checkbox" name="hideChat">
+            <span class="toggle"></span>
+          </label>
+          <div class="sub-options">
+            <section class="checkbox">
+              <label>
+                <span id="hideChatFullScreen">Only hide in full screen</span>
+                <input type="checkbox" name="hideChatFullScreen">
+                <span class="toggle"></span>
+              </label>
+            </section>
+          </div>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="addTakeSnapshot">Add Take snaphot to video menu</span>
+            <input type="checkbox" name="addTakeSnapshot">
+            <span class="toggle"></span>
+          </label>
+          <div class="sub-options">
+            <section class="select snapshot">
+              <label>
+                <span id="snapshotFormat">Snapshot format</span>
+                <select name="snapshotFormat">
+                  <option value="jpeg">JPEG</option>
+                  <option value="png">PNG</option>
+                </select>
+              </label>
+            </section>
+            <section class="select snapshot jpegSnapshot">
+              <label>
+                <span id="snapshotQuality">Quality</span>
+                <select name="snapshotQuality">
+                  <option id="qualityFull" value="1.0">Full</option>
+                  <option id="qualityHigh" value="0.92">High</option>
+                  <option id="qualityMedium" value="0.75">Medium</option>
+                  <option id="qualityLow" value="0.5">Low</option>
+                </select>
+              </label>
+            </section>
+          </div>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="downloadTranscript">Make Transcript downloadable</span>
+            <input type="checkbox" name="downloadTranscript">
+            <span class="toggle"></span>
+          </label>
+        </section>
+      </div>
     </section>
+
     <section class="group labelled collapsible">
       <label data-collapse-id="shorts">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
@@ -621,84 +656,87 @@
         </svg>
         <span id="shorts">Shorts</span>
       </label>
-      <section class="checkbox">
-        <label>
-          <span id="hideShorts">Hide Shorts</span>
-          <input type="checkbox" name="hideShorts">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="redirectShorts">Redirect Shorts to the normal player</span>
-          <input type="checkbox" name="redirectShorts">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="select desktop">
-        <label>
-          <span id="minimumShortsPerRow">Minimum Shorts per row</span>
-          <select name="minimumShortsPerRow">
-            <option value="auto">Auto</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-          </select>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="hideShortsMetadataUntilHover">Hide Shorts metadata until hover</span>
-          <input type="checkbox" name="hideShortsMetadataUntilHover">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideShortsSuggestedActions">Hide suggested actions</span>
-          <input type="checkbox" name="hideShortsSuggestedActions">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideShortsRelatedLink">Hide link to related Short by the same channel</span>
-          <input type="checkbox" name="hideShortsRelatedLink">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideShortsMusicLink">Hide music link</span>
-          <input type="checkbox" name="hideShortsMusicLink">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="hideShortsRemixButton">Hide Remix button</span>
-          <input type="checkbox" name="hideShortsRemixButton">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="alwaysShowShortsProgressBar">Always show progress bar</span>
-          <input type="checkbox" name="alwaysShowShortsProgressBar">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="stopShortsLooping">Stop Shorts looping</span>
-          <input type="checkbox" name="stopShortsLooping">
-          <span class="toggle"></span>
-        </label>
-      </section>
+      <div class="options">
+        <section class="checkbox">
+          <label>
+            <span id="hideShorts">Hide Shorts</span>
+            <input type="checkbox" name="hideShorts">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="redirectShorts">Redirect Shorts to the normal player</span>
+            <input type="checkbox" name="redirectShorts">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="select desktop">
+          <label>
+            <span id="minimumShortsPerRow">Minimum Shorts per row</span>
+            <select name="minimumShortsPerRow">
+              <option value="auto">Auto</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+            </select>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="hideShortsMetadataUntilHover">Hide Shorts metadata until hover</span>
+            <input type="checkbox" name="hideShortsMetadataUntilHover">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideShortsSuggestedActions">Hide suggested actions</span>
+            <input type="checkbox" name="hideShortsSuggestedActions">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideShortsRelatedLink">Hide link to related Short by the same channel</span>
+            <input type="checkbox" name="hideShortsRelatedLink">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideShortsMusicLink">Hide music link</span>
+            <input type="checkbox" name="hideShortsMusicLink">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="hideShortsRemixButton">Hide Remix button</span>
+            <input type="checkbox" name="hideShortsRemixButton">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="alwaysShowShortsProgressBar">Always show progress bar</span>
+            <input type="checkbox" name="alwaysShowShortsProgressBar">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="stopShortsLooping">Stop Shorts looping</span>
+            <input type="checkbox" name="stopShortsLooping">
+            <span class="toggle"></span>
+          </label>
+        </section>
+      </div>
     </section>
+
     <section class="group labelled collapsible">
       <label data-collapse-id="uiTweaks">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
@@ -706,102 +744,107 @@
         </svg>
         <span id="uiTweaks">UI tweaks</span>
       </label>
-      <section class="select desktop">
-        <label>
-          <span id="enforceTheme">Enforce theme</span>
-          <select name="enforceTheme">
-            <option value="default">Don't enforce</option>
-            <option value="device">Device theme</option>
-            <option value="dark">Dark</option>
-            <option value="light">Light</option>
-          </select>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="showFullVideoTitles">Show full video titles</span>
-          <input type="checkbox" name="showFullVideoTitles">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="useSquareCorners">Use square corners for thumbnails and videos</span>
-          <input type="checkbox" name="useSquareCorners">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideHomeCategories">Hide categories in Home</span>
-          <input type="checkbox" name="hideHomeCategories">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="redirectLogoToSubscriptions">Link YouTube logo to Subscriptions</span>
-          <input type="checkbox" name="redirectLogoToSubscriptions">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="tidyGuideSidebar">Tidy Guide sidebar</span>
-          <input type="checkbox" name="tidyGuideSidebar">
-          <span class="toggle"></span>
-        </label>
-        <section class="checkbox tidyingGuideSidebar">
+      <div class="options">
+        <section class="select desktop">
           <label>
-            <span id="hideSidebarSubscriptions">Hide Subscriptions list</span>
-            <input type="checkbox" name="hideSidebarSubscriptions">
+            <span id="enforceTheme">Enforce theme</span>
+            <select name="enforceTheme">
+              <option value="default">Don't enforce</option>
+              <option value="device">Device theme</option>
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+            </select>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="showFullVideoTitles">Show full video titles</span>
+            <input type="checkbox" name="showFullVideoTitles">
             <span class="toggle"></span>
           </label>
         </section>
-      </section>
-      <section class="checkbox mobile">
-        <label>
-          <span id="hideExploreButton">Hide Explore button in Home</span>
-          <input type="checkbox" name="hideExploreButton">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox mobile">
-        <label>
-          <span id="hideSubscriptionsChannelList">Hide channel list in Subscriptions</span>
-          <input type="checkbox" name="hideSubscriptionsChannelList">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="hideSubscriptionsLatestBar">Hide "Latest" bar in Subscriptions</span>
-          <input type="checkbox" name="hideSubscriptionsLatestBar">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideChannelBanner">Hide channel banner images</span>
-          <input type="checkbox" name="hideChannelBanner">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideVoiceSearch">Hide Search with your voice</span>
-          <input type="checkbox" name="hideVoiceSearch">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox desktop">
-        <label>
-          <span id="fixGhostCards">Fix grid loading placeholders</span>
-          <input type="checkbox" name="fixGhostCards">
-          <span class="toggle"></span>
-        </label>
-      </section>
+        <section class="checkbox">
+          <label>
+            <span id="useSquareCorners">Use square corners for thumbnails and videos</span>
+            <input type="checkbox" name="useSquareCorners">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideHomeCategories">Hide categories in Home</span>
+            <input type="checkbox" name="hideHomeCategories">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="redirectLogoToSubscriptions">Link YouTube logo to Subscriptions</span>
+            <input type="checkbox" name="redirectLogoToSubscriptions">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="tidyGuideSidebar">Tidy Guide sidebar</span>
+            <input type="checkbox" name="tidyGuideSidebar">
+            <span class="toggle"></span>
+          </label>
+          <div class="sub-options">
+            <section class="checkbox tidyingGuideSidebar">
+              <label>
+                <span id="hideSidebarSubscriptions">Hide Subscriptions list</span>
+                <input type="checkbox" name="hideSidebarSubscriptions">
+                <span class="toggle"></span>
+              </label>
+            </section>
+          </div>
+        </section>
+        <section class="checkbox mobile">
+          <label>
+            <span id="hideExploreButton">Hide Explore button in Home</span>
+            <input type="checkbox" name="hideExploreButton">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox mobile">
+          <label>
+            <span id="hideSubscriptionsChannelList">Hide channel list in Subscriptions</span>
+            <input type="checkbox" name="hideSubscriptionsChannelList">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="hideSubscriptionsLatestBar">Hide "Latest" bar in Subscriptions</span>
+            <input type="checkbox" name="hideSubscriptionsLatestBar">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideChannelBanner">Hide channel banner images</span>
+            <input type="checkbox" name="hideChannelBanner">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideVoiceSearch">Hide Search with your voice</span>
+            <input type="checkbox" name="hideVoiceSearch">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox desktop">
+          <label>
+            <span id="fixGhostCards">Fix grid loading placeholders</span>
+            <input type="checkbox" name="fixGhostCards">
+            <span class="toggle"></span>
+          </label>
+        </section>
+      </div>
     </section>
+
     <section class="group labelled collapsible">
       <label data-collapse-id="embeddedVideos">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor">
@@ -809,47 +852,53 @@
         </svg>
         <span id="embeddedVideos">Embedded videos</span>
       </label>
-      <section class="checkbox">
-        <label>
-          <span id="hideEmbedShareButton">Hide Share button</span>
-          <input type="checkbox" name="hideEmbedShareButton">
-          <span class="toggle"></span>
-        </label>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="hideEmbedPauseOverlay">Hide pause overlay</span>
-          <input type="checkbox" name="hideEmbedPauseOverlay">
-          <span class="toggle"></span>
-        </label>
-      </section>
+      <div class="options">
+        <section class="checkbox">
+          <label>
+            <span id="hideEmbedShareButton">Hide Share button</span>
+            <input type="checkbox" name="hideEmbedShareButton">
+            <span class="toggle"></span>
+          </label>
+        </section>
+        <section class="checkbox">
+          <label>
+            <span id="hideEmbedPauseOverlay">Hide pause overlay</span>
+            <input type="checkbox" name="hideEmbedPauseOverlay">
+            <span class="toggle"></span>
+          </label>
+        </section>
+      </div>
     </section>
 
     <section class="group labelled debug">
       <label id="debugOptions">Debug options</label>
-      <section class="checkbox">
-        <label>
-          <span id="debug">Debug mode</span>
-          <input type="checkbox" name="debug">
-          <span class="toggle"></span>
-        </label>
-        <p id="debugNote">Enables debug logging</p>
-        <section class="checkbox debugging">
+      <div class="options">
+        <section class="checkbox">
           <label>
-            <span id="debugLogGridObservers">Log grid observers</span>
-            <input type="checkbox" name="debugLogGridObservers">
+            <span id="debug">Debug mode</span>
+            <input type="checkbox" name="debug">
             <span class="toggle"></span>
           </label>
+          <p id="debugNote">Enables debug logging</p>
+          <div class="sub-options">
+            <section class="checkbox debugging">
+              <label>
+                <span id="debugLogGridObservers">Log grid observers</span>
+                <input type="checkbox" name="debugLogGridObservers">
+                <span class="toggle"></span>
+              </label>
+            </section>
+          </div>
         </section>
-      </section>
-      <section class="checkbox">
-        <label>
-          <span id="debugManualHiding">Debug manual hiding</span>
-          <input type="checkbox" name="debugManualHiding">
-          <span class="toggle"></span>
-        </label>
-        <p id="debugManualHidingNote">Highlights elements instead of hiding them</p>
-      </section>
+        <section class="checkbox">
+          <label>
+            <span id="debugManualHiding">Debug manual hiding</span>
+            <input type="checkbox" name="debugManualHiding">
+            <span class="toggle"></span>
+          </label>
+          <p id="debugManualHidingNote">Highlights elements instead of hiding them</p>
+        </section>
+      </div>
     </section>
     <div id="version">v1.31.5<span id="debugCountdown"></span></div>
   </form>
