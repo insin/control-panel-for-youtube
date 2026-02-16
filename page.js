@@ -5407,12 +5407,6 @@ async function tweakHomePage() {
     return
   }
   hideAnimationController = createHideAnimationController()
-  if (
-    // Videos need to be manually hidden
-    !config.hideWatched && !config.hideStreamed && !config.hideChannels &&
-    // Dismissed videos need to be manually hidden when switching categories
-    (mobile || !config.hideHiddenVideos)
-  ) return
   if (desktop) {
     observeDesktopRichGridItems({page: 'home'})
   }
@@ -5548,7 +5542,6 @@ async function tweakShortsPage() {
 
 async function tweakSubscriptionsPage() {
   hideAnimationController = createHideAnimationController()
-  if (!config.hideWatched && !config.hideStreamed) return
   if (desktop) {
     observeDesktopRichGridItems({page: 'subscriptions'})
   }
