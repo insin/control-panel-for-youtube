@@ -35,7 +35,7 @@ let defaultConfig = {
   hidePlaylists: false,
   hidePremiumUpsells: true,
   hideRelated: true,
-  hideShareThanksClip: true,
+  hideShareThanksClip: false,
   hideShorts: true,
   hideShortsMusicLink: true,
   hideShortsRelatedLink: true,
