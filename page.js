@@ -65,7 +65,7 @@ let defaultConfig = {
   displaySubscriptionsGridAsList: false,
   downloadTranscript: true,
   enforceTheme: 'default',
-  fixGhostCards: false,
+  fixGhostCards: true,
   fullSizeTheaterMode: false,
   fullSizeTheaterModeHideHeader: true,
   hideChat: false,
@@ -2252,6 +2252,13 @@ const configureCss = (() => {
             display: flex;
             justify-content: center;
             width: 100%;
+          }
+        `)
+        // XXX Revert CSS from the "Youtube-shorts block" extension which breaks loading
+        //     https://github.com/insin/control-panel-for-youtube/issues/223
+        cssRules.push(`
+          ytd-continuation-item-renderer:not(:last-child):not(#comments *) {
+            display: flex !important;
           }
         `)
       }
@@ -5604,7 +5611,7 @@ async function tweakVideoPage() {
 }
 
 /**
- * Wait for video overlays with watch progress when they're loazed lazily.
+ * Wait for video overlays with watch progress when they're loaded lazily.
  * @param {Element} $video
  * @param {string} uniqueId
  */

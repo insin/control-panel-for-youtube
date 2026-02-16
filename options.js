@@ -257,7 +257,7 @@ let defaultConfig = {
   displaySubscriptionsGridAsList: false,
   downloadTranscript: true,
   enforceTheme: 'default',
-  fixGhostCards: false,
+  fixGhostCards: true,
   fullSizeTheaterMode: false,
   fullSizeTheaterModeHideHeader: true,
   hideChat: false,
