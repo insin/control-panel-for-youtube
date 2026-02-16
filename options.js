@@ -1,3 +1,29 @@
+//#region Theme hooks
+/** @type {'chrome' | 'edge' | 'firefox' | 'ios' | 'mac'} */
+let browser = (() => {
+  let ua = navigator.userAgent.toLowerCase()
+  if (ua.includes('firefox')) return 'firefox'
+  else if (ua.includes('edg/')) return 'edge'
+  else if (ua.includes('safari') && !ua.includes('chrome'))
+    return ua.includes('iphone') || ua.includes('ipad') ? 'ios' : 'mac'
+  return 'chrome'
+})()
+let theme = browser
+document.body.classList.add(`browser-${browser}`, theme)
+
+if (theme == 'chrome' || theme == 'edge' || theme == 'firefox') {
+  let $top = document.createElement('div')
+  $top.className = 'stickySentinel top'
+  let $bottom = document.createElement('div')
+  $bottom.className = 'stickySentinel bottom'
+  for (let $group of document.querySelectorAll('section.group.labelled')) {
+    $group.prepend($top.cloneNode())
+    $group.insertBefore($bottom.cloneNode(), $group.lastElementChild)
+  }
+}
+//#endregion
+
+//#region Localisation
 document.title = chrome.i18n.getMessage('extensionName')
 
 for (let optionValue of [
@@ -180,17 +206,7 @@ for (let translationClass of [
     $el.textContent = translation
   }
 }
-
-let $body = document.body
-let $form = document.querySelector('form')
-
-let isSafari = navigator.userAgent.includes('Safari/') && !/Chrom(e|ium)\//.test(navigator.userAgent)
-let isIos = isSafari && /iP(ad|hone)/.test(navigator.userAgent)
-if (isSafari) {
-  $body.classList.add('safari', isIos ? 'iOS' : 'macOS')
-} else {
-  $body.classList.toggle('edge', navigator.userAgent.includes('Edg/'))
-}
+//#endregion
 
 //#region Default config
 let prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -304,14 +320,21 @@ let defaultConfig = {
 }
 //#endregion
 
+//#region Config & variables
 /** @type {import("./types").OptionsConfig} */
 let optionsConfig
 
+let $body = document.body
 let $collapsibleLabels = document.querySelectorAll('section.labelled.collapsible > label[data-collapse-id]')
+let $form = document.querySelector('form')
 let $hiddenChannels = /** @type {HTMLElement} */ (document.querySelector('#hiddenChannels'))
 let $hiddenChannelsDetails = /** @type {HTMLDetailsElement} */ (document.querySelector('#hiddenChannelsDetails'))
 let $hiddenChannelsSummary = /** @type {HTMLElement} */ (document.querySelector('#hiddenChannelsSummary'))
+let $optionsIcon = /** @type {HTMLImageElement} */ (document.querySelector('#optionsIcon'))
+let $stickySentinels = document.querySelectorAll('.stickySentinel')
+//#endregion
 
+//#region Utility functions
 /**
  * @param {keyof HTMLElementTagNameMap} tagName
  * @param {({[key: string]: any} | null)?} attributes
@@ -342,8 +365,11 @@ function h(tagName, attributes, ...children) {
 
   return $el
 }
+//#endregion
 
+//#region Options page functions
 function onToggleCollapse(e) {
+  if (theme == 'ios') return
   let collapsedOptions = optionsConfig.collapsedOptions.slice()
   let collapseId = e.currentTarget.getAttribute('data-collapse-id')
   let index = collapsedOptions.indexOf(collapseId)
@@ -419,6 +445,10 @@ function updateDisplay() {
   $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
   $body.classList.toggle('snapshot', optionsConfig.addTakeSnapshot)
   $body.classList.toggle('tidyingGuideSidebar', optionsConfig.tidyGuideSidebar)
+  let icon = `options-icon${!optionsConfig.enabled ? '-disabled' : ''}.png`
+  if ($optionsIcon.src != icon) {
+    $optionsIcon.src = icon
+  }
   updateCollapsedOptionsDisplay()
   updateHiddenChannelsDisplay()
 }
@@ -455,6 +485,7 @@ function updateHiddenChannelsDisplay() {
     )
   }
 }
+//#endregion
 
 //#region Main
 function main() {
@@ -468,13 +499,24 @@ function main() {
     updateDisplay()
 
     $form.addEventListener('change', onFormChanged)
-    // TODO Add iOS section groups in the Preact + htm rewrite instead
-    if (!isIos) {
-      for (let $label of $collapsibleLabels) {
-        $label.addEventListener('click', onToggleCollapse)
-      }
+    for (let $label of $collapsibleLabels) {
+      $label.addEventListener('click', onToggleCollapse)
     }
     $hiddenChannelsDetails.addEventListener('toggle', updateHiddenChannelsDisplay)
+    let stickyObserver = new IntersectionObserver((entries) => {
+      for (let entry of entries) {
+        let $label = entry.target.parentElement.querySelector('label')
+        if (entry.target.classList.contains('top')) {
+          $label.classList.toggle('stuck', !entry.isIntersecting && entry.boundingClientRect.top < 0)
+        }
+        if (entry.target.classList.contains('bottom')) {
+          $label.classList.toggle('force-static', !entry.isIntersecting && entry.boundingClientRect.top < 0)
+        }
+      }
+    })
+    for (let $sentinel of $stickySentinels) {
+      stickyObserver.observe($sentinel)
+    }
     chrome.storage.local.onChanged.addListener(onStorageChanged)
 
     $body.classList.toggle('debug', Boolean(optionsConfig.debug || optionsConfig.debugManualHiding))

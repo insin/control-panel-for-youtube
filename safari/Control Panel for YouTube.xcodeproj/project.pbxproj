@@ -75,6 +75,8 @@
 		FBE861E32B43A6F80053AD2F /* toolbar-icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861CD2B43A6F80053AD2F /* toolbar-icon72.png */; };
 		FBE861E52B43A7610053AD2F /* options-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861E42B43A7610053AD2F /* options-icon.png */; };
 		FBE861E62B43A7610053AD2F /* options-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE861E42B43A7610053AD2F /* options-icon.png */; };
+		FBFBA8462F45AD2000C1A55D /* options-icon-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = FBFBA8452F45AD2000C1A55D /* options-icon-disabled.png */; };
+		FBFBA8472F45AD2000C1A55D /* options-icon-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = FBFBA8452F45AD2000C1A55D /* options-icon-disabled.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -165,6 +167,7 @@
 		FBE861CC2B43A6F80053AD2F /* toolbar-icon16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-icon16.png"; path = "../../../icons/toolbar-icon16.png"; sourceTree = "<group>"; };
 		FBE861CD2B43A6F80053AD2F /* toolbar-icon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-icon72.png"; path = "../../../icons/toolbar-icon72.png"; sourceTree = "<group>"; };
 		FBE861E42B43A7610053AD2F /* options-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "options-icon.png"; path = "../../../options-icon.png"; sourceTree = "<group>"; };
+		FBFBA8452F45AD2000C1A55D /* options-icon-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "options-icon-disabled.png"; path = "../../../options-icon-disabled.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,8 +249,8 @@
 		FBE8606A2B42F1E40053AD2F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FBAAF4362E49730700064115 /* background.js */,
 				FBE861042B438C950053AD2F /* _locales */,
+				FBAAF4362E49730700064115 /* background.js */,
 				FBE860D52B438ACE0053AD2F /* browser_action.html */,
 				FBE860D42B438ACE0053AD2F /* content.js */,
 				FBE734F62B64C91D0084B277 /* embed.js */,
@@ -261,6 +264,7 @@
 				FBE860D62B438ACE0053AD2F /* options.html */,
 				FBE860D72B438ACE0053AD2F /* options.js */,
 				FBE861E42B43A7610053AD2F /* options-icon.png */,
+				FBFBA8452F45AD2000C1A55D /* options-icon-disabled.png */,
 				FBB23FDF2DE55CAE007886FC /* page.js */,
 				FBE861CC2B43A6F80053AD2F /* toolbar-icon16.png */,
 				FBE861C52B43A6F80053AD2F /* toolbar-icon19.png */,
@@ -484,6 +488,7 @@
 				FBE861D62B43A6F80053AD2F /* icon128.png in Resources */,
 				FBAAF4382E49730700064115 /* background.js in Resources */,
 				FBE861E52B43A7610053AD2F /* options-icon.png in Resources */,
+				FBFBA8472F45AD2000C1A55D /* options-icon-disabled.png in Resources */,
 				FBE861D22B43A6F80053AD2F /* toolbar-icon19.png in Resources */,
 				FBE861CE2B43A6F80053AD2F /* toolbar-icon48.png in Resources */,
 				FBE860B82B42F1E40053AD2F /* manifest.json in Resources */,
@@ -513,6 +518,7 @@
 				FBE861D72B43A6F80053AD2F /* icon128.png in Resources */,
 				FBAAF4372E49730700064115 /* background.js in Resources */,
 				FBE861E62B43A7610053AD2F /* options-icon.png in Resources */,
+				FBFBA8462F45AD2000C1A55D /* options-icon-disabled.png in Resources */,
 				FBE861D32B43A6F80053AD2F /* toolbar-icon19.png in Resources */,
 				FBE861CF2B43A6F80053AD2F /* toolbar-icon48.png in Resources */,
 				FBE860B92B42F1E40053AD2F /* manifest.json in Resources */,
