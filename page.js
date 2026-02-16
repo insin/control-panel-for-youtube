@@ -2496,24 +2496,35 @@ const configureCss = (() => {
         // TODO Observe current theater mode state to get rid of these :has()
         if (config.fullSizeTheaterModeHideHeader) {
           cssRules.push(`
-            /* Hide header */
-            #content.ytd-app:has(> #page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) #masthead-container #masthead {
-              transform: translateY(-100%);
-              transition: transform .15s ease-in !important;
-            }
-            /* Slide out after a short delay on hover */
-            #content.ytd-app:has(> #page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) #masthead-container:hover #masthead {
-              transform: translateY(0);
-              transition: transform .3s ease-out .35s !important;
-            }
-            /* Appear instantly when focused (e.g. press / to search) */
-            #content.ytd-app:has(> #page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) #masthead-container:focus-within #masthead {
-              transform: translateY(0);
-              transition: none !important;
-            }
-            /* Reclaim header space */
-            #content.ytd-app:has(> #page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) #page-manager {
-              margin-top: 0 !important;
+            #content.ytd-app:has(> #page-manager > ytd-watch-flexy[role="main"][theater]:not([fullscreen])) {
+              /* Lower the container - allow's Vivaldi's PiP control to be used */
+              #masthead-container {
+                z-index: 1 !important;
+              }
+              /* Hide header */
+              #masthead-container #masthead {
+                transform: translateY(-100%);
+                transition: transform .15s ease-in !important;
+              }
+              /* Slide out after a short delay on hover */
+              #masthead-container:hover #masthead {
+                transform: translateY(0);
+                transition: transform .3s ease-out .35s !important;
+              }
+              /* Appear instantly when focused (e.g. press / to search) */
+              #masthead-container:focus-within #masthead {
+                transform: translateY(0);
+                transition: none !important;
+              }
+              /* Reclaim header space */
+              #page-manager {
+                margin-top: 0 !important;
+              }
+              /* Hide overlays which would display under the header */
+              #movie_player .ytp-overlay-top-left,
+              #movie_player .ytp-overlay-top-right {
+                display: none;
+              }
             }
             /* Make theater mode full view height */
             ytd-watch-flexy[theater]:not([fullscreen]) #full-bleed-container.ytd-watch-flexy {
