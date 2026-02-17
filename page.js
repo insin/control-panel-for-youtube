@@ -2226,8 +2226,9 @@ const configureCss = (() => {
 
       let gridPagesNeedingGhostCardFix = getGridPagesNeedingGhostCardFix()
       if (config.fixGhostCards && gridPagesNeedingGhostCardFix.length > 0) {
+        let pageSelector = `ytd-browse:is(${gridPagesNeedingGhostCardFix.map(page => `[page-subtype="${page}"]`).join(', ')})`
         cssRules.push(`
-          ytd-browse:is(${gridPagesNeedingGhostCardFix .map(page => `[page-subtype="${page}"]`).join(', ')}) {
+          ${pageSelector} {
             /* Make continuation item renderer retain position but take up no space */
             ytd-continuation-item-renderer {
               height: 1px;
@@ -2257,8 +2258,10 @@ const configureCss = (() => {
         // XXX Revert CSS from the "Youtube-shorts block" extension which breaks loading
         //     https://github.com/insin/control-panel-for-youtube/issues/223
         cssRules.push(`
-          ytd-continuation-item-renderer:not(:last-child):not(#comments *) {
-            display: flex !important;
+          ${pageSelector} {
+            ytd-continuation-item-renderer:not(:last-child):not(#comments *):not([style*="display: none"]) {
+              display: flex !important;
+            }
           }
         `)
       }
