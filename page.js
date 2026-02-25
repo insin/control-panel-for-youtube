@@ -8,6 +8,8 @@ let defaultConfig = {
   debug: false,
   debugLogGridObservers: false,
   debugManualHiding: false,
+  defaultPlaybackSpeed: "1.0",
+  alwaysShowShortsProgressBar: false,
   alwaysShowShortsProgressBar: true,
   blockAds: true,
   disableAmbientMode: true,
@@ -3282,6 +3284,16 @@ function alwaysUseTheaterMode($player) {
   }
 }
 
+async function defaultPlaybackSpeed() {
+  let $player = await getElement('#movie_player', {
+    name: 'player (defaultPlaybackSpeed)',
+    stopIf: currentUrlChanges(),
+  })
+  if (!$player) return
+  // @ts-ignore
+  $player.setPlaybackRate(parseFloat(config.defaultPlaybackSpeed))
+}
+
 function animateHidingHiddenItems(itemsToHide) {
   function hideItem(item) {
     item.classList.remove('cpfyt-vanishing-flip')
@@ -5572,6 +5584,9 @@ async function tweakSubscriptionsPage() {
 async function tweakVideoPage() {
   if (config.disableAutoplay) {
     disableAutoplay()
+  }
+  if (config.defaultPlaybackSpeed) {
+    defaultPlaybackSpeed()
   }
   if (desktop) {
     run(async () => {
