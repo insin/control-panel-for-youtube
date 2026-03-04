@@ -5674,6 +5674,59 @@ function blockAds() {
     delete playerResponse.playerAds
   }
 
+  // TODO Patching fetch() needs to be separated from the blockAds option
+  function processGuideResponse(data) {
+    if (!Array.isArray(data.items)) {
+      warn('no items array in /guide response')
+      return
+    }
+
+    let liveChannels = []
+    let topLevelItems
+    let expandableItems
+
+    function isLiveChannel(item) {
+      return item?.guideEntryRenderer?.badges?.liveBroadcasting
+    }
+
+    for (let guideItem of data.items) {
+      if (!guideItem.guideSubscriptionsSectionRenderer) continue
+      if (!Array.isArray(guideItem.guideSubscriptionsSectionRenderer.items)) {
+        warn('no items array in guideSubscriptionsSectionRenderer')
+        return
+      }
+      topLevelItems = guideItem.guideSubscriptionsSectionRenderer.items
+
+      for (let topLevelIndex = topLevelItems.length - 1; topLevelIndex >= 0; topLevelIndex--) {
+        let topLevelItem = topLevelItems[topLevelIndex]
+        if (topLevelItem.guideCollapsibleEntryRenderer) {
+          if (!Array.isArray(topLevelItem.guideCollapsibleEntryRenderer.expandableItems)) {
+            warn('no expandableItems array in guideCollapsibleEntryRenderer')
+            continue
+          }
+          expandableItems = topLevelItem.guideCollapsibleEntryRenderer.expandableItems
+          for (let expandableIndex = expandableItems.length - 1; expandableIndex >= 0; expandableIndex--) {
+            let expandableItem = expandableItems[expandableIndex]
+            if (isLiveChannel(expandableItem)) {
+              expandableItems.splice(expandableIndex, 1)
+              liveChannels.unshift(expandableItem)
+            }
+          }
+        }
+        else if (isLiveChannel(topLevelItem)) {
+          topLevelItems.splice(topLevelIndex, 1)
+          liveChannels.unshift(topLevelItem)
+        }
+      }
+    }
+    if (topLevelItems && liveChannels.length > 0) {
+      log('moving', liveChannels.length, `live channel${s(liveChannels.length)} to the top of the Subscriptions sidebar`)
+      // Insert live channel items after the Subscriptions header
+      topLevelItems.splice(1, 0, ...liveChannels)
+      // TODO Move channels to expandableItems to maintain topLevelItems' original length?
+    }
+  }
+
   function processPlayerResponse(data, source) {
     if (data.videoDetails) {
       patchPlayerResponse(data)
@@ -5701,7 +5754,7 @@ function blockAds() {
     if (
       (config && !(config.enabled && config.blockAds)) ||
       !(request instanceof Request) ||
-      !url || !url.includes('/player') && !url.includes('/get_watch') && !url.includes('/reel_watch_sequence') ||
+      !url || !url.includes('/player') && !url.includes('/get_watch') && !url.includes('/reel_watch_sequence') && !url.includes('/guide') ||
       // Ignore adblock detection requests with data: URL payloads
       !Request_clone.call(request).url.startsWith('https://')
     ) {
@@ -5718,6 +5771,9 @@ function blockAds() {
           }
           else if (url.includes('/reel_watch_sequence')) {
             processReelWatchSequenceResponse(data)
+          }
+          else if (url.includes('/guide')) {
+            processGuideResponse(data)
           }
           return new Response(JSON.stringify(data), {
             status: response.status,
