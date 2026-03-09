@@ -1595,10 +1595,8 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push(
-          // Home
-          'ytm-rich-item-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
-          // Subscriptions
-          '.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
+          // Home & Subscriptions
+          '.tab-content:is([tab-identifier="FEwhat_to_watch"], [tab-identifier="FEsubscriptions"]) ytm-rich-item-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
           // Search
           'ytm-search ytm-video-with-context-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="LIVE"])',
           // Large item in Related videos
@@ -1648,10 +1646,8 @@ const configureCss = (() => {
       }
       if (mobile) {
         hideCssSelectors.push(
-          // Home
-          'ytm-rich-item-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])',
-          // Subscriptions
-          '.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])',
+          // Home & Subscriptions
+          '.tab-content:is([tab-identifier="FEwhat_to_watch"], [tab-identifier="FEsubscriptions"]) ytm-rich-item-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])',
           // Search
           'ytm-search ytm-video-with-context-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])',
           // Playlist in channel Home tab
@@ -1885,11 +1881,10 @@ const configureCss = (() => {
         hideCssSelectors.push(
           // Bottom nav item
           'ytm-pivot-bar-item-renderer:has(> div.pivot-shorts)',
+          // Home & Subscriptions shelf
+          '.tab-content:is([tab-identifier="FEwhat_to_watch"], [tab-identifier="FEsubscriptions"]) ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
           // Home shelf
-          'ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
-          'ytm-rich-section-renderer:has(ytm-shorts-lockup-view-model)',
-          // Subscriptions shelf
-          '.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(ytm-reel-shelf-renderer)',
+          '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer:has(ytm-shorts-lockup-view-model)',
           // Search shelf
           'ytm-search lazy-list > ytm-reel-shelf-renderer',
           // Search
@@ -1956,7 +1951,7 @@ const configureCss = (() => {
           // Big promo on Home screen
           'ytm-statement-banner-renderer',
           // Home
-          'ytm-rich-item-renderer:has(> ad-slot-renderer)',
+          '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-item-renderer:has(> ad-slot-renderer)',
           // Bottom of screen promo
           '.mealbar-promo-renderer',
           // Search results
@@ -2008,7 +2003,7 @@ const configureCss = (() => {
             // Looking for something different? tile in Home
             'ytm-rich-item-renderer:has(> .feed-nudge-wrapper)',
             // "Most relevant" shelf in Subscriptions
-            '.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(> lazy-list > ytm-horizontal-card-list-renderer)',
+            '.tab-content[tab-identifier="FEsubscriptions"] ytm-rich-section-renderer:has(ytm-rich-shelf-renderer)',
           )
         } else {
           // Logged-out users can get "Try searching to get started" Home page
@@ -2035,7 +2030,7 @@ const configureCss = (() => {
       if (mobile) {
         hideCssSelectors.push(
           // Subscriptions
-          '.tab-content[tab-identifier="FEsubscriptions"] ytm-item-section-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="UPCOMING"])'
+          '.tab-content[tab-identifier="FEsubscriptions"] ytm-rich-item-renderer:has(ytm-thumbnail-overlay-time-status-renderer[data-style="UPCOMING"])'
         )
       }
     }
@@ -5002,11 +4997,8 @@ function observeVideoHiddenState() {
   if (mobile) {
     /** @type {HTMLElement} */
     let $video
-    if (isHomePage()) {
+    if (isHomePage() || isSubscriptionsPage()) {
       $video = $lastClickedElement?.closest('ytm-rich-item-renderer')
-    }
-    else if (isSubscriptionsPage()) {
-      $video = $lastClickedElement?.closest('lazy-list')
     }
     // TODO ytm-notification-multi-action-renderer replaces hidden Related videos
     // else if (isVideoPage()) {
@@ -5020,9 +5012,6 @@ function observeVideoHiddenState() {
 
       log('hideHiddenVideos: video hidden, showing timer')
       $elementToHide = $video
-      if (isSubscriptionsPage()) {
-        $elementToHide = $video.closest('ytm-item-section-renderer')
-      }
       $undoButton = $dismissedContent.querySelector('button')
       pieConfig = {
         $container: $dismissedContent.querySelector('ytm-notification-multi-action-renderer .notification-multi-action-text-wrapper') || $dismissedContent.firstElementChild,
@@ -5561,10 +5550,10 @@ async function tweakSubscriptionsPage() {
   }
   if (mobile) {
     observeMobileVideoList({
-      name: 'subscriptions <lazy-list>',
-      selector: '.tab-content[tab-identifier="FEsubscriptions"] ytm-section-list-renderer > lazy-list',
+      name: 'subscriptions <ytm-rich-grid-renderer> contents',
+      selector: '.tab-content[tab-identifier="FEsubscriptions"] .rich-grid-renderer-contents',
       page: 'subscriptions',
-      videoElements: new Set(['ytm-item-section-renderer']),
+      videoElements: new Set(['ytm-rich-item-renderer']),
     })
   }
 }
