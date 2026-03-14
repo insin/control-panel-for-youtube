@@ -1665,6 +1665,8 @@ const configureCss = (() => {
           '#above-the-fold + ytd-metadata-row-container-renderer',
           // Game / Infocards in full screen description panel
           'ytd-structured-description-content-renderer[panel-target-id="engagement-panel-structured-description"] .ytd-structured-description-content-renderer:not(#items, ytd-video-description-header-renderer, ytd-expandable-video-description-body-renderer, ytd-video-description-transcript-section-renderer)',
+          // New metadata module (e.g. Game, People mentioned)
+          ':is(#above-the-fold, ytd-structured-description-content-renderer[panel-target-id="engagement-panel-structured-description"]) yt-video-attributes-section-view-model',
         )
       }
       if (mobile) {
