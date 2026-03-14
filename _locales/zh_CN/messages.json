@@ -98,9 +98,6 @@
   "disableHomeFeedNote": {
     "message": "仅当登录时——重定向到订阅页面"
   },
-  "disableTheaterBigMode": {
-    "message": "停用影院模式下的放大界面"
-  },
   "disableThemedHover": {
     "message": "停用主题悬停效果"
   },

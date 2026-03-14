@@ -60,8 +60,6 @@ export type SiteConfig = {
   disableAmbientMode: boolean
   disableAutoplay: boolean
   disableHomeFeed: boolean
-  // XXX This doesn't seem to happen any more in the old player UI
-  disableTheaterBigMode: boolean
   hiddenChannels: Channel[]
   hideAI: boolean
   hideAskButton: boolean

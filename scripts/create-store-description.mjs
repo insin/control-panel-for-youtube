@@ -148,7 +148,6 @@ ${messages.videoPages}:
 • ${messages.hideComments}
 • ${messages.alwaysUseTheaterMode}${messages.desktopVersion}
 • ${messages.fullSizeTheaterMode}${messages.desktopVersion}
-• ${messages.disableTheaterBigMode}${messages.desktopVersion}
 • ${messages.alwaysUseOriginalAudio}${messages.desktopVersion}
 • ${messages.hideEndCards}${messages.desktopVersion}
 • ${messages.hideEndVideos}${messages.desktopVersion}

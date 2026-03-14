@@ -13,7 +13,6 @@ let defaultConfig = {
   disableAmbientMode: true,
   disableAutoplay: true,
   disableHomeFeed: false,
-  disableTheaterBigMode: true,
   hiddenChannels: [],
   hideAI: true,
   hideAskButton: false,
@@ -3464,24 +3463,6 @@ async function disableAutoplay() {
 }
 
 /** @param {HTMLElement} $player */
-function disableTheaterBigMode($player) {
-  observeElement($player, () => {
-    if ($player.classList.contains('ytp-big-mode') &&
-        $player.closest('ytd-watch-flexy[role="main"][theater]:not([fullscreen])')) {
-      log('disableTheaterBigMode: removing .ytp-big-mode from player')
-      $player.classList.remove('ytp-big-mode')
-    }
-  }, {
-    leading: true,
-    name: 'disableTheaterBigMode: player class',
-    observers: pageObservers,
-  }, {
-    attributes: true,
-    attributeFilter: ['class'],
-  })
-}
-
-/** @param {HTMLElement} $player */
 function hideFullScreenMoreVideos($player) {
   observeElement($player, () => {
     let remove = false
@@ -4398,27 +4379,8 @@ function observeDesktopContextMenu($popupContainer) {
     }
   }
 
-  function observeContextMenuClass() {
-    // The big mode class is applied separately to the video context menu
-    observeElement($contextMenu, () => {
-      if ($contextMenu.classList.contains('ytp-big-mode') &&
-          document.querySelector('ytd-watch-flexy[role="main"][theater]:not([fullscreen])')) {
-        log('disableTheaterBigMode: removing .ytp-big-mode from context menu')
-        $contextMenu.classList.remove('ytp-big-mode')
-      }
-    }, {
-      leading: true,
-      name: 'disableTheaterBigMode: context menu class',
-      observers: globalObservers,
-    }, {
-      attributes: true,
-      attributeFilter: ['class'],
-    })
-  }
-
   function processContextMenu() {
     if (config.addTakeSnapshot) addTakeShapshotMenuItem()
-    if (config.disableTheaterBigMode) observeContextMenuClass()
   }
 
   if ($contextMenu) {
@@ -5576,9 +5538,6 @@ async function tweakVideoPage() {
       }
       if (config.alwaysUseOriginalAudio) {
         alwaysUseOriginalAudio('#movie_player', $player)
-      }
-      if (config.disableTheaterBigMode) {
-        disableTheaterBigMode($player)
       }
       if (config.playerHideFullScreenMoreVideos) {
         hideFullScreenMoreVideos($player)

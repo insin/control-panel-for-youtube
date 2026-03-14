@@ -98,9 +98,6 @@
   "disableHomeFeedNote": {
     "message": "ログイン時に登録チャンネルへリダイレクト"
   },
-  "disableTheaterBigMode": {
-    "message": "シアターモードの拡大UIを無効にする"
-  },
   "disableThemedHover": {
     "message": "テーマホバー効果を無効にする"
   },
