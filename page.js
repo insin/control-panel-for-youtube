@@ -5155,7 +5155,7 @@ function manuallyHideVideo($video, {hideDismissed = false} = {}) {
     if (desktop) {
       let $metadata = /** @type {HTMLElement} */ ($video.querySelector(
         // TODO Remove #metadata-line after confirming all videos have moved to yt-lockup-view-model
-        '#metadata-line, yt-content-metadata-view-model .yt-content-metadata-view-model__delimiter + .yt-content-metadata-view-model__metadata-text'
+        '#metadata-line, yt-content-metadata-view-model .ytContentMetadataViewModelDelimiter + .ytContentMetadataViewModelMetadataText'
       ))
       if ($metadata) {
         hide = Boolean($metadata.innerText.match(getString('STREAMED_METADATA_INNERTEXT_RE')))
