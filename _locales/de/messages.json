@@ -133,10 +133,10 @@
     "description": "<= 112 Zeichen"
   },
   "extensionName": {
-    "message": "Steuerung für Youbtube"
+    "message": "Steuerung für Youtube"
   },
   "extensionNameDisabled": {
-    "message": "Steuerung für Youbtube (deaktiviert)"
+    "message": "Steuerung für Youtube (deaktiviert)"
   },
   "features": {
     "message": "Funktionen"
