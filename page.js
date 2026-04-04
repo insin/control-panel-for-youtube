@@ -5191,7 +5191,7 @@ function manuallyHideVideo($video, {hideDismissed = false} = {}) {
     let hide = false
     let $views
     if (desktop) {
-      $views = $video.querySelector('.yt-content-metadata-view-model__metadata-row:nth-of-type(2) .yt-content-metadata-view-model__metadata-text')
+      $views = $video.querySelector('.ytContentMetadataViewModelMetadataRow:nth-of-type(2) .ytContentMetadataViewModelMetadataText')
     }
     if (mobile) {
       $views = $video.querySelector('ytm-badge-and-byline-renderer [role="text"][aria-label]')
