@@ -2373,7 +2373,7 @@ const configureCss = (() => {
                 width: 100%;
                 max-width: 600px;
               }
-              .yt-content-metadata-view-model {
+              yt-content-metadata-view-model {
                 display: flex;
                 flex-direction: row;
                 gap: 1rem;
@@ -2464,7 +2464,7 @@ const configureCss = (() => {
                   left: 0;
                 }
                 /* Channel name */
-                .yt-content-metadata-view-model__metadata-row:first-child {
+                .ytContentMetadataViewModelMetadataRow:first-child {
                   position: absolute;
                   top: -48px;
                   left: 50px;
@@ -2486,7 +2486,7 @@ const configureCss = (() => {
                     white-space: normal;
                   }
                 }
-                &:not(:has(.yt-lockup-metadata-view-model__avatar)) .yt-content-metadata-view-model__metadata-row:first-child {
+                &:not(:has(.yt-lockup-metadata-view-model__avatar)) .ytContentMetadataViewModelMetadataRow:first-child {
                   left: 0;
                 }
                 /* Adjust for header height */
