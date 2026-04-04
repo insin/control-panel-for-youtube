@@ -5114,7 +5114,7 @@ function hideWatched($video) {
     $progressBar = $video.querySelector('#progress, .ytThumbnailOverlayProgressBarHostWatchedProgressBarSegment')
   }
   if (mobile) {
-    $progressBar = $video.querySelector('.thumbnail-overlay-resume-playback-progress')
+    $progressBar = $video.querySelector('.YtmThumbnailOverlayResumePlaybackRendererThumbnailOverlayResumePlaybackProgress')
   }
   let hide = false
   if ($progressBar) {
