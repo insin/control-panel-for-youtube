@@ -2496,6 +2496,20 @@ const configureCss = (() => {
               }
             }
           `)
+        } else {
+          // Move channel avatar below metadata
+          cssRules.push(`
+            ${gridAsListPageSelector} {
+              yt-lockup-metadata-view-model {
+                display: grid !important;
+                .yt-lockup-metadata-view-model__avatar {
+                  grid-row: 2;
+                  margin-right: 0;
+                  margin-top: 12px;
+                }
+              }
+            }
+          `)
         }
       }
       if (config.fullSizeTheaterMode) {
