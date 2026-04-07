@@ -2132,7 +2132,7 @@ const configureCss = (() => {
           .ytThumbnailViewModelLarge,
           ytd-thumbnail:is([side=small], [size=medium], [size=large]) a.ytd-thumbnail,
           ytd-thumbnail:is([side=small], [size=medium], [size=large])::before,
-          yt-lockup-view-model .yt-spec-touch-feedback-shape:not(.yt-spec-touch-feedback-shape--circular) :is(.yt-spec-touch-feedback-shape__stroke, .yt-spec-touch-feedback-shape__fill, .yt-spec-touch-feedback-shape__hover-effect),
+          yt-lockup-view-model .ytSpecTouchFeedbackShapeHost:not(.ytSpecTouchFeedbackShapeCircular) :is(.ytSpecTouchFeedbackShapeStroke, .ytSpecTouchFeedbackShapeFill, .ytSpecTouchFeedbackShapeHoverEffect),
           .ytp-videowall-still-image,
           .ytp-modern-videowall-still-image,
           .ytp-modern-videowall-still:hover,
@@ -2279,19 +2279,19 @@ const configureCss = (() => {
             --cpfyt-touch-response-color: #fff;
           }
           ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) {
-            .yt-spec-touch-feedback-shape__hover-effect {
+            .ytSpecTouchFeedbackShapeHoverEffect {
               display: none !important;
             }
-            .yt-spec-touch-feedback-shape__stroke {
+            .ytSpecTouchFeedbackShapeStroke {
               border-color: var(--yt-spec-touch-response, --cpfyt-touch-response-color) !important;
             }
-            .yt-spec-touch-feedback-shape__fill {
+            .ytSpecTouchFeedbackShapeFill {
               background-color: var(--yt-spec-touch-response, --cpfyt-touch-response-color) !important;
             }
-            .yt-lockup-metadata-view-model__title {
+            .ytLockupMetadataViewModelTitle {
               color: var(--cpfyt-title-color) !important;
             }
-            .yt-lockup-metadata-view-model__metadata {
+            .ytLockupMetadataViewModelMetadata {
               color: var(--cpfyt-metadata-color) !important;
             }
           }
