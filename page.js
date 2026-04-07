@@ -2098,7 +2098,7 @@ const configureCss = (() => {
       if (desktop) {
         cssRules.push(`
           #video-title,
-          .yt-lockup-metadata-view-model__title,
+          .ytLockupMetadataViewModelTitle,
           .ytPlayerOverlayVideoDetailsRendererTitle,
           .ytp-modern-videowall-still-info-title,
           .shortsLockupViewModelHostOutsideMetadataTitle,
@@ -2113,7 +2113,6 @@ const configureCss = (() => {
         cssRules.push(`
           .media-item-headline,
           .video-card-title,
-          .yt-lockup-metadata-view-model__title,
           .YtmCompactMediaItemHeadline,
           .shortsLockupViewModelHostMetadataTitle {
             max-height: unset !important;
