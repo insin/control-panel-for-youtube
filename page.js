@@ -2129,8 +2129,10 @@ const configureCss = (() => {
           .ytThumbnailViewModelSmall,
           .ytThumbnailViewModelMedium,
           .ytThumbnailViewModelLarge,
-          ytd-thumbnail:is([side=small], [size=medium], [size=large]) a.ytd-thumbnail,
-          ytd-thumbnail:is([side=small], [size=medium], [size=large])::before,
+          ytd-thumbnail:is([size=small], [size=medium], [size=large]) a.ytd-thumbnail,
+          ytd-thumbnail:is([size=small], [size=medium], [size=large])::before,
+          ytd-playlist-thumbnail:is([size=small], [size=medium], [size=large]) a.ytd-playlist-thumbnail,
+          ytd-playlist-thumbnail:is([size=small], [size=medium], [size=large])::before,
           yt-lockup-view-model .ytSpecTouchFeedbackShapeHost:not(.ytSpecTouchFeedbackShapeCircular) :is(.ytSpecTouchFeedbackShapeStroke, .ytSpecTouchFeedbackShapeFill, .ytSpecTouchFeedbackShapeHoverEffect),
           .ytp-videowall-still-image,
           .ytp-modern-videowall-still-image,
@@ -2161,6 +2163,7 @@ const configureCss = (() => {
           .reel-video-in-sequence-thumbnail.ytd-shorts,
           .anchored-panel.ytd-shorts,
           /* Misc */
+          .immersive-header-container.ytd-playlist-header-renderer,
           .yt-page-header-view-model__page-header-background {
             border-radius: 0 !important;
           }
