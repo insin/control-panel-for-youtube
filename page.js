@@ -2454,11 +2454,11 @@ const configureCss = (() => {
                   padding-top: 60px;
                 }
                 .yt-lockup-view-model__metadata,
-                .yt-lockup-metadata-view-model {
+                .ytLockupMetadataViewModelHost {
                   position: static;
                 }
                 /* Channel avatar */
-                .yt-lockup-metadata-view-model__avatar {
+                .ytLockupMetadataViewModelAvatar {
                   position: absolute;
                   top: -50px;
                   left: 0;
@@ -2486,7 +2486,7 @@ const configureCss = (() => {
                     white-space: normal;
                   }
                 }
-                &:not(:has(.yt-lockup-metadata-view-model__avatar)) .ytContentMetadataViewModelMetadataRow:first-child {
+                &:not(:has(.ytLockupMetadataViewModelAvatar)) .ytContentMetadataViewModelMetadataRow:first-child {
                   left: 0;
                 }
                 /* Adjust for header height */
@@ -2502,7 +2502,7 @@ const configureCss = (() => {
             ${gridAsListPageSelector} {
               yt-lockup-metadata-view-model {
                 display: grid !important;
-                .yt-lockup-metadata-view-model__avatar {
+                .ytLockupMetadataViewModelAvatar {
                   grid-row: 2;
                   margin-right: 0;
                   margin-top: 12px;
