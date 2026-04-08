@@ -36,6 +36,7 @@ Certain features also depend on translations in the `locales` object in [content
 - [@movcoa](https://github.com/movcoa) for [providing a Chinese translation](https://github.com/insin/control-panel-for-youtube/issues/67)
 - [@tohu-sand](https://github.com/tohu-sand) for [improving the Japanese translation](https://github.com/insin/control-panel-for-youtube/pull/68)
 - [@maxchrr](https://github.com/maxchrr) for [providing a French translation](https://github.com/insin/control-panel-for-youtube/pull/86)
+- [@uDEV2019](https://github.com/uDEV2019) for [providing a German translation](https://github.com/insin/control-panel-for-youtube/pull/250)
 
 ## Attribution
 

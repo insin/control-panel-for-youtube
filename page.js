@@ -2098,7 +2098,7 @@ const configureCss = (() => {
       if (desktop) {
         cssRules.push(`
           #video-title,
-          .yt-lockup-metadata-view-model__title,
+          .ytLockupMetadataViewModelTitle,
           .ytPlayerOverlayVideoDetailsRendererTitle,
           .ytp-modern-videowall-still-info-title,
           .shortsLockupViewModelHostOutsideMetadataTitle,
@@ -2113,7 +2113,6 @@ const configureCss = (() => {
         cssRules.push(`
           .media-item-headline,
           .video-card-title,
-          .yt-lockup-metadata-view-model__title,
           .YtmCompactMediaItemHeadline,
           .shortsLockupViewModelHostMetadataTitle {
             max-height: unset !important;
@@ -2130,9 +2129,11 @@ const configureCss = (() => {
           .ytThumbnailViewModelSmall,
           .ytThumbnailViewModelMedium,
           .ytThumbnailViewModelLarge,
-          ytd-thumbnail:is([side=small], [size=medium], [size=large]) a.ytd-thumbnail,
-          ytd-thumbnail:is([side=small], [size=medium], [size=large])::before,
-          yt-lockup-view-model .yt-spec-touch-feedback-shape:not(.yt-spec-touch-feedback-shape--circular) :is(.yt-spec-touch-feedback-shape__stroke, .yt-spec-touch-feedback-shape__fill, .yt-spec-touch-feedback-shape__hover-effect),
+          ytd-thumbnail:is([size=small], [size=medium], [size=large]) a.ytd-thumbnail,
+          ytd-thumbnail:is([size=small], [size=medium], [size=large])::before,
+          ytd-playlist-thumbnail:is([size=small], [size=medium], [size=large]) a.ytd-playlist-thumbnail,
+          ytd-playlist-thumbnail:is([size=small], [size=medium], [size=large])::before,
+          yt-lockup-view-model .ytSpecTouchFeedbackShapeHost:not(.ytSpecTouchFeedbackShapeCircular) :is(.ytSpecTouchFeedbackShapeStroke, .ytSpecTouchFeedbackShapeFill, .ytSpecTouchFeedbackShapeHoverEffect),
           .ytp-videowall-still-image,
           .ytp-modern-videowall-still-image,
           .ytp-modern-videowall-still:hover,
@@ -2162,6 +2163,7 @@ const configureCss = (() => {
           .reel-video-in-sequence-thumbnail.ytd-shorts,
           .anchored-panel.ytd-shorts,
           /* Misc */
+          .immersive-header-container.ytd-playlist-header-renderer,
           .yt-page-header-view-model__page-header-background {
             border-radius: 0 !important;
           }
@@ -2279,19 +2281,19 @@ const configureCss = (() => {
             --cpfyt-touch-response-color: #fff;
           }
           ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) {
-            .yt-spec-touch-feedback-shape__hover-effect {
+            .ytSpecTouchFeedbackShapeHoverEffect {
               display: none !important;
             }
-            .yt-spec-touch-feedback-shape__stroke {
+            .ytSpecTouchFeedbackShapeStroke {
               border-color: var(--yt-spec-touch-response, --cpfyt-touch-response-color) !important;
             }
-            .yt-spec-touch-feedback-shape__fill {
+            .ytSpecTouchFeedbackShapeFill {
               background-color: var(--yt-spec-touch-response, --cpfyt-touch-response-color) !important;
             }
-            .yt-lockup-metadata-view-model__title {
+            .ytLockupMetadataViewModelTitle {
               color: var(--cpfyt-title-color) !important;
             }
-            .yt-lockup-metadata-view-model__metadata {
+            .ytLockupMetadataViewModelMetadata {
               color: var(--cpfyt-metadata-color) !important;
             }
           }
@@ -2454,11 +2456,11 @@ const configureCss = (() => {
                   padding-top: 60px;
                 }
                 .yt-lockup-view-model__metadata,
-                .yt-lockup-metadata-view-model {
+                .ytLockupMetadataViewModelHost {
                   position: static;
                 }
                 /* Channel avatar */
-                .yt-lockup-metadata-view-model__avatar {
+                .ytLockupMetadataViewModelAvatar {
                   position: absolute;
                   top: -50px;
                   left: 0;
@@ -2486,12 +2488,26 @@ const configureCss = (() => {
                     white-space: normal;
                   }
                 }
-                &:not(:has(.yt-lockup-metadata-view-model__avatar)) .ytContentMetadataViewModelMetadataRow:first-child {
+                &:not(:has(.ytLockupMetadataViewModelAvatar)) .ytContentMetadataViewModelMetadataRow:first-child {
                   left: 0;
                 }
                 /* Adjust for header height */
                 .ytDismissibleItemAspectRatio16By9 {
                   min-height: 178px;
+                }
+              }
+            }
+          `)
+        } else {
+          // Move channel avatar below metadata
+          cssRules.push(`
+            ${gridAsListPageSelector} {
+              yt-lockup-metadata-view-model {
+                display: grid !important;
+                .ytLockupMetadataViewModelAvatar {
+                  grid-row: 2;
+                  margin-right: 0;
+                  margin-top: 12px;
                 }
               }
             }
@@ -2834,6 +2850,7 @@ const configureCss = (() => {
       if (config.searchThumbnailSize != 'large') {
         cssRules.push(`
           ytd-search ytd-video-renderer ytd-thumbnail.ytd-video-renderer,
+          ytd-search ytd-movie-renderer .thumbnail-container.ytd-movie-renderer,
           ytd-search yt-lockup-view-model .yt-lockup-view-model__content-image,
           ytd-search ytd-channel-renderer #avatar-section {
             max-width: ${{
