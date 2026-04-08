@@ -133,10 +133,10 @@
     "description": "<= 112 Zeichen"
   },
   "extensionName": {
-    "message": "Steuerung für Youtube"
+    "message": "Steuerung für YouTube"
   },
   "extensionNameDisabled": {
-    "message": "Steuerung für Youtube (deaktiviert)"
+    "message": "Steuerung für YouTube (deaktiviert)"
   },
   "features": {
     "message": "Funktionen"
@@ -340,7 +340,7 @@
     "message": "Mittel"
   },
   "minimumShortsPerRow": {
-    "message": "Mindestanzahl an Kurzfirlem pro Reihe"
+    "message": "Mindestanzahl an Kurzfilmen pro Reihe"
   },
   "mobileGridView": {
     "message": "Rasteransicht für Abonnements und Suche verwenden (nur Hochformat)"
@@ -370,7 +370,7 @@
     "message": "Titel im Vollbildmodus ausblenden"
   },
   "playerHideFullScreenVoting": {
-    "message": "\"Gefällt mir\"- & \"Gefällt mir nicht\"-Schaltflächen im Vollbildmodus asublenden"
+    "message": "\"Gefällt mir\"- & \"Gefällt mir nicht\"-Schaltflächen im Vollbildmodus ausblenden"
   },
   "playerRemoveDelhiExperimentFlags": {
     "message": "Neuen Fortschrittsbalken und neue Bedienelemente deaktivieren"
@@ -448,7 +448,7 @@
     "message": "UI-Optimierungen"
   },
   "useSquareCorners": {
-    "message": "Eckige Ecken für Miniaturbilder und Videos verenden"
+    "message": "Eckige Ecken für Miniaturbilder und Videos verwenden"
   },
   "videoLists": {
     "message": "Videolisten"
