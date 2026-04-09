@@ -2762,14 +2762,14 @@ const configureCss = (() => {
             max-width: var(--ytd-watch-flexy-sidebar-width);
           }
           #secondary #related {
-            /* Apply --horizontal styles when --vertical is used */
-            .yt-lockup-view-model--vertical {
+            /* Apply .ytLockupViewModelHorizontal styles when .ytLockupViewModelVertical is used */
+            .ytLockupViewModelVertical {
               -moz-box-orient:vertical;
               -moz-box-direction:normal;
               flex-direction:row;
               height:inherit
             }
-            .yt-lockup-view-model--vertical .yt-lockup-view-model__content-image {
+            .ytLockupViewModelVertical .ytLockupViewModelContentImage {
               display:-moz-box;
               display:flex;
               -moz-box-flex:0;
@@ -2779,33 +2779,33 @@ const configureCss = (() => {
               justify-content:center;
               max-width:500px
             }
-            .yt-lockup-view-model--vertical .yt-lockup-view-model__metadata {
+            .ytLockupViewModelVertical .ytLockupViewModelMetadata {
               -moz-box-flex:1;
               flex:1
             }
-            .yt-lockup-view-model--vertical.yt-lockup-view-model--collection-stack-1 {
+            .ytLockupViewModelVertical.ytLockupViewModelCollectionStack1 {
               position:relative;
               margin-top:6px
             }
-            .yt-lockup-view-model--vertical.yt-lockup-view-model--collection-stack-2 {
+            .ytLockupViewModelVertical.ytLockupViewModelCollectionStack2 {
               position:relative;
               margin-top:10px
             }
-            .yt-lockup-view-model--vertical.yt-lockup-view-model--compact .yt-lockup-view-model__content-image {
+            .ytLockupViewModelHorizontal.ytLockupViewModelCompact .ytLockupViewModelContentImage  {
               padding-right:8px
             }
-            .yt-lockup-metadata-view-model--vertical .yt-lockup-metadata-view-model__avatar {
+            .ytLockupViewModelVertical .ytLockupMetadataViewModelAvatar {
               display:none;
             }
 
             /* Fix --vertical version images */
-            .yt-lockup-view-model--vertical .yt-lockup-view-model__content-image {
+            .ytLockupViewModelVertical .ytLockupViewModelContentImage {
               width:168px;
               padding-bottom:0;
             }
 
             /* Constrain width of wide % width version */
-            .yt-lockup-view-model__content-image {
+            .ytLockupViewModelContentImage {
               max-width:168px;
             }
 
