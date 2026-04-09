@@ -2361,17 +2361,17 @@ const configureCss = (() => {
                 padding-bottom: 20px;
                 padding-top: 20px;
               }
-              .yt-lockup-view-model {
+              .ytLockupViewModelHost {
                 flex-direction: row;
               }
-              .yt-lockup-view-model__content-image {
+              .ytLockupViewModelContentImage {
                 flex: none;
                 width: 246px;
                 height: 138px;
                 margin-right: 16px;
                 padding-bottom: 0;
               }
-              .yt-lockup-view-model__metadata {
+              .ytLockupViewModelMetadata {
                 width: 100%;
                 max-width: 600px;
               }
@@ -2455,7 +2455,7 @@ const configureCss = (() => {
                 &:not(:has(.ytDismissibleItemReplacedContent)) {
                   padding-top: 60px;
                 }
-                .yt-lockup-view-model__metadata,
+                .ytLockupViewModelMetadata,
                 .ytLockupMetadataViewModelHost {
                   position: static;
                 }
