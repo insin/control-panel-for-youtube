@@ -2843,7 +2843,7 @@ const configureCss = (() => {
         cssRules.push(`
           ytd-search ytd-video-renderer ytd-thumbnail.ytd-video-renderer,
           ytd-search ytd-movie-renderer .thumbnail-container.ytd-movie-renderer,
-          ytd-search yt-lockup-view-model .yt-lockup-view-model__content-image,
+          ytd-search yt-lockup-view-model .ytLockupViewModelContentImage,
           ytd-search ytd-channel-renderer #avatar-section {
             max-width: ${{
               medium: 420,
