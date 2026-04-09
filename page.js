@@ -2477,15 +2477,7 @@ const configureCss = (() => {
                     font-size: 2rem;
                     line-height: 2.8rem;
                     font-weight: 700;
-                    overflow: hidden;
-                    display: block;
                     max-height: 2.8rem;
-                    -webkit-line-clamp: 1;
-                    display: box;
-                    display: -webkit-box;
-                    -webkit-box-orient: vertical;
-                    text-overflow: ellipsis;
-                    white-space: normal;
                   }
                 }
                 &:not(:has(.ytLockupMetadataViewModelAvatar)) .ytContentMetadataViewModelMetadataRow:first-child {
