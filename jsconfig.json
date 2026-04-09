@@ -4,6 +4,7 @@
     "module": "NodeNext",
     "moduleDetection": "force",
     "moduleResolution": "nodenext",
+    "strict": false,
     "target": "ES2022"
   },
   "exclude": [
