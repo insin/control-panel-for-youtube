@@ -872,7 +872,7 @@ const MenuConfigs = {
   },
   'YT-LIST-ITEM-VIEW-MODEL': {
     itemSelector: 'yt-list-item-view-model',
-    itemTextSelector: '.yt-list-item-view-model__title',
+    itemTextSelector: '.ytListItemViewModelTitle',
   },
 }
 
