@@ -1719,7 +1719,7 @@ const configureCss = (() => {
           'ytd-movie-renderer',
           // Related
           'ytd-compact-movie-renderer',
-          'ytd-compact-video-renderer:has(a[href*="&pp=sAQB"])',
+          'yt-lockup-view-model:has(a[href*="&pp=sAQB"])',
         )
       }
       if (mobile) {
