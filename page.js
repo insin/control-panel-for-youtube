@@ -1585,11 +1585,13 @@ const configureCss = (() => {
           // Grid item (Home, Subscriptions)
           'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(ytd-thumbnail[is-live-video])',
           'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(.yt-badge-shape--thumbnail-live)',
+          'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(.ytBadgeShapeThumbnailLive)',
           // List item (Search)
           'ytd-video-renderer:has(ytd-thumbnail[is-live-video])',
           // Related
           'ytd-compact-video-renderer:has(> .ytd-compact-video-renderer > ytd-thumbnail[is-live-video])',
           '#related yt-lockup-view-model:has(.yt-badge-shape--thumbnail-live)',
+          '#related yt-lockup-view-model:has(.ytBadgeShapeThumbnailLive)',
         )
       }
       if (mobile) {
@@ -1620,14 +1622,17 @@ const configureCss = (() => {
           // Grid item (Home, Subscriptions, Channel videos tab)
           'ytd-rich-item-renderer:has(.badge-style-type-members-only)',
           'ytd-rich-item-renderer:has(.yt-badge-shape--commerce > .yt-badge-shape__icon)',
-          'ytd-rich-item-renderer:has(.yt-badge-shape--membership)', // Current
+          'ytd-rich-item-renderer:has(.yt-badge-shape--membership)',
+          'ytd-rich-item-renderer:has(.ytBadgeShapeCommerce > .ytBadgeShapeIcon)', // Current
           // List item (Search)
           'ytd-video-renderer:has(.badge-style-type-members-only)',
           'ytd-video-renderer:has(.yt-badge-shape--membership)',
+          'ytd-video-renderer:has(.ytBadgeShapeCommerce > .ytBadgeShapeIcon)', // Current?
           // Related
           'ytd-compact-video-renderer:has(.badge-style-type-members-only)',
-          '#related yt-lockup-view-model:has(.yt-badge-shape--commerce > .yt-badge-shape__icon)', // Current
+          '#related yt-lockup-view-model:has(.yt-badge-shape--commerce > .yt-badge-shape__icon)',
           '#related yt-lockup-view-model:has(.yt-badge-shape--membership)',
+          '#related yt-lockup-view-model:has(.ytBadgeShapeCommerce > .ytBadgeShapeIcon)', // Current?
           // Video endscreen
           // TODO Hide by href based on any of the first 12 items in #related being members only videos
         )
@@ -1636,7 +1641,8 @@ const configureCss = (() => {
           html:not([cpfyt-channel-tab="membership"]) {
             ytd-app {
               ytd-item-section-renderer[page-subtype="channels"] ytd-grid-video-renderer:has(.badge-style-type-members-only),
-              ytd-item-section-renderer[page-subtype="channels"] ytd-grid-video-renderer:has(.yt-badge-shape--membership) {
+              ytd-item-section-renderer[page-subtype="channels"] ytd-grid-video-renderer:has(.yt-badge-shape--membership),
+              ytd-item-section-renderer[page-subtype="channels"] ytd-grid-video-renderer:has(.ytBadgeShapeCommerce > .ytBadgeShapeIcon) {
                 display: none !important;
               }
             }
