@@ -872,7 +872,7 @@ const MenuConfigs = {
   },
   'YT-LIST-ITEM-VIEW-MODEL': {
     itemSelector: 'yt-list-item-view-model',
-    itemTextSelector: '.yt-list-item-view-model__title',
+    itemTextSelector: '.ytListItemViewModelTitle',
   },
 }
 
@@ -1585,11 +1585,13 @@ const configureCss = (() => {
           // Grid item (Home, Subscriptions)
           'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(ytd-thumbnail[is-live-video])',
           'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(.yt-badge-shape--thumbnail-live)',
+          'ytd-browse:not([page-subtype="channels"]) ytd-rich-item-renderer:has(.ytBadgeShapeThumbnailLive)',
           // List item (Search)
           'ytd-video-renderer:has(ytd-thumbnail[is-live-video])',
           // Related
           'ytd-compact-video-renderer:has(> .ytd-compact-video-renderer > ytd-thumbnail[is-live-video])',
           '#related yt-lockup-view-model:has(.yt-badge-shape--thumbnail-live)',
+          '#related yt-lockup-view-model:has(.ytBadgeShapeThumbnailLive)',
         )
       }
       if (mobile) {
@@ -1620,14 +1622,17 @@ const configureCss = (() => {
           // Grid item (Home, Subscriptions, Channel videos tab)
           'ytd-rich-item-renderer:has(.badge-style-type-members-only)',
           'ytd-rich-item-renderer:has(.yt-badge-shape--commerce > .yt-badge-shape__icon)',
-          'ytd-rich-item-renderer:has(.yt-badge-shape--membership)', // Current
+          'ytd-rich-item-renderer:has(.yt-badge-shape--membership)',
+          'ytd-rich-item-renderer:has(.ytBadgeShapeCommerce > .ytBadgeShapeIcon)', // Current
           // List item (Search)
           'ytd-video-renderer:has(.badge-style-type-members-only)',
           'ytd-video-renderer:has(.yt-badge-shape--membership)',
+          'ytd-video-renderer:has(.ytBadgeShapeCommerce > .ytBadgeShapeIcon)', // Current?
           // Related
           'ytd-compact-video-renderer:has(.badge-style-type-members-only)',
-          '#related yt-lockup-view-model:has(.yt-badge-shape--commerce > .yt-badge-shape__icon)', // Current
+          '#related yt-lockup-view-model:has(.yt-badge-shape--commerce > .yt-badge-shape__icon)',
           '#related yt-lockup-view-model:has(.yt-badge-shape--membership)',
+          '#related yt-lockup-view-model:has(.ytBadgeShapeCommerce > .ytBadgeShapeIcon)', // Current?
           // Video endscreen
           // TODO Hide by href based on any of the first 12 items in #related being members only videos
         )
@@ -1636,7 +1641,8 @@ const configureCss = (() => {
           html:not([cpfyt-channel-tab="membership"]) {
             ytd-app {
               ytd-item-section-renderer[page-subtype="channels"] ytd-grid-video-renderer:has(.badge-style-type-members-only),
-              ytd-item-section-renderer[page-subtype="channels"] ytd-grid-video-renderer:has(.yt-badge-shape--membership) {
+              ytd-item-section-renderer[page-subtype="channels"] ytd-grid-video-renderer:has(.yt-badge-shape--membership),
+              ytd-item-section-renderer[page-subtype="channels"] ytd-grid-video-renderer:has(.ytBadgeShapeCommerce > .ytBadgeShapeIcon) {
                 display: none !important;
               }
             }
@@ -1719,7 +1725,7 @@ const configureCss = (() => {
           'ytd-movie-renderer',
           // Related
           'ytd-compact-movie-renderer',
-          'ytd-compact-video-renderer:has(a[href*="&pp=sAQB"])',
+          'yt-lockup-view-model:has(a[href*="&pp=sAQB"])',
         )
       }
       if (mobile) {
@@ -2361,17 +2367,17 @@ const configureCss = (() => {
                 padding-bottom: 20px;
                 padding-top: 20px;
               }
-              .yt-lockup-view-model {
+              .ytLockupViewModelHost {
                 flex-direction: row;
               }
-              .yt-lockup-view-model__content-image {
+              .ytLockupViewModelContentImage {
                 flex: none;
                 width: 246px;
                 height: 138px;
                 margin-right: 16px;
                 padding-bottom: 0;
               }
-              .yt-lockup-view-model__metadata {
+              .ytLockupViewModelMetadata {
                 width: 100%;
                 max-width: 600px;
               }
@@ -2455,7 +2461,7 @@ const configureCss = (() => {
                 &:not(:has(.ytDismissibleItemReplacedContent)) {
                   padding-top: 60px;
                 }
-                .yt-lockup-view-model__metadata,
+                .ytLockupViewModelMetadata,
                 .ytLockupMetadataViewModelHost {
                   position: static;
                 }
@@ -2477,15 +2483,7 @@ const configureCss = (() => {
                     font-size: 2rem;
                     line-height: 2.8rem;
                     font-weight: 700;
-                    overflow: hidden;
-                    display: block;
                     max-height: 2.8rem;
-                    -webkit-line-clamp: 1;
-                    display: box;
-                    display: -webkit-box;
-                    -webkit-box-orient: vertical;
-                    text-overflow: ellipsis;
-                    white-space: normal;
                   }
                 }
                 &:not(:has(.ytLockupMetadataViewModelAvatar)) .ytContentMetadataViewModelMetadataRow:first-child {
@@ -2770,14 +2768,14 @@ const configureCss = (() => {
             max-width: var(--ytd-watch-flexy-sidebar-width);
           }
           #secondary #related {
-            /* Apply --horizontal styles when --vertical is used */
-            .yt-lockup-view-model--vertical {
+            /* Apply .ytLockupViewModelHorizontal styles when .ytLockupViewModelVertical is used */
+            .ytLockupViewModelVertical {
               -moz-box-orient:vertical;
               -moz-box-direction:normal;
               flex-direction:row;
               height:inherit
             }
-            .yt-lockup-view-model--vertical .yt-lockup-view-model__content-image {
+            .ytLockupViewModelVertical .ytLockupViewModelContentImage {
               display:-moz-box;
               display:flex;
               -moz-box-flex:0;
@@ -2787,33 +2785,33 @@ const configureCss = (() => {
               justify-content:center;
               max-width:500px
             }
-            .yt-lockup-view-model--vertical .yt-lockup-view-model__metadata {
+            .ytLockupViewModelVertical .ytLockupViewModelMetadata {
               -moz-box-flex:1;
               flex:1
             }
-            .yt-lockup-view-model--vertical.yt-lockup-view-model--collection-stack-1 {
+            .ytLockupViewModelVertical.ytLockupViewModelCollectionStack1 {
               position:relative;
               margin-top:6px
             }
-            .yt-lockup-view-model--vertical.yt-lockup-view-model--collection-stack-2 {
+            .ytLockupViewModelVertical.ytLockupViewModelCollectionStack2 {
               position:relative;
               margin-top:10px
             }
-            .yt-lockup-view-model--vertical.yt-lockup-view-model--compact .yt-lockup-view-model__content-image {
+            .ytLockupViewModelHorizontal.ytLockupViewModelCompact .ytLockupViewModelContentImage  {
               padding-right:8px
             }
-            .yt-lockup-metadata-view-model--vertical .yt-lockup-metadata-view-model__avatar {
+            .ytLockupViewModelVertical .ytLockupMetadataViewModelAvatar {
               display:none;
             }
 
             /* Fix --vertical version images */
-            .yt-lockup-view-model--vertical .yt-lockup-view-model__content-image {
+            .ytLockupViewModelVertical .ytLockupViewModelContentImage {
               width:168px;
               padding-bottom:0;
             }
 
             /* Constrain width of wide % width version */
-            .yt-lockup-view-model__content-image {
+            .ytLockupViewModelContentImage {
               max-width:168px;
             }
 
@@ -2851,7 +2849,7 @@ const configureCss = (() => {
         cssRules.push(`
           ytd-search ytd-video-renderer ytd-thumbnail.ytd-video-renderer,
           ytd-search ytd-movie-renderer .thumbnail-container.ytd-movie-renderer,
-          ytd-search yt-lockup-view-model .yt-lockup-view-model__content-image,
+          ytd-search yt-lockup-view-model .ytLockupViewModelContentImage,
           ytd-search ytd-channel-renderer #avatar-section {
             max-width: ${{
               medium: 420,

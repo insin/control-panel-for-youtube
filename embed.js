@@ -125,6 +125,7 @@ function configChanged(changes) {
 
 /** @param {{[key: string]: chrome.storage.StorageChange}} storageChanges */
 function onConfigChange(storageChanges) {
+  /** @type {Partial<import("./types").SiteConfig>} */
   let configChanges = Object.fromEntries(
     Object.entries(storageChanges)
       .filter(([key]) => config.hasOwnProperty(key))
