@@ -2094,7 +2094,8 @@ const configureCss = (() => {
           .anchored-panel.ytd-shorts,
           /* Misc */
           .immersive-header-container.ytd-playlist-header-renderer,
-          .yt-page-header-view-model__page-header-background {
+          .ytImageBannerViewModelInset,
+          .ytImageBannerViewModelSmallInset {
             border-radius: 0 !important;
           }
         `)
