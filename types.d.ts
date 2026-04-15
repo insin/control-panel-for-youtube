@@ -38,12 +38,10 @@ export type LocaleKey =
   | 'SHORTS'
   // This needs to match both innerText and textContent
   | 'STREAMED_METADATA_INNERTEXT_RE'
-  | 'STREAMED_TITLE_ARIA_LABEL'
+  | 'STREAMED_TITLE_ARIA_LABEL_RE'
   | 'TAKE_SNAPSHOT'
-  | 'TELL_US_WHY'
   | 'THANKS'
   | 'UNHIDE_CHANNEL'
-  | 'UPLOAD_DATE'
 
 export type OptionsConfig = EmbedConfig & SiteConfig & {
   version?: Version

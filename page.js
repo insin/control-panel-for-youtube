@@ -148,7 +148,6 @@ const locales = {
     MINIPLAYER: 'Minispeler',
     ORIGINAL: 'oorspronklike',
     SHORTS: "Kortvideo's",
-    UPLOAD_DATE: 'Oplaaidatum',
   },
   'am-ET': {
     ADS_BLOCKED: 'ከቪዲዮ በፊት ያሉ ማስታወቂያዎች በተሳካ ሁኔታ ታግደዋል!',
@@ -156,7 +155,6 @@ const locales = {
     MINIPLAYER: 'ትንሽ አጫዋች',
     ORIGINAL: 'የመጀመሪያ',
     SHORTS: 'ቁምጣ',
-    UPLOAD_DATE: 'የተለቀቀበት ቀን',
   },
   ar: {
     ADS_BLOCKED: 'تم حظر إعلانات ما قبل الفيديو بنجاح!',
@@ -164,7 +162,6 @@ const locales = {
     MINIPLAYER: 'المشغّل المصغّر',
     ORIGINAL: 'أصلي',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'تاريخ التحميل',
   },
   'as-IN': {
     ADS_BLOCKED: "ভিডিঅ'ৰ আগৰ বিজ্ঞাপনসমূহ সফলতাৰে অৱৰোধ কৰা হৈছে!",
@@ -172,7 +169,6 @@ const locales = {
     MINIPLAYER: 'মিনিপ্লে’য়াৰ',
     ORIGINAL: 'মূল',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'আপলোডৰ তাৰিখ',
   },
   'az-Latn-AZ': {
     ADS_BLOCKED: 'Video öncəsi reklamlar uğurla bloklandı!',
@@ -180,7 +176,6 @@ const locales = {
     MINIPLAYER: 'Minipleyer',
     ORIGINAL: 'orijinal',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Yüklənmə tarixi',
   },
   'be-BY': {
     ADS_BLOCKED: 'Рэклама перад відэа паспяхова заблакіравана!',
@@ -188,7 +183,6 @@ const locales = {
     MINIPLAYER: 'Міні-прайгравальнік',
     ORIGINAL: 'арыгінальны',
     SHORTS: 'Кароткія відэа',
-    UPLOAD_DATE: 'Дата загрузкі',
   },
   'bg-BG': {
     ADS_BLOCKED: 'Рекламите преди видеото са блокирани успешно!',
@@ -196,7 +190,6 @@ const locales = {
     MINIPLAYER: 'Миниплейър',
     ORIGINAL: 'оригинален',
     SHORTS: 'Кратки видеоклипове',
-    UPLOAD_DATE: 'Дата на качване',
   },
   'bn-BD': {
     ADS_BLOCKED: 'ভিডিওর শুরুর বিজ্ঞাপন সফলভাবে ব্লক করা হয়েছে!',
@@ -204,7 +197,6 @@ const locales = {
     MINIPLAYER: 'মিনিপ্লেয়ার',
     ORIGINAL: 'মূল',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'আপলোডের তারিখ',
   },
   'bs-Latn-BA': {
     ADS_BLOCKED: 'Reklame prije videa su uspješno blokirane!',
@@ -212,7 +204,6 @@ const locales = {
     MINIPLAYER: 'Miniplejer',
     ORIGINAL: 'original',
     SHORTS: 'Shortsi',
-    UPLOAD_DATE: 'Datum otpremanja',
   },
   'ca-ES': {
     ADS_BLOCKED: 'Anuncis pre-roll bloquejats amb èxit!',
@@ -220,7 +211,6 @@ const locales = {
     MINIPLAYER: 'Minireproductor',
     ORIGINAL: 'original',
     SHORTS: 'Curts',
-    UPLOAD_DATE: 'Data de pujada',
   },
   'cs-CZ': {
     ADS_BLOCKED: 'Reklamy před videem byly úspěšně zablokovány!',
@@ -228,7 +218,6 @@ const locales = {
     MINIPLAYER: 'Minipřehrávač',
     ORIGINAL: 'původní',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Datum nahrání',
   },
   'da-DK': {
     ADS_BLOCKED: 'Pre-roll reklamer blokeret!',
@@ -236,15 +225,21 @@ const locales = {
     MINIPLAYER: 'Miniafspiller',
     ORIGINAL: 'originalt',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Uploaddato',
   },
   'de-DE': {
     ADS_BLOCKED: 'Pre-Roll-Anzeigen erfolgreich blockiert!',
+    COLLABORATORS: 'Collab-Partner',
+    HIDE_CHANNEL: 'Kanal ausblenden',
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+Aufrufe$',
     MINIPLAYER: 'Miniplayer',
+    MIXES: 'Mixe',
     ORIGINAL: 'Original',
+    SHARE: 'Teilen',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Uploaddatum',
+    STREAMED_METADATA_INNERTEXT_RE: '\\bgestreamt$',
+    STREAMED_TITLE_ARIA_LABEL_RE: 'Aufrufe vor .* \\bgestreamt\\b',
+    TAKE_SNAPSHOT: 'Screenshot erstellen',
+    UNHIDE_CHANNEL: 'Kanal einblenden',
   },
   'el-GR': {
     ADS_BLOCKED: 'Οι διαφημίσεις στην αρχή του βίντεο αποκλείστηκαν!',
@@ -252,7 +247,6 @@ const locales = {
     MINIPLAYER: 'Ελαχιστοποιημένο player',
     ORIGINAL: 'πρωτότυπο',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Ημερομηνία μεταφόρτωσης',
   },
   en: {
     ADS_BLOCKED: 'Pre-roll ads successfully blocked!',
@@ -266,12 +260,10 @@ const locales = {
     SHARE: 'Share',
     SHORTS: 'Shorts',
     STREAMED_METADATA_INNERTEXT_RE: '(?:^|\\n)\\s*Streamed',
-    STREAMED_TITLE_ARIA_LABEL: 'views Streamed',
+    STREAMED_TITLE_ARIA_LABEL_RE: 'views Streamed',
     TAKE_SNAPSHOT: 'Take snapshot',
-    TELL_US_WHY: 'Tell us why',
     THANKS: 'Thanks',
     UNHIDE_CHANNEL: 'Unhide channel',
-    UPLOAD_DATE: 'Upload date',
   },
   'es-419': {
     ADS_BLOCKED: '¡Anuncios pre-roll bloqueados con éxito!',
@@ -279,7 +271,6 @@ const locales = {
     MINIPLAYER: 'Reproductor en miniatura',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Fecha de carga',
   },
   'es-ES': {
     ADS_BLOCKED: '¡Anuncios pre-roll bloqueados con éxito!',
@@ -287,7 +278,6 @@ const locales = {
     MINIPLAYER: 'Minirreproductor',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Fecha de subida',
   },
   'es-US': {
     ADS_BLOCKED: '¡Anuncios pre-roll bloqueados con éxito!',
@@ -295,7 +285,6 @@ const locales = {
     MINIPLAYER: 'Reproductor en miniatura',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Fecha de carga',
   },
   'et-EE': {
     ADS_BLOCKED: 'Videolaadsed reklaamid edukalt blokeeritud!',
@@ -303,7 +292,6 @@ const locales = {
     MINIPLAYER: 'Minipleier',
     ORIGINAL: 'algne',
     SHORTS: 'Lühivideod',
-    UPLOAD_DATE: 'Üleslaadimise kuupäev',
   },
   'eu-ES': {
     ADS_BLOCKED: 'Bideo aurreko iragarkiak ondo blokeatu dira!',
@@ -311,7 +299,6 @@ const locales = {
     MINIPLAYER: 'Erreproduzigailu txikia',
     ORIGINAL: 'jatorrizkoa',
     SHORTS: 'Film laburrak',
-    UPLOAD_DATE: 'Igotzeko data',
   },
   'fa-IR': {
     ADS_BLOCKED: 'تبلیغات ابتدای ویدیو با موفقیت مسدود شد!',
@@ -319,7 +306,6 @@ const locales = {
     MINIPLAYER: 'پخش‌کننده کوچک',
     ORIGINAL: 'اصلی',
     SHORTS: 'کوته‌ویدیوهای YouTube',
-    UPLOAD_DATE: 'تاریخ بارگذاری',
   },
   'fil-PH': {
     ADS_BLOCKED: 'Matagumpay na na-block ang mga pre-roll ad!',
@@ -327,7 +313,6 @@ const locales = {
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'orihinal',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Petsa ng pag-upload',
   },
   'fr-CA': {
     ADS_BLOCKED: 'Publicités avant la vidéo bloquées avec succès !',
@@ -335,7 +320,6 @@ const locales = {
     MINIPLAYER: 'Minilecteur',
     ORIGINAL: 'originale',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Date de mise en ligne',
   },
   'fr-FR': {
     ADS_BLOCKED: 'Publicités avant la vidéo bloquées avec succès !',
@@ -348,12 +332,10 @@ const locales = {
     SHARE: 'Partager',
     SHORTS: 'Shorts',
     STREAMED_METADATA_INNERTEXT_RE: '(?:^|\\n)\\s*Diffusé',
-    STREAMED_TITLE_ARIA_LABEL: 'vues Diffusé',
+    STREAMED_TITLE_ARIA_LABEL_RE: 'vues Diffusé',
     TAKE_SNAPSHOT: 'Prendre une capture',
-    TELL_US_WHY: 'Dites-nous pourquoi',
     THANKS: 'Merci',
     UNHIDE_CHANNEL: 'Afficher la chaîne',
-    UPLOAD_DATE: 'Date de mise en ligne',
   },
   'gl-ES': {
     ADS_BLOCKED: 'Anuncios pre-roll bloqueados con éxito!',
@@ -361,7 +343,6 @@ const locales = {
     MINIPLAYER: 'Reprodutor minimizado',
     ORIGINAL: 'orixinal',
     SHORTS: 'Curtas',
-    UPLOAD_DATE: 'Data de subida',
   },
   'gu-IN': {
     ADS_BLOCKED: 'વીડિયો પહેલાની જાહેરાતો સફળતાપૂર્વક બ્લોક કરી!',
@@ -369,7 +350,6 @@ const locales = {
     MINIPLAYER: 'મીનીપ્લેયર',
     ORIGINAL: 'ઑરિજિનલ',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'અપલોડ કર્યાની તારીખ',
   },
   'he-IL': {
     ADS_BLOCKED: 'פרסומות לפני הסרטון נחסמו בהצלחה!',
@@ -377,7 +357,6 @@ const locales = {
     MINIPLAYER: 'מיני-נגן',
     ORIGINAL: 'מקור',
     SHORTS: 'סרטוני Shorts',
-    UPLOAD_DATE: 'תאריך העלאה',
   },
   'hi-IN': {
     ADS_BLOCKED: 'वीडियो से पहले आने वाले विज्ञापन सफलतापूर्वक ब्लॉक किए गए!',
@@ -385,7 +364,6 @@ const locales = {
     MINIPLAYER: 'मिनी प्लेयर',
     ORIGINAL: 'मूल',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'अपलोड करने की तारीख',
   },
   'hr-HR': {
     ADS_BLOCKED: 'Oglasi prije videa uspješno blokirani!',
@@ -393,7 +371,6 @@ const locales = {
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'izvorno',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Datum prijenosa',
   },
   'hu-HU': {
     ADS_BLOCKED: 'Videó előtti hirdetések sikeresen blokkolva!',
@@ -401,7 +378,6 @@ const locales = {
     MINIPLAYER: 'Minilejátszó',
     ORIGINAL: 'eredeti',
     SHORTS: 'Rövid videók',
-    UPLOAD_DATE: 'Feltöltés dátuma',
   },
   'hy-AM': {
     ADS_BLOCKED: 'Տեսանյութից առաջ գովազդները հաջողությամբ արգելափակվեցին:',
@@ -409,7 +385,6 @@ const locales = {
     MINIPLAYER: 'Մինի նվագարկիչ',
     ORIGINAL: 'բնօրինակ',
     SHORTS: 'Կարճ հոլովակներ',
-    UPLOAD_DATE: 'Բեռնելու ամսաթիվ',
   },
   'id-ID': {
     ADS_BLOCKED: 'Iklan pre-roll berhasil diblokir!',
@@ -417,7 +392,6 @@ const locales = {
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'asli',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Tanggal upload',
   },
   'is-IS': {
     ADS_BLOCKED: 'Forauglýsingar lokaðar!',
@@ -425,7 +399,6 @@ const locales = {
     MINIPLAYER: 'Smáspilari',
     ORIGINAL: 'upprunalegt',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Hleðsludagsetning',
   },
   'it-IT': {
     ADS_BLOCKED: 'Annunci pre-roll bloccati con successo!',
@@ -433,7 +406,6 @@ const locales = {
     MINIPLAYER: 'Mini player',
     ORIGINAL: 'originale',
     SHORTS: 'Short',
-    UPLOAD_DATE: 'Data di caricamento',
   },
   'ja-JP': {
     ADS_BLOCKED: '動画再生前の広告をブロックしました！',
@@ -447,11 +419,9 @@ const locales = {
     SHARE: '共有',
     SHORTS: 'ショート',
     STREAMED_METADATA_INNERTEXT_RE: 'に配信済み\\s*$',
-    STREAMED_TITLE_ARIA_LABEL: '前 に配信済み',
+    STREAMED_TITLE_ARIA_LABEL_RE: '前 に配信済み',
     TAKE_SNAPSHOT: 'スナップショットを撮る',
-    TELL_US_WHY: '理由を教えてください',
     UNHIDE_CHANNEL: 'チャンネルの再表示',
-    UPLOAD_DATE: 'アップロード日',
   },
   'ka-GE': {
     ADS_BLOCKED: 'რეკლამები ვიდეომდე წარმატებით დაიბლოკა!',
@@ -459,7 +429,6 @@ const locales = {
     MINIPLAYER: 'მინიდამკვრელი',
     ORIGINAL: 'ორიგინალია',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'ატვირთვის თარიღი',
   },
   'kk-KZ': {
     ADS_BLOCKED: 'Бейне алдындағы жарнамалар сәтті бұғатталды!',
@@ -467,7 +436,6 @@ const locales = {
     MINIPLAYER: 'Шағын ойнатқыш',
     ORIGINAL: 'түпнұсқа',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Жүктелген күні',
   },
   'km-KH': {
     ADS_BLOCKED: 'ការផ្សាយពាណិជ្ជកម្មមុនវីដេអូត្រូវបានទប់ស្កាត់ដោយជោគជ័យ!',
@@ -475,7 +443,6 @@ const locales = {
     MINIPLAYER: 'កម្មវិធី​ចាក់ខ្នាត​តូច',
     ORIGINAL: 'ដើម',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'កាលបរិច្ឆេទ​បង្ហោះ',
   },
   'kn-IN': {
     ADS_BLOCKED: 'ವೀಡಿಯೊಗೆ ಮುಂಚಿನ ಜಾಹೀರಾತುಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ!',
@@ -483,7 +450,6 @@ const locales = {
     MINIPLAYER: 'ಮಿನಿಪ್ಲೇಯರ್',
     ORIGINAL: 'ಮೂಲ',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'ಅಪ್‌ಲೋಡ್ ದಿನಾಂಕ',
   },
   'ko-KR': {
     ADS_BLOCKED: '동영상 시작 전 광고가 차단되었습니다!',
@@ -491,7 +457,6 @@ const locales = {
     MINIPLAYER: '소형 플레이어',
     ORIGINAL: '원본',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: '업로드 날짜',
   },
   'ky-KG': {
     ADS_BLOCKED: 'Видеонун алдындагы жарнамалар ийгиликтүү бөгөттөлдү!',
@@ -499,7 +464,6 @@ const locales = {
     MINIPLAYER: 'Мини ойноткуч',
     ORIGINAL: 'түпнуска',
     SHORTS: 'Кыска видеолор',
-    UPLOAD_DATE: 'Жүктөлгөн күнү',
   },
   'lo-LA': {
     ADS_BLOCKED: 'ບລັອກໂຄສະນາກ່ອນວິດີໂອສຳເລັດແລ້ວ!',
@@ -507,7 +471,6 @@ const locales = {
     MINIPLAYER: 'ຕົວຫຼິ້ນຂະໜາດນ້ອຍ',
     ORIGINAL: 'ຕົ້ນສະບັບ',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'ວັນທີອັບໂຫລດ',
   },
   'lt-LT': {
     ADS_BLOCKED: 'Reklama prieš vaizdo įrašą sėkmingai užblokuota!',
@@ -515,7 +478,6 @@ const locales = {
     MINIPLAYER: 'Sumažinta leistuvė',
     ORIGINAL: 'pradinis',
     SHORTS: 'Klipukai',
-    UPLOAD_DATE: 'Įkėlimo data',
   },
   'lv-LV': {
     ADS_BLOCKED: 'Reklāmas pirms video veiksmīgi bloķētas!',
@@ -523,7 +485,6 @@ const locales = {
     MINIPLAYER: 'Mini atskaņotājs',
     ORIGINAL: 'oriģināls',
     SHORTS: 'Īsie videoklipi',
-    UPLOAD_DATE: 'Augšupielādes datums',
   },
   'mk-MK': {
     ADS_BLOCKED: 'Рекламите пред видеото се успешно блокирани!',
@@ -531,7 +492,6 @@ const locales = {
     MINIPLAYER: 'Миниплеер',
     ORIGINAL: 'оригинален',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Датум на прикачување',
   },
   'ml-IN': {
     ADS_BLOCKED: 'വീഡിയോയ്ക്ക് മുമ്പുള്ള പരസ്യങ്ങൾ വിജയകരമായി തടഞ്ഞു!',
@@ -539,7 +499,6 @@ const locales = {
     MINIPLAYER: 'മിനിപ്ലേയർ',
     ORIGINAL: 'ഒറിജിനൽ',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'അപ്‌ലോഡ് തീയതി',
   },
   'mn-MN': {
     ADS_BLOCKED: 'Видеоны өмнөх сурталчилгааг амжилттай хаасан!',
@@ -547,7 +506,6 @@ const locales = {
     MINIPLAYER: 'Мини тоглуулагч',
     ORIGINAL: 'эх хувь',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Байршуулсан огноо',
   },
   'mr-IN': {
     ADS_BLOCKED:
@@ -556,7 +514,6 @@ const locales = {
     MINIPLAYER: 'मिनीप्लेअर',
     ORIGINAL: 'मूळ',
     SHORTS: 'शॉर्ट',
-    UPLOAD_DATE: 'अपलोड केल्याची तारीख',
   },
   'ms-MY': {
     ADS_BLOCKED: 'Iklan pra-roll berjaya disekat!',
@@ -564,7 +521,6 @@ const locales = {
     MINIPLAYER: 'Pemain mini',
     ORIGINAL: 'asal',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Tarikh muat naik',
   },
   'my-MM': {
     ADS_BLOCKED: 'ဗီဒီယိုမစမီ ကြော်ငြာများကို အောင်မြင်စွာ ပိတ်လိုက်ပါပြီ!',
@@ -572,7 +528,6 @@ const locales = {
     MINIPLAYER: 'မီနီပလေယာ',
     ORIGINAL: 'မူရင်း',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'တင်ခဲ့သည့် နေ့စွဲ',
   },
   'nb-NO': {
     ADS_BLOCKED: 'Pre-roll annonser blokkert!',
@@ -580,7 +535,6 @@ const locales = {
     MINIPLAYER: 'Minispiller',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Opplastingsdato',
   },
   'ne-NP': {
     ADS_BLOCKED: 'भिडियो सुरु हुनु अघिको विज्ञापन सफलतापूर्वक रोकियो!',
@@ -588,7 +542,6 @@ const locales = {
     MINIPLAYER: 'मिनिप्लेयर',
     ORIGINAL: 'मूल',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'अपलोड गरिएको मिति',
   },
   'nl-NL': {
     ADS_BLOCKED: 'Pre-roll advertenties succesvol geblokkeerd!',
@@ -596,7 +549,6 @@ const locales = {
     MINIPLAYER: 'Minispeler',
     ORIGINAL: 'Originele',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Upload-datum',
   },
   'or-IN': {
     ADS_BLOCKED: 'ଭିଡିଓ ପୂର୍ବର ବିଜ୍ଞାପନ ସଫଳତାର ସହ ଅବରୋଧ କରାଗଲା!',
@@ -604,7 +556,6 @@ const locales = {
     MINIPLAYER: 'ମିନି ପ୍ଲେୟାର',
     ORIGINAL: 'ମୂଳ',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'ଅପଲୋଡ୍ ତାରିଖ',
   },
   'pa-Guru-IN': {
     ADS_BLOCKED: 'ਵੀਡੀਓ ਤੋਂ ਪਹਿਲਾਂ ਵਾਲੇ ਇਸ਼ਤਿਹਾਰ ਸਫਲਤਾਪੂਰਵਕ ਬਲੌਕ ਕੀਤੇ ਗਏ!',
@@ -612,7 +563,6 @@ const locales = {
     MINIPLAYER: 'ਮਿਨੀ ਪਲੇਅਰ',
     ORIGINAL: 'ਮੂਲ',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'ਅੱਪਲੋਡ ਕਰਨ ਦੀ ਤਾਰੀਖ',
   },
   'pl-PL': {
     ADS_BLOCKED: 'Reklamy przed filmem pomyślnie zablokowane!',
@@ -620,7 +570,6 @@ const locales = {
     MINIPLAYER: 'Miniodtwarzacz',
     ORIGINAL: 'oryginalny',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Data przesłania',
   },
   'pt-BR': {
     ADS_BLOCKED: 'Anúncios pré-roll bloqueados com sucesso!',
@@ -628,7 +577,6 @@ const locales = {
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Data de envio',
   },
   'pt-PT': {
     ADS_BLOCKED: 'Anúncios pré-roll bloqueados com sucesso!',
@@ -636,7 +584,6 @@ const locales = {
     MINIPLAYER: 'Minileitor',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Data de carregamento',
   },
   'ro-RO': {
     ADS_BLOCKED: 'Reclamele pre-roll au fost blocate cu succes!',
@@ -644,7 +591,6 @@ const locales = {
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Data încărcării',
   },
   'ru-RU': {
     ADS_BLOCKED: 'Реклама перед видео успешно заблокирована!',
@@ -652,7 +598,6 @@ const locales = {
     MINIPLAYER: 'Мини-проигрыватель',
     ORIGINAL: 'оригинальная',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Дата загрузки',
   },
   'si-LK': {
     ADS_BLOCKED: 'වීඩියෝවට පෙර දැන්වීම් සාර්ථකව අවහිර කරන ලදී!',
@@ -660,7 +605,6 @@ const locales = {
     MINIPLAYER: 'කුඩා වාදකය',
     ORIGINAL: 'මුල්',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'උඩුගත කළ දිනය',
   },
   'sk-SK': {
     ADS_BLOCKED: 'Reklamy pred videom boli úspešne zablokované!',
@@ -668,7 +612,6 @@ const locales = {
     MINIPLAYER: 'Miniprehrávač',
     ORIGINAL: 'pôvodná',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Dátum nahrania',
   },
   'sl-SI': {
     ADS_BLOCKED: 'Oglasi pred predvajanjem uspešno blokirani!',
@@ -676,7 +619,6 @@ const locales = {
     MINIPLAYER: 'Minipredvajalnik',
     ORIGINAL: 'Izvirnik',
     SHORTS: 'Kratki videoposnetki',
-    UPLOAD_DATE: 'Datum nalaganja',
   },
   'sq-AL': {
     ADS_BLOCKED: 'Reklamat para videos u bllokuan me sukses!',
@@ -684,7 +626,6 @@ const locales = {
     MINIPLAYER: 'Miniluajtësi',
     ORIGINAL: 'origjinale',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Data e ngarkimit',
   },
   'sr-Cyrl-RS': {
     ADS_BLOCKED: 'Рекламе пре видеа су успешно блокиране!',
@@ -692,7 +633,6 @@ const locales = {
     MINIPLAYER: 'Мини-плејер',
     ORIGINAL: 'оригинална',
     SHORTS: 'Шортси',
-    UPLOAD_DATE: 'Датум отпремања',
   },
   'sr-Latn-RS': {
     ADS_BLOCKED: 'Reklame pre videa su uspešno blokirane!',
@@ -700,7 +640,6 @@ const locales = {
     MINIPLAYER: 'Mini-plejer',
     ORIGINAL: 'originalna',
     SHORTS: 'Šortsi',
-    UPLOAD_DATE: 'Datum otpremanja',
   },
   'sw-TZ': {
     ADS_BLOCKED: 'Matangazo ya kabla ya video yamezuiwa!',
@@ -708,7 +647,6 @@ const locales = {
     MINIPLAYER: 'Kichezaji kidogo',
     ORIGINAL: 'halisi',
     SHORTS: 'Video Fupi',
-    UPLOAD_DATE: 'Tarehe ya kupakia',
   },
   'ta-IN': {
     ADS_BLOCKED: 'வீடியோவிற்கு முந்தைய விளம்பரங்கள் வெற்றிகரமாக முடக்கப்பட்டன!',
@@ -716,7 +654,6 @@ const locales = {
     MINIPLAYER: 'மினிபிளேயர்',
     ORIGINAL: 'அசல்',
     SHORTS: 'Shorts வீடியோக்கள்',
-    UPLOAD_DATE: 'பதிவேற்றிய தேதி',
   },
   'te-IN': {
     ADS_BLOCKED: 'వీడియోకి ముందు వచ్చే యాడ్స్ విజయవంతంగా నిరోధించబడ్డాయి!',
@@ -724,7 +661,6 @@ const locales = {
     MINIPLAYER: 'మినీ ప్లేయర్',
     ORIGINAL: 'అసలైనది',
     SHORTS: 'షార్ట్‌లు',
-    UPLOAD_DATE: 'అప్‌లోడ్ తేదీ',
   },
   'th-TH': {
     ADS_BLOCKED: 'บล็อกโฆษณาก่อนเล่นวิดีโอเรียบร้อยแล้ว!',
@@ -732,7 +668,6 @@ const locales = {
     MINIPLAYER: 'มินิเพลเยอร์',
     ORIGINAL: 'เสียงต้นฉบับ',
     SHORTS: 'วิดีโอสั้น',
-    UPLOAD_DATE: 'วันที่อัปโหลด',
   },
   'tr-TR': {
     ADS_BLOCKED: 'Video öncesi reklamlar başarıyla engellendi!',
@@ -740,7 +675,6 @@ const locales = {
     MINIPLAYER: 'Mini oynatıcı',
     ORIGINAL: 'orijinal',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Yükleme tarihi',
   },
   'uk-UA': {
     ADS_BLOCKED: 'Рекламу перед відео успішно заблоковано!',
@@ -748,7 +682,6 @@ const locales = {
     MINIPLAYER: 'Мініпрогравач',
     ORIGINAL: 'оригінал',
     SHORTS: 'Відео Shorts',
-    UPLOAD_DATE: 'Дата завантаження',
   },
   'ur-PK': {
     ADS_BLOCKED: 'ویڈیو سے پہلے آنے والے اشتہارات کامیابی سے بلاک کر دیے گئے!',
@@ -756,7 +689,6 @@ const locales = {
     MINIPLAYER: 'مِنی پلیئر',
     ORIGINAL: 'اصل',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'اپ لوڈ کرنے کی تاریخ',
   },
   'uz-Latn-UZ': {
     ADS_BLOCKED: 'Video oldidan reklamalar muvaffaqiyatli bloklandi!',
@@ -764,7 +696,6 @@ const locales = {
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'original',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Yuklangan sana',
   },
   'vi-VN': {
     ADS_BLOCKED: 'Đã chặn thành công quảng cáo đầu video!',
@@ -772,7 +703,6 @@ const locales = {
     MINIPLAYER: 'Trình phát thu nhỏ',
     ORIGINAL: 'gốc',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: 'Ngày tải lên',
   },
   'zh-Hans-CN': {
     ADS_BLOCKED: '片头广告已成功拦截！',
@@ -786,12 +716,10 @@ const locales = {
     SHARE: '分享',
     SHORTS: '短视频',
     STREAMED_METADATA_INNERTEXT_RE: '直播时间：',
-    STREAMED_TITLE_ARIA_LABEL: '直播时间：',
+    STREAMED_TITLE_ARIA_LABEL_RE: '直播时间：',
     TAKE_SNAPSHOT: '截取快照',
-    TELL_US_WHY: '告诉我们原因',
     THANKS: '感谢',
     UNHIDE_CHANNEL: '取消隐藏频道',
-    UPLOAD_DATE: '上传日期',
   },
   'zh-Hant-HK': {
     ADS_BLOCKED: '影片前廣告已成功封鎖！',
@@ -799,7 +727,6 @@ const locales = {
     MINIPLAYER: '迷你播放器',
     ORIGINAL: '原聲',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: '上載日期',
   },
   'zh-Hant-TW': {
     ADS_BLOCKED: '影片前廣告已成功封鎖！',
@@ -807,7 +734,6 @@ const locales = {
     MINIPLAYER: '迷你播放器',
     ORIGINAL: '原文',
     SHORTS: 'Shorts',
-    UPLOAD_DATE: '上傳日期',
   },
   'zu-ZA': {
     ADS_BLOCKED: 'Izikhangiso zangaphambi kwevidiyo zivinjwe ngempumelelo!',
@@ -815,7 +741,6 @@ const locales = {
     MINIPLAYER: 'Isidlali Esincane',
     ORIGINAL: 'yokuqala',
     SHORTS: 'Okufushane',
-    UPLOAD_DATE: 'Idethi yokulayisha',
   },
 }
 
@@ -886,6 +811,7 @@ const Svgs = {
   MINIPLAYER_NEW_PATH: 'M21.20 3.01C21.66 3.05 22.08 3.26 22.41 3.58C22.73 3.91 22.94 4.33 22.98 4.79L23 5V19C23.00 19.49 22.81 19.97 22.48 20.34C22.15 20.70 21.69 20.93 21.20 20.99L21 21H3L2.79 20.99C2.30 20.93 1.84 20.70 1.51 20.34C1.18 19.97 .99 19.49 1 19V13H3V19H21V5H11V3H21L21.20 3.01ZM1.29 3.29C1.10 3.48 1.00 3.73 1.00 4C1.00 4.26 1.10 4.51 1.29 4.70L5.58 9H3C2.73 9 2.48 9.10 2.29 9.29C2.10 9.48 2 9.73 2 10C2 10.26 2.10 10.51 2.29 10.70C2.48 10.89 2.73 11 3 11H9V5C9 4.73 8.89 4.48 8.70 4.29C8.51 4.10 8.26 4 8 4C7.73 4 7.48 4.10 7.29 4.29C7.10 4.48 7 4.73 7 5V7.58L2.70 3.29C2.51 3.10 2.26 3.00 2 3.00C1.73 3.00 1.48 3.10 1.29 3.29ZM19.10 11.00L19 11H12L11.89 11.00C11.66 11.02 11.45 11.13 11.29 11.29C11.13 11.45 11.02 11.66 11.00 11.89L11 12V17C10.99 17.24 11.09 17.48 11.25 17.67C11.42 17.85 11.65 17.96 11.89 17.99L12 18H19L19.10 17.99C19.34 17.96 19.57 17.85 19.74 17.67C19.90 17.48 20.00 17.24 20 17V12L19.99 11.89C19.97 11.66 19.87 11.45 19.70 11.29C19.54 11.13 19.33 11.02 19.10 11.00ZM13 16V13H18V16H13Z',
   MINIPLAYER_OLD_PATH: 'M25,17 L17,17 L17,23 L25,23 L25,17 L25,17 Z M29,25 L29,10.98 C29,9.88 28.1,9 27,9 L9,9 C7.9,9 7,9.88 7,10.98 L7,25 C7,26.1 7.9,27 9,27 L27,27 C28.1,27 29,26.1 29,25 L29,25 Z M27,25.02 L9,25.02 L9,10.97 L27,10.97 L27,25.02 L27,25.02 Z',
   RESTORE: '<svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M8.76 1.487c9.617-2.963 17.833 7.473 12.698 16.126-5.135 8.652-18.231 6.441-20.238-3.42-.267-1.307 1.693-1.707 1.96-.4 1.321 6.495 8.971 9.382 14.254 5.38 5.016-3.8 4.683-11.443-.644-14.793A9 9 0 0 0 4.518 7H7c1.333 0 1.333 2 0 2H1V3c0-1.333 2-1.333 2 0v2.678a11 11 0 0 1 5.76-4.192Z"/></svg>',
+  SHARE_PATH_MOBILE: 'M10 3.158V7.51c-5.428.223-8.27 3.75-8.875 11.199-.04.487-.07.975-.09 1.464l-.014.395c-.014.473.578.684.88.32.302-.368.61-.73.925-1.086l.244-.273c1.79-1.967 3-2.677 4.93-2.917a18.011 18.011 0 012-.112v4.346a1 1 0 001.646.763l9.805-8.297 1.55-1.31-1.55-1.31-9.805-8.297A1 1 0 0010 3.158Zm2 6.27v.002-4.116l7.904 6.688L12 18.689v-4.212l-2.023.024c-1.935.022-3.587.17-5.197 1.024a9 9 0 00-1.348.893c.355-1.947.916-3.39 1.63-4.425 1.062-1.541 2.607-2.385 5.02-2.485L12 9.428Z',
 }
 
 // YouTube channel URLs: https://support.google.com/youtube/answer/6180214
@@ -1326,7 +1252,7 @@ const configureCss = (() => {
         hideCssSelectors.push('ytd-browse[page-subtype="channels"] #page-header-banner')
       }
       if (mobile) {
-        hideCssSelectors.push('html[cpfyt-page="channel"] .yt-page-header-view-model__page-header-banner-container')
+        hideCssSelectors.push('html[cpfyt-page="channel"] .ytPageHeaderViewModelBannerContainer')
       }
     }
 
@@ -1475,8 +1401,6 @@ const configureCss = (() => {
       if (mobile) {
         hideCssSelectors.push(
           'ytm-slim-video-metadata-section-renderer + ytm-item-section-renderer',
-          // Shorts button
-          'ytm-button-renderer.icon-shorts_comment',
           // Shorts button (new UI)
           'reel-action-bar-view-model > button-view-model:nth-of-type(1)',
         )
@@ -1846,10 +1770,8 @@ const configureCss = (() => {
           `ytm-slim-video-action-bar-renderer button-view-model:has(button[aria-label="${getString('SHARE')}"])`,
           // Menu items
           `.${Classes.HIDE_SHARE_THANKS_CLIP}`,
-          // Shorts button
-          '.reel-player-overlay-actions .icon-shorts_share',
           // Shorts button (new UI)
-          `reel-action-bar-view-model button-view-model:has(button[title="${getString('SHARE')}"])`,
+          `reel-action-bar-view-model button-view-model:has(path[d="${Svgs.SHARE_PATH_MOBILE}"])`,
           // Full screen button
           `player-fullscreen-action-menu ytm-slim-metadata-button-renderer:has(button[aria-label="${getString('SHARE')}"])`,
         )
@@ -2911,8 +2833,8 @@ const configureCss = (() => {
         hideCssSelectors.push(
           // The user menu is replaced with "Open App" on videos when logged out
           'html.watch-scroll .mobile-topbar-header-sign-in-button',
-          // The overflow menu has an Open App menu item we'll add this class to
-          `ytm-menu-item.${Classes.HIDE_OPEN_APP}`,
+          // Video and Short menus have an Open App menu item we'll add this class to
+          `.${Classes.HIDE_OPEN_APP}`,
           // The last item in the full screen menu is Open App
           '#menu .multi-page-menu-system-link-list:has(+ ytm-privacy-tos-footer-renderer)',
         )
@@ -3812,13 +3734,13 @@ async function addHideChannelToMobileVideoMenu($menu) {
   let hasIcon = Boolean($menuItems.querySelector('c3-icon'))
   let hideChannelMenuItemHTML = html`
     <ytm-menu-item id="cpfyt-hide-channel-menu-item">
-      <button class="menu-item-button list-item-styles">
+      <button class="menu-item-button">
         ${hasIcon ? `<c3-icon>
           <div style="width: 100%; height: 100%; fill: currentcolor;">
             ${Svgs.DELETE}
           </div>
         </c3-icon>` : ''}
-        <span class="yt-core-attributed-string" role="text">
+        <span role="text">
           ${getString('HIDE_CHANNEL')}
         </span>
       </button>
@@ -3897,7 +3819,7 @@ function getChannelDetailsFromVideo($video) {
   }
   if (mobile) {
     let $thumbnailLink =/** @type {HTMLAnchorElement} */ ($video.querySelector('ytm-channel-thumbnail-with-link-renderer > a'))
-    let $name = /** @type {HTMLElement} */ ($video.querySelector('ytm-badge-and-byline-renderer .yt-core-attributed-string'))
+    let $name = /** @type {HTMLElement} */ ($video.querySelector('ytm-badge-and-byline-renderer .ytAttributedStringHost'))
     if ($name) {
       return {
         name: $name.textContent,
@@ -4323,7 +4245,6 @@ async function observeDesktopRichGridItems(options) {
 /** @param {HTMLElement} $dropdown */
 async function onDesktopMenuAppeared($dropdown) {
   log('menu appeared', $dropdown)
-
 
   // YouTube currently has 2 menu components: <tp-yt-paper-listbox> and <yt-list-item-view-model>
   let $menu = $dropdown.querySelector('tp-yt-paper-listbox, yt-list-item-view-model')
@@ -5097,30 +5018,37 @@ function onMobileMenuAppeared($menu) {
   log('menu appeared')
 
   if (config.hideOpenApp || config.hideShareThanksClip) {
-    let menuItems = $menu.querySelectorAll('ytm-menu-item')
-    for (let $menuItem of menuItems) {
-      let itemText = $menuItem.textContent
-      if (config.hideOpenApp && itemText == getYtString('OPEN_APP')) {
-        log('tagging Open App menu item by text')
-        $menuItem.classList.add(Classes.HIDE_OPEN_APP)
-      }
-      else if (config.hideShareThanksClip && itemText == getString('SHARE')) {
-        log('tagging Share menu item by text')
-        $menuItem.classList.add(Classes.HIDE_SHARE_THANKS_CLIP)
-      }
-      else {
-        requestAnimationFrame(() => {
-          if (config.hideOpenApp && $menuItem.querySelector('path[d="M19 5H8a1 1 0 000 2h7.586L5.293 17.293a1 1 0 101.414 1.414L17 8.414V16a1 1 0 002 0V5Z"]')) {
+    requestAnimationFrame(() => {
+      // YouTube currently has 2 menu item variants
+      let menuItems = $menu.querySelectorAll('ytm-menu-item, yt-list-item-view-model')
+      for (let $menuItem of menuItems) {
+        let itemText = $menuItem.textContent
+        if (config.hideOpenApp) {
+          if (itemText == getYtString('OPEN_APP')) {
+            log('tagging Open App menu item by text')
+            $menuItem.classList.add(Classes.HIDE_OPEN_APP)
+            continue
+          }
+          else if ($menuItem.querySelector('path[d="M19 5H8a1 1 0 000 2h7.586L5.293 17.293a1 1 0 101.414 1.414L17 8.414V16a1 1 0 002 0V5Z"]')) {
             log('tagging Open App menu item by icon')
             $menuItem.classList.add(Classes.HIDE_OPEN_APP)
+            continue
           }
-          else if (config.hideShareThanksClip && $menuItem.querySelector('path[d="M10 3.158V7.51c-5.428.223-8.27 3.75-8.875 11.199-.04.487-.07.975-.09 1.464l-.014.395c-.014.473.578.684.88.32.302-.368.61-.73.925-1.086l.244-.273c1.79-1.967 3-2.677 4.93-2.917a18.011 18.011 0 012-.112v4.346a1 1 0 001.646.763l9.805-8.297 1.55-1.31-1.55-1.31-9.805-8.297A1 1 0 0010 3.158Zm2 6.27v.002-4.116l7.904 6.688L12 18.689v-4.212l-2.023.024c-1.935.022-3.587.17-5.197 1.024a9 9 0 00-1.348.893c.355-1.947.916-3.39 1.63-4.425 1.062-1.541 2.607-2.385 5.02-2.485L12 9.428Z"]')) {
+        }
+        if (config.hideShareThanksClip) {
+          if (itemText == getString('SHARE')) {
+            log('tagging Share menu item by text')
+            $menuItem.classList.add(Classes.HIDE_SHARE_THANKS_CLIP)
+            continue
+          }
+          else if (config.hideShareThanksClip && $menuItem.querySelector(`path[d="${Svgs.SHARE_PATH_MOBILE}"]`)) {
             log('tagging Share menu item by icon')
             $menuItem.classList.add(Classes.HIDE_SHARE_THANKS_CLIP)
+            continue
           }
-        })
+        }
       }
-    }
+    })
   }
 
   if (config.hideChannels) {
@@ -5189,9 +5117,9 @@ function manuallyHideVideo($video, {hideDismissed = false} = {}) {
       }
     }
     if (mobile) {
-      let $videoTitleWithLabel = $video.querySelector('.media-item-headline .yt-core-attributed-string[aria-label]')
+      let $videoTitleWithLabel = $video.querySelector('.media-item-headline [aria-label]')
       if ($videoTitleWithLabel) {
-        hide = $videoTitleWithLabel.getAttribute('aria-label').includes(getString('STREAMED_TITLE_ARIA_LABEL'))
+        hide = Boolean($videoTitleWithLabel.getAttribute('aria-label').match(getString('STREAMED_TITLE_ARIA_LABEL_RE')))
       }
     }
     $video.classList.toggle(Classes.HIDE_STREAMED, hide)
