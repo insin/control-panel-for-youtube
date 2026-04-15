@@ -2374,16 +2374,6 @@ const configureCss = (() => {
             }
           `)
         }
-        if (config.hideSidebarWhenEmpty) {
-          cssRules.push(`
-            #secondary:has(> #secondary-inner.cpfyt-empty) {
-              width: 0 !important;
-              min-width: 0 !important;
-              overflow: hidden !important;
-              padding-right: 0 !important;
-            }
-          `)
-        }
         if (config.showChannelHeadersInListView) {
           // Move channel avatar and name up above the thumbnail
           cssRules.push(`
@@ -2546,6 +2536,16 @@ const configureCss = (() => {
           // Offers
           '#offer-module',
         )
+      }
+      if (config.hideSidebarWhenEmpty) {
+        cssRules.push(`
+          #secondary:has(> #secondary-inner.cpfyt-empty) {
+            width: 0 !important;
+            min-width: 0 !important;
+            overflow: hidden !important;
+            padding-right: 0 !important;
+          }
+        `)
       }
       if (config.hideShortsMetadataUntilHover) {
         cssRules.push(`
