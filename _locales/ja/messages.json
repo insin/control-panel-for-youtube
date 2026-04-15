@@ -299,6 +299,9 @@
   "hideSidebarSubscriptions": {
     "message": "登録チャンネルのリストを非表示にする"
   },
+  "hideSidebarWhenEmpty": {
+    "message": "サイドバーが空のときは非表示"
+  },
   "hideSponsored": {
     "message": "スポンサー動画とプロモーションを非表示"
   },

@@ -125,6 +125,7 @@ export type SiteConfig = {
   hideMerchEtc: boolean
   hideRelatedBelow: boolean
   hideSidebarSubscriptions: boolean
+  hideSidebarWhenEmpty: boolean
   hideShortsMetadataUntilHover: boolean
   hideShortsRemixButton: boolean
   hideSubscriptionsLatestBar: boolean

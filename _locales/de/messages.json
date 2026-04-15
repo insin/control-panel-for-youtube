@@ -300,6 +300,9 @@
   "hideSidebarSubscriptions": {
     "message": "Abonnementliste ausblenden"
   },
+  "hideSidebarWhenEmpty": {
+    "message": "Seitenleiste ausblenden, wenn leer"
+  },
   "hideSponsored": {
     "message": "Gesponserte Videos und Werbeaktionen ausblenden"
   },

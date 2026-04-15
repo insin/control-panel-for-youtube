@@ -300,6 +300,9 @@
   "hideSidebarSubscriptions": {
     "message": "Masquer la liste des abonnements"
   },
+  "hideSidebarWhenEmpty": {
+    "message": "Masquer la barre latérale si vide"
+  },
   "hideSponsored": {
     "message": "Masquer les vidéos sponsorisées et promotions"
   },

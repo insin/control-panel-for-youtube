@@ -300,6 +300,9 @@
   "hideSidebarSubscriptions": {
     "message": "隐藏订阅列表"
   },
+  "hideSidebarWhenEmpty": {
+    "message": "侧边栏为空时隐藏"
+  },
   "hideSponsored": {
     "message": "隐藏赞助视频和宣传片"
   },

@@ -300,6 +300,9 @@
   "hideSidebarSubscriptions": {
     "message": "Hide Subscriptions list"
   },
+  "hideSidebarWhenEmpty": {
+    "message": "Hide sidebar when empty"
+  },
   "hideSponsored": {
     "message": "Hide Sponsored videos & promos"
   },

@@ -77,6 +77,7 @@ let defaultConfig = {
   hideMerchEtc: true,
   hideRelatedBelow: true,
   hideSidebarSubscriptions: false,
+  hideSidebarWhenEmpty: false,
   hideShortsMetadataUntilHover: true,
   hideShortsRemixButton: true,
   hideSubscriptionsLatestBar: true,
@@ -2447,6 +2448,16 @@ const configureCss = (() => {
               #chips-content {
                 padding-left: 8px;
               }
+            }
+          `)
+        }
+        if (config.hideSidebarWhenEmpty) {
+          cssRules.push(`
+            #secondary:has(> #secondary-inner.cpfyt-empty) {
+              width: 0 !important;
+              min-width: 0 !important;
+              overflow: hidden !important;
+              padding-right: 0 !important;
             }
           `)
         }
@@ -5563,6 +5574,24 @@ async function tweakVideoPage() {
     }
     if (config.restoreMiniplayerButton) {
       restoreMiniplayerButton()
+    }
+    if (config.hideSidebarWhenEmpty) {
+      run(async() => {
+        let $secondaryInner = await getElement('#secondary-inner', {
+          name: '#secondary-inner (hideSidebarWhenEmpty)',
+          stopIf: currentUrlChanges(),
+        })
+        if (!$secondaryInner) return
+        let observer = new ResizeObserver(([entry]) => {
+          $secondaryInner.classList.toggle('cpfyt-empty', entry.contentRect.height < 1)
+        })
+        observer.observe($secondaryInner)
+        pageObservers.set('#secondary-inner resize observer (hideSidebarWhenEmpty)', {
+          disconnect() {
+            observer.disconnect()
+          }
+        })
+      })
     }
   }
   if (config.hideWatched || config.hideStreamed || config.hideChannels || config.hideLowViews) {
