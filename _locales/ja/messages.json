@@ -98,6 +98,9 @@
   "disableHomeFeedNote": {
     "message": "ログイン時に登録チャンネルへリダイレクト"
   },
+  "disableStableVolume": {
+    "message": "「一定音量」を無効にする"
+  },
   "disableThemedHover": {
     "message": "テーマホバー効果を無効にする"
   },
@@ -403,6 +406,9 @@
   },
   "removePink": {
     "message": "進捗バーからピンクのグラデーションを削除"
+  },
+  "requiresPageRefresh": {
+    "message": "適用にはページの再読み込みが必要です"
   },
   "restoreMiniplayerButton": {
     "message": "ミニプレーヤーボタンを復元する"

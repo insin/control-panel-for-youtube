@@ -43,12 +43,14 @@ let captions = {
 
 let extraTranslations = {
   "desktopVersion": {
+    "de": " (Desktop-Version)",
     "en": " (desktop version)",
     "ja": "（デスクトップ版）",
     "zh_CN": "（桌面版）",
     "fr": " (version bureau)",
   },
   "mobileVersion": {
+    "de": " (Mobilversion)",
     "en": " (mobile version)",
     "ja": "（モバイル版）",
     "zh_CN": "（手机版）",
@@ -138,6 +140,7 @@ ${messages.videoLists}:
 ${messages.videoPages}:
 
 • ${messages.disableAutoplay}
+• ${messages.disableStableVolume}
 • ${messages.disableAmbientMode}
 • ${messages.hideRelated}
 • ${messages.hideNextButton}
@@ -153,6 +156,7 @@ ${messages.videoPages}:
 • ${messages.hideEndVideos}${messages.desktopVersion}
 • ${messages.hideJumpAheadButton}${messages.desktopVersion}
 • ${messages.hideChat}${messages.desktopVersion}
+• ${messages.hideSidebarWhenEmpty}${messages.desktopVersion}
 • ${messages.addTakeSnapshot} (JPEG / PNG) ${messages.desktopVersion}
 • ${messages.downloadTranscript}${messages.desktopVersion}
 

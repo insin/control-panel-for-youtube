@@ -98,6 +98,9 @@
   "disableHomeFeedNote": {
     "message": "Seulement si connecté(e) - redirige vers les Abonnements"
   },
+  "disableStableVolume": {
+    "message": "Désactiver le volume stable"
+  },
   "disableThemedHover": {
     "message": "Désactiver les effets de survol thématiques"
   },
@@ -404,6 +407,9 @@
   },
   "removePink": {
     "message": "Supprimer le dégradé rose des barres de progression"
+  },
+  "requiresPageRefresh": {
+    "message": "Nécessite d'actualiser la page"
   },
   "restoreMiniplayerButton": {
     "message": "Restaurer le bouton du mini-lecteur"

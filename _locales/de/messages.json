@@ -98,6 +98,9 @@
   "disableHomeFeedNote": {
     "message": "Nur wenn eingeloggt - Weiterleitung zu Abonnements"
   },
+  "disableStableVolume": {
+    "message": "„Gleichbleibende Lautstärke“ deaktivieren"
+  },
   "disableThemedHover": {
     "message": "Thematische Hover-Effekte deaktivieren"
   },
@@ -404,6 +407,9 @@
   },
   "removePink": {
     "message": "Rosa Farbverlauf aus Fortschrittsbalken entfernen"
+  },
+  "requiresPageRefresh": {
+    "message": "Zum Anwenden Seite neu laden"
   },
   "restoreMiniplayerButton": {
     "message": "\"Miniplayer\"-Schaltfläche wiederherstellen"

@@ -98,6 +98,9 @@
   "disableHomeFeedNote": {
     "message": "Only when logged in - redirects to Subscriptions"
   },
+  "disableStableVolume": {
+    "message": "Disable Stable Volume"
+  },
   "disableThemedHover": {
     "message": "Disable themed hover effects"
   },
@@ -404,6 +407,9 @@
   },
   "removePink": {
     "message": "Remove pink gradient from progress bars"
+  },
+  "requiresPageRefresh": {
+    "message": "Requires page refresh to apply"
   },
   "restoreMiniplayerButton": {
     "message": "Restore Miniplayer button"

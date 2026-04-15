@@ -13,6 +13,7 @@ let defaultConfig = {
   disableAmbientMode: true,
   disableAutoplay: true,
   disableHomeFeed: false,
+  disableStableVolume: false,
   hiddenChannels: [],
   hideAI: true,
   hideAskButton: false,
@@ -5852,6 +5853,19 @@ function main() {
   if (config.enabled) {
     if (config.blockAds) {
       blockAds()
+    }
+    if (config.disableStableVolume) {
+      let pref = JSON.parse(localStorage['yt-player-drc-pref'] || 'null')
+      if (pref?.data !== '0' || (pref?.expiration ?? 0) < Date.now()) {
+        log('Disabling Stable Volume')
+        localStorage['yt-player-drc-pref'] = JSON.stringify({
+          data: '0',
+          creation: Date.now(),
+          expiration: Date.now() + 365 * 24 * 60 * 60 * 1000,
+        })
+      } else {
+        log('Stable Volume already disabled')
+      }
     }
     if (desktop && config.disableVideoPreviews) {
       disableVideoPreviews()

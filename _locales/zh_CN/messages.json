@@ -98,6 +98,9 @@
   "disableHomeFeedNote": {
     "message": "仅当登录时——重定向到订阅页面"
   },
+  "disableStableVolume": {
+    "message": "禁用“稳定音量”"
+  },
   "disableThemedHover": {
     "message": "停用主题悬停效果"
   },
@@ -404,6 +407,9 @@
   },
   "removePink": {
     "message": "从进度条中移除粉色渐变"
+  },
+  "requiresPageRefresh": {
+    "message": "刷新页面后生效"
   },
   "restoreMiniplayerButton": {
     "message": "恢复迷你播放器按钮"

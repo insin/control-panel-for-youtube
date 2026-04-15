@@ -59,6 +59,7 @@ for (let translationId of [
   'disableAutoplay',
   'disableHomeFeed',
   'disableHomeFeedNote',
+  'disableStableVolume',
   'disableThemedHover',
   'disableThemedHoverNote',
   'disableVideoPreviews',
@@ -174,6 +175,7 @@ for (let translationId of [
 
 for (let translationClass of [
   'inHomeAndSubscriptionsNote',
+  'requiresPageRefresh',
 ]) {
   let translation = chrome.i18n.getMessage(translationClass)
   for (let $el of document.querySelectorAll(`.${translationClass}`)) {
@@ -205,6 +207,7 @@ let defaultConfig = {
   disableAmbientMode: true,
   disableAutoplay: true,
   disableHomeFeed: false,
+  disableStableVolume: false,
   hiddenChannels: [],
   hideAI: true,
   hideAskButton: false,
