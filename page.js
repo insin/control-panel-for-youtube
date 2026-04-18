@@ -2233,31 +2233,6 @@ const configureCss = (() => {
             background: none !important;
             box-shadow: none !important;
           }
-          /* Video descriptions */
-          ytd-watch-metadata {
-            --yt-saturated-base-background: unset !important;
-            --yt-saturated-raised-background:  unset !important;
-            --yt-saturated-additive-background:  unset !important;
-            --yt-saturated-text-primary: unset !important;
-            --yt-saturated-text-secondary: unset !important;
-            --yt-saturated-outline: unset !important;
-            --yt-saturated-key-light: unset !important;
-            --yt-saturated-collection-stack: unset !important;
-            --yt-saturated-inverted-background: unset !important;
-            --yt-saturated-text-primary-inverse: unset !important;
-            --yt-saturated-text-disabled: unset !important;
-            --yt-saturated-drop-shadow: unset !important;
-            --yt-saturated-card-outline: unset !important;
-            --yt-saturated-overlay-background: unset !important;
-            --yt-saturated-overlay-text-primary: unset !important;
-          }
-          #description.ytd-watch-metadata:hover #snippet-text.ytd-text-inline-expander .yt-core-attributed-string--link-inherit-color[style] {
-            color: inherit !important;
-          }
-          #info.ytd-watch-info-text a,
-          #description.ytd-watch-metadata #snippet-text.ytd-text-inline-expander a {
-            color: var(--yt-spec-call-to-action);
-          }
         `)
       }
       let gridsToList = [
@@ -5501,6 +5476,61 @@ async function tweakVideoPage() {
     })
     if (config.hideChannels && !config.hideEndVideos && config.hiddenChannels.length > 0) {
       observeDesktopEndscreenVideos()
+    }
+    if (config.disableThemedHover) {
+      // The theme is applied to snippet text on hover using style="color: …",
+      // we need to grab that before unsetting theme variables.
+      run(async() => {
+        let $watchMetadata = await getElement('ytd-watch-metadata', {
+          name: 'ytd-watch-metadata (disableThemedHover)',
+          stopIf: currentUrlChanges(),
+        })
+        if (!$watchMetadata) return
+        let $style
+        observeElement($watchMetadata, () => {
+          let ytSaturatedTextPrimary = $watchMetadata.style.getPropertyValue('--yt-saturated-text-primary')
+          if (!ytSaturatedTextPrimary) return
+          let [r, g, b] = ytSaturatedTextPrimary.match(/\d+/g).map(Number)
+          let hoverTextColor = `rgb(${r}, ${g}, ${b})`
+          log(`disableThemedHover: snippet hover text color is ${hoverTextColor}`)
+          $style ??= addStyle()
+          $style.textContent = dedent(`
+            ytd-watch-metadata {
+              --yt-saturated-base-background: unset !important;
+              --yt-saturated-raised-background: unset !important;
+              --yt-saturated-additive-background: unset !important;
+              --yt-saturated-text-primary: unset !important;
+              --yt-saturated-text-secondary: unset !important;
+              --yt-saturated-outline: unset !important;
+              --yt-saturated-key-light: unset !important;
+              --yt-saturated-collection-stack: unset !important;
+              --yt-saturated-inverted-background: unset !important;
+              --yt-saturated-text-primary-inverse: unset !important;
+              --yt-saturated-text-disabled: unset !important;
+              --yt-saturated-drop-shadow: unset !important;
+              --yt-saturated-card-outline: unset !important;
+              --yt-saturated-overlay-background: unset !important;
+              --yt-saturated-overlay-text-primary: unset !important;
+            }
+            #snippet-text span[style="color: ${hoverTextColor};"] {
+              color: rgb(19, 19, 19) !important;
+            }
+            html[dark] #snippet-text span[style="color: ${hoverTextColor};"] {
+              color: rgb(255, 255, 255) !important;
+            }
+          `)
+        }, {
+          leading: true,
+          name: 'ytd-watch-metadata[style] (disableThemedHover)',
+          observers: pageObservers,
+          onDisconnect: () => {
+            $style?.remove()
+          }
+        }, {
+          attributes: true,
+          attributeFilter: ['style'],
+        })
+      })
     }
     if (config.restoreMiniplayerButton) {
       restoreMiniplayerButton()
