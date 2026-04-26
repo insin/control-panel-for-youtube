@@ -4190,7 +4190,7 @@ async function observeDesktopRichGridItems(options) {
       for (let $addedNode of mutation.addedNodes) {
         if (!($addedNode instanceof HTMLElement)) continue
         if ($addedNode.nodeName == 'YTD-RICH-ITEM-RENDERER') {
-          processGridItem($addedNode, `grid item ${++itemCount}`)
+          requestAnimationFrame(() => processGridItem($addedNode, `grid item ${++itemCount}`))
           videosAdded++
         }
         if (fixGhostCards && $addedNode.nodeName == 'YTD-CONTINUATION-ITEM-RENDERER') {
