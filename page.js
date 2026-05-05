@@ -4190,7 +4190,7 @@ async function observeDesktopRichGridItems(options) {
       for (let $addedNode of mutation.addedNodes) {
         if (!($addedNode instanceof HTMLElement)) continue
         if ($addedNode.nodeName == 'YTD-RICH-ITEM-RENDERER') {
-          processGridItem($addedNode, `grid item ${++itemCount}`)
+          requestAnimationFrame(() => processGridItem($addedNode, `grid item ${++itemCount}`))
           videosAdded++
         }
         if (fixGhostCards && $addedNode.nodeName == 'YTD-CONTINUATION-ITEM-RENDERER') {
@@ -5490,9 +5490,15 @@ async function tweakVideoPage() {
         observeElement($watchMetadata, () => {
           let ytSaturatedTextPrimary = $watchMetadata.style.getPropertyValue('--yt-saturated-text-primary')
           if (!ytSaturatedTextPrimary) return
-          let [r, g, b] = ytSaturatedTextPrimary.match(/\d+/g).map(Number)
-          let hoverTextColor = `rgb(${r}, ${g}, ${b})`
-          log(`disableThemedHover: snippet hover text color is ${hoverTextColor}`)
+          let hoverTextColor
+          let match = ytSaturatedTextPrimary.match(/\d+/g)
+          if (match) {
+            let [r, g, b] = match.map(Number)
+            hoverTextColor = `rgb(${r}, ${g}, ${b})`
+            log(`disableThemedHover: snippet hover text color is ${hoverTextColor}`)
+          } else {
+            warn('disableThemedHover: no match for ytSaturatedTextPrimary=', ytSaturatedTextPrimary)
+          }
           $style ??= addStyle()
           $style.textContent = dedent(`
             ytd-watch-metadata {
@@ -5512,12 +5518,12 @@ async function tweakVideoPage() {
               --yt-saturated-overlay-background: unset !important;
               --yt-saturated-overlay-text-primary: unset !important;
             }
-            #snippet-text span[style="color: ${hoverTextColor};"] {
+            ${hoverTextColor ? `#snippet-text span[style="color: ${hoverTextColor};"] {
               color: rgb(19, 19, 19) !important;
             }
             html[dark] #snippet-text span[style="color: ${hoverTextColor};"] {
               color: rgb(255, 255, 255) !important;
-            }
+            }` : ''}
           `)
         }, {
           leading: true,
