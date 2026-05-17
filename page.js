@@ -2746,6 +2746,7 @@ const configureCss = (() => {
             display: flex;
             flex-direction: column;
           }
+          /* Keep the top section where it is */
           #sections.ytd-guide-renderer[cpfyt-subscriptions-first] > :nth-child(1) {
             order: -3;
           }
@@ -2775,23 +2776,18 @@ const configureCss = (() => {
       }
       if (loggedIn && config.tidyGuideSidebar) {
         hideCssSelectors.push(
-          // Explore (3rd last)
-          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-last-child(3)',
-          // More from YouTube (2nd last)
-          '#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-last-child(2)',
+          // Explore / More from YouTube / Report History
+          '#sections.ytd-guide-renderer :is([cpfyt-section="explore"], [cpfyt-section="more-from-youtube"], [cpfyt-section="report-history"])',
           // Footer
           '#footer.ytd-guide-renderer',
         )
         if (config.hideSidebarSubscriptions) {
           if (config.restoreSidebarSubscriptionsLink) {
-            hideCssSelectors.push(
-              '#sections.ytd-guide-renderer > ytd-guide-section-renderer:is([cpfyt-section="channels"], [cpfyt-section="subscriptions"])',
-            )
+            // Hide the entire section if we moved the Subscriptions header up
+            hideCssSelectors.push('#sections.ytd-guide-renderer [cpfyt-section="subscriptions"]')
           } else {
+            // Hide channels under the Subscriptions header
             hideCssSelectors.push(
-              // Old sidebar - hide entire section
-              '#sections.ytd-guide-renderer:not([cpfyt-subscriptions-first]) > ytd-guide-section-renderer:is([cpfyt-section="channels"], [cpfyt-section="subscriptions"])',
-              // New sidebar - hide contents under the header
               '#sections.ytd-guide-renderer[cpfyt-subscriptions-first] > ytd-guide-section-renderer[cpfyt-section="subscriptions"] #items.ytd-guide-section-renderer > :not(:first-child)',
             )
           }
@@ -5210,38 +5206,60 @@ async function handleDesktopGuideBar() {
   let $sidebarSectionsContainer = await getElement('ytd-guide-renderer > #sections', {
     name: 'sidebar sections container',
   })
-  observeElement($sidebarSectionsContainer, (_, observer) => {
-    let $sections = $sidebarSectionsContainer.querySelectorAll('#sections.ytd-guide-renderer > ytd-guide-section-renderer')
-    if ($sections.length < 3) return
-    run(() => {
-      let $header = $sections[1].querySelector('#header ytd-guide-entry-renderer')
-      if (!$header) return
+
+  /**
+   * @param {HTMLElement} $section
+   */
+  function processSection($section) {
+    let sectionName
+    let $header = $section.querySelector('#header ytd-guide-entry-renderer')
+    if ($header) {
       let $endpoint = /** @type {HTMLAnchorElement} */ ($header.querySelector('a#endpoint'))
-      let section = $endpoint?.href.split('/').pop()
-      if (!section) return
-      $sections[1].setAttribute('cpfyt-section', section)
-      if (section == 'subscriptions') {
-        $sidebarSectionsContainer.setAttribute('cpfyt-subscriptions-first', '')
-        if (config.restoreSidebarSubscriptionsLink && !$sections[0].querySelector('a[href="/feed/subscriptions"]')) {
-          $header.removeAttribute('is-header')
-          let $items = $sections[0].querySelector('#items')
+      sectionName = $endpoint?.href.split('/').pop()
+    }
+    else if ($section.querySelector('a[href="/channel/UC-9-kyTW8ZkZNDHQJ6FgpwQ"]')) {
+      sectionName = 'explore'
+    }
+    else if ($section.querySelector('a[href^="https://www.youtubekids.com"]')) {
+      sectionName = 'more-from-youtube'
+    }
+    else if ($section.querySelector('a[href="/reporthistory"]')) {
+      sectionName = 'report-history'
+    }
+    if (!sectionName) return
+    $section.setAttribute('cpfyt-section', sectionName)
+    if (sectionName == 'subscriptions' && $section.parentElement.children[1] === $section) {
+      $sidebarSectionsContainer.setAttribute('cpfyt-subscriptions-first', '')
+      if (config.restoreSidebarSubscriptionsLink) {
+        run(() => {
+          let $firstSection = $section.parentElement.children[0]
+          if ($firstSection.querySelector('a[href="/feed/subscriptions"]')) return
+          let $items = $firstSection.querySelector('#items')
           if (!$items) return
+          $header.removeAttribute('is-header')
           $items.appendChild($header)
           log ('restoreSidebarSubscriptionsLink: restored Subscriptions link')
+        })
+      }
+    }
+    return sectionName
+  }
+
+  let $initialSections = $sidebarSectionsContainer.querySelectorAll('#sections.ytd-guide-renderer > ytd-guide-section-renderer')
+  if (Array.from($initialSections, processSection).includes('report-history')) {
+    return
+  }
+
+  observeElement($sidebarSectionsContainer, (mutations, observer) => {
+    for (let mutation of mutations) {
+      for (let $addedNode of mutation.addedNodes) {
+        if (!($addedNode instanceof HTMLElement)) continue
+        if (processSection($addedNode) == 'report-history') {
+          observer.disconnect()
         }
       }
-    })
-    run(() => {
-      let $header = $sections[2].querySelector('#header ytd-guide-entry-renderer')
-      if (!$header) return
-      let $endpoint = /** @type {HTMLAnchorElement} */ ($header.querySelector('a#endpoint'))
-      let section = $endpoint?.href.split('/').pop()
-      if (!section) return
-      $sections[2].setAttribute('cpfyt-section', section)
-    })
-    observer.disconnect()
+    }
   }, {
-    leading: true,
     name: 'sidebar sections container (for sections being added)',
     observers: globalObservers,
   })
