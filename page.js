@@ -1143,6 +1143,14 @@ const configureCss = (() => {
     }
 
     let cssRules = [`
+      html {
+        --cpfyt-text-primary: #0f0f0f;
+        --cpfyt-text-secondary: #606060;
+      }
+      html[dark] {
+        --cpfyt-text-primary: #f1f1f1;
+        --cpfyt-text-secondary: #aaa;
+      }
       .cpfyt-vanishing-flip {
         transition: opacity ${ANIMATE_HIDE_DURATION_MS}ms ease-out, transform ${ANIMATE_HIDE_DURATION_MS}ms ease-out !important;
         opacity: 0 !important;
@@ -1317,7 +1325,7 @@ const configureCss = (() => {
             display: flex !important;
             min-height: 36px;
             padding: 0 12px 0 16px;
-            color: var(--yt-spec-text-primary);
+            color: var(--cpfyt-text-primary);
           }
           tp-yt-paper-listbox .cpfyt-menu-item {
             -webkit-font-smoothing: antialiased;
@@ -1356,7 +1364,7 @@ const configureCss = (() => {
             background-color: rgba(255, 255, 255, .1);
           }
           .cpfyt-menu-icon {
-            color: var(--yt-spec-text-primary);
+            color: var(--cpfyt-text-primary);
             fill: currentColor;
             height: 24px;
             margin-right: 12px;
@@ -1367,7 +1375,7 @@ const configureCss = (() => {
             margin-right: 12px;
           }
           .cpfyt-menu-text {
-            color: var(--yt-spec-text-primary);
+            color: var(--cpfyt-text-primary);
             flex-basis: 0.000000001px;
             flex: 1;
             font-family: "Roboto","Arial",sans-serif;
@@ -2202,13 +2210,9 @@ const configureCss = (() => {
         cssRules.push(`
           /* Videos */
           html {
-            --cpfyt-title-color: #0f0f0f;
-            --cpfyt-metadata-color: #606060;
             --cpfyt-touch-response-color: #000;
           }
           html[dark] {
-            --cpfyt-title-color: #f1f1f1;
-            --cpfyt-metadata-color: #aaa;
             --cpfyt-touch-response-color: #fff;
           }
           ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) {
@@ -2222,10 +2226,10 @@ const configureCss = (() => {
               background-color: var(--yt-spec-touch-response, --cpfyt-touch-response-color) !important;
             }
             .ytLockupMetadataViewModelTitle {
-              color: var(--cpfyt-title-color) !important;
+              color: var(--cpfyt-text-primary) !important;
             }
             .ytLockupMetadataViewModelMetadata {
-              color: var(--cpfyt-metadata-color) !important;
+              color: var(--cpfyt-text-secondary) !important;
             }
           }
           /* Shorts */
@@ -2378,7 +2382,7 @@ const configureCss = (() => {
                   left: 50px;
                   /* #title.ytd-shelf-renderer styles */
                   a, span {
-                    color: var(--yt-spec-text-primary);
+                    color: var(--cpfyt-text-primary);
                     font-family: "Roboto","Arial",sans-serif;
                     font-size: 2rem;
                     line-height: 2.8rem;
