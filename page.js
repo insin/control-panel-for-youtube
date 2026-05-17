@@ -2792,6 +2792,9 @@ const configureCss = (() => {
             )
           }
         }
+        // Remove the bottom botder on the last visible section
+        let lastVisibleSection = (!config.revertSidebarOrder || config.hideSidebarSubscriptions && config.restoreSidebarSubscriptionsLink) ? 'you' : 'subscriptions'
+        cssRules.push(`#sections.ytd-guide-renderer > .ytd-guide-renderer[cpfyt-section="${lastVisibleSection}"] { border-bottom: none; }`)
       }
     }
     //#endregion
