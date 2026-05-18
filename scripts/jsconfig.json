@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "maxNodeModuleJsDepth": 0,
+    "strict": false,
+    "target": "es2024",
+    "types": ["node"]
+  },
+  "include": ["*.js", "locales/*.js"]
+}

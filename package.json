@@ -3,6 +3,7 @@
     "create-browser-action": "node ./scripts/create-browser-action.js",
     "watch-options-html": "npx -y chokidar-cli options.html -c \"npm run create-browser-action\" --initial",
     "create-store-description": "node ./scripts/create-store-description.mjs",
+    "typecheck": "npx --yes -p typescript tsc -p jsconfig.json --noEmit && npx --yes -p typescript tsc -p scripts/jsconfig.json --noEmit",
     "release": "node ./scripts/release.js",
     "prebuild": "npm run create-browser-action",
     "build": "node ./scripts/build.js",

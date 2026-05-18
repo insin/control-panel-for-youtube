@@ -15,4 +15,4 @@ node create-player-js-curl-config.js
 
 Run `node create-locales.js` to create `locales.js`.
 
-Open it, save to format it with Prettier, then use its contents to update `page.js`.
+Format `locales.js, then use its contents to update `page.js`.

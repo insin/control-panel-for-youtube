@@ -1,13 +1,9 @@
 {
   "compilerOptions": {
     "checkJs": true,
-    "module": "NodeNext",
-    "moduleDetection": "force",
-    "moduleResolution": "nodenext",
     "strict": false,
-    "target": "ES2022"
+    "target": "es2024",
+    "types": ["chrome", "trusted-types"]
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["*.js", "safari/Shared (App)/Resources/**/*.js"]
 }
