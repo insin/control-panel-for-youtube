@@ -11,7 +11,6 @@
 html {
   height: 100%;
 }
-
 body {
   display: flex;
   flex-direction: column;
@@ -19,14 +18,23 @@ body {
   height: 100%;
   font: -apple-system-short-body;
 }
-
-body:not(.platform-mac, .platform-ios) :is(.platform-mac, .platform-ios),
-body:not(.state-on, .state-off) :is(.state-on, .state-off),
 body.platform-ios .platform-mac,
 body.platform-mac .platform-ios,
-body.state-on :is(.state-off, .state-unknown),
-body.state-off :is(.state-on, .state-unknown) {
+body:not(.state-on, .state-off, .state-error) :is(.state-on, .state-off, .state-error),
+body.state-on :is(.state-off, .state-unknown, .state-error),
+body.state-off :is(.state-on, .state-unknown, .state-error),
+body.state-error :is(.state-on, .state-off, .state-unknown) {
   display: none;
+}
+
+button {
+  font-size: 1em;
+}
+ol {
+  text-align: left;
+}
+strong {
+  font-weight: 600;
 }
 
 .app {
@@ -36,9 +44,9 @@ body.state-off :is(.state-on, .state-unknown) {
   align-items: center;
   justify-content: center;
   gap: 1.25rem;
+  margin: 0 20px;
   text-align: center;
 }
-
 .ad {
   display: flex;
   flex-direction: row;
@@ -52,34 +60,27 @@ body.state-off :is(.state-on, .state-unknown) {
   max-width: 26rem;
 }
 
-button {
-  font-size: 1rem;
-}
-
 .flex {
   display: flex;
 }
-
 .flex-col {
   flex-direction: column;
 }
-
 .font-bold {
   font-weight: bold;
 }
-
 .justify-between {
   justify-content: space-between;
 }
-
 .-mb-2 {
   margin-bottom: -.5rem;
 }
-
 .mb-4 {
   margin-bottom: 1rem;
 }
-
+.no-wrap {
+  display: inline-block;
+}
 .text-center {
   text-align: center;
 }
