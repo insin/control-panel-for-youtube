@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd "$(dirname "$0")"
+
 url="https://youtube.com"
 user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
 
@@ -85,13 +87,29 @@ languages=(
   zu-ZA
 )
 
-mkdir -p desktop
 for lang in "${languages[@]}"; do
-  echo "$lang"
-  curl -A "$user_agent" \
-       -H "Accept-Language: ${lang}" \
-       -L \
-       -o "desktop/${lang}.html" \
-       "$url"
+  output="${lang}.html"
+  tmp="${output}.tmp"
+  result=$(
+    curl \
+      --silent \
+      --show-error \
+      -A "$user_agent" \
+      -H "Accept-Language: ${lang}" \
+      -L \
+      -w "%{http_code} %{size_download}" \
+      -o "$tmp" \
+      "$url"
+  )
+  status="${result%% *}"
+  size="${result#* }"
+
+  if [[ "$status" == 2* ]]; then
+    mv "$tmp" "$output"
+  else
+    rm -f "$tmp"
+  fi
+
+  printf "%-18s %s %10s bytes\n" "$lang" "$status" "$size"
   sleep 2
 done

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd "$(dirname "$0")"
+
 url="https://m.youtube.com"
 user_agent="Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
 
@@ -85,13 +87,29 @@ languages=(
   zu-ZA
 )
 
-mkdir -p mobile
 for lang in "${languages[@]}"; do
-  echo "$lang"
-  curl -A "$user_agent" \
-       -H "Accept-Language: ${lang}" \
-       -L \
-       -o "mobile/${lang}.html" \
-       "$url"
+  output="${lang}.html"
+  tmp="${output}.tmp"
+  result=$(
+    curl \
+      --silent \
+      --show-error \
+      -A "$user_agent" \
+      -H "Accept-Language: ${lang}" \
+      -L \
+      -w "%{http_code} %{size_download}" \
+      -o "$tmp" \
+      "$url"
+  )
+  status="${result%% *}"
+  size="${result#* }"
+
+  if [[ "$status" == 2* ]]; then
+    mv "$tmp" "$output"
+  else
+    rm -f "$tmp"
+  fi
+
+  printf "%-18s %s %10s bytes\n" "$lang" "$status" "$size"
   sleep 2
 done

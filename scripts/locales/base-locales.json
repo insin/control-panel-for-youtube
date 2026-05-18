@@ -73,14 +73,14 @@
   },
   "de-DE": {
     "ADS_BLOCKED": "Pre-Roll-Anzeigen erfolgreich blockiert!",
+    "COLLABORATORS": "Collab-Partner",
     "HIDE_CHANNEL": "Kanal ausblenden",
     "LOW_VIEWS_RE": "^(\\d{1,3})\\s+Aufrufe$",
     "MINIPLAYER": "Miniplayer",
     "MIXES": "Mixe",
     "ORIGINAL": "Original",
     "SHARE": "Teilen",
-    "SHORTS": "Shorts",
-    "STREAMED_METADATA_INNERTEXT_RE": "(?:^|\\n)\\s*gestreamt",
+    "STREAMED_METADATA_INNERTEXT_RE": "\\bgestreamt$",
     "STREAMED_TITLE_ARIA_LABEL_RE": "Aufrufe vor .* \\bgestreamt\\b",
     "TAKE_SNAPSHOT": "Screenshot erstellen",
     "UNHIDE_CHANNEL": "Kanal einblenden"

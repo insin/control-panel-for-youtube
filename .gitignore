@@ -3,9 +3,10 @@ TODO.md
 browser_action.html
 manifest.json
 node_modules/
+scripts/**/translations.json
 scripts/locales/desktop/*
 scripts/locales/locales.js
 scripts/locales/mobile/*
-scripts/**/translations.json
+scripts/locales/player-js/*
 web-ext-artifacts/
 wip/

@@ -29,6 +29,7 @@ export type LocaleKey =
   | 'ADS_BLOCKED'
   | 'CLIP'
   | 'COLLABORATORS'
+  | 'EXPERIENCING_INTERRUPTIONS'
   | 'HIDE_CHANNEL'
   | 'LOW_VIEWS_RE'
   | 'MINIPLAYER'
