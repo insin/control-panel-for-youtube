@@ -1751,6 +1751,8 @@ const configureCss = (() => {
     if (config.hideMetadata) {
       if (desktop) {
         hideCssSelectors.push(
+          // Top-right controls which link to metadata
+          '#movie_player :is(.ytp-cards-button, .ytp-cards-teaser)',
           // Channel name / Videos / About below video
           '#structured-description .ytd-structured-description-content-renderer:not(#items, ytd-video-description-transcript-section-renderer)',
           // Game below video
