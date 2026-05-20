@@ -1297,12 +1297,18 @@ const configureCss = (() => {
 
     let cssRules = [`
       html {
+        --cpfyt-additive-background: rgb(0,0,0,.1);
+        --cpfyt-outline: rgb(0,0,0,.2);
         --cpfyt-text-primary: #0f0f0f;
         --cpfyt-text-secondary: #606060;
+        --cpfyt-touch-response: #000;
       }
       html[dark] {
+        --cpfyt-additive-background: rgb(255,255,255,.1);
+        --cpfyt-outline: rgb(255,255,255,.2);
         --cpfyt-text-primary: #f1f1f1;
         --cpfyt-text-secondary: #aaa;
+        --cpfyt-touch-response: #fff;
       }
       .cpfyt-vanishing-flip {
         transition: opacity ${ANIMATE_HIDE_DURATION_MS}ms ease-out, transform ${ANIMATE_HIDE_DURATION_MS}ms ease-out !important;
@@ -1485,11 +1491,11 @@ const configureCss = (() => {
             border-radius: 8px;
           }
           tp-yt-paper-listbox .cpfyt-menu-item:hover {
-            background-color: var(--yt-spec-additive-background);
+            background-color: var(--cpfyt-additive-background);
           }
           tp-yt-paper-listbox .cpfyt-menu-item:focus {
             position: relative;
-            background-color: var(--yt-spec-additive-background);
+            background-color: var(--cpfyt-additive-background);
             outline: 2px solid currentColor;
             outline-offset: -2px;
           }
@@ -2364,21 +2370,15 @@ const configureCss = (() => {
       if (config.disableThemedHover) {
         cssRules.push(`
           /* Videos */
-          html {
-            --cpfyt-touch-response-color: #000;
-          }
-          html[dark] {
-            --cpfyt-touch-response-color: #fff;
-          }
           ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) {
             .ytSpecTouchFeedbackShapeHoverEffect {
               display: none !important;
             }
             .ytSpecTouchFeedbackShapeStroke {
-              border-color: var(--yt-spec-touch-response, --cpfyt-touch-response-color) !important;
+              border-color: var(--cpfyt-touch-response) !important;
             }
             .ytSpecTouchFeedbackShapeFill {
-              background-color: var(--yt-spec-touch-response, --cpfyt-touch-response-color) !important;
+              background-color: var(--cpfyt-touch-response) !important;
             }
             .ytLockupMetadataViewModelTitle {
               color: var(--cpfyt-text-primary) !important;
@@ -2412,7 +2412,7 @@ const configureCss = (() => {
             }
             ytd-rich-item-renderer.ytd-rich-grid-renderer {
               width: 100%;
-              border-bottom: 1px solid var(--yt-spec-outline);
+              border-bottom: 1px solid var(--cpfyt-outline);
               /* For <ytd-rich-grid-media> */
               border-radius: 0 !important;
               margin-left: 24px;
@@ -2487,7 +2487,7 @@ const configureCss = (() => {
             #dismissible.ytd-rich-shelf-renderer:not(:has(.button-container:not([hidden]) > .expand-collapse-button)) {
               margin-bottom: 0 !important;
               padding-bottom: 20px;
-              border-bottom: 1px solid var(--yt-spec-outline);
+              border-bottom: 1px solid var(--cpfyt-outline);
             }
             #dismissible.ytd-rich-shelf-renderer:has(.button-container:not([hidden]) > .expand-collapse-button) {
               margin-bottom: 10px !important;
