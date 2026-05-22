@@ -153,6 +153,9 @@
   "fullSizeTheaterModeHideHeader": {
     "message": "Masquer l'en-tête"
   },
+  "fullWidthChannelPage": {
+    "message": "Page de chaîne pleine largeur"
+  },
   "gridItemsPerRow": {
     "message": "Éléments de grille par ligne"
   },

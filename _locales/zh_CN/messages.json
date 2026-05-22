@@ -153,6 +153,9 @@
   "fullSizeTheaterModeHideHeader": {
     "message": "隐藏标题栏"
   },
+  "fullWidthChannelPage": {
+    "message": "全宽频道页"
+  },
   "gridItemsPerRow": {
     "message": "每行网格项目数"
   },

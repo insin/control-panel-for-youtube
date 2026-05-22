@@ -72,6 +72,7 @@ for (let translationId of [
   'fixGhostCards',
   'fullSizeTheaterMode',
   'fullSizeTheaterModeHideHeader',
+  'fullWidthChannelPage',
   'gridItemsPerRow',
   'hideAI',
   'hideAskButton',

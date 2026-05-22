@@ -68,6 +68,7 @@ let defaultConfig = {
   fixGhostCards: true,
   fullSizeTheaterMode: false,
   fullSizeTheaterModeHideHeader: true,
+  fullWidthChannelPage: false,
   hideChat: false,
   hideChatFullScreen: false,
   hideCollaborations: true,
@@ -2301,12 +2302,12 @@ const configureCss = (() => {
       // Fix spaces & gaps caused by left gutter margin on first column items
       // when we hide videos in grids.
       let gridPagesToFix = [
-        'channels',
         !config.displayHomeGridAsList && 'home',
         !config.displaySubscriptionsGridAsList && 'subscriptions',
       ].filter(Boolean)
       cssRules.push(`
-        ytd-browse:is(${gridPagesToFix.map(page => `[page-subtype="${page}"]`).join(', ')}) {
+        ${gridPagesToFix.length > 0 ? `ytd-browse:is(${gridPagesToFix.map(page => `[page-subtype="${page}"]`).join(', ')}),` : ''}
+        html:is([cpfyt-channel-tab="videos"], [cpfyt-channel-tab="streams"]) ytd-browse[page-subtype="channels"] {
           /* Remove left gutter margin from first column items */
           ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
             margin-left: calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
@@ -2620,6 +2621,44 @@ const configureCss = (() => {
             }
           `)
         }
+      }
+      if (config.fullWidthChannelPage) {
+        cssRules.push(`
+          ytd-browse[page-subtype="channels"] {
+            ytd-two-column-browse-results-renderer {
+              max-width: none !important;
+              width: 100% !important;
+              #primary.ytd-two-column-browse-results-renderer {
+                padding-left: 32px;
+                padding-right: 32px;
+              }
+              /* Video grids */
+              #contents.ytd-rich-grid-renderer {
+                max-width: none !important;
+                width: 100% !important;
+              }
+              ytd-rich-grid-media.ytd-rich-item-renderer {
+                max-width: none !important;
+              }
+            }
+            #page-header.ytd-tabbed-page-header {
+              padding-left: 32px;
+              padding-right: 32px;
+            }
+            #tabs.ytd-tabbed-page-header {
+              margin-left: 32px;
+              margin-right: 32px;
+            }
+          }
+          /* Align grid tabs with Home and Subscriptions grid */
+          html:is([cpfyt-channel-tab="videos"], [cpfyt-channel-tab="streams"]) ytd-browse[page-subtype="channels"] {
+            ytd-two-column-browse-results-renderer {
+              #primary.ytd-two-column-browse-results-renderer {
+                padding-right: 0;
+              }
+            }
+          }
+        `)
       }
       if (config.hideChat) {
         // Full screen button
@@ -3164,7 +3203,8 @@ const configureGridCss = (() => {
       let ytOverMinimum = gridMode == 'minimum' && lastElementsPerRow && lastElementsPerRow > gridItemsPerRow
       if (!ytOverMinimum) {
         cssRules.push(`
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-renderer {
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-renderer,
+          html:is([cpfyt-channel-tab="videos"], [cpfyt-channel-tab="streams"]) ytd-browse[page-subtype="channels"] ytd-rich-grid-renderer {
             --ytd-rich-grid-items-per-row: ${gridItemsPerRow} !important;
           }
         `)
@@ -4204,7 +4244,7 @@ function observeDesktopYtLockupViewModelItemContent($gridItem, uniqueId) {
   })
 }
 
-/** @param {{page: 'home' | 'subscriptions'}} options */
+/** @param {{page: 'channels' | 'home' | 'subscriptions'}} options */
 async function observeDesktopRichGridItems(options) {
   let {page} = options
   let itemCount = 0
@@ -4231,6 +4271,9 @@ async function observeDesktopRichGridItems(options) {
     attributes: true,
     attributeFilter: ['elements-per-row'],
   })
+
+  // We don't need to observe videos on channel tabs
+  if (page == 'channels') return
 
   let $gridContents = $renderer.querySelector(':scope > #contents')
 
@@ -5502,13 +5545,19 @@ async function tweakHomePage() {
 }
 
 async function tweakChannelPage() {
+  let channelTab = location.pathname.match(URL_CHANNEL_TAB_RE)?.[1] ?? 'featured'
   let seen = new Map()
+
   function isOnFeaturedTab() {
     if (!seen.has(location.pathname)) {
       let section = location.pathname.match(URL_CHANNEL_RE)[1]
       seen.set(location.pathname, section == undefined || section == 'featured')
     }
     return seen.get(location.pathname)
+  }
+
+  if (channelTab == 'videos' || channelTab == 'streams') {
+    observeDesktopRichGridItems({page: 'channels'})
   }
 
   if (desktop && config.pauseChannelTrailers && isOnFeaturedTab()) {

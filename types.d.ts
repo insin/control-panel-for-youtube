@@ -116,6 +116,7 @@ export type SiteConfig = {
   fixGhostCards: boolean
   fullSizeTheaterMode: boolean
   fullSizeTheaterModeHideHeader: boolean
+  fullWidthChannelPage: boolean
   hideChat: boolean
   hideChatFullScreen: boolean
   hideEndCards: boolean

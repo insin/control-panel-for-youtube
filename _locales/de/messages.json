@@ -153,6 +153,9 @@
   "fullSizeTheaterModeHideHeader": {
     "message": "Kopfzeile ausblenden"
   },
+  "fullWidthChannelPage": {
+    "message": "Kanalseite in voller Breite"
+  },
   "gridItemsPerRow": {
     "message": "Rasterelemente pro Zeile"
   },

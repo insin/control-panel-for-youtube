@@ -153,6 +153,9 @@
   "fullSizeTheaterModeHideHeader": {
     "message": "Hide header"
   },
+  "fullWidthChannelPage": {
+    "message": "Full-width channel page"
+  },
   "gridItemsPerRow": {
     "message": "Grid items per row"
   },

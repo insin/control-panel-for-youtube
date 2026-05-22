@@ -177,6 +177,7 @@ ${messages.uiTweaks}:
 • ${messages.showFullVideoTitles}
 • ${messages.useSquareCorners}
 • ${messages.hideHomeCategories}
+• ${messages.fullWidthChannelPage}${messages.desktopVersion}
 • ${messages.hideChannelBanner}
 • ${messages.hideVoiceSearch}
 • ${messages.enforceTheme}${messages.desktopVersion}
