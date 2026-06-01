@@ -98,6 +98,9 @@
   "disableHomeFeedNote": {
     "message": "Nur wenn eingeloggt - Weiterleitung zu Abonnements"
   },
+  "disableNumberKeySeeking": {
+    "message": "Spulen mit Zifferntasten deaktivieren"
+  },
   "disableStableVolume": {
     "message": "„Gleichbleibende Lautstärke“ deaktivieren"
   },

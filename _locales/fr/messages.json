@@ -98,6 +98,9 @@
   "disableHomeFeedNote": {
     "message": "Seulement si connecté(e) - redirige vers les Abonnements"
   },
+  "disableNumberKeySeeking": {
+    "message": "Désactiver la navigation par touches numériques"
+  },
   "disableStableVolume": {
     "message": "Désactiver le volume stable"
   },

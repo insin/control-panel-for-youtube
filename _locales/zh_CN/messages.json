@@ -98,6 +98,9 @@
   "disableHomeFeedNote": {
     "message": "仅当登录时——重定向到订阅页面"
   },
+  "disableNumberKeySeeking": {
+    "message": "禁用数字键跳转"
+  },
   "disableStableVolume": {
     "message": "禁用“稳定音量”"
   },

@@ -107,6 +107,7 @@ export type SiteConfig = {
   alwaysUseOriginalAudio: boolean
   alwaysUseTheaterMode: boolean
   animateHiding: boolean
+  disableNumberKeySeeking: boolean
   disableThemedHover: boolean
   disableVideoPreviews: boolean
   displayHomeGridAsList: boolean

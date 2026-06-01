@@ -98,6 +98,9 @@
   "disableHomeFeedNote": {
     "message": "ログイン時に登録チャンネルへリダイレクト"
   },
+  "disableNumberKeySeeking": {
+    "message": "数字キーによるシークを無効にする"
+  },
   "disableStableVolume": {
     "message": "「一定音量」を無効にする"
   },

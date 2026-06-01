@@ -59,6 +59,7 @@ let defaultConfig = {
   alwaysUseOriginalAudio: true,
   alwaysUseTheaterMode: false,
   animateHiding: !prefersReducedMotion,
+  disableNumberKeySeeking: false,
   disableThemedHover: true,
   disableVideoPreviews: false,
   displayHomeGridAsList: false,
@@ -5708,6 +5709,29 @@ async function tweakVideoPage() {
     })
     if (config.hideChannels && !config.hideEndVideos && config.hiddenChannels.length > 0) {
       observeDesktopEndscreenVideos()
+    }
+    if (config.disableNumberKeySeeking) {
+      log('disableNumberKeySeeking: listening for number key events')
+      /** @param {KeyboardEvent} e */
+      function disableNumberKeySeeking(e) {
+        let isNumberKey = e.code >= 'Digit0' && e.code <= 'Digit9' || e.code >= 'Numpad0' && e.code <= 'Numpad9'
+        let isUnmodified = !e.ctrlKey && !e.metaKey && !e.altKey
+        let isEditable =
+          e.target instanceof HTMLInputElement ||
+          e.target instanceof HTMLTextAreaElement ||
+          // @ts-expect-error
+          e.target?.isContentEditable
+        if (isNumberKey && isUnmodified && !isEditable) {
+          e.preventDefault()
+          e.stopImmediatePropagation()
+        }
+      }
+      window.addEventListener('keydown', disableNumberKeySeeking, {capture: true})
+      pageObservers.set('disable number keys listener', {
+        disconnect() {
+          window.removeEventListener('keydown', disableNumberKeySeeking, {capture: true})
+        }
+      })
     }
     if (config.disableThemedHover) {
       // The theme is applied to snippet text on hover using style="color: …",

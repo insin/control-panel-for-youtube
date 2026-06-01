@@ -111,6 +111,7 @@ ${messages.annoyances}:
 • ${messages.hidePremiumUpsells}
 • ${messages.hideExperiencingInterruptions}${messages.desktopVersion}
 • ${messages.disableVideoPreviews}${messages.desktopVersion}
+• ${messages.disableNumberKeySeeking}${messages.desktopVersion}
 • ${messages.disableThemedHover}${messages.desktopVersion}
 • ${messages.pauseChannelTrailers}${messages.desktopVersion}
 • ${messages.allowBackgroundPlay}${messages.mobileVersion}

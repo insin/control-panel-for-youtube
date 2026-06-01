@@ -98,6 +98,9 @@
   "disableHomeFeedNote": {
     "message": "Only when logged in - redirects to Subscriptions"
   },
+  "disableNumberKeySeeking": {
+    "message": "Disable number key seeking"
+  },
   "disableStableVolume": {
     "message": "Disable Stable Volume"
   },
