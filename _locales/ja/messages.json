@@ -23,6 +23,9 @@
   "annoyances": {
     "message": "煩わしい項目"
   },
+  "preventScrollinShorts": {
+    "message": "ショート動画のスクロールを防止"
+  },
   "anyPercent": {
     "message": "割合によらず"
   },
