@@ -2309,14 +2309,6 @@ const configureCss = (() => {
       cssRules.push(`
         ${gridPagesToFix.length > 0 ? `ytd-browse:is(${gridPagesToFix.map(page => `[page-subtype="${page}"]`).join(', ')}),` : ''}
         html:is([cpfyt-channel-tab="videos"], [cpfyt-channel-tab="streams"]) ytd-browse[page-subtype="channels"] {
-          /* Remove left gutter margin from first column items */
-          ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
-            margin-left: calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
-          }
-          /* Apply the left gutter as padding in the grid contents instead */
-          #contents.ytd-rich-grid-renderer {
-            padding-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * 2) !important;
-          }
           /* Adjust non-grid items so they don't double the gutter */
           #contents.ytd-rich-grid-renderer > :not(ytd-rich-item-renderer, ytd-continuation-item-renderer) {
             margin-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * -1) !important;
@@ -2418,8 +2410,8 @@ const configureCss = (() => {
               border-bottom: 1px solid var(--cpfyt-outline);
               /* For <ytd-rich-grid-media> */
               border-radius: 0 !important;
-              margin-left: 24px;
-              margin-right: 24px;
+              margin-left: 12px;
+              margin-right: 12px;
               margin-bottom: 0;
             }
             ytd-rich-item-renderer.ytd-rich-grid-renderer #content.ytd-rich-item-renderer {
