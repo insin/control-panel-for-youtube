@@ -107,9 +107,6 @@
   "disableThemedHover": {
     "message": "テーマホバー効果を無効にする"
   },
-  "disableThemedHoverNote": {
-    "message": "ホームと動画の概要欄"
-  },
   "disableVideoPreviews": {
     "message": "動画のプレビューを無効にする"
   },

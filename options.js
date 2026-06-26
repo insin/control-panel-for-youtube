@@ -62,7 +62,6 @@ for (let translationId of [
   'disableStableVolume',
   'disableNumberKeySeeking',
   'disableThemedHover',
-  'disableThemedHoverNote',
   'disableVideoPreviews',
   'displayHomeGridAsList',
   'displaySubscriptionsGridAsList',

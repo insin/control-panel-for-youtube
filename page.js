@@ -2372,7 +2372,8 @@ const configureCss = (() => {
       if (config.disableThemedHover) {
         cssRules.push(`
           /* Videos */
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) {
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]),
+          #related {
             .ytSpecTouchFeedbackShapeHoverEffect {
               display: none !important;
             }

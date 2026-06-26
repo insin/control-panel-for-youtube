@@ -107,9 +107,6 @@
   "disableThemedHover": {
     "message": "Thematische Hover-Effekte deaktivieren"
   },
-  "disableThemedHoverNote": {
-    "message": "Auf der Startseite und in Videobeschreibungen"
-  },
   "disableVideoPreviews": {
     "message": "Videovorschau deaktivieren"
   },
