@@ -89,6 +89,7 @@ let defaultConfig = {
   pauseChannelTrailers: true,
   playerControlsBg: 'default',
   playerFixFullScreenButton: true,
+  playerHideFullScreenMoreActions: true,
   playerHideFullScreenTitle: true,
   playerHideFullScreenVoting: true,
   playerRemoveDelhiExperimentFlags: false,
@@ -2158,6 +2159,12 @@ const configureCss = (() => {
         cssRules.push(`.${Classes.HIDE_WATCHED} { outline: 2px solid green !important; }`)
       } else {
         hideCssSelectors.push(`.${Classes.HIDE_WATCHED}`)
+      }
+    }
+
+    if (config.playerHideFullScreenMoreActions) {
+      if (desktop) {
+        hideCssSelectors.push('yt-player-quick-action-buttons button:has([d="M6 10a2 2 0 100 4 2 2 0 000-4Zm6 0a2 2 0 100 4 2 2 0 000-4Zm6 0a2 2 0 100 4 2 2 0 000-4Z"])')
       }
     }
 

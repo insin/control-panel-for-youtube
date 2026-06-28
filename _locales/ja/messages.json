@@ -371,6 +371,9 @@
   "playerHideFullScreenControls": {
     "message": "新しい全画面コントロールを非表示にする"
   },
+  "playerHideFullScreenMoreActions": {
+    "message": "全画面表示の「その他の操作」メニューを非表示"
+  },
   "playerHideFullScreenMoreVideos": {
     "message": "全画面で「その他の動画」を非表示にする"
   },

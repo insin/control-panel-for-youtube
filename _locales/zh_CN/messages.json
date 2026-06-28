@@ -372,6 +372,9 @@
   "playerHideFullScreenControls": {
     "message": "隐藏新的全屏控件"
   },
+  "playerHideFullScreenMoreActions": {
+    "message": "隐藏全屏“更多操作”菜单"
+  },
   "playerHideFullScreenMoreVideos": {
     "message": "隐藏全屏下的“更多视频”"
   },

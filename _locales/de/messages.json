@@ -372,6 +372,9 @@
   "playerHideFullScreenControls": {
     "message": "Neue Vollbild-Bedienelemente ausblenden"
   },
+  "playerHideFullScreenMoreActions": {
+    "message": "Menü „Weitere Aktionen“ im Vollbildmodus ausblenden"
+  },
   "playerHideFullScreenMoreVideos": {
     "message": "\"Mehr Videos\" im Vollbildmodus ausblenden"
   },

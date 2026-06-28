@@ -372,6 +372,9 @@
   "playerHideFullScreenControls": {
     "message": "Hide new full screen controls"
   },
+  "playerHideFullScreenMoreActions": {
+    "message": "Hide full screen \"More actions\" menu"
+  },
   "playerHideFullScreenMoreVideos": {
     "message": "Hide \"More videos\" in full screen"
   },

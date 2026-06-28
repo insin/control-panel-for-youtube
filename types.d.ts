@@ -135,6 +135,7 @@ export type SiteConfig = {
   minimumShortsPerRow: 'auto' | '4' | '5' | '6' | '7' | '8' | '9'
   pauseChannelTrailers: boolean
   playerFixFullScreenButton: boolean
+  playerHideFullScreenMoreActions: boolean
   playerHideFullScreenTitle: boolean
   playerHideFullScreenVoting: boolean
   playerControlsBg: 'default' | 'blur' | 'transparent'

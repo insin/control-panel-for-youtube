@@ -372,6 +372,9 @@
   "playerHideFullScreenControls": {
     "message": "Masquer les nouveaux contrôles en plein écran"
   },
+  "playerHideFullScreenMoreActions": {
+    "message": "Masquer le menu \"Plus d'actions\" en plein écran"
+  },
   "playerHideFullScreenMoreVideos": {
     "message": "Masquer « Plus de vidéos » en plein écran"
   },
