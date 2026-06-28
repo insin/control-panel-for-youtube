@@ -2202,6 +2202,15 @@ const configureCss = (() => {
       }
     }
 
+    if (config.playerHideFullScreenVoting) {
+      if (desktop) {
+         hideCssSelectors.push('yt-player-quick-action-buttons :is(like-button-view-model, dislike-button-view-model)')
+      }
+      if (mobile) {
+        hideCssSelectors.push('player-fullscreen-action-menu ytm-slim-metadata-toggle-button-renderer')
+      }
+    }
+
     if (config.showFullVideoTitles) {
       if (desktop) {
         cssRules.push(`
@@ -2820,9 +2829,6 @@ const configureCss = (() => {
       }
       if (config.playerHideFullScreenTitle) {
         hideCssSelectors.push('.ytp-fullscreen-metadata')
-      }
-      if (config.playerHideFullScreenVoting) {
-        hideCssSelectors.push('yt-player-quick-action-buttons :is(like-button-view-model, dislike-button-view-model)')
       }
       if (config.removePink) {
         cssRules.push(`
