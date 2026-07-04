@@ -2330,6 +2330,16 @@ const configureCss = (() => {
             margin-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * -1) !important;
           }
         }
+        html:is([cpfyt-channel-tab="videos"], [cpfyt-channel-tab="streams"]) ytd-browse[page-subtype="channels"] {
+          /* Remove left gutter margin from first column items */
+          ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
+            margin-left: calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
+          }
+          /* Apply the left gutter as padding in the grid contents instead */
+          #contents.ytd-rich-grid-renderer {
+            padding-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * 2) !important;
+          }
+        }
       `)
 
       let gridPagesNeedingGhostCardFix = getGridPagesNeedingGhostCardFix()
