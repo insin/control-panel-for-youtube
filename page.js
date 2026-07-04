@@ -2390,26 +2390,23 @@ const configureCss = (() => {
       if (config.disableThemedHover) {
         cssRules.push(`
           /* Videos */
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]),
-          #related {
-            .ytSpecTouchFeedbackShapeHoverEffect {
-              display: none !important;
-            }
-            .ytSpecTouchFeedbackShapeStroke {
-              border-color: var(--cpfyt-touch-response) !important;
-            }
-            .ytSpecTouchFeedbackShapeFill {
-              background-color: var(--cpfyt-touch-response) !important;
-            }
-            .ytLockupMetadataViewModelTitle {
-              color: var(--cpfyt-text-primary) !important;
-            }
-            .ytLockupMetadataViewModelMetadata {
-              color: var(--cpfyt-text-secondary) !important;
-            }
+          .ytSpecTouchFeedbackShapeHoverEffect {
+            display: none !important;
+          }
+          .ytSpecTouchFeedbackShapeStroke {
+            border-color: var(--cpfyt-touch-response) !important;
+          }
+          .ytSpecTouchFeedbackShapeFill {
+            background-color: var(--cpfyt-touch-response) !important;
+          }
+          .ytLockupMetadataViewModelTitle {
+            color: var(--cpfyt-text-primary) !important;
+          }
+          .ytLockupMetadataViewModelMetadata {
+            color: var(--cpfyt-text-secondary) !important;
           }
           /* Shorts */
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-item-renderer[rich-grid-hover-highlight] {
+          ytd-rich-item-renderer[rich-grid-hover-highlight] {
             background: none !important;
             box-shadow: none !important;
           }
