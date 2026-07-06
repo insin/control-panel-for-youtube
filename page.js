@@ -2324,20 +2324,16 @@ const configureCss = (() => {
       ].filter(Boolean)
       cssRules.push(`
         ${gridPagesToFix.length > 0 ? `ytd-browse:is(${gridPagesToFix.map(page => `[page-subtype="${page}"]`).join(', ')}),` : ''}
-        html:is([cpfyt-channel-tab="videos"], [cpfyt-channel-tab="streams"]) ytd-browse[page-subtype="channels"] {
+        ytd-browse[page-subtype="channels"] {
           /* Adjust non-grid items so they don't double the gutter */
           #contents.ytd-rich-grid-renderer > :not(ytd-rich-item-renderer, ytd-continuation-item-renderer) {
             margin-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * -1) !important;
           }
         }
-        html:is([cpfyt-channel-tab="videos"], [cpfyt-channel-tab="streams"]) ytd-browse[page-subtype="channels"] {
+        ytd-browse[page-subtype="channels"] {
           /* Remove left gutter margin from first column items */
           ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
             margin-left: calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
-          }
-          /* Apply the left gutter as padding in the grid contents instead */
-          #contents.ytd-rich-grid-renderer {
-            padding-left: calc(var(--ytd-rich-grid-gutter-margin, 16px) * 2) !important;
           }
         }
       `)
@@ -2360,9 +2356,9 @@ const configureCss = (() => {
               display: contents;
             }
             .ghost-card {
-              --ytd-rich-item-row-usable-width: calc(100% - var(--ytd-rich-grid-gutter-margin)*2);
+              --ytd-rich-item-row-usable-width: calc(100% - var(--ytd-rich-grid-gutter-margin, 16px) * 2);
               margin-bottom: var(--ytd-rich-grid-row-margin);
-              width: calc(var(--ytd-rich-item-row-usable-width)/var(--ytd-rich-grid-items-per-row) - var(--ytd-rich-grid-item-margin) - .01px);
+              width: calc(var(--ytd-rich-item-row-usable-width)/var(--ytd-rich-grid-items-per-row) - var(--ytd-rich-grid-item-margin, 16px) - .01px);
             }
           }
           /* Container for cloned loading spinner */
@@ -2642,12 +2638,20 @@ const configureCss = (() => {
       if (config.fullWidthChannelPage) {
         cssRules.push(`
           ytd-browse[page-subtype="channels"] {
+            #page-header.ytd-tabbed-page-header {
+              padding-left: var(--ytd-rich-grid-gutter-margin, 16px);
+              padding-right: var(--ytd-rich-grid-gutter-margin, 16px);
+            }
+            #tabs.ytd-tabbed-page-header {
+              margin-left: var(--ytd-rich-grid-gutter-margin, 16px);
+              margin-right: var(--ytd-rich-grid-gutter-margin, 16px);
+            }
             ytd-two-column-browse-results-renderer {
               max-width: none !important;
               width: 100% !important;
               #primary.ytd-two-column-browse-results-renderer {
-                padding-left: 32px;
-                padding-right: 32px;
+                padding-left: var(--ytd-rich-grid-gutter-margin, 16px);
+                padding-right: var(--ytd-rich-grid-gutter-margin, 16px);
               }
               /* Video grids */
               #contents.ytd-rich-grid-renderer {
@@ -2656,22 +2660,6 @@ const configureCss = (() => {
               }
               ytd-rich-grid-media.ytd-rich-item-renderer {
                 max-width: none !important;
-              }
-            }
-            #page-header.ytd-tabbed-page-header {
-              padding-left: 32px;
-              padding-right: 32px;
-            }
-            #tabs.ytd-tabbed-page-header {
-              margin-left: 32px;
-              margin-right: 32px;
-            }
-          }
-          /* Align grid tabs with Home and Subscriptions grid */
-          html:is([cpfyt-channel-tab="videos"], [cpfyt-channel-tab="streams"]) ytd-browse[page-subtype="channels"] {
-            ytd-two-column-browse-results-renderer {
-              #primary.ytd-two-column-browse-results-renderer {
-                padding-right: 0;
               }
             }
           }
@@ -3217,8 +3205,7 @@ const configureGridCss = (() => {
       let ytOverMinimum = gridMode == 'minimum' && lastElementsPerRow && lastElementsPerRow > gridItemsPerRow
       if (!ytOverMinimum) {
         cssRules.push(`
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-renderer,
-          html:is([cpfyt-channel-tab="videos"], [cpfyt-channel-tab="streams"]) ytd-browse[page-subtype="channels"] ytd-rich-grid-renderer {
+          ytd-browse:is([page-subtype="channels"], [page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-grid-renderer {
             --ytd-rich-grid-items-per-row: ${gridItemsPerRow} !important;
           }
         `)
@@ -5559,26 +5546,32 @@ async function tweakHomePage() {
 }
 
 async function tweakChannelPage() {
-  let channelTab = location.pathname.match(URL_CHANNEL_TAB_RE)?.[1] ?? 'featured'
-  let seen = new Map()
+    let $channelContent = await getElement('ytd-browse[page-subtype="channels"] ytd-two-column-browse-results-renderer > #primary', {
+    name: 'channel content',
+    stopIf: () => !isChannelPage(),
+  })
+  if (!$channelContent) return
 
-  function isOnFeaturedTab() {
-    if (!seen.has(location.pathname)) {
-      let section = location.pathname.match(URL_CHANNEL_RE)[1]
-      seen.set(location.pathname, section == undefined || section == 'featured')
+  observeElement($channelContent, () => {
+    let grid = $channelContent.firstElementChild?.tagName == 'YTD-RICH-GRID-RENDERER'
+    log('channel content', {grid})
+    if (grid) {
+      observeDesktopRichGridItems({page: 'channels'})
     }
-    return seen.get(location.pathname)
-  }
+  }, {
+    leading: true,
+    name: 'channel content',
+    observers: pageObservers,
+  })
 
-  if (channelTab == 'videos' || channelTab == 'streams') {
-    observeDesktopRichGridItems({page: 'channels'})
+  function getChannelTab() {
+    return location.pathname.match(URL_CHANNEL_TAB_RE)?.[1] ?? 'featured'
   }
-
-  if (desktop && config.pauseChannelTrailers && isOnFeaturedTab()) {
+  if (desktop && config.pauseChannelTrailers && getChannelTab() == 'featured') {
     let $channelTrailer = /** @type {HTMLVideoElement} */ (
       await getElement('ytd-channel-video-player-renderer video', {
         name: `channel trailer`,
-        stopIf: () => !isOnFeaturedTab(),
+        stopIf: () => getChannelTab() != 'featured',
         timeout: 2000,
       })
     )
