@@ -329,6 +329,9 @@
   "hideVoiceSearch": {
     "message": "音声検索を非表示"
   },
+  "hideWatchSideMenu": {
+    "message": "動画ページのサイドメニューを非表示"
+  },
   "hideWatched": {
     "message": "視聴済みの動画を非表示"
   },

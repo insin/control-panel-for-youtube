@@ -89,6 +89,7 @@ ${messages.recentChanges}:
 • ${messages.restoreSidebarSubscriptionsLink}${messages.desktopVersion}
 • ${messages.revertSidebarOrder}${messages.desktopVersion}
 • ${messages.revertGiantRelated}${messages.desktopVersion}
+• ${messages.hideWatchSideMenu}${messages.desktopVersion}
 • ${messages.displaySubscriptionsGridAsList}${messages.desktopVersion}
 • ${messages.displayHomeGridAsList}${messages.desktopVersion}
 

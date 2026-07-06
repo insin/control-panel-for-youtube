@@ -131,6 +131,7 @@ export type SiteConfig = {
   hideShortsMetadataUntilHover: boolean
   hideShortsRemixButton: boolean
   hideSubscriptionsLatestBar: boolean
+  hideWatchSideMenu: boolean
   minimumGridItemsPerRow: 'auto' | '+1' | '+2' | '+3' | '3' | '4' | '5' | '6'
   minimumShortsPerRow: 'auto' | '4' | '5' | '6' | '7' | '8' | '9'
   pauseChannelTrailers: boolean

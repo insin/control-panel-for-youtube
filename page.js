@@ -84,6 +84,7 @@ let defaultConfig = {
   hideShortsMetadataUntilHover: true,
   hideShortsRemixButton: true,
   hideSubscriptionsLatestBar: true,
+  hideWatchSideMenu: true,
   minimumGridItemsPerRow: '+1',
   minimumShortsPerRow: '8',
   pauseChannelTrailers: true,
@@ -2776,6 +2777,14 @@ const configureCss = (() => {
         //   // Hide the Show more/Show less button if we're showing everything
         //   hideCssSelectors.push('ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer[is-shorts] .expand-collapse-button')
         // }
+      }
+      if (config.hideWatchSideMenu) {
+        cssRules.push(`
+          ytd-watch-flexy {
+            --ytd-watch-flexy-fixed-side-menu-width: 0 !important;
+          }
+        `)
+        hideCssSelectors.push('#fixed-side-menu')
       }
       if (config.playerControlsBg == 'transparent') {
         cssRules.push(`

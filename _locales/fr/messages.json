@@ -330,6 +330,9 @@
   "hideVoiceSearch": {
     "message": "Masquer la recherche vocale"
   },
+  "hideWatchSideMenu": {
+    "message": "Masquer le menu latéral de la page vidéo"
+  },
   "hideWatched": {
     "message": "Masquer les vidéos vues"
   },

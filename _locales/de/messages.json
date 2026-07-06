@@ -330,6 +330,9 @@
   "hideVoiceSearch": {
     "message": "\"Mit deiner Stimme suchen\" ausblenden"
   },
+  "hideWatchSideMenu": {
+    "message": "Seitenmenü der Videoseite ausblenden"
+  },
   "hideWatched": {
     "message": "Gesehene Videos ausblenden"
   },

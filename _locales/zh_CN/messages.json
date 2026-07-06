@@ -330,6 +330,9 @@
   "hideVoiceSearch": {
     "message": "隐藏语音搜索"
   },
+  "hideWatchSideMenu": {
+    "message": "隐藏视频页侧边菜单"
+  },
   "hideWatched": {
     "message": "隐藏已观看的视频"
   },
