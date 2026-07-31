@@ -165,6 +165,16 @@ ${messages.videoPages}:
 ${messages.shorts}:
 
 • ${messages.hideShorts}
+• ${messages.hideShortsHome}
+• ${messages.hideShortsSubscriptions}
+• ${messages.hideShortsSearch}
+• ${messages.hideShortsChannels}
+• ${messages.hideShortsChannelTabs}
+• ${messages.hideShortsWatchRelated}
+• ${messages.hideShortsWatchDescription}
+• ${messages.hideShortsHistory}
+• ${messages.hideShortsOtherFeeds}
+• ${messages.hideShortsNavigation}
 • ${messages.redirectShorts}
 • ${messages.hideShortsSuggestedActions}
 • ${messages.hideShortsRelatedLink}

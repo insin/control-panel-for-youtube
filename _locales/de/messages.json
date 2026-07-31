@@ -288,11 +288,29 @@
   "hideShorts": {
     "message": "Kurzfilme ausblenden"
   },
+  "hideShortsChannelTabs": {
+    "message": "„Shorts“-Tabs auf Kanalseiten ausblenden"
+  },
+  "hideShortsChannels": {
+    "message": "Kurzfilme auf Kanalseiten ausblenden"
+  },
+  "hideShortsHistory": {
+    "message": "Kurzfilme im Verlauf ausblenden"
+  },
+  "hideShortsHome": {
+    "message": "Kurzfilme auf der Startseite ausblenden"
+  },
   "hideShortsMetadataUntilHover": {
     "message": "Kurzfilm-Metadaten bis mit Maus darüber gefahren wird ausblenden"
   },
   "hideShortsMusicLink": {
     "message": "Musiklink ausblenden"
+  },
+  "hideShortsNavigation": {
+    "message": "Kurzfilme in der Navigation ausblenden"
+  },
+  "hideShortsOtherFeeds": {
+    "message": "Kurzfilme in anderen Feeds ausblenden"
   },
   "hideShortsRelatedLink": {
     "message": "Link zu ähnlichem Kurzfilm desselben Kanals ausblenden"
@@ -300,8 +318,20 @@
   "hideShortsRemixButton": {
     "message": "\"Remix\"-Schaltfläche ausblenden"
   },
+  "hideShortsSearch": {
+    "message": "Kurzfilme in Suchergebnissen ausblenden"
+  },
+  "hideShortsSubscriptions": {
+    "message": "Kurzfilme in Abonnements ausblenden"
+  },
   "hideShortsSuggestedActions": {
     "message": "Vorgeschlagene Aktionen ausblenden"
+  },
+  "hideShortsWatchDescription": {
+    "message": "Kurzfilme unter Videobeschreibungen ausblenden"
+  },
+  "hideShortsWatchRelated": {
+    "message": "Kurzfilme in ähnlichen Videos ausblenden"
   },
   "hideSidebarSubscriptions": {
     "message": "Abonnementliste ausblenden"

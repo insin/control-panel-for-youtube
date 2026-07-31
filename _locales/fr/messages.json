@@ -288,11 +288,29 @@
   "hideShorts": {
     "message": "Masquer les Shorts"
   },
+  "hideShortsChannelTabs": {
+    "message": "Masquer les onglets Shorts sur les pages de chaîne"
+  },
+  "hideShortsChannels": {
+    "message": "Masquer les Shorts sur les pages de chaîne"
+  },
+  "hideShortsHistory": {
+    "message": "Masquer les Shorts dans l'historique"
+  },
+  "hideShortsHome": {
+    "message": "Masquer les Shorts sur la page d’accueil"
+  },
   "hideShortsMetadataUntilHover": {
     "message": "Masquer les métadonnées des Shorts jusqu'au survol"
   },
   "hideShortsMusicLink": {
     "message": "Masquer le lien de la musique"
+  },
+  "hideShortsNavigation": {
+    "message": "Masquer les Shorts dans la navigation"
+  },
+  "hideShortsOtherFeeds": {
+    "message": "Masquer les Shorts dans les autres flux"
   },
   "hideShortsRelatedLink": {
     "message": "Masquer le lien vers un Short similaire de la même chaîne"
@@ -300,8 +318,20 @@
   "hideShortsRemixButton": {
     "message": "Masquer le bouton Remix"
   },
+  "hideShortsSearch": {
+    "message": "Masquer les Shorts dans les résultats de recherche"
+  },
+  "hideShortsSubscriptions": {
+    "message": "Masquer les Shorts dans les abonnements"
+  },
   "hideShortsSuggestedActions": {
     "message": "Masquer les actions suggérées"
+  },
+  "hideShortsWatchDescription": {
+    "message": "Masquer les Shorts sous la description des vidéos"
+  },
+  "hideShortsWatchRelated": {
+    "message": "Masquer les Shorts parmi les vidéos associées"
   },
   "hideSidebarSubscriptions": {
     "message": "Masquer la liste des abonnements"

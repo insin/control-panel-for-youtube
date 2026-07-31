@@ -114,11 +114,21 @@ for (let translationId of [
   'hideRelatedBelow',
   'hideShareThanksClip',
   'hideShorts',
+  'hideShortsChannelTabs',
+  'hideShortsChannels',
+  'hideShortsHistory',
+  'hideShortsHome',
   'hideShortsMetadataUntilHover',
   'hideShortsMusicLink',
+  'hideShortsNavigation',
+  'hideShortsOtherFeeds',
   'hideShortsRelatedLink',
   'hideShortsRemixButton',
+  'hideShortsSearch',
+  'hideShortsSubscriptions',
   'hideShortsSuggestedActions',
+  'hideShortsWatchDescription',
+  'hideShortsWatchRelated',
   'hideSidebarSubscriptions',
   'hideSidebarWhenEmpty',
   'hideSponsored',
@@ -234,9 +244,19 @@ let defaultConfig = {
   hideRelated: true,
   hideShareThanksClip: false,
   hideShorts: true,
+  hideShortsChannelTabs: false,
+  hideShortsChannels: true,
+  hideShortsHistory: false,
+  hideShortsHome: true,
   hideShortsMusicLink: true,
+  hideShortsNavigation: true,
+  hideShortsOtherFeeds: true,
   hideShortsRelatedLink: true,
+  hideShortsSearch: true,
+  hideShortsSubscriptions: true,
   hideShortsSuggestedActions: true,
+  hideShortsWatchDescription: true,
+  hideShortsWatchRelated: true,
   hideSponsored: true,
   hideStreamed: true,
   hideSuggestedSections: true,
@@ -424,6 +444,7 @@ function updateDisplay() {
   $body.classList.toggle('fullSizeTheaterMode', optionsConfig.fullSizeTheaterMode)
   $body.classList.toggle('hiddenChannels', shouldDisplayHiddenChannels())
   $body.classList.toggle('hidingHiddenVideos', optionsConfig.hideHiddenVideos)
+  $body.classList.toggle('hidingShorts', optionsConfig.hideShorts)
   $body.classList.toggle('hidingWatched', optionsConfig.hideWatched)
   $body.classList.toggle('jpegSnapshot', optionsConfig.snapshotFormat == 'jpeg')
   $body.classList.toggle('mobile', optionsConfig.version == 'mobile')

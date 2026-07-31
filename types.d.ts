@@ -85,9 +85,19 @@ export type SiteConfig = {
   hideRelated: boolean
   hideShareThanksClip: boolean
   hideShorts: boolean
+  hideShortsChannelTabs: boolean
+  hideShortsChannels: boolean
+  hideShortsHistory: boolean
+  hideShortsHome: boolean
   hideShortsMusicLink: boolean
+  hideShortsNavigation: boolean
+  hideShortsOtherFeeds: boolean
   hideShortsRelatedLink: boolean
+  hideShortsSearch: boolean
+  hideShortsSubscriptions: boolean
   hideShortsSuggestedActions: boolean
+  hideShortsWatchDescription: boolean
+  hideShortsWatchRelated: boolean
   hideSponsored: boolean
   hideStreamed: boolean
   hideSuggestedSections: boolean
