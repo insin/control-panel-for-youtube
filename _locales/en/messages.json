@@ -432,6 +432,9 @@
   "revertSidebarOrder": {
     "message": "Restore order of sidebar items"
   },
+  "searchOptions": {
+    "message": "Search options"
+  },
   "searchThumbnailSize": {
     "message": "Search thumbnail size"
   },

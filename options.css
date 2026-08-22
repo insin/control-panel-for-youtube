@@ -41,6 +41,20 @@ body:not(.iOS.safari) .toggle {
   display: none;
 }
 
+.search-hidden {
+  display: none;
+}
+
+.group.search label {
+  gap: 8px;
+}
+
+.group.search input[type=search] {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+}
+
 label {
   display: flex;
   justify-content: space-between;
@@ -107,6 +121,9 @@ section.labelled.collapsible > label {
 section.labelled.collapsible > label > svg {
   position: absolute;
   right: 16px;
+}
+body.searching section.labelled.collapsible > label > svg {
+  display: none;
 }
 section.labelled.collapsible.collapsed label > svg {
   transform: rotate(180deg);
