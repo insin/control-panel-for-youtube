@@ -432,6 +432,9 @@
   "revertSidebarOrder": {
     "message": "Reihenfolge der Seitenleistenelemente wiederherstellen"
   },
+  "searchOptions": {
+    "message": "Optionen durchsuchen"
+  },
   "searchThumbnailSize": {
     "message": "Miniaturbildgröße suchen"
   },

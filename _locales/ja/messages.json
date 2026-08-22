@@ -431,6 +431,9 @@
   "revertSidebarOrder": {
     "message": "サイドバーの項目の並び順を復元する"
   },
+  "searchOptions": {
+    "message": "オプションを検索"
+  },
   "searchThumbnailSize": {
     "message": "検索サムネイルのサイズ"
   },

@@ -186,6 +186,8 @@ for (let translationClass of [
   }
 }
 
+/** @type {HTMLInputElement} */ (document.querySelector('#optionsSearch')).placeholder = chrome.i18n.getMessage('searchOptions')
+
 let $body = document.body
 let $form = document.querySelector('form')
 
@@ -318,6 +320,8 @@ let defaultConfig = {
 let optionsConfig
 
 let $collapsibleLabels = document.querySelectorAll('section.labelled.collapsible > label[data-collapse-id]')
+let $searchableGroups = document.querySelectorAll('form > section.group.labelled')
+let $optionsSearch = /** @type {HTMLInputElement} */ (document.querySelector('#optionsSearch'))
 let $hiddenChannels = /** @type {HTMLElement} */ (document.querySelector('#hiddenChannels'))
 let $hiddenChannelsDetails = /** @type {HTMLDetailsElement} */ (document.querySelector('#hiddenChannelsDetails'))
 let $hiddenChannelsSummary = /** @type {HTMLElement} */ (document.querySelector('#hiddenChannelsSummary'))
@@ -353,6 +357,31 @@ function h(tagName, attributes, ...children) {
   return $el
 }
 
+let searchQuery = ''
+
+function getOptionBlocks($group) {
+  return $group.querySelectorAll(':scope > section.checkbox, :scope > section.select')
+}
+
+function groupNameMatchesSearch($group) {
+  let $label = $group.querySelector(':scope > label')
+  return Boolean($label && $label.textContent.toLowerCase().includes(searchQuery))
+}
+
+function groupMatchesSearch($group) {
+  if (!searchQuery) return true
+  if (groupNameMatchesSearch($group)) return true
+  for (let $block of getOptionBlocks($group)) {
+    if ($block.textContent.toLowerCase().includes(searchQuery)) return true
+  }
+  return false
+}
+
+function onSearchInput() {
+  searchQuery = $optionsSearch.value.trim().toLowerCase()
+  updateDisplay()
+}
+
 function onToggleCollapse(e) {
   let collapsedOptions = optionsConfig.collapsedOptions.slice()
   let collapseId = e.currentTarget.getAttribute('data-collapse-id')
@@ -372,6 +401,7 @@ function onToggleCollapse(e) {
  */
 function onFormChanged(e) {
   let $el = /** @type {HTMLInputElement} */ (e.target)
+  if ($el === $optionsSearch) return
   let prop = $el.name
   let value = $el.type == 'checkbox' ? $el.checked : $el.value
   optionsConfig[prop] = value
@@ -427,15 +457,30 @@ function updateDisplay() {
   $body.classList.toggle('hidingWatched', optionsConfig.hideWatched)
   $body.classList.toggle('jpegSnapshot', optionsConfig.snapshotFormat == 'jpeg')
   $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
+  $body.classList.toggle('searching', Boolean(searchQuery))
   $body.classList.toggle('snapshot', optionsConfig.addTakeSnapshot)
   $body.classList.toggle('tidyingGuideSidebar', optionsConfig.tidyGuideSidebar)
   updateCollapsedOptionsDisplay()
+  updateSearchDisplay()
   updateHiddenChannelsDisplay()
 }
 
 function updateCollapsedOptionsDisplay() {
   for (let $label of $collapsibleLabels) {
-    $label.parentElement.classList.toggle('collapsed', optionsConfig.collapsedOptions.includes($label.getAttribute('data-collapse-id')))
+    let $group = $label.parentElement
+    let collapsed = optionsConfig.collapsedOptions.includes($label.getAttribute('data-collapse-id')) && !(searchQuery && groupMatchesSearch($group))
+    $group.classList.toggle('collapsed', collapsed)
+  }
+}
+
+function updateSearchDisplay() {
+  for (let $group of $searchableGroups) {
+    let groupNameMatches = !searchQuery || groupNameMatchesSearch($group)
+    $group.classList.toggle('search-hidden', searchQuery && !groupMatchesSearch($group))
+    for (let $block of getOptionBlocks($group)) {
+      let blockMatches = groupNameMatches || $block.textContent.toLowerCase().includes(searchQuery)
+      $block.classList.toggle('search-hidden', !blockMatches)
+    }
   }
 }
 
@@ -478,6 +523,8 @@ function main() {
     updateDisplay()
 
     $form.addEventListener('change', onFormChanged)
+    $form.addEventListener('submit', (e) => e.preventDefault())
+    $optionsSearch.addEventListener('input', onSearchInput)
     // TODO Add iOS section groups in the Preact + htm rewrite instead
     if (!isIos) {
       for (let $label of $collapsibleLabels) {

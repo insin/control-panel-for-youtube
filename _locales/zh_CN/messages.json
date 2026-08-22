@@ -432,6 +432,9 @@
   "revertSidebarOrder": {
     "message": "恢复侧边栏项目的顺序"
   },
+  "searchOptions": {
+    "message": "搜索选项"
+  },
   "searchThumbnailSize": {
     "message": "搜索缩略图大小"
   },

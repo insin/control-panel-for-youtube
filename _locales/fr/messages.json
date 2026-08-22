@@ -432,6 +432,9 @@
   "revertSidebarOrder": {
     "message": "Restaurer l'ordre des éléments de la barre latérale"
   },
+  "searchOptions": {
+    "message": "Rechercher des options"
+  },
   "searchThumbnailSize": {
     "message": "Taille des miniatures dans les résultats de recherche"
   },
