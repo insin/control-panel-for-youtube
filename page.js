@@ -5343,7 +5343,7 @@ function manuallyHideVideo($video, {hideDismissed = false} = {}) {
     }
     if ($views) {
       hide = Boolean($views.textContent.match(getString('LOW_VIEWS_RE')) ||
-          $views.textContent.match("^\\d{1,3}$"))
+          $views.textContent.match("^(\\u200f|\\u202b)?\\d{1,3}$"))
     }
     $video.classList.toggle(Classes.HIDE_LOW_VIEWS, hide)
   }
