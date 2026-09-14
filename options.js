@@ -466,9 +466,26 @@ function updateHiddenChannelsDisplay() {
   }
 }
 
+/**
+ * Wait for background initialization before reading settings or enabling writers.
+ * Falling back preserves ordinary extension behavior if the background is unavailable.
+ * @param {(config: Record<string, any>) => void} callback
+ */
+function getInitialConfig(callback) {
+  chrome.runtime.sendMessage({type: 'get-initial-config'}, (storedConfig) => {
+    let error = chrome.runtime.lastError
+    if (error || !storedConfig) {
+      console.warn('[config] Initialization unavailable; using local settings')
+      chrome.storage.local.get(callback)
+      return
+    }
+    callback(storedConfig)
+  })
+}
+
 //#region Main
 function main() {
-  chrome.storage.local.get((storedConfig) => {
+  getInitialConfig((storedConfig) => {
     optionsConfig = {...defaultConfig, ...storedConfig}
 
     for (let [prop, value] of Object.entries(optionsConfig)) {
