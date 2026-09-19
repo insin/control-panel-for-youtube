@@ -5344,7 +5344,8 @@ function manuallyHideVideo($video, {hideDismissed = false} = {}) {
       $views = $video.querySelector('ytm-badge-and-byline-renderer [role="text"][aria-label]')
     }
     if ($views) {
-      hide = Boolean($views.textContent.match(getString('LOW_VIEWS_RE')))
+      hide = Boolean($views.textContent.match(getString('LOW_VIEWS_RE')) ||
+          $views.textContent.match("^(\\u200f|\\u202b)?\\d{1,3}$"))
     }
     $video.classList.toggle(Classes.HIDE_LOW_VIEWS, hide)
   }
