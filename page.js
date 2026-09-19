@@ -37,9 +37,19 @@ let defaultConfig = {
   hideRelated: true,
   hideShareThanksClip: false,
   hideShorts: true,
+  hideShortsChannelTabs: false,
+  hideShortsChannels: true,
+  hideShortsHistory: false,
+  hideShortsHome: true,
   hideShortsMusicLink: true,
+  hideShortsNavigation: true,
+  hideShortsOtherFeeds: true,
   hideShortsRelatedLink: true,
+  hideShortsSearch: true,
+  hideShortsSubscriptions: true,
   hideShortsSuggestedActions: true,
+  hideShortsWatchDescription: true,
+  hideShortsWatchRelated: true,
   hideSponsored: true,
   hideStreamed: true,
   hideSuggestedSections: true,
@@ -972,8 +982,8 @@ const Svgs = {
 }
 
 // YouTube channel URLs: https://support.google.com/youtube/answer/6180214
-const URL_CHANNEL_RE = /\/(?:@[^\/]+|(?:c|channel|user)\/[^\/]+)(?:\/(featured|videos|shorts|streams|podcasts|playlists|community|posts|membership|search))?\/?$/
-const URL_CHANNEL_TAB_RE = /\/(featured|videos|shorts|streams|podcasts|playlists|community|posts|membership|search)\/?$/
+const URL_CHANNEL_RE = /\/(?:@[^\/]+|(?:c|channel|user)\/[^\/]+)(?:\/(featured|videos|shorts|streams|podcasts|playlists|community|posts|membership|search|about|channels|courses|live|releases|store))?\/?$/
+const URL_CHANNEL_TAB_RE = /\/(featured|videos|shorts|streams|podcasts|playlists|community|posts|membership|search|about|channels|courses|live|releases|store)\/?$/
 //#endregion
 
 //#region State
@@ -1953,53 +1963,267 @@ const configureCss = (() => {
     }
 
     if (config.hideShorts) {
-      hideCssSelectors.push('.HideShorts')
-      if (desktop) {
-        hideCssSelectors.push(
-          // Side nav item
-          `ytd-guide-entry-renderer:has(> a[title="${getString('SHORTS')}"])`,
-          // Mini side nav item
-          `ytd-mini-guide-entry-renderer:has(> a[aria-label="${getString('SHORTS')}"])`,
-          // Grid shelf
-          'ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer[is-shorts])',
-          // Group of 3 Shorts in Home grid
-          'ytd-browse[page-subtype="home"] ytd-rich-grid-group',
-          // Individual Short in Home grid
-          'ytd-browse[page-subtype="home"] ytd-rich-item-renderer[is-slim-media][rendered-from-rich-grid]',
-          // Chips
-          `yt-chip-cloud-chip-renderer:has(> #chip-container > yt-formatted-string[title="${getString('SHORTS')}"])`,
-          // List shelf (except History, so watched Shorts can be removed)
-          'ytd-browse:not([page-subtype="history"]) ytd-reel-shelf-renderer',
-          'ytd-search ytd-reel-shelf-renderer',
-          'ytd-search grid-shelf-view-model',
-          // List item (except History, so watched Shorts can be removed)
-          'ytd-browse:not([page-subtype="history"]) ytd-video-renderer:has(a[href^="/shorts"])',
-          'ytd-search ytd-video-renderer:has(a[href^="/shorts"])',
-          // Under video
-          '#structured-description ytd-reel-shelf-renderer',
-          // Related
-          '#related ytd-reel-shelf-renderer',
-          '#related ytd-compact-video-renderer:has(a[href^="/shorts"])',
-        )
+      if (config.hideShortsNavigation) {
+        if (desktop) {
+          hideCssSelectors.push(
+            // Side nav item
+            'ytd-guide-entry-renderer:has(> a[href^="/shorts"])',
+            `ytd-guide-entry-renderer:has(> a[title="${getString('SHORTS')}"])`,
+            // Mini side nav item
+            'ytd-mini-guide-entry-renderer:has(> a[href^="/shorts"])',
+            `ytd-mini-guide-entry-renderer:has(> a[aria-label="${getString('SHORTS')}"])`,
+          )
+        }
+        if (mobile) {
+          hideCssSelectors.push(
+            // Bottom nav item
+            'ytm-pivot-bar-item-renderer:has(> div.pivot-shorts)',
+            'ytm-pivot-bar-item-renderer:has(a[href^="/shorts"], [data-pivot-id="shorts"])',
+          )
+        }
       }
-      if (mobile) {
-        hideCssSelectors.push(
-          // Bottom nav item
-          'ytm-pivot-bar-item-renderer:has(> div.pivot-shorts)',
-          // Home & Subscriptions shelf
-          '.tab-content:is([tab-identifier="FEwhat_to_watch"], [tab-identifier="FEsubscriptions"]) ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
-          // Home shelf
-          '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer:has(ytm-shorts-lockup-view-model)',
-          // Search shelf
-          'ytm-search lazy-list > ytm-reel-shelf-renderer',
-          // Search
-          'ytm-search ytm-video-with-context-renderer:has(a[href^="/shorts"])',
-          'ytm-search grid-shelf-view-model',
-          // Under video
-          'ytm-structured-description-content-renderer ytm-reel-shelf-renderer',
-          // Related
-          'ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(a[href^="/shorts"])',
-        )
+
+      if (config.hideShortsChannelTabs) {
+        if (desktop) {
+          hideCssSelectors.push(
+            // Channel tab
+            `ytd-browse[page-subtype="channels"] [tab-title="${getString('SHORTS')}"]`,
+            'ytd-browse[page-subtype="channels"] tp-yt-paper-tab:has(a[href$="/shorts"])',
+          )
+        }
+        if (mobile) {
+          hideCssSelectors.push(
+            // Channel tab
+            `html[cpfyt-page="channel"] ytm-browse [tab-title="${getString('SHORTS')}"]`,
+            'html[cpfyt-page="channel"] ytm-browse yt-tab-shape:has(a[href$="/shorts"])',
+          )
+        }
+      }
+
+      if (config.hideShortsHome) {
+        if (desktop) {
+          hideCssSelectors.push(
+            // Grid shelf
+            'ytd-browse[page-subtype="home"] ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer[is-shorts])',
+            // Group of Shorts in Home grid
+            'ytd-browse[page-subtype="home"] ytd-rich-grid-group:has(a[href^="/shorts/"])',
+            // Individual Short in Home grid
+            'ytd-browse[page-subtype="home"] ytd-rich-item-renderer[is-slim-media][rendered-from-rich-grid]:has(a[href^="/shorts/"])',
+            // List shelf
+            'ytd-browse[page-subtype="home"] ytd-reel-shelf-renderer',
+            'ytd-browse[page-subtype="home"] ytd-shelf-renderer:has(ytm-shorts-lockup-view-model a[href^="/shorts/"])',
+            'ytd-browse[page-subtype="home"] grid-shelf-view-model:has(a[href^="/shorts/"])',
+            // List item
+            'ytd-browse[page-subtype="home"] ytd-video-renderer:has(a[href^="/shorts/"])',
+            // Chips
+            `ytd-browse[page-subtype="home"] yt-chip-cloud-chip-renderer:has(> #chip-container > yt-formatted-string[title="${getString('SHORTS')}"])`,
+          )
+        }
+        if (mobile) {
+          hideCssSelectors.push(
+            // Home shelf
+            '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
+            '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-section-renderer:has(ytm-shorts-lockup-view-model)',
+            '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-shelf-renderer:has(a[href^="/shorts/"])',
+            '.tab-content[tab-identifier="FEwhat_to_watch"] ytm-rich-item-renderer:has(a[href^="/shorts/"])',
+            '.tab-content[tab-identifier="FEwhat_to_watch"] grid-shelf-view-model:has(a[href^="/shorts/"])',
+          )
+        }
+      }
+
+      if (config.hideShortsSubscriptions) {
+        if (desktop) {
+          hideCssSelectors.push(
+            // Subscriptions shelf
+            'ytd-browse:is([page-subtype="subscriptions"], [page-subtype="filteredsubscriptions"]) ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts])',
+            'ytd-browse:is([page-subtype="subscriptions"], [page-subtype="filteredsubscriptions"]) ytd-reel-shelf-renderer',
+            'ytd-browse:is([page-subtype="subscriptions"], [page-subtype="filteredsubscriptions"]) ytd-shelf-renderer:has(ytm-shorts-lockup-view-model a[href^="/shorts/"])',
+            'ytd-browse:is([page-subtype="subscriptions"], [page-subtype="filteredsubscriptions"]) grid-shelf-view-model:has(a[href^="/shorts/"])',
+            // Subscriptions item
+            'ytd-browse:is([page-subtype="subscriptions"], [page-subtype="filteredsubscriptions"]) ytd-rich-item-renderer:has(a[href^="/shorts/"])',
+            'ytd-browse:is([page-subtype="subscriptions"], [page-subtype="filteredsubscriptions"]) ytd-video-renderer:has(a[href^="/shorts/"])',
+            // Chips
+            `ytd-browse:is([page-subtype="subscriptions"], [page-subtype="filteredsubscriptions"]) yt-chip-cloud-chip-renderer:has(> #chip-container > yt-formatted-string[title="${getString('SHORTS')}"])`,
+          )
+        }
+        if (mobile) {
+          hideCssSelectors.push(
+            // Subscriptions shelf
+            '.tab-content[tab-identifier="FEsubscriptions"] ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
+            '.tab-content[tab-identifier="FEsubscriptions"] ytm-rich-section-renderer:has(ytm-shorts-lockup-view-model)',
+            '.tab-content[tab-identifier="FEsubscriptions"] ytm-shelf-renderer:has(a[href^="/shorts/"])',
+            '.tab-content[tab-identifier="FEsubscriptions"] ytm-rich-item-renderer:has(a[href^="/shorts/"])',
+            '.tab-content[tab-identifier="FEsubscriptions"] grid-shelf-view-model:has(a[href^="/shorts/"])',
+          )
+        }
+      }
+
+      if (config.hideShortsSearch) {
+        if (desktop) {
+          hideCssSelectors.push(
+            '.HideShorts',
+            // Search shelf
+            'ytd-search ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts])',
+            'ytd-search ytd-reel-shelf-renderer',
+            'ytd-search ytd-shelf-renderer:has(ytm-shorts-lockup-view-model a[href^="/shorts/"])',
+            'ytd-search grid-shelf-view-model:has(a[href^="/shorts/"])',
+            // Search
+            'ytd-search ytd-video-renderer:has(a[href^="/shorts/"])',
+            'ytd-search ytd-rich-item-renderer:has(a[href^="/shorts/"])',
+            // Chips
+            `ytd-search yt-chip-cloud-chip-renderer:has(> #chip-container > yt-formatted-string[title="${getString('SHORTS')}"])`,
+          )
+        }
+        if (mobile) {
+          hideCssSelectors.push(
+            // Search shelf
+            'ytm-search lazy-list > ytm-reel-shelf-renderer',
+            'ytm-search ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
+            'ytm-search ytm-rich-section-renderer:has(ytm-shorts-lockup-view-model)',
+            'ytm-search ytm-shelf-renderer:has(a[href^="/shorts/"])',
+            // Search
+            'ytm-search ytm-video-with-context-renderer:has(a[href^="/shorts/"])',
+            'ytm-search ytm-compact-video-renderer:has(a[href^="/shorts/"])',
+            'ytm-search grid-shelf-view-model:has(a[href^="/shorts/"])',
+          )
+        }
+      }
+
+      if (config.hideShortsChannels) {
+        if (desktop) {
+          // In a channel's horizontal Shorts lists and grids
+          cssRules.push(`
+            html:not([cpfyt-channel-tab="shorts"]) {
+              ytd-app {
+                ytd-browse[page-subtype="channels"] ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]),
+                ytd-browse[page-subtype="channels"] ytd-reel-shelf-renderer,
+                ytd-browse[page-subtype="channels"] ytd-shelf-renderer:has(ytm-shorts-lockup-view-model a[href^="/shorts/"]),
+                ytd-browse[page-subtype="channels"] grid-shelf-view-model:has(a[href^="/shorts/"]),
+                ytd-browse[page-subtype="channels"] ytd-video-renderer:has(a[href^="/shorts/"]),
+                ytd-browse[page-subtype="channels"] ytd-rich-item-renderer:has(a[href^="/shorts/"]),
+                ytd-browse[page-subtype="channels"] ytd-grid-video-renderer:has(a[href^="/shorts/"]),
+                ytd-browse[page-subtype="channels"] yt-lockup-view-model:has(a[href^="/shorts/"]),
+                ytd-browse[page-subtype="channels"] yt-chip-cloud-chip-renderer:has(> #chip-container > yt-formatted-string[title="${getString('SHORTS')}"]) {
+                  display: none !important;
+                }
+              }
+            }
+          `)
+        }
+        if (mobile) {
+          hideCssSelectors.push(
+            // Channel shelf
+            'html[cpfyt-page="channel"]:not([cpfyt-channel-tab="shorts"]) ytm-browse ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
+            'html[cpfyt-page="channel"]:not([cpfyt-channel-tab="shorts"]) ytm-browse ytm-rich-section-renderer:has(ytm-shorts-lockup-view-model)',
+            'html[cpfyt-page="channel"]:not([cpfyt-channel-tab="shorts"]) ytm-browse ytm-reel-shelf-renderer',
+            'html[cpfyt-page="channel"]:not([cpfyt-channel-tab="shorts"]) ytm-browse ytm-shelf-renderer:has(a[href^="/shorts/"])',
+            // Channel item
+            'html[cpfyt-page="channel"]:not([cpfyt-channel-tab="shorts"]) ytm-browse ytm-video-with-context-renderer:has(a[href^="/shorts/"])',
+            'html[cpfyt-page="channel"]:not([cpfyt-channel-tab="shorts"]) ytm-browse ytm-compact-video-renderer:has(a[href^="/shorts/"])',
+            'html[cpfyt-page="channel"]:not([cpfyt-channel-tab="shorts"]) ytm-browse grid-shelf-view-model:has(a[href^="/shorts/"])',
+          )
+        }
+      }
+
+      if (config.hideShortsWatchDescription) {
+        if (desktop) {
+          hideCssSelectors.push(
+            // Under video
+            '#structured-description ytd-reel-shelf-renderer',
+            '#structured-description grid-shelf-view-model:has(a[href^="/shorts/"])',
+            '#structured-description ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts])',
+          )
+        }
+        if (mobile) {
+          hideCssSelectors.push(
+            // Under video
+            'ytm-structured-description-content-renderer ytm-reel-shelf-renderer',
+            'ytm-structured-description-content-renderer grid-shelf-view-model:has(a[href^="/shorts/"])',
+            'ytm-structured-description-content-renderer ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
+            'ytm-structured-description-content-renderer ytm-rich-section-renderer:has(ytm-shorts-lockup-view-model)',
+          )
+        }
+      }
+
+      if (config.hideShortsWatchRelated) {
+        if (desktop) {
+          hideCssSelectors.push(
+            // Related
+            '#related ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts])',
+            '#related ytd-reel-shelf-renderer',
+            '#related grid-shelf-view-model:has(a[href^="/shorts/"])',
+            '#related ytd-compact-video-renderer:has(a[href^="/shorts/"])',
+            '#related ytd-video-renderer:has(a[href^="/shorts/"])',
+            '#related yt-lockup-view-model:has(a[href^="/shorts/"])',
+            `#related yt-chip-cloud-chip-renderer:has(> #chip-container > yt-formatted-string[title="${getString('SHORTS')}"])`,
+          )
+        }
+        if (mobile) {
+          hideCssSelectors.push(
+            // Related
+            'ytm-item-section-renderer[section-identifier="related-items"] ytm-reel-shelf-renderer',
+            'ytm-item-section-renderer[section-identifier="related-items"] grid-shelf-view-model:has(a[href^="/shorts/"])',
+            'ytm-item-section-renderer[section-identifier="related-items"] ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
+            'ytm-item-section-renderer[section-identifier="related-items"] ytm-rich-section-renderer:has(ytm-shorts-lockup-view-model)',
+            'ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer:has(a[href^="/shorts/"])',
+            'ytm-item-section-renderer[section-identifier="related-items"] ytm-compact-video-renderer:has(a[href^="/shorts/"])',
+          )
+        }
+      }
+
+      if (config.hideShortsHistory) {
+        if (desktop) {
+          hideCssSelectors.push(
+            // History shelf
+            'ytd-browse[page-subtype="history"] ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts])',
+            'ytd-browse[page-subtype="history"] ytd-reel-shelf-renderer',
+            'ytd-browse[page-subtype="history"] ytd-shelf-renderer:has(ytm-shorts-lockup-view-model a[href^="/shorts/"])',
+            'ytd-browse[page-subtype="history"] grid-shelf-view-model:has(a[href^="/shorts/"])',
+            // History item
+            'ytd-browse[page-subtype="history"] ytd-video-renderer:has(a[href^="/shorts/"])',
+            'ytd-browse[page-subtype="history"] ytd-rich-item-renderer:has(a[href^="/shorts/"])',
+            `ytd-browse[page-subtype="history"] yt-chip-cloud-chip-renderer:has(> #chip-container > yt-formatted-string[title="${getString('SHORTS')}"])`,
+          )
+        }
+        if (mobile) {
+          hideCssSelectors.push(
+            // History shelf
+            'html[cpfyt-page="history"] ytm-browse ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
+            'html[cpfyt-page="history"] ytm-browse ytm-rich-section-renderer:has(ytm-shorts-lockup-view-model)',
+            'html[cpfyt-page="history"] ytm-browse ytm-reel-shelf-renderer',
+            'html[cpfyt-page="history"] ytm-browse ytm-shelf-renderer:has(a[href^="/shorts/"])',
+            'html[cpfyt-page="history"] ytm-browse grid-shelf-view-model:has(a[href^="/shorts/"])',
+            'html[cpfyt-page="history"] ytm-browse ytm-video-with-context-renderer:has(a[href^="/shorts/"])',
+            'html[cpfyt-page="history"] ytm-browse ytm-compact-video-renderer:has(a[href^="/shorts/"])',
+          )
+        }
+      }
+
+      if (config.hideShortsOtherFeeds) {
+        if (desktop) {
+          hideCssSelectors.push(
+            // Other feeds (except History)
+            'ytd-browse:not([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="filteredsubscriptions"], [page-subtype="channels"], [page-subtype="history"]) ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts])',
+            'ytd-browse:not([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="filteredsubscriptions"], [page-subtype="channels"], [page-subtype="history"]) ytd-reel-shelf-renderer',
+            'ytd-browse:not([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="filteredsubscriptions"], [page-subtype="channels"], [page-subtype="history"]) ytd-shelf-renderer:has(ytm-shorts-lockup-view-model a[href^="/shorts/"])',
+            'ytd-browse:not([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="filteredsubscriptions"], [page-subtype="channels"], [page-subtype="history"]) grid-shelf-view-model:has(a[href^="/shorts/"])',
+            'ytd-browse:not([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="filteredsubscriptions"], [page-subtype="channels"], [page-subtype="history"]) ytd-video-renderer:has(a[href^="/shorts/"])',
+            'ytd-browse:not([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="filteredsubscriptions"], [page-subtype="channels"], [page-subtype="history"]) ytd-rich-item-renderer:has(a[href^="/shorts/"])',
+            `ytd-browse:not([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="filteredsubscriptions"], [page-subtype="channels"], [page-subtype="history"]) yt-chip-cloud-chip-renderer:has(> #chip-container > yt-formatted-string[title="${getString('SHORTS')}"])`,
+          )
+        }
+        if (mobile) {
+          hideCssSelectors.push(
+            // Other feeds
+            'html[cpfyt-page="other"] ytm-browse ytm-rich-section-renderer:has(ytm-reel-shelf-renderer)',
+            'html[cpfyt-page="other"] ytm-browse ytm-rich-section-renderer:has(ytm-shorts-lockup-view-model)',
+            'html[cpfyt-page="other"] ytm-browse ytm-reel-shelf-renderer',
+            'html[cpfyt-page="other"] ytm-browse ytm-shelf-renderer:has(a[href^="/shorts/"])',
+            'html[cpfyt-page="other"] ytm-browse grid-shelf-view-model:has(a[href^="/shorts/"])',
+            'html[cpfyt-page="other"] ytm-browse ytm-video-with-context-renderer:has(a[href^="/shorts/"])',
+            'html[cpfyt-page="other"] ytm-browse ytm-compact-video-renderer:has(a[href^="/shorts/"])',
+          )
+        }
       }
     }
 
@@ -2775,7 +2999,12 @@ const configureCss = (() => {
           'ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer > #contents > ytd-rich-section-renderer:first-child'
         )
       }
-      if (!config.hideShorts && config.minimumShortsPerRow != 'auto') {
+      let showingShortsOnHome = !config.hideShorts || !config.hideShortsHome
+      let showingShortsInSubscriptions = !config.hideShorts || !config.hideShortsSubscriptions
+      if (
+        config.minimumShortsPerRow != 'auto' &&
+        (showingShortsOnHome || showingShortsInSubscriptions)
+      ) {
         let shortsPerRow = Number(config.minimumShortsPerRow)
         // Don't override the number of items if YouTube wants to show more
         let exclude = []
@@ -2783,16 +3012,32 @@ const configureCss = (() => {
           exclude.push(`[style*="--ytd-rich-grid-items-per-row: ${i}"]`)
         }
         let excludeSelector = exclude.length > 0 ? `:not(${exclude.join(', ')})` : ''
+        let shortsGridSelectors = []
+        let shortsItemSelectors = []
+        if (showingShortsOnHome) {
+          shortsGridSelectors.push(
+            'ytd-browse[page-subtype="home"] ytd-rich-shelf-renderer[is-shorts]',
+          )
+          shortsItemSelectors.push(
+            'ytd-browse[page-subtype="home"] ytd-rich-item-renderer[is-slim-media]',
+          )
+        }
+        if (showingShortsInSubscriptions) {
+          shortsGridSelectors.push(
+            'ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer[is-shorts]',
+            'ytd-browse[page-subtype="filteredsubscriptions"] ytd-rich-grid-renderer[is-shorts-grid]',
+          )
+          shortsItemSelectors.push(
+            'ytd-browse[page-subtype="subscriptions"] ytd-rich-item-renderer[is-slim-media]',
+          )
+        }
         cssRules.push(`
-          ytd-browse[page-subtype="home"] ytd-rich-shelf-renderer[is-shorts]${excludeSelector},
-          ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer[is-shorts]${excludeSelector},
-          ytd-browse[page-subtype="filteredsubscriptions"] ytd-rich-grid-renderer[is-shorts-grid]${excludeSelector} {
+          ${shortsGridSelectors.map(selector => `${selector}${excludeSelector}`).join(',\n')} {
             --ytd-rich-grid-slim-items-per-row: ${shortsPerRow} !important;
             --ytd-rich-grid-items-per-row: ${shortsPerRow} !important;
           }
           /* Show Shorts beyond the ones YouTube thinks should be visible */
-          ytd-browse[page-subtype="home"] ytd-rich-item-renderer[is-slim-media]:nth-child(-n+${shortsPerRow}),
-          ytd-browse[page-subtype="subscriptions"] ytd-rich-item-renderer[is-slim-media]:nth-child(-n+${shortsPerRow}) {
+          ${shortsItemSelectors.map(selector => `${selector}:nth-child(-n+${shortsPerRow})`).join(',\n')} {
             display: block !important;
           }
         `)
@@ -3690,21 +3935,26 @@ function handleCurrentUrl() {
   log('handling', getCurrentUrl())
   disconnectObservers(pageObservers, 'page')
 
-  let page = ''
+  let page = 'other'
   let channelTab = ''
   if (isHomePage()) {
+    page = 'home'
     tweakHomePage()
   }
   else if (isSubscriptionsPage()) {
+    page = 'subscriptions'
     tweakSubscriptionsPage()
   }
   else if (isVideoPage()) {
+    page = 'watch'
     tweakVideoPage()
   }
   else if (isSearchPage()) {
+    page = 'search'
     tweakSearchPage()
   }
   else if (isShortsPage()) {
+    page = 'shorts'
     tweakShortsPage()
   }
   else if (isChannelPage()) {
@@ -3712,17 +3962,21 @@ function handleCurrentUrl() {
     channelTab = location.pathname.match(URL_CHANNEL_TAB_RE)?.[1] ?? 'featured'
     tweakChannelPage()
   }
+  else if (location.pathname == '/feed/history') {
+    page = 'history'
+  }
+  else if (location.pathname == '/playlist') {
+    page = 'playlist'
+  }
   // Add a current page indicator to html[cpfyt-page] when we need a CSS hook
   if (mobile && document.documentElement.getAttribute('cpfyt-page') != page) {
     document.documentElement.setAttribute('cpfyt-page', page)
   }
-  if (desktop) {
-    if (channelTab) {
-      document.documentElement.setAttribute('cpfyt-channel-tab', channelTab)
-    }
-    else if (document.documentElement.hasAttribute('cpfyt-channel-tab')) {
-      document.documentElement.removeAttribute('cpfyt-channel-tab')
-    }
+  if (channelTab) {
+    document.documentElement.setAttribute('cpfyt-channel-tab', channelTab)
+  }
+  else if (document.documentElement.hasAttribute('cpfyt-channel-tab')) {
+    document.documentElement.removeAttribute('cpfyt-channel-tab')
   }
 
   if (location.pathname.startsWith('/shorts/')) {
@@ -5643,7 +5897,7 @@ async function tweakChannelPage() {
 
 // TODO Hide ytd-channel-renderer if a channel is hidden
 function tweakSearchPage() {
-  if (desktop && config.hideShorts) {
+  if (desktop && config.hideShorts && config.hideShortsSearch) {
     run(async function() {
       let $chips = await getElement('ytd-search #chip-bar #chips', {
         name: 'search chip bar (hideShorts)',

@@ -288,11 +288,29 @@
   "hideShorts": {
     "message": "Hide Shorts"
   },
+  "hideShortsChannelTabs": {
+    "message": "Hide Shorts tabs on channel pages"
+  },
+  "hideShortsChannels": {
+    "message": "Hide Shorts on channel pages"
+  },
+  "hideShortsHistory": {
+    "message": "Hide Shorts in History"
+  },
+  "hideShortsHome": {
+    "message": "Hide Shorts in Home"
+  },
   "hideShortsMetadataUntilHover": {
     "message": "Hide Shorts metadata until hover"
   },
   "hideShortsMusicLink": {
     "message": "Hide music link"
+  },
+  "hideShortsNavigation": {
+    "message": "Hide Shorts in navigation"
+  },
+  "hideShortsOtherFeeds": {
+    "message": "Hide Shorts in other feeds"
   },
   "hideShortsRelatedLink": {
     "message": "Hide link to related Short by the same channel"
@@ -300,8 +318,20 @@
   "hideShortsRemixButton": {
     "message": "Hide Remix button"
   },
+  "hideShortsSearch": {
+    "message": "Hide Shorts in Search results"
+  },
+  "hideShortsSubscriptions": {
+    "message": "Hide Shorts in Subscriptions"
+  },
   "hideShortsSuggestedActions": {
     "message": "Hide suggested actions"
+  },
+  "hideShortsWatchDescription": {
+    "message": "Hide Shorts below video descriptions"
+  },
+  "hideShortsWatchRelated": {
+    "message": "Hide Shorts in Related videos"
   },
   "hideSidebarSubscriptions": {
     "message": "Hide Subscriptions list"

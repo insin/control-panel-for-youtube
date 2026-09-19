@@ -287,11 +287,29 @@
   "hideShorts": {
     "message": "ショート動画を非表示"
   },
+  "hideShortsChannelTabs": {
+    "message": "チャンネルページのショート動画タブを非表示"
+  },
+  "hideShortsChannels": {
+    "message": "チャンネルページのショート動画を非表示"
+  },
+  "hideShortsHistory": {
+    "message": "履歴のショート動画を非表示"
+  },
+  "hideShortsHome": {
+    "message": "ホームのショート動画を非表示"
+  },
   "hideShortsMetadataUntilHover": {
     "message": "ホバーするまでショートのメタデータを隠す"
   },
   "hideShortsMusicLink": {
     "message": "楽曲リンクを非表示にする"
+  },
+  "hideShortsNavigation": {
+    "message": "ナビゲーションのショート動画を非表示"
+  },
+  "hideShortsOtherFeeds": {
+    "message": "その他のフィードのショート動画を非表示"
   },
   "hideShortsRelatedLink": {
     "message": "同じチャンネルの関連ショート動画へのリンクを非表示にする"
@@ -299,8 +317,20 @@
   "hideShortsRemixButton": {
     "message": "リミックスボタンを隠す"
   },
+  "hideShortsSearch": {
+    "message": "検索結果のショート動画を非表示"
+  },
+  "hideShortsSubscriptions": {
+    "message": "登録チャンネルのショート動画を非表示"
+  },
   "hideShortsSuggestedActions": {
     "message": "提案アクションを非表示"
+  },
+  "hideShortsWatchDescription": {
+    "message": "動画の説明欄の下にあるショート動画を非表示"
+  },
+  "hideShortsWatchRelated": {
+    "message": "関連動画のショート動画を非表示"
   },
   "hideSidebarSubscriptions": {
     "message": "登録チャンネルのリストを非表示にする"

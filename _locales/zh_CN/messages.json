@@ -288,11 +288,29 @@
   "hideShorts": {
     "message": "隐藏短视频"
   },
+  "hideShortsChannelTabs": {
+    "message": "隐藏频道页面上的Shorts标签页"
+  },
+  "hideShortsChannels": {
+    "message": "隐藏频道页面上的Shorts短视频"
+  },
+  "hideShortsHistory": {
+    "message": "隐藏观看记录中的Shorts短视频"
+  },
+  "hideShortsHome": {
+    "message": "隐藏首页中的Shorts短视频"
+  },
   "hideShortsMetadataUntilHover": {
     "message": "隐藏Shorts元数据直至悬停"
   },
   "hideShortsMusicLink": {
     "message": "隐藏音乐链接"
+  },
+  "hideShortsNavigation": {
+    "message": "隐藏导航栏中的Shorts入口"
+  },
+  "hideShortsOtherFeeds": {
+    "message": "隐藏其他信息流中的Shorts短视频"
   },
   "hideShortsRelatedLink": {
     "message": "隐藏同一频道的关联Shorts短视频链接"
@@ -300,8 +318,20 @@
   "hideShortsRemixButton": {
     "message": "隐藏混剪按钮"
   },
+  "hideShortsSearch": {
+    "message": "隐藏搜索结果中的Shorts短视频"
+  },
+  "hideShortsSubscriptions": {
+    "message": "隐藏订阅信息流中的Shorts短视频"
+  },
   "hideShortsSuggestedActions": {
     "message": "隐藏建议操作"
+  },
+  "hideShortsWatchDescription": {
+    "message": "隐藏视频说明下方的Shorts短视频"
+  },
+  "hideShortsWatchRelated": {
+    "message": "隐藏相关视频中的Shorts短视频"
   },
   "hideSidebarSubscriptions": {
     "message": "隐藏订阅列表"
