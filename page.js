@@ -933,8 +933,8 @@ const ANIMATE_HIDE_DURATION_MS = 350
 const UNDO_HIDE_DELAY_MS = 5000
 
 const Classes = {
+  COLLABORATION: 'cpfyt-collaboration',
   HIDE_CHANNEL: 'cpfyt-hide-channel',
-  HIDE_COLLABORATIONS: 'cpfyt-hide-collaborations',
   HIDE_HIDDEN: 'cpfyt-hide-hidden',
   HIDE_LOW_VIEWS: 'cpfyt-hide-low-views',
   HIDE_OPEN_APP: 'cpfyt-hide-open-app',
@@ -1447,10 +1447,11 @@ const configureCss = (() => {
         )
       }
       if (mobile) {
+        let selector = `html[cpfyt-page="subscriptions"] .${Classes.COLLABORATION}`
         if (debugManualHiding) {
-          cssRules.push(`.${Classes.HIDE_COLLABORATIONS} { outline: 2px solid aqua !important; }`)
+          cssRules.push(`${selector} { outline: 2px solid aqua !important; }`)
         } else {
-          hideCssSelectors.push(`.${Classes.HIDE_COLLABORATIONS}`)
+          hideCssSelectors.push(selector)
         }
       }
     }
@@ -2528,10 +2529,10 @@ const configureCss = (() => {
           // Move channel avatar and name up above the thumbnail
           cssRules.push(`
             ${gridAsListPageSelector} {
-              ytd-rich-item-renderer.ytd-rich-grid-renderer {
+              ytd-rich-item-renderer.ytd-rich-grid-renderer:not(.${Classes.COLLABORATION}) {
                 position: relative;
               }
-              ytd-rich-item-renderer.ytd-rich-grid-renderer #content.ytd-rich-item-renderer:not(:has(> ytd-rich-grid-media)) {
+              ytd-rich-item-renderer.ytd-rich-grid-renderer:not(.${Classes.COLLABORATION}) #content.ytd-rich-item-renderer:not(:has(> ytd-rich-grid-media)) {
                 &:not(:has(.ytDismissibleItemReplacedContent)) {
                   padding-top: 60px;
                 }
@@ -2546,7 +2547,8 @@ const configureCss = (() => {
                   left: 0;
                 }
                 /* Channel name */
-                .ytContentMetadataViewModelMetadataRow:first-child {
+                /* Old - "views" layout */
+                .ytContentMetadataViewModelMetadataRow:first-child:not(:has(> .ytContentMetadataViewModelLeadingIcon)) {
                   position: absolute;
                   top: -48px;
                   left: 50px;
@@ -2560,7 +2562,29 @@ const configureCss = (() => {
                     max-height: 2.8rem;
                   }
                 }
-                &:not(:has(.ytLockupMetadataViewModelAvatar)) .ytContentMetadataViewModelMetadataRow:first-child {
+                &:not(:has(.ytLockupMetadataViewModelAvatar)) .ytContentMetadataViewModelMetadataRow:first-child:not(:has(> .ytContentMetadataViewModelLeadingIcon)) {
+                  left: 0;
+                }
+                /* New - play icon layout */
+                .ytContentMetadataViewModelMetadataRow:first-child:has(> .ytContentMetadataViewModelLeadingIcon) > :first-child {
+                  position: absolute;
+                  top: -48px;
+                  left: 50px;
+                  /* #title.ytd-shelf-renderer styles */
+                  a, span {
+                    color: var(--cpfyt-text-primary);
+                    font-family: "Roboto","Arial",sans-serif;
+                    font-size: 2rem;
+                    line-height: 2.8rem;
+                    font-weight: 700;
+                    max-height: 2.8rem;
+                  }
+                  /* Hide spacer between the channel name and views */
+                  & + .ytContentMetadataViewModelDelimiter {
+                    display: none;
+                  }
+                }
+                &:not(:has(.ytLockupMetadataViewModelAvatar)) .ytContentMetadataViewModelMetadataRow:first-child:has(> .ytContentMetadataViewModelLeadingIcon) > :first-child {
                   left: 0;
                 }
                 /* Adjust for header height */
@@ -4179,7 +4203,7 @@ async function observeDesktopRelatedVideos() {
   /** @param {Element} $item  */
   function processRelatedItem($item) {
     let itemNumber = ++itemCount
-    manuallyHideVideo($item, {hideDismissed: $item.nodeName == 'YT-LOCKUP-VIEW-MODEL'})
+    manuallyTagVideo($item, {hideDismissed: $item.nodeName == 'YT-LOCKUP-VIEW-MODEL'})
     if ($item.nodeName == 'YTD-COMPACT-VIDEO-RENDERER') {
       waitForDesktopVideoOverlay($item, `related item ${itemNumber}`)
     }
@@ -4231,7 +4255,7 @@ function observeDesktopYtLockupViewModelItemContent($gridItem, uniqueId) {
     if (mutations.length == 0) {
       let $lockupViewModel = $gridItem.querySelector('yt-lockup-view-model')
       if ($lockupViewModel) {
-        requestAnimationFrame(() => manuallyHideVideo($gridItem, {hideDismissed: true}))
+        requestAnimationFrame(() => manuallyTagVideo($gridItem, {hideDismissed: true}))
       }
       return
     }
@@ -4244,7 +4268,7 @@ function observeDesktopYtLockupViewModelItemContent($gridItem, uniqueId) {
             log('yt-lockup-view-model added to', uniqueId)
           }
           // Let the new thumbnail finish rendering
-          requestAnimationFrame(() => manuallyHideVideo($gridItem, {hideDismissed: true}))
+          requestAnimationFrame(() => manuallyTagVideo($gridItem, {hideDismissed: true}))
         }
       }
     }
@@ -4294,7 +4318,7 @@ async function observeDesktopRichGridItems(options) {
    * @param {string} $gridItem
    */
   function processGridItem($gridItem, uniqueId) {
-    manuallyHideVideo($gridItem, {hideDismissed: page === 'home'})
+    manuallyTagVideo($gridItem, {hideDismissed: page === 'home'})
     observeDesktopYtLockupViewModelItemContent($gridItem, uniqueId)
   }
 
@@ -4765,7 +4789,7 @@ async function observeSearchResultSections(options) {
     if ($videoLink && !$videoLink.href) {
       observeElement($videoLink, (_, observer) => {
         if ($videoLink.href) {
-          manuallyHideVideo($item)
+          manuallyTagVideo($item)
           observer.disconnect()
         }
       }, {
@@ -4803,7 +4827,7 @@ async function observeSearchResultSections(options) {
       suggestedSectionCount = 0
       for (let $item of $contents.children) {
         if ($item.nodeName == videoNodeName) {
-          manuallyHideVideo($item)
+          manuallyTagVideo($item)
           if (mobile && isInitialSection) {
             waitForMobileVideoToRender($item, ++itemCount)
           }
@@ -4829,7 +4853,7 @@ async function observeSearchResultSections(options) {
       }
       for (let $video of $items.children) {
         if ($video.nodeName == videoNodeName) {
-          manuallyHideVideo($video)
+          manuallyTagVideo($video)
         }
       }
       // More videos are added if the "More" control is used
@@ -4840,7 +4864,7 @@ async function observeSearchResultSections(options) {
             if (!($addedNode instanceof HTMLElement)) continue
             if ($addedNode.nodeName == videoNodeName) {
               if (!moreVideosAdded) moreVideosAdded = true
-              manuallyHideVideo($addedNode)
+              manuallyTagVideo($addedNode)
             }
           }
         }
@@ -4876,7 +4900,7 @@ async function observeSearchResultSections(options) {
         for (let $addedNode of mutation.addedNodes) {
           if (!($addedNode instanceof HTMLElement)) continue
           if ($addedNode.nodeName == videoNodeName) {
-            manuallyHideVideo($addedNode)
+            manuallyTagVideo($addedNode)
             if (mobile && isInitialSection) {
               waitForMobileVideoToRender($addedNode, ++itemCount)
             }
@@ -5151,7 +5175,7 @@ async function observeMobileVideoList(options) {
       for (let $addedNode of mutation.addedNodes) {
         if (!($addedNode instanceof HTMLElement)) continue
         if (videoNodeNames.has($addedNode.nodeName)) {
-          requestAnimationFrame(() => manuallyHideVideo($addedNode))
+          requestAnimationFrame(() => manuallyTagVideo($addedNode))
           newItemCount++
         }
       }
@@ -5167,7 +5191,7 @@ async function observeMobileVideoList(options) {
   let initialItemCount = 0
   for (let $initialItem of $list.children) {
     if (videoNodeNames.has($initialItem.nodeName)) {
-      requestAnimationFrame(() => manuallyHideVideo($initialItem))
+      requestAnimationFrame(() => manuallyTagVideo($initialItem))
       initialItemCount++
     }
   }
@@ -5275,12 +5299,12 @@ function hideWatched($video) {
 }
 
 /**
- * Tag individual video elements to be hidden by options which would need too
- * complex or broad CSS :has() relative selectors.
+ * Tag individual video elements with hook classes which would need too-complex
+ * or broad CSS :has() relative selectors.
  * @param {Element} $video video container element
  * @param {{hideDismissed?: boolean}} [options]
  */
-function manuallyHideVideo($video, {hideDismissed = false} = {}) {
+function manuallyTagVideo($video, {hideDismissed = false} = {}) {
   if (hideDismissed) {
     // This option is only used for yt-lockup-view-model videos
     let $dismissedContent = $video.querySelector('.ytDismissibleItemReplacedContent')
@@ -5326,12 +5350,16 @@ function manuallyHideVideo($video, {hideDismissed = false} = {}) {
     $video.classList.toggle(Classes.HIDE_CHANNEL, hide)
   }
 
-  if (mobile && config.hideCollaborations && isSubscriptionsPage()) {
-    $video.classList.toggle(
-      Classes.HIDE_COLLABORATIONS,
+  if (isHomePage() || isSubscriptionsPage()) {
+    let collaboration = false
+    if (desktop) {
+      collaboration = Boolean($video.querySelector('yt-avatar-stack-view-model'))
+    }
+    if (mobile) {
       // @ts-expect-error
-      $video.querySelector('ytm-video-with-context-renderer')?.data?.shortBylineText?.runs?.[0]?.navigationEndpoint?.showSheetCommand?.panelLoadingStrategy?.inlineContent?.sheetViewModel?.header?.panelHeaderViewModel?.title?.content == getString('COLLABORATORS')
-    )
+      collaboration = $video.querySelector('ytm-video-with-context-renderer')?.data?.shortBylineText?.runs?.[0]?.navigationEndpoint?.showSheetCommand?.panelLoadingStrategy?.inlineContent?.sheetViewModel?.header?.panelHeaderViewModel?.title?.content == getString('COLLABORATORS')
+    }
+    $video.classList.toggle(Classes.COLLABORATION, collaboration)
   }
 
   if (config.hideLowViews && isVideoPage()) {
