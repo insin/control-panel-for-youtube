@@ -2841,7 +2841,9 @@ const configureCss = (() => {
           .ytThumbnailOverlayProgressBarHostWatchedProgressBarSegment,
           .ytChapteredProgressBarChapteredPlayerBarChapterSeen,
           .ytChapteredProgressBarChapteredPlayerBarFill,
+          .ytFocusedChapterProgressBarLineProgressBarPlayed,
           .ytProgressBarLineProgressBarPlayed,
+          .ytwThumbnailOverlayResumePlaybackRendererThumbnailOverlayResumePlaybackProgress,
           #progress.yt-page-navigation-progress,
           .progress-bar-played.ytd-progress-bar-line {
             background: #f03 !important;
