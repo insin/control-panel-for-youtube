@@ -2,6 +2,9 @@
   "addTakeSnapshot": {
     "message": "Add Take snapshot to video menu"
   },
+  "preventScrollinShorts": {
+    "message": "Prevent scroll in Shorts"
+  },
   "ads": {
     "message": "Ads"
   },
