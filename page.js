@@ -985,7 +985,7 @@ let effectiveGridItemsPerRow
 let effectiveGridMode
 /** @type {Map<string, import("./types").Disconnectable>} */
 let globalObservers = new Map()
-/** @type {ReturnType<createHideAnimationController>} */
+/** @type {ReturnType<typeof createHideAnimationController>} */
 let hideAnimationController
 /** @type {import("./types").Channel} */
 let lastClickedChannel
@@ -1276,7 +1276,7 @@ function waitFor(fn, name) {
         if (elapsed > 0) {
           log(name, 'became available after', Date.now() - startTime, 'ms')
         }
-        resolve()
+        resolve(undefined)
         return
       }
       requestAnimationFrame(check)
@@ -3380,7 +3380,7 @@ async function alwaysUseOriginalAudio(playerSelector, $player = null) {
         if (playerState == 1) {
           log('alwaysUseOriginalAudio: video started playing')
           $player.removeEventListener('onStateChange', onStateChange)
-          resolve()
+          resolve(undefined)
         }
       }
       $player.addEventListener('onStateChange', onStateChange)
@@ -6042,7 +6042,7 @@ function blockAds() {
 
   let urlProp = crypto.randomUUID()
   let XMLHttpRequest_open = XMLHttpRequest.prototype.open
-  XMLHttpRequest.prototype.open = function(_, url, __, ___, ____) {
+  XMLHttpRequest.prototype.open = function(_, url) {
     if (config?.enabled && config?.blockAds && (url?.includes('/player') || url?.includes('/get_watch'))) {
       this[urlProp] = url
     }
