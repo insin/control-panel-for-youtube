@@ -54,6 +54,7 @@ export type SiteConfig = {
   debug?: boolean
   debugLogGridObservers?: boolean
   debugManualHiding?: boolean
+  defaultPlaybackSpeed: string
   alwaysShowShortsProgressBar: boolean
   blockAds: boolean
   disableAmbientMode: boolean
