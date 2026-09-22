@@ -91,6 +91,7 @@ export type SiteConfig = {
   hideSponsored: boolean
   hideStreamed: boolean
   hideSuggestedSections: boolean
+  hideThumbnailBadges: boolean
   hideUpcoming: boolean
   hideVoiceSearch: boolean
   hideWatched: boolean
@@ -131,6 +132,7 @@ export type SiteConfig = {
   hideShortsMetadataUntilHover: boolean
   hideShortsRemixButton: boolean
   hideSubscriptionsLatestBar: boolean
+  hideViewsIcon: boolean
   hideWatchSideMenu: boolean
   minimumGridItemsPerRow: 'auto' | '+1' | '+2' | '+3' | '3' | '4' | '5' | '6'
   minimumShortsPerRow: 'auto' | '4' | '5' | '6' | '7' | '8' | '9'

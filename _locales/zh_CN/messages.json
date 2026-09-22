@@ -324,8 +324,14 @@
   "hideSuggestedSections": {
     "message": "隐藏建议的部分"
   },
+  "hideThumbnailBadges": {
+    "message": "隐藏缩略图徽章（最新、4K等）"
+  },
   "hideUpcoming": {
     "message": "隐藏即将播放的视频"
+  },
+  "hideViewsIcon": {
+    "message": "隐藏观看次数图标"
   },
   "hideVoiceSearch": {
     "message": "隐藏语音搜索"

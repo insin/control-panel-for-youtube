@@ -324,8 +324,14 @@
   "hideSuggestedSections": {
     "message": "Hide suggested sections"
   },
+  "hideThumbnailBadges": {
+    "message": "Hide thumbnail badges (New, 4K etc.)"
+  },
   "hideUpcoming": {
     "message": "Hide Upcoming videos"
+  },
+  "hideViewsIcon": {
+    "message": "Hide views icon"
   },
   "hideVoiceSearch": {
     "message": "Hide Search with your voice"

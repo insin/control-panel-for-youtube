@@ -324,8 +324,14 @@
   "hideSuggestedSections": {
     "message": "Vorgeschlagene Abschnitte ausblenden"
   },
+  "hideThumbnailBadges": {
+    "message": "Thumbnail-Badges ausblenden (Neu, 4K etc.)"
+  },
   "hideUpcoming": {
     "message": "Demnächst erscheinende Videos ausblenden"
+  },
+  "hideViewsIcon": {
+    "message": "Aufruf-Symbol ausblenden"
   },
   "hideVoiceSearch": {
     "message": "\"Mit deiner Stimme suchen\" ausblenden"

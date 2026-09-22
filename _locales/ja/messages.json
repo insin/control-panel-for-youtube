@@ -323,8 +323,14 @@
   "hideSuggestedSections": {
     "message": "おすすめセクションを非表示"
   },
+  "hideThumbnailBadges": {
+    "message": "サムネイルのバッジを非表示（新着、4Kなど）"
+  },
   "hideUpcoming": {
     "message": "公開予定の動画を非表示"
+  },
+  "hideViewsIcon": {
+    "message": "視聴回数アイコンを非表示"
   },
   "hideVoiceSearch": {
     "message": "音声検索を非表示"

@@ -43,6 +43,7 @@ let defaultConfig = {
   hideSponsored: true,
   hideStreamed: true,
   hideSuggestedSections: true,
+  hideThumbnailBadges: false,
   hideUpcoming: true,
   hideVoiceSearch: true,
   hideWatched: true,
@@ -84,6 +85,7 @@ let defaultConfig = {
   hideShortsMetadataUntilHover: true,
   hideShortsRemixButton: true,
   hideSubscriptionsLatestBar: true,
+  hideViewsIcon: false,
   hideWatchSideMenu: true,
   minimumGridItemsPerRow: '+1',
   minimumShortsPerRow: '8',
@@ -969,6 +971,7 @@ const Svgs = {
   MINIPLAYER_OLD_PATH: 'M25,17 L17,17 L17,23 L25,23 L25,17 L25,17 Z M29,25 L29,10.98 C29,9.88 28.1,9 27,9 L9,9 C7.9,9 7,9.88 7,10.98 L7,25 C7,26.1 7.9,27 9,27 L27,27 C28.1,27 29,26.1 29,25 L29,25 Z M27,25.02 L9,25.02 L9,10.97 L27,10.97 L27,25.02 L27,25.02 Z',
   RESTORE: '<svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><path d="M8.76 1.487c9.617-2.963 17.833 7.473 12.698 16.126-5.135 8.652-18.231 6.441-20.238-3.42-.267-1.307 1.693-1.707 1.96-.4 1.321 6.495 8.971 9.382 14.254 5.38 5.016-3.8 4.683-11.443-.644-14.793A9 9 0 0 0 4.518 7H7c1.333 0 1.333 2 0 2H1V3c0-1.333 2-1.333 2 0v2.678a11 11 0 0 1 5.76-4.192Z"/></svg>',
   SHARE_PATH_MOBILE: 'M10 3.158V7.51c-5.428.223-8.27 3.75-8.875 11.199-.04.487-.07.975-.09 1.464l-.014.395c-.014.473.578.684.88.32.302-.368.61-.73.925-1.086l.244-.273c1.79-1.967 3-2.677 4.93-2.917a18.011 18.011 0 012-.112v4.346a1 1 0 001.646.763l9.805-8.297 1.55-1.31-1.55-1.31-9.805-8.297A1 1 0 0010 3.158Zm2 6.27v.002-4.116l7.904 6.688L12 18.689v-4.212l-2.023.024c-1.935.022-3.587.17-5.197 1.024a9 9 0 00-1.348.893c.355-1.947.916-3.39 1.63-4.425 1.062-1.541 2.607-2.385 5.02-2.485L12 9.428Z',
+  VIEWS_ICON: 'M5 4.623v14.755a1.5 1.5 0 002.261 1.294l12.766-7.51L22 12.002l-1.973-1.162L7.26 3.33A1.5 1.5 0 005 4.623Zm2 13.88V5.497L18.056 12 7 18.503Z',
 }
 
 // YouTube channel URLs: https://support.google.com/youtube/answer/6180214
@@ -2121,6 +2124,26 @@ const configureCss = (() => {
       }
     }
 
+    if (config.hideThumbnailBadges) {
+      if (desktop) {
+        hideCssSelectors.push(
+          // Related
+          // New overlay format
+          '#related yt-thumbnail-overlay-badge-view-model',
+          // Search
+          'ytd-badge-supported-renderer#badges',
+        )
+      }
+      if (mobile) {
+        hideCssSelectors.push(
+          // Related
+          'ytm-item-section-renderer[section-identifier="related-items"] .ytmBadgeAndBylineRendererItemBadge',
+          // Search
+          'ytm-search .ytmBadgeAndBylineRendererItemBadge',
+        )
+      }
+    }
+
     if (config.hideUpcoming) {
       if (desktop) {
         hideCssSelectors.push(
@@ -2802,6 +2825,9 @@ const configureCss = (() => {
         //   hideCssSelectors.push('ytd-browse[page-subtype="subscriptions"] ytd-rich-shelf-renderer[is-shorts] .expand-collapse-button')
         // }
       }
+      if (config.hideViewsIcon) {
+        hideCssSelectors.push(`.ytContentMetadataViewModelLeadingIcon:has(path[d="${Svgs.VIEWS_ICON}"])`)
+      }
       if (config.hideWatchSideMenu) {
         cssRules.push(`
           ytd-watch-flexy {
@@ -3152,6 +3178,7 @@ const configureCss = (() => {
           .ytChapteredProgressBarChapteredPlayerBarChapterSeen,
           .ytChapteredProgressBarChapteredPlayerBarFill,
           .ytProgressBarLineProgressBarPlayed,
+          .ytwThumbnailOverlayResumePlaybackRendererThumbnailOverlayResumePlaybackProgress,
           .ytThumbnailOverlayProgressBarHostWatchedProgressBarSegment {
             background: #f03 !important;
           }

@@ -89,6 +89,7 @@ ${messages.recentChanges}:
 • ${messages.restoreSidebarSubscriptionsLink}${messages.desktopVersion}
 • ${messages.revertSidebarOrder}${messages.desktopVersion}
 • ${messages.revertGiantRelated}${messages.desktopVersion}
+• ${messages.hideViewsIcon}${messages.desktopVersion}
 • ${messages.hideWatchSideMenu}${messages.desktopVersion}
 • ${messages.displaySubscriptionsGridAsList}${messages.desktopVersion}
 • ${messages.displayHomeGridAsList}${messages.desktopVersion}
@@ -178,6 +179,7 @@ ${messages.uiTweaks}:
 
 • ${messages.showFullVideoTitles}
 • ${messages.useSquareCorners}
+• ${messages.hideThumbnailBadges}
 • ${messages.hideHomeCategories}
 • ${messages.fullWidthChannelPage}${messages.desktopVersion}
 • ${messages.hideChannelBanner}
