@@ -2128,10 +2128,12 @@ const configureCss = (() => {
       if (desktop) {
         hideCssSelectors.push(
           // Related
-          // New overlay format
+          // Old: under metadata
+          '#related ytd-badge-supported-renderer',
+          // New: thumbnail overlay
           '#related yt-thumbnail-overlay-badge-view-model',
           // Search
-          'ytd-badge-supported-renderer#badges',
+          'ytd-search ytd-badge-supported-renderer#badges',
         )
       }
       if (mobile) {
