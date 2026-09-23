@@ -56,6 +56,9 @@
   "blur": {
     "message": "模糊"
   },
+  "channelPages": {
+    "message": "频道页"
+  },
   "dark": {
     "message": "深色"
   },
@@ -413,6 +416,9 @@
   },
   "recentChanges": {
     "message": "YouTube 近期更改"
+  },
+  "redirectChannelToVideos": {
+    "message": "在“视频”标签页中打开频道"
   },
   "redirectLogoToSubscriptions": {
     "message": "点击Logo跳转至订阅"

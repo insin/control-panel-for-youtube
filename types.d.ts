@@ -143,6 +143,7 @@ export type SiteConfig = {
   playerHideFullScreenVoting: boolean
   playerControlsBg: 'default' | 'blur' | 'transparent'
   playerRemoveDelhiExperimentFlags: boolean
+  redirectChannelToVideos: boolean
   redirectLogoToSubscriptions: boolean
   restoreMiniplayerButton: boolean
   restoreSidebarSubscriptionsLink: boolean

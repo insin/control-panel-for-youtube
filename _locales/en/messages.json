@@ -56,6 +56,9 @@
   "blur": {
     "message": "Blur"
   },
+  "channelPages": {
+    "message": "Channel pages"
+  },
   "dark": {
     "message": "Dark"
   },
@@ -413,6 +416,9 @@
   },
   "recentChanges": {
     "message": "Recent YouTube changes"
+  },
+  "redirectChannelToVideos": {
+    "message": "Open channels on the Videos tab"
   },
   "redirectLogoToSubscriptions": {
     "message": "Link YouTube logo to Subscriptions"

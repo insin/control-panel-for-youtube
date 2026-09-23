@@ -115,7 +115,6 @@ ${messages.annoyances}:
 • ${messages.disableVideoPreviews}${messages.desktopVersion}
 • ${messages.disableNumberKeySeeking}${messages.desktopVersion}
 • ${messages.disableThemedHover}${messages.desktopVersion}
-• ${messages.pauseChannelTrailers}${messages.desktopVersion}
 • ${messages.allowBackgroundPlay}${messages.mobileVersion}
 • ${messages.hideOpenApp}${messages.mobileVersion}
 
@@ -163,6 +162,12 @@ ${messages.videoPages}:
 • ${messages.addTakeSnapshot} (JPEG / PNG) ${messages.desktopVersion}
 • ${messages.downloadTranscript}${messages.desktopVersion}
 
+${messages.channelPages}:
+• ${messages.redirectChannelToVideos}${messages.desktopVersion}
+• ${messages.fullWidthChannelPage}${messages.desktopVersion}
+• ${messages.hideChannelBanner}
+• ${messages.pauseChannelTrailers}${messages.desktopVersion}
+
 ${messages.shorts}:
 
 • ${messages.hideShorts}
@@ -181,8 +186,6 @@ ${messages.uiTweaks}:
 • ${messages.useSquareCorners}
 • ${messages.hideThumbnailBadges}
 • ${messages.hideHomeCategories}
-• ${messages.fullWidthChannelPage}${messages.desktopVersion}
-• ${messages.hideChannelBanner}
 • ${messages.hideVoiceSearch}
 • ${messages.enforceTheme}${messages.desktopVersion}
 • ${messages.redirectLogoToSubscriptions}${messages.desktopVersion}

@@ -96,6 +96,7 @@ let defaultConfig = {
   playerHideFullScreenTitle: true,
   playerHideFullScreenVoting: true,
   playerRemoveDelhiExperimentFlags: false,
+  redirectChannelToVideos: false,
   redirectLogoToSubscriptions: false,
   restoreMiniplayerButton: true,
   restoreSidebarSubscriptionsLink: true,
@@ -5241,6 +5242,27 @@ function onDocumentClick(e) {
         log('redirecting YouTube logo click to Subscriptions')
         browseEndpoint.browseId = 'FEsubscriptions'
         webCommandMetadata.url = '/feed/subscriptions'
+        return
+      }
+    }
+  }
+  if (desktop && config.redirectChannelToVideos) {
+    let $link = /** @type {HTMLAnchorElement} */ ($lastClickedElement?.closest('a'))
+    if ($link) {
+      // @ts-expect-error
+      let linkData = $link.data || $link._data
+      let browseEndpoint = linkData?.browseEndpoint
+      let webCommandMetadata = linkData?.commandMetadata?.webCommandMetadata
+      if (browseEndpoint && webCommandMetadata?.webPageType == 'WEB_PAGE_TYPE_CHANNEL') {
+        let channelUrl = browseEndpoint.canonicalBaseUrl || (
+          browseEndpoint.browseId ? `/channel/${browseEndpoint.browseId}` : null
+        )
+        if (channelUrl) {
+          log('redirecting channel click to Videos')
+          browseEndpoint.params = 'EgZ2aWRlb3PyBgQKAjoA'
+          webCommandMetadata.url = $link.href = `${channelUrl}/videos`
+          return
+        }
       }
     }
   }
@@ -5253,6 +5275,7 @@ function onDocumentClick(e) {
         log('redirecting Shorts video click to normal player')
         webCommandMetadata.url = `/watch?v=${$shortsLink.pathname.split('/').at(-1)}`
         webCommandMetadata.webPageType = 'WEB_PAGE_TYPE_WATCH'
+        return
       }
     }
   }

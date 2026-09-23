@@ -56,6 +56,9 @@
   "blur": {
     "message": "Flou"
   },
+  "channelPages": {
+    "message": "Pages de chaîne"
+  },
   "dark": {
     "message": "Sombre"
   },
@@ -413,6 +416,9 @@
   },
   "recentChanges": {
     "message": "Changements récents sur YouTube"
+  },
+  "redirectChannelToVideos": {
+    "message": "Ouvrir les chaînes sur l'onglet Vidéos"
   },
   "redirectLogoToSubscriptions": {
     "message": "Rediriger le logo YouTube vers les Abonnements"

@@ -56,6 +56,9 @@
   "blur": {
     "message": "ぼかし"
   },
+  "channelPages": {
+    "message": "チャンネルページ"
+  },
   "dark": {
     "message": "ダーク"
   },
@@ -412,6 +415,9 @@
   },
   "recentChanges": {
     "message": "最近のYouTubeの変更"
+  },
+  "redirectChannelToVideos": {
+    "message": "チャンネルを「動画」タブで開く"
   },
   "redirectLogoToSubscriptions": {
     "message": "ロゴのリンク先を登録チャンネルにする"
