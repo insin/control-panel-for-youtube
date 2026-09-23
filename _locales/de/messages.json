@@ -95,6 +95,9 @@
   "disableAutoplay": {
     "message": "Automatische Wiedergabe deaktivieren"
   },
+  "disableContinueWatching": {
+    "message": "Pop-up bei Inaktivitätspause deaktivieren"
+  },
   "disableHomeFeed": {
     "message": "Startseiten-Feed deaktivieren"
   },

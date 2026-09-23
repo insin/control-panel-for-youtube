@@ -95,6 +95,9 @@
   "disableAutoplay": {
     "message": "Disable Autoplay"
   },
+  "disableContinueWatching": {
+    "message": "Disable \"Video paused. Continue watching?\" popup"
+  },
   "disableHomeFeed": {
     "message": "Disable Home feed"
   },

@@ -60,6 +60,7 @@ let defaultConfig = {
   alwaysUseOriginalAudio: true,
   alwaysUseTheaterMode: false,
   animateHiding: !prefersReducedMotion,
+  disableContinueWatching: false,
   disableNumberKeySeeking: false,
   disableThemedHover: true,
   disableVideoPreviews: false,
@@ -3651,6 +3652,41 @@ async function disableAutoplay() {
   }
 }
 
+function disableContinueWatching() {
+  let $watch = document.querySelector('ytd-watch-flexy, ytd-watch-grid')
+  // @ts-expect-error
+  if (!$watch || typeof $watch.youthereDataChanged_ != 'function') {
+    warn('disableContinueWatching: watch element or youthereDataChanged_ not found')
+    return
+  }
+
+  // @ts-expect-error
+  let youthereDataChanged = $watch.youthereDataChanged_
+  function onYouthereDataChanged(messages) {
+    let hits = messages?.filter(message => message?.youThereRenderer)
+    if (hits?.length) {
+      log('disableContinueWatching: filtered messages', hits)
+    }
+    return youthereDataChanged.call(this, messages?.filter(message => !message?.youThereRenderer))
+  }
+
+  // @ts-expect-error
+  $watch.youThereManager_?.reset?.()
+  log('disableContinueWatching: patching youthereDataChanged_')
+  // @ts-expect-error
+  $watch.youthereDataChanged_ = onYouthereDataChanged
+
+  pageObservers.set('disable continue watching', {
+    disconnect() {
+      // @ts-expect-error
+      if ($watch.youthereDataChanged_ == onYouthereDataChanged) {
+        // @ts-expect-error
+        $watch.youthereDataChanged_ = youthereDataChanged
+      }
+    }
+  })
+}
+
 /** @param {HTMLElement} $player */
 function hideFullScreenMoreVideos($player) {
   observeElement($player, () => {
@@ -5802,6 +5838,9 @@ async function tweakVideoPage() {
       }
       if (config.alwaysUseOriginalAudio) {
         alwaysUseOriginalAudio('#movie_player', $player)
+      }
+      if (config.disableContinueWatching) {
+        disableContinueWatching()
       }
       if (config.playerHideFullScreenMoreVideos) {
         hideFullScreenMoreVideos($player)

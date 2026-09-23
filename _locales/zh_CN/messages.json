@@ -95,6 +95,9 @@
   "disableAutoplay": {
     "message": "禁用自动播放"
   },
+  "disableContinueWatching": {
+    "message": "禁用闲置暂停弹窗"
+  },
   "disableHomeFeed": {
     "message": "关闭首页动态"
   },

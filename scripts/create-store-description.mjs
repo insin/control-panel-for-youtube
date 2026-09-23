@@ -108,15 +108,16 @@ ${messages.newVideoPlayerUI}:
 ${messages.annoyances}:
 
 • ${messages.hideAI}
-• ${messages.removePink}
-• ${messages.hideInfoPanels}
-• ${messages.hidePremiumUpsells}
 • ${messages.hideExperiencingInterruptions}${messages.desktopVersion}
+• ${messages.disableContinueWatching}${messages.desktopVersion}
+• ${messages.allowBackgroundPlay}${messages.mobileVersion}
+• ${messages.removePink}
 • ${messages.disableVideoPreviews}${messages.desktopVersion}
 • ${messages.disableNumberKeySeeking}${messages.desktopVersion}
 • ${messages.disableThemedHover}${messages.desktopVersion}
-• ${messages.allowBackgroundPlay}${messages.mobileVersion}
+• ${messages.hidePremiumUpsells}
 • ${messages.hideOpenApp}${messages.mobileVersion}
+• ${messages.hideInfoPanels}
 
 ${messages.videoLists}:
 

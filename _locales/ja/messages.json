@@ -95,6 +95,9 @@
   "disableAutoplay": {
     "message": "自動再生を無効にする"
   },
+  "disableContinueWatching": {
+    "message": "操作がない場合の一時停止ポップアップを無効にする"
+  },
   "disableHomeFeed": {
     "message": "ホームフィードを無効にする"
   },
