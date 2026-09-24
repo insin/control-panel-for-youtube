@@ -53,6 +53,7 @@ let defaultConfig = {
   redirectShorts: true,
   removePink: true,
   showFullVideoTitles: false,
+  showFullVideoDetails: false,
   stopShortsLooping: true,
   useSquareCorners: false,
   // Desktop only
@@ -2267,6 +2268,16 @@ const configureCss = (() => {
         `)
       }
     }
+	
+	if (config.showFullVideoDetails) {
+	  if (desktop) {
+		cssRules.push(`
+		  .ytContentMetadataViewModelMetadataRow {
+			flex-wrap: wrap;
+		  }
+		`)
+	  }
+	}
 
     if (config.useSquareCorners) {
       if (desktop) {
