@@ -101,6 +101,7 @@ export type SiteConfig = {
   redirectShorts: boolean
   removePink: boolean
   showFullVideoTitles: boolean
+  showFullVideoDetails: boolean
   stopShortsLooping: boolean
   useSquareCorners: boolean
   // Desktop only
