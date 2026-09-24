@@ -1,623 +1,577 @@
-:root {
-  --background: rgb(255, 255, 255);
-  --body-padding: 0;
-  --border: rgb(240, 240, 240);
-  --browser-action-width: 400px;
-  --font-family: system-ui, sans-serif;
-  --font-size-primary: 13px;
-  --font-size-secondary: 13px;
-  --group-label-weight: 600;
-  --hover-background: rgba(31, 31, 31, 0.08);
-  --label-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
-  --text-error: rgb(197, 57, 41);
-  --text-primary: rgb(31, 31, 31);
-  --text-secondary: rgb(95, 99, 104);
-  --text-success: rgb(24, 128, 56);
-  color-scheme: light dark;
-}
+const $body = document.body
 
-body {
-  background-color: var(--background);
-  color: var(--text-primary);
-  font-family: var(--font-family);
-  font-size: var(--font-size-primary);
-  margin: 0;
-  padding: var(--body-padding);
-  user-select: none;
-  -webkit-user-select: none;
-}
-body.browserAction {
-  min-width: var(--browser-action-width);
-}
-.firefoxSizer {
-  display: none;
-}
-body.browser-firefox.browserAction {
-  min-width: auto;
-  max-width: var(--browser-action-width);
-  .firefoxSizer {
-    display: block;
-    overflow: hidden;
-    line-height: 0;
+//#region Theme hooks
+/** @type {'chrome' | 'edge' | 'firefox' | 'ios' | 'mac'} */
+const browser = (() => {
+  let ua = navigator.userAgent.toLowerCase()
+  if (ua.includes('firefox')) return 'firefox'
+  else if (ua.includes('edg/')) return 'edge'
+  else if (ua.includes('safari') && !ua.includes('chrome'))
+    return ua.includes('iphone') || ua.includes('ipad') ? 'ios' : 'mac'
+  return 'chrome'
+})()
+let theme = browser
+document.body.classList.add(`browser-${browser}`, theme)
+
+if (theme == 'chrome' || theme == 'edge' || theme == 'firefox') {
+  let $top = document.createElement('div')
+  $top.className = 'stickySentinel top'
+  let $bottom = document.createElement('div')
+  $bottom.className = 'stickySentinel bottom'
+  for (let $group of document.querySelectorAll('section.group.labelled')) {
+    $group.prepend($top.cloneNode())
+    let $options = $group.querySelector('.options')
+    $options.insertBefore($bottom.cloneNode(), $options.lastElementChild)
   }
 }
-body.browser-ios.browserAction {
-  min-width: 0;
-}
-body.browser-mac.browserAction {
-  min-width: 340px;
-}
+//#endregion
 
-/* #region Hide state */
-body.desktop .mobile,
-body.mobile .desktop,
-body:not(.debug) .debug,
-body:not(.debugging) .debugging,
-body:not(.displayingGridAsList) .displayingGridAsList,
-body:not(.fullSizeTheaterMode) .fullSizeTheaterMode,
-body:not(.hiddenChannels) #hiddenChannelsDetails,
-body:not(.hidingHiddenVideos) .hidingHiddenVideos,
-body:not(.hidingWatched) .hidingWatched,
-body:not(.ios) .toggle,
-body:not(.jpegSnapshot) .jpegSnapshot,
-body:not(.snapshot) .snapshot,
-body:not(.tidyingGuideSidebar) .tidyingGuideSidebar,
-p:empty {
-  display: none;
-}
-/* #endregion */
+//#region Localisation
+document.title = chrome.i18n.getMessage('extensionName')
 
-/* #region Disabled */
-body.disabled section.group ~ section {
-  visibility: hidden;
-}
-body.ios.disabled section.group ~ section .toggle {
-  display: none;
-}
-body.disabled:not(.ios, .mac) section.group {
-  border-bottom: 1px solid var(--border);
-}
-/* #endregion */
-
-/* Separate controls from their label by default */
-label {
-  align-items: center;
-  color: var(--text-primary);
-  display: flex;
-  gap: 12px;
-  justify-content: space-between;
-}
-/* Wrapper for label content which needs to be grouped */
-label .label-content {
-  align-items: center;
-  display: flex;
-  gap: 0.5rem;
-}
-.options label {
-  cursor: pointer;
-}
-
-p {
-  color: var(--text-secondary);
-  font-size: var(--font-size-secondary);
-  margin-bottom: 0;
-  margin-right: 40px;
-  padding-bottom: 4px;
-}
-
-input[type=checkbox],
-select {
-  cursor: pointer;
-}
-input[type=checkbox] {
-  flex-shrink: 0;
-}
-
-details {
-  margin-left: 12px;
-}
-
-summary {
-  padding-top: 4px;
-  padding-bottom: 4px;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  cursor: pointer;
-}
-
-.icon {
-  height: 1.25rem;
-}
-body.mac .icon {
-  display: none;
-}
-body.ios .icon {
-  height: 1.75rem;
-}
-
-#version {
-  text-align: center;
-  font-size: 75%;
-  margin-top: 12px;
-  margin-bottom: 8px;
-}
-body.disabled #version {
-  display: none;
-}
-
-/* #region Option groups and options */
-section {
-  border-top: 1px solid var(--border);
-}
-section.group:first-of-type,
-section.group > section:first-of-type,
-.options > section:first-of-type {
-  border-top: none;
-}
-
-/* Option group */
-section.group > label {
-  font-weight: var(--group-label-weight);
-  padding: 10px 12px;
-}
-section.labelled {
-  position: relative;
-}
-section.labelled .stickySentinel.top {
-  height: 1px;
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-}
-section.labelled .stickySentinel.bottom {
-  height: 0;
-  pointer-events: none;
-}
-/* Sticky label */
-/* TODO Toggle off when Settings tab is added */
-body:is(.firefox, .chrome, .edge) {
-  section.labelled > label {
-    background: var(--background);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  section.labelled:not(.collapsed) > label.stuck {
-    box-shadow: var(--label-shadow);
-  }
-  section.labelled > label.unstick {
-    position: static;
-  }
-}
-section.collapsible > label {
-  cursor: pointer;
-  position: relative;
-}
-section.collapsible > label > svg {
-  position: absolute;
-  right: 16px;
-}
-section.collapsed label > svg {
-  transform: rotate(180deg);
-}
-body:not(.ios) section.collapsed > .options {
-  display: none;
-}
-
-/* Option */
-.options {
-    margin-left: 12px;
-}
-section.labelled .options {
-  margin-left: 40px;
-}
-.options > section {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  & > * + :is(p, label) {
-    margin-top: 8px;
-  }
-  & > label {
-    padding: 4px 12px 4px 0;
+for (let optionValue of [
+  'auto',
+  'blur',
+  'dark',
+  'default',
+  'device',
+  'large',
+  'light',
+  'medium',
+  'small',
+  'transparent',
+  'xsmall',
+]) {
+  let label = chrome.i18n.getMessage(optionValue)
+  for (let $option of document.querySelectorAll(`option[value="${optionValue}"]`)) {
+    $option.textContent = label
   }
 }
 
-section.labelled .options > section:first-of-type {
-  padding-top: 0;
-}
-
-/* Sub option */
-.sub-options {
-  margin-left: 20px;
-}
-.sub-options > section {
-  padding-top: 8px;
-  padding-bottom: 8px;
-
-  &:first-of-type {
-    margin-top: 8px;
-  }
-
-  &:last-of-type {
-    padding-bottom: 0;
-  }
-
-  & > * + :is(p, label) {
-    margin-top: 8px;
-  }
-  & > label {
-    padding: 4px 12px 4px 0;
+for (let gridItemsRelative of ['1', '2', '3']) {
+  let $option = document.querySelector(`select[name="minimumGridItemsPerRow"] option[value="+${gridItemsRelative}"]`)
+  if ($option) {
+    $option.textContent = chrome.i18n.getMessage('autoPlusX', gridItemsRelative)
+  } else {
+    console.warn('could not find <option> for gridItemsRelative', gridItemsRelative)
   }
 }
 
-/* #region macOS Safari */
-body.mac {
-  button {
-    font-size: var(--font-size-primary);
-  }
-   form {
-    padding: 4px 0;
-  }
-  label {
-    justify-content: start;
-    align-items: center;
-    padding-top: 0;
-    padding-bottom: 0;
-    gap: 0;
-  }
-  p {
-    margin-right: 12px;
-  }
-  input[type="checkbox"] {
-    margin-left: 0;
-    margin-right: 6px;
-  }
-  select {
-    font-size: 16px;
-    /* Focus indicator is bugged when you set the font size */
-    &:focus {
-      outline: none;
-    }
-  }
-  /* Don't display dividing lines between option groups or options */
-  section {
-    border-top: none;
-  }
-  /* Option group */
-  /* Space before first option group */
-  section.group:first-of-type,
-  section.labelled:first-of-type {
-    margin-top: 14px;
-  }
-  /* Space option groups */
-  section.group:not(:first-of-type) {
-    margin-top: 18px;
-  }
-  /* macOS uses disclosure triangles for collapsible options */
-  section.collapsible > label > svg:not(:active) {
-    color: var(--disclosure-triangle-color);
-  }
-  section.collapsible > label > svg {
-    position: static;
-    margin-right: 6px;
-  }
-  section.collapsible.collapsed > label > svg {
-    transform: rotate(-90deg);
-  }
-  /* Add colons to option group labels */
-  section.group > label:not(.checkbox)::after {
-    content: ":";
-  }
-
-  /* Option */
-  section.group .options {
-    margin-left: 12px;
-  }
-  .options > section {
-    padding-bottom: 0;
-    &:first-of-type {
-      padding-top: 0;
-    }
-  }
-  section.labelled .options {
-    margin-left: 32px;
-    & > section:first-of-type {
-      padding-top: 8px;
-    }
-  }
-
-  /* Sub option */
-  .sub-options > section {
-    padding-top: 0;
-  }
-
-  /* Inputs */
-  /* Put checkboxes before their labels */
-  section.checkbox > label,
-  label.checkbox {
-    flex-direction: row-reverse;
-  }
-  /* Add colons to dropdown labels */
-  section.select label {
-    display: block;
-  }
-  section.select span::after {
-    content: ": ";
-    display: inline-block;
-  }
-  /* Align help text with checkbox labels */
-  section.checkbox > p {
-    margin-left: 20px;
-  }
-  label.button {
-    gap: 8px;
+for (let gridItemsMinimum of ['3', '4', '5', '6']) {
+  let $option = document.querySelector(`select[name="minimumGridItemsPerRow"] option[value="${gridItemsMinimum}"]`)
+  if ($option) {
+    $option.textContent = chrome.i18n.getMessage('atLeastX', gridItemsMinimum)
+  } else {
+    console.warn('could not find <option> for gridItemsMinimum', gridItemsMinimum)
   }
 }
-/* #endregion */
 
-/* #region iOS Safari */
-body.ios {
-  label {
-    /* Prevent flash when labels are tapped */
-    -webkit-tap-highlight-color: transparent;
-    padding-right: 18px;
-    /* All option padding comes from labels */
-    padding-top: 8px;
-    padding-bottom: 8px;
+for (let translationId of [
+  'addTakeSnapshot',
+  'ads',
+  'allowBackgroundPlay',
+  'alwaysShowShortsProgressBar',
+  'alwaysUseOriginalAudio',
+  'alwaysUseTheaterMode',
+  'animateHiding',
+  'annoyances',
+  'anyPercent',
+  'blockAds',
+  'blockAdsNote',
+  'channelPages',
+  'debug',
+  'debugLogGridObservers',
+  'debugManualHiding',
+  'debugManualHidingNote',
+  'debugNote',
+  'debugOptions',
+  'disableAmbientMode',
+  'disableAutoplay',
+  'disableContinueWatching',
+  'disableHomeFeed',
+  'disableHomeFeedNote',
+  'disableStableVolume',
+  'disableNumberKeySeeking',
+  'disableThemedHover',
+  'disableVideoPreviews',
+  'displayHomeGridAsList',
+  'displaySubscriptionsGridAsList',
+  'downloadTranscript',
+  'embeddedVideos',
+  'enabled',
+  'enforceTheme',
+  'fixGhostCards',
+  'fullSizeTheaterMode',
+  'fullSizeTheaterModeHideHeader',
+  'fullWidthChannelPage',
+  'gridItemsPerRow',
+  'hideAI',
+  'hideAskButton',
+  'hideAutoDubbed',
+  'hideAutoDubbedNote',
+  'hideChannelBanner',
+  'hideChannelWatermark',
+  'hideChannels',
+  'hideChannelsNote',
+  'hideChat',
+  'hideChatFullScreen',
+  'hideCollaborations',
+  'hideComments',
+  'hideEmbedPauseOverlay',
+  'hideEmbedShareButton',
+  'hideEndCards',
+  'hideEndVideos',
+  'hideExperiencingInterruptions',
+  'hideExploreButton',
+  'hideHiddenVideos',
+  'hideHiddenVideosNote',
+  'hideHomeCategories',
+  'hideHomePosts',
+  'hideInfoPanels',
+  'hideJumpAheadButton',
+  'hideLive',
+  'hideLowViews',
+  'hideMembersOnly',
+  'hideMerchEtc',
+  'hideMetadata',
+  'hideMixes',
+  'hideMoviesAndTV',
+  'hideNextButton',
+  'hideNextButtonNote',
+  'hideOpenApp',
+  'hidePlaylists',
+  'hidePremiumUpsells',
+  'hideRelated',
+  'hideRelatedBelow',
+  'hideShareThanksClip',
+  'hideShorts',
+  'hideShortsMetadataUntilHover',
+  'hideShortsMusicLink',
+  'hideShortsRelatedLink',
+  'hideShortsRemixButton',
+  'hideShortsSuggestedActions',
+  'hideSidebarSubscriptions',
+  'hideSidebarWhenEmpty',
+  'hideSponsored',
+  'hideStreamed',
+  'hideSubscriptionsChannelList',
+  'hideSubscriptionsLatestBar',
+  'hideSuggestedSections',
+  'hideThumbnailBadges',
+  'hideUpcoming',
+  'hideViewsIcon',
+  'hideVoiceSearch',
+  'hideWatched',
+  'hideWatchedThreshold',
+  'hideWatchSideMenu',
+  'mobileGridView',
+  'newVideoPlayerUI',
+  'pauseChannelTrailers',
+  'playerControlsBg',
+  'playerFixFullScreenButton',
+  'playerHideFullScreenControls',
+  'playerHideFullScreenMoreActions',
+  'playerHideFullScreenMoreVideos',
+  'playerHideFullScreenTitle',
+  'playerHideFullScreenVoting',
+  'playerRemoveDelhiExperimentFlags',
+  'playerRemoveDelhiExperimentFlagsNote',
+  'qualityFull',
+  'qualityHigh',
+  'qualityLow',
+  'qualityMedium',
+  'recentChanges',
+  'redirectChannelToVideos',
+  'redirectLogoToSubscriptions',
+  'redirectShorts',
+  'removePink',
+  'restoreMiniplayerButton',
+  'restoreSidebarSubscriptionsLink',
+  'revertGiantRelated',
+  'revertSidebarOrder',
+  'searchThumbnailSize',
+  'shorts',
+  'showChannelHeadersInListView',
+  'showFullVideoTitles',
+  'showFullVideoDetails',
+  'snapshotFormat',
+  'snapshotQuality',
+  'stopShortsLooping',
+  'tidyGuideSidebar',
+  'uiTweaks',
+  'useSquareCorners',
+  'videoLists',
+  'videoPages',
+]) {
+  let $el = document.getElementById(translationId)
+  if ($el) {
+    $el.textContent = chrome.i18n.getMessage(translationId)
+  } else {
+    console.warn('could not find element for translationId', translationId)
   }
-  p {
-    margin-right: 18px;
-  }
-  summary {
-    padding-left: 0;
-  }
-  button,
-  select {
-    font-size: 16px;
-  }
+}
 
-  /* Labelled option groups should display their label above the box */
-  section.labelled {
-    margin-top: 46px;
-    position: relative;
+for (let translationClass of [
+  'inHomeAndSubscriptionsNote',
+  'requiresPageRefresh',
+]) {
+  let translation = chrome.i18n.getMessage(translationClass)
+  for (let $el of document.querySelectorAll(`.${translationClass}`)) {
+    $el.textContent = translation
   }
-  section.labelled > label {
-    color: var(--outside-label-color);
-    font-size: 12px;
-    padding-left: 0;
-    position: absolute;
-    text-transform: uppercase;
-    top: -32px;
-  }
-  section.labelled > label + section,
-  section.labelled > label + section.desktop + section {
-    border-top: none;
-  }
-  section.labelled > label + p {
-    margin-top: 12px;
-  }
-  /* Hide toggle indicator as sections aren't collapsible in iOS */
-  section.collapsible > label > svg {
-    display: none;
-  }
+}
+//#endregion
 
-  /* Option group */
-  /* Option groups should contain their options in a rounded box */
-  section.group {
-    background-color: white;
-    border-radius: 10px;
-    /* Use padding to indent options so the label will line up */
-    padding-left: 18px;
-    padding-bottom: 1px;
-    padding-top: 1px;
-    border-top: none !important;
-  }
+//#region Default config
+let prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+/** @type {import("./types").OptionsConfig} */
+let defaultConfig = {
+  enabled: true,
+  collapsedOptions: [],
+  // Default based on platform until the content script runs
+  version: /(Android|iP(ad|hone))/.test(navigator.userAgent) ? 'mobile' : 'desktop',
+  alwaysShowShortsProgressBar: true,
+  blockAds: true,
+  disableAmbientMode: true,
+  disableAutoplay: true,
+  disableHomeFeed: false,
+  disableStableVolume: false,
+  hiddenChannels: [],
+  hideAI: true,
+  hideAskButton: false,
+  hideAutoDubbed: false,
+  hideChannelBanner: false,
+  hideChannelWatermark: true,
+  hideChannels: true,
+  hideComments: false,
+  hideHiddenVideos: true,
+  hideHomeCategories: false,
+  hideInfoPanels: true,
+  hideLive: false,
+  hideLowViews: true,
+  hideMembersOnly: true,
+  hideMetadata: true,
+  hideMixes: true,
+  hideMoviesAndTV: false,
+  hideNextButton: true,
+  hidePlaylists: false,
+  hidePremiumUpsells: true,
+  hideRelated: true,
+  hideShareThanksClip: false,
+  hideShorts: true,
+  hideShortsMusicLink: true,
+  hideShortsRelatedLink: true,
+  hideShortsSuggestedActions: true,
+  hideSponsored: true,
+  hideStreamed: true,
+  hideSuggestedSections: true,
+  hideThumbnailBadges: false,
+  hideUpcoming: true,
+  hideVoiceSearch: true,
+  hideWatched: true,
+  hideWatchedThreshold: '85',
+  playerHideFullScreenControls: false,
+  playerHideFullScreenMoreVideos: true,
+  redirectShorts: true,
+  removePink: true,
+  showFullVideoTitles: false,
+  showFullVideoDetails: false,
+  stopShortsLooping: true,
+  useSquareCorners: false,
+  // Desktop only
+  addTakeSnapshot: true,
+  alwaysUseOriginalAudio: true,
+  alwaysUseTheaterMode: false,
+  animateHiding: !prefersReducedMotion,
+  disableContinueWatching: false,
+  disableNumberKeySeeking: false,
+  disableThemedHover: true,
+  disableVideoPreviews: false,
+  displayHomeGridAsList: false,
+  displaySubscriptionsGridAsList: false,
+  downloadTranscript: true,
+  enforceTheme: 'default',
+  fixGhostCards: true,
+  fullSizeTheaterMode: false,
+  fullSizeTheaterModeHideHeader: true,
+  fullWidthChannelPage: false,
+  hideChat: false,
+  hideChatFullScreen: false,
+  hideCollaborations: true,
+  hideEndCards: true,
+  hideEndVideos: true,
+  hideExperiencingInterruptions: false,
+  hideJumpAheadButton: false,
+  hideMerchEtc: true,
+  hideRelatedBelow: true,
+  hideSidebarSubscriptions: false,
+  hideSidebarWhenEmpty: false,
+  hideShortsMetadataUntilHover: true,
+  hideShortsRemixButton: true,
+  hideSubscriptionsLatestBar: true,
+  hideViewsIcon: false,
+  hideWatchSideMenu: true,
+  minimumGridItemsPerRow: '+1',
+  minimumShortsPerRow: '8',
+  pauseChannelTrailers: true,
+  playerControlsBg: 'default',
+  playerFixFullScreenButton: true,
+  playerHideFullScreenMoreActions: true,
+  playerHideFullScreenTitle: true,
+  playerHideFullScreenVoting: true,
+  playerRemoveDelhiExperimentFlags: false,
+  redirectChannelToVideos: false,
+  redirectLogoToSubscriptions: false,
+  restoreMiniplayerButton: true,
+  restoreSidebarSubscriptionsLink: true,
+  revertGiantRelated: true,
+  revertSidebarOrder: true,
+  searchThumbnailSize: 'xsmall',
+  snapshotFormat: 'jpeg',
+  snapshotQuality: '0.92',
+  showChannelHeadersInListView: true,
+  tidyGuideSidebar: true,
+  // Mobile only
+  allowBackgroundPlay: true,
+  hideExploreButton: true,
+  hideHomePosts: true,
+  hideOpenApp: true,
+  hideSubscriptionsChannelList: true,
+  mobileGridView: true,
+  // Embedded videos
+  hideEmbedPauseOverlay: true,
+  hideEmbedShareButton: true,
+}
+//#endregion
 
-  /* Option */
-  .options {
-    margin-left: 0;
-  }
-  .options > section {
-    /* All options should have a dividing line */
-    border-top: 1px solid var(--border);
-    /* All option padding comes from labels */
-    padding: 0;
-    &:first-of-type {
-      border-top: none;
-    }
-    & > * + :is(p) {
-      margin-top: 0;
+//#region Config & variables
+/** @type {import("./types").OptionsConfig} */
+let optionsConfig
+
+let $collapsibleLabels = document.querySelectorAll('section.labelled.collapsible > label[data-collapse-id]')
+let $form = document.querySelector('form')
+let $hiddenChannels = /** @type {HTMLElement} */ (document.querySelector('#hiddenChannels'))
+let $hiddenChannelsDetails = /** @type {HTMLDetailsElement} */ (document.querySelector('#hiddenChannelsDetails'))
+let $hiddenChannelsSummary = /** @type {HTMLElement} */ (document.querySelector('#hiddenChannelsSummary'))
+let $optionsIcon = /** @type {HTMLImageElement} */ (document.querySelector('#optionsIcon'))
+let $stickySentinels = document.querySelectorAll('.stickySentinel')
+//#endregion
+
+//#region Utility functions
+/**
+ * @param {keyof HTMLElementTagNameMap} tagName
+ * @param {({[key: string]: any} | null)?} attributes
+ * @param {...any} children
+ * @returns {HTMLElement}
+ */
+function h(tagName, attributes, ...children) {
+  let $el = document.createElement(tagName)
+
+  if (attributes) {
+    for (let [prop, value] of Object.entries(attributes)) {
+      if (prop.startsWith('on') && typeof value == 'function') {
+        $el.addEventListener(prop.slice(2).toLowerCase(), value)
+      } else {
+        $el[prop] = value
+      }
     }
   }
 
-  /* Sub option */
-  .sub-options {
-    margin-left: 18px;
-  }
-  .sub-options > section {
-    /* All option padding comes from labels */
-    padding: 0;
-    &:first-of-type {
-      margin-top: 0;
+  for (let child of children) {
+    if (child == null || child === false) continue
+    if (child instanceof Node) {
+      $el.appendChild(child)
+    } else {
+      $el.insertAdjacentText('beforeend', String(child))
     }
   }
 
-  /* Inputs */
-  section.checkbox.enabled > label {
-    padding: 5px 18px 5px 0;
+  return $el
+}
+//#endregion
+
+//#region Options page functions
+function onToggleCollapse(e) {
+  if (theme == 'ios') return
+  let collapsedOptions = optionsConfig.collapsedOptions.slice()
+  let collapseId = e.currentTarget.getAttribute('data-collapse-id')
+  let index = collapsedOptions.indexOf(collapseId)
+  if (index == -1) {
+    collapsedOptions.push(collapseId)
+  } else {
+    collapsedOptions.splice(index, 1)
+  }
+  optionsConfig.collapsedOptions = collapsedOptions
+  storeConfigChanges({collapsedOptions})
+  updateDisplay()
+}
+
+/**
+ * @param {Event} e
+ */
+function onFormChanged(e) {
+  let $el = /** @type {HTMLInputElement} */ (e.target)
+  let prop = $el.name
+  let value = $el.type == 'checkbox' ? $el.checked : $el.value
+  optionsConfig[prop] = value
+  storeConfigChanges({[prop]: value})
+  updateDisplay()
+}
+
+/**
+ * @param {{[key: string]: chrome.storage.StorageChange}} changes
+ */
+function onStorageChanged(changes) {
+  for (let prop in changes) {
+    optionsConfig[prop] = changes[prop].newValue
+    setFormValue(prop, changes[prop].newValue)
+  }
+  updateDisplay()
+}
+
+function setFormValue(prop, value) {
+  if (!$form.elements.hasOwnProperty(prop)) return
+
+  let $el = /** @type {HTMLInputElement} */ ($form.elements[prop])
+  if ($el.type == 'checkbox') {
+    $el.checked = value
+  } else {
+    $el.value = value
   }
 }
-/* #endregion */
-/* #endregion */
 
-/* #region Toggles */
-body.ios .checkbox input[type="checkbox"] {
-  position: absolute;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  width: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
+/**
+ * Store config changes without triggering this page's own listener.
+ * @param {Partial<import("./types").OptionsConfig>} changes
+ */
+function storeConfigChanges(changes) {
+  chrome.storage.local.onChanged.removeListener(onStorageChanged)
+  chrome.storage.local.set(changes, () => {
+    chrome.storage.local.onChanged.addListener(onStorageChanged)
+  })
 }
-body.ios .checkbox .toggle {
-  position: relative;
-  display: inline-block;
-  min-width: 46px;
-  height: 26px;
-  background-color: var(--toggle-bg);
-  border-radius: 23px;
-  vertical-align: text-bottom;
-  transition: all 0.3s linear;
-  margin-left: 8px;
-}
-body.ios .checkbox .toggle::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 42px;
-  height: 22px;
-  border-radius: 11px;
-  transform: translate3d(2px, 2px, 0) scale3d(1, 1, 1);
-  transition: all 0.25s linear;
-}
-body.ios .checkbox .toggle::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 22px;
-  height: 22px;
-  background-color: #fff;
-  border-radius: 11px;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.12);
-  transform: translate3d(2px, 2px, 0);
-  transition: all 0.2s ease-in-out;
-}
-body.ios .checkbox label:active .toggle::after,
-body.ios label.checkbox:active .toggle:after {
-  width: 28px;
-  transform: translate3d(2px, 2px, 0);
-}
-body.ios .checkbox label:active input:checked + .toggle::after,
-body.ios label.checkbox:active input:checked + .toggle::after {
-  transform: translate3d(16px, 2px, 0);
-}
-body.ios input:checked + .toggle {
-  background-color: var(--active-toggle-bg);
-}
-body.ios input:checked + .toggle::before {
-  transform: translate3d(18px, 2px, 0) scale3d(0, 0, 0);
-}
-body.ios input:checked + .toggle::after {
-  transform: translate3d(22px, 2px, 0);
-}
-body.ios .checkbox input:focus + .toggle {
-  outline: 5px auto Highlight;
-  /* biome-ignore lint/suspicious/noDuplicateProperties: fallback for WebKit focus rings. */
-  outline: 5px auto -webkit-focus-ring-color;
-}
-/* #endregion */
 
-/* #region Light mode overrides */
-/* #region Firefox */
-body.firefox {
-  --border: rgb(215, 215, 219);
-  --font-family: inherit;
-  --font-size-primary: 15px;
-  --font-size-secondary: 14px;
-  --hover-background: color-mix(in srgb, currentColor 14%, transparent);
-  --text-secondary: rgb(91, 91, 102);
+function shouldDisplayHiddenChannels() {
+  return optionsConfig.hideChannels && optionsConfig.hiddenChannels.length > 0
 }
-/* #endregion */
 
-/* #region Edge */
-body.edge {
-  --border: rgb(182, 182, 182);
-  --font-size-primary: 14px;
-  --font-size-secondary: 12px;
-  --hover-background: rgba(0, 0, 0, 0.039);
-  --text-secondary: rgb(118, 118, 118);
-}
-/* #endregion */
-
-/* #region macOS Safari */
-body.mac {
-  --background: transparent;
-  --disclosure-triangle-color: rgb(154, 154, 154);
-  --group-label-weight: 400;
-  --text-secondary: rgb(123, 123, 123);
-}
-/* #endregion */
-
-/* #region iOS Safari */
-body.ios {
-  --background: rgb(242, 242, 247);
-  --body-padding: 18px;
-  --font-size-primary: 16px;
-  --font-size-secondary: 12px;
-  --group-label-weight: 400;
-  --outside-label-color: rgb(133, 133, 139);
-  --text-secondary: rgb(95, 99, 104);
-  /* Toggles */
-  --active-toggle-bg: rgb(52, 199, 89);
-  --toggle-bg: rgb(233, 233, 235);
-}
-/* #endregion */
-/* #endregion */
-
-/* #region Dark mode overrides */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: rgb(41, 42, 45);
-    --border: rgb(63, 64, 66);
-    --hover-background: rgba(227, 227, 227, 0.08);
-    --label-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    --text-error: rgb(242, 139, 130);
-    --text-primary: rgb(227, 227, 227);
-    --text-secondary: rgb(196, 199, 197);
-    --text-success: rgb(129, 201, 149);
+function updateDisplay() {
+  $body.classList.toggle('debugging', optionsConfig.debug)
+  $body.classList.toggle('desktop', optionsConfig.version == 'desktop')
+  $body.classList.toggle('disabled', !optionsConfig.enabled)
+  $body.classList.toggle('displayingGridAsList',  optionsConfig.displayHomeGridAsList || optionsConfig.displaySubscriptionsGridAsList)
+  $body.classList.toggle('fullSizeTheaterMode', optionsConfig.fullSizeTheaterMode)
+  $body.classList.toggle('hiddenChannels', shouldDisplayHiddenChannels())
+  $body.classList.toggle('hidingHiddenVideos', optionsConfig.hideHiddenVideos)
+  $body.classList.toggle('hidingWatched', optionsConfig.hideWatched)
+  $body.classList.toggle('jpegSnapshot', optionsConfig.snapshotFormat == 'jpeg')
+  $body.classList.toggle('mobile', optionsConfig.version == 'mobile')
+  $body.classList.toggle('snapshot', optionsConfig.addTakeSnapshot)
+  $body.classList.toggle('tidyingGuideSidebar', optionsConfig.tidyGuideSidebar)
+  let icon = `options-icon${!optionsConfig.enabled ? '-disabled' : ''}.png`
+  if ($optionsIcon.src != icon) {
+    $optionsIcon.src = icon
   }
+  updateCollapsedOptionsDisplay()
+  updateHiddenChannelsDisplay()
+}
 
-  /* #region Edge */
-  body.edge {
-    --background: rgb(59, 59, 59);
-    --border: rgb(115, 115, 115);
-    --hover-background: rgba(255, 255, 255, 0.078);
-    --text-primary: rgb(255, 255, 255);
-    --text-secondary: rgb(167, 167, 167);
+function updateCollapsedOptionsDisplay() {
+  for (let $label of $collapsibleLabels) {
+    $label.parentElement.classList.toggle('collapsed', optionsConfig.collapsedOptions.includes($label.getAttribute('data-collapse-id')))
   }
-  /* #endregion */
+}
 
-  /* #region Firefox  */
-  body.firefox {
-    --background: rgb(35, 34, 43);
-    --border: rgb(78, 77, 84);
-    --text-primary: rgb(251, 251, 254);
-    --text-secondary: rgb(191, 191, 201);
+function updateHiddenChannelsDisplay() {
+  if (!shouldDisplayHiddenChannels()) return
+
+  $hiddenChannelsSummary.textContent = chrome.i18n.getMessage('hiddenChannelsSummary', String(optionsConfig.hiddenChannels.length))
+
+  if (!$hiddenChannelsDetails.open) return
+
+  while ($hiddenChannels.hasChildNodes()) $hiddenChannels.firstChild.remove()
+  for (let [index, {name}] of optionsConfig.hiddenChannels.entries()) {
+    $hiddenChannels.appendChild(
+      h('section', null,
+        h('label', {className: 'button'},
+          h('span', null, name),
+          h('button', {
+            type: 'button',
+            onclick() {
+              optionsConfig.hiddenChannels = optionsConfig.hiddenChannels.filter((_, i) => i != index)
+              storeConfigChanges({hiddenChannels: optionsConfig.hiddenChannels})
+              updateDisplay()
+            }
+          }, '×')
+        )
+      )
+    )
   }
-  /* #endregion */
+}
+//#endregion
 
-  /* #region macOS Safari */
-  body.mac {
-    --disclosure-triangle-color: rgb(154, 153, 154);
-    --text-secondary: rgb(184, 184, 184);
-  }
-  /* #endregion */
+//#region Main
+function main() {
+  chrome.storage.local.get((storedConfig) => {
+    optionsConfig = {...defaultConfig, ...storedConfig}
 
-  /* #region iOS Safari */
-  body.ios {
-    --background: rgb(0, 0, 0);
-    --border: rgb(35, 35, 37);
-    --outside-label-color: rgb(141, 141, 147);
-    --text-secondary: rgb(132, 132, 138);
-    /* Toggles */
-    --active-toggle-bg: rgb(48, 209, 88);
-    --toggle-bg: rgb(57, 57, 61);
-    section.group {
-      background-color: rgb(28, 28, 30);
+    for (let [prop, value] of Object.entries(optionsConfig)) {
+      setFormValue(prop, value)
     }
-  }
-  /* #endregion */
+
+    updateDisplay()
+
+    $form.addEventListener('change', onFormChanged)
+    for (let $label of $collapsibleLabels) {
+      $label.addEventListener('click', onToggleCollapse)
+    }
+    $hiddenChannelsDetails.addEventListener('toggle', updateHiddenChannelsDisplay)
+    let stickyObserver = new IntersectionObserver((entries) => {
+      for (let entry of entries) {
+        let $sentinel = /** @type {HTMLElement} */ (entry.target)
+        // Ignore hidden sentinels
+        if ($sentinel.offsetParent == null) continue
+        let $label = $sentinel.closest('section.labelled').querySelector('label')
+        if ($sentinel.classList.contains('top')) {
+          $label.classList.toggle('stuck', !entry.isIntersecting && entry.boundingClientRect.top < 0)
+        }
+        if ($sentinel.classList.contains('bottom')) {
+          $label.classList.toggle('unstick', !entry.isIntersecting && entry.boundingClientRect.top < 0)
+        }
+      }
+    })
+    for (let $sentinel of $stickySentinels) {
+      stickyObserver.observe($sentinel)
+    }
+    chrome.storage.local.onChanged.addListener(onStorageChanged)
+
+    $body.classList.toggle('debug', Boolean(optionsConfig.debug || optionsConfig.debugManualHiding))
+    if (!optionsConfig.debug && !optionsConfig.debugManualHiding) {
+      let $version = document.querySelector('#version')
+      let $debugCountdown = document.querySelector('#debugCountdown')
+      let debugCountdown = 5
+
+      function onClick(e) {
+        if (e.target === $version || $version.contains(/** @type {Node} */ (e.target))) {
+          debugCountdown--
+        } else {
+          debugCountdown = 5
+        }
+
+        if (debugCountdown == 0) {
+          $body.classList.add('debug')
+          $debugCountdown.textContent = ''
+          $form.removeEventListener('click', onClick)
+        }
+        else if (debugCountdown <= 3) {
+          $debugCountdown.textContent = ` (${debugCountdown})`
+        }
+      }
+
+      $form.addEventListener('click', onClick)
+    }
+  })
 }
-/* #endregion */
+
+main()
+//#endregion
