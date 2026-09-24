@@ -3593,7 +3593,7 @@ function animateHidingHiddenItems(itemsToHide) {
   }
 }
 
-async function disableAutoplay() {
+async function syncAutoplayState() {
   if (desktop) {
     let $autoplayButton = await getElement('button[data-tooltip-target-id="ytp-autonav-toggle-button"]', {
       name: 'Autoplay button',
@@ -3606,11 +3606,12 @@ async function disableAutoplay() {
     // and take action if needed.
     observeElement($autoplayButton, (_, observer) => {
       if ($autoplayButton.style.display == 'none') return
-      if ($autoplayButton.querySelector('.ytp-autonav-toggle-button[aria-checked="true"]')) {
-        log('turning Autoplay off')
+      let autoplayOn = $autoplayButton.querySelector('.ytp-autonav-toggle-button')?.getAttribute('aria-checked') == 'true'
+      if (autoplayOn == config.disableAutoplay) {
+        log(`turning Autoplay ${config.disableAutoplay ? 'off' : 'on'}`)
         $autoplayButton.click()
       } else {
-        log('Autoplay is already off')
+        log(`Autoplay is already ${config.disableAutoplay ? 'off' : 'on'}`)
       }
       observer.disconnect()
     }, {
@@ -3637,11 +3638,12 @@ async function disableAutoplay() {
       let $autoplayButton = /** @type {HTMLElement} */ ($customControl.querySelector('button.ytm-autonav-toggle-button-container'))
       if (!$autoplayButton) return
 
-      if ($autoplayButton.getAttribute('aria-pressed') == 'true') {
-        log('turning Autoplay off')
+      let autoplayOn = $autoplayButton.getAttribute('aria-pressed') == 'true'
+      if (autoplayOn == config.disableAutoplay) {
+        log(`turning Autoplay ${config.disableAutoplay ? 'off' : 'on'}`)
         $autoplayButton.click()
       } else {
-        log('Autoplay is already off')
+        log(`Autoplay is already ${config.disableAutoplay ? 'off' : 'on'}`)
       }
       observer.disconnect()
     }, {
@@ -5823,9 +5825,7 @@ async function tweakSubscriptionsPage() {
 }
 
 async function tweakVideoPage() {
-  if (config.disableAutoplay) {
-    disableAutoplay()
-  }
+  syncAutoplayState()
   if (desktop) {
     run(async () => {
       let $player = await getElement('#movie_player', {
