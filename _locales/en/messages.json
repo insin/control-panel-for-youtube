@@ -459,6 +459,9 @@
   "showFullVideoTitles": {
     "message": "Show full video titles"
   },
+  "showFullVideoDetails": {
+    "message": "Show full video details"
+  },
   "small": {
     "message": "Small"
   },
