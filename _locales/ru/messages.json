@@ -1,0 +1,480 @@
+{
+  "addTakeSnapshot": {
+    "message": "Добавить «Сделать снимок» в меню видео"
+  },
+  "ads": {
+    "message": "Реклама"
+  },
+  "allowBackgroundPlay": {
+    "message": "Разрешить воспроизведение в фоне"
+  },
+  "alwaysShowShortsProgressBar": {
+    "message": "Всегда показывать полосу прогресса"
+  },
+  "alwaysUseOriginalAudio": {
+    "message": "Всегда использовать оригинальную аудиодорожку"
+  },
+  "alwaysUseTheaterMode": {
+    "message": "Всегда использовать режим театра"
+  },
+  "animateHiding": {
+    "message": "Анимировать скрытие"
+  },
+  "annoyances": {
+    "message": "Раздражающие элементы"
+  },
+  "anyPercent": {
+    "message": "любой %"
+  },
+  "atLeastX": {
+    "message": "Не менее $AMOUNT$",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "auto": {
+    "message": "Авто"
+  },
+  "autoPlusX": {
+    "message": "Авто +$AMOUNT$",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
+  },
+  "blockAds": {
+    "message": "Блокировать рекламу"
+  },
+  "blockAdsNote": {
+    "message": "Отключите, чтобы избежать конфликтов с другими блокировщиками рекламы"
+  },
+  "blur": {
+    "message": "Размытие"
+  },
+  "dark": {
+    "message": "Тёмная"
+  },
+  "debug": {
+    "message": "Режим отладки"
+  },
+  "debugLogGridObservers": {
+    "message": "Записывать работу наблюдателей сетки в журнал"
+  },
+  "debugManualHiding": {
+    "message": "Отладка ручного скрытия"
+  },
+  "debugManualHidingNote": {
+    "message": "Выделять элементы вместо их скрытия"
+  },
+  "debugNote": {
+    "message": "Включить журнал отладки"
+  },
+  "debugOptions": {
+    "message": "Параметры отладки"
+  },
+  "default": {
+    "message": "По умолчанию"
+  },
+  "desktopOnly": {
+    "message": "Только для компьютера"
+  },
+  "device": {
+    "message": "Тема устройства"
+  },
+  "disableAmbientMode": {
+    "message": "Отключить режим Ambient"
+  },
+  "disableAutoplay": {
+    "message": "Отключить автовоспроизведение"
+  },
+  "disableHomeFeed": {
+    "message": "Отключить ленту «Главная»"
+  },
+  "disableHomeFeedNote": {
+    "message": "Только для авторизованных пользователей - перенаправлять в «Подписки»"
+  },
+  "disableNumberKeySeeking": {
+    "message": "Отключить перемотку цифровыми клавишами"
+  },
+  "disableStableVolume": {
+    "message": "Отключить стабильную громкость"
+  },
+  "disableThemedHover": {
+    "message": "Отключить тематические эффекты при наведении"
+  },
+  "disableVideoPreviews": {
+    "message": "Отключить предпросмотр видео"
+  },
+  "displayHomeGridAsList": {
+    "message": "Отображать сетку «Главная» списком"
+  },
+  "displaySubscriptionsGridAsList": {
+    "message": "Отображать сетку «Подписки» списком"
+  },
+  "downloadTranscript": {
+    "message": "Сделать расшифровку доступной для скачивания"
+  },
+  "embeddedVideos": {
+    "message": "Встроенные видео"
+  },
+  "enabled": {
+    "message": "Включено"
+  },
+  "enforceTheme": {
+    "message": "Принудительно использовать тему"
+  },
+  "experimentalFeatures": {
+    "message": "Экспериментальные функции"
+  },
+  "extensionDescription": {
+    "message": "Даёт больше контроля над YouTube, добавляя недостающие параметры и улучшения интерфейса",
+    "description": "<= 112 characters"
+  },
+  "extensionName": {
+    "message": "Control Panel for YouTube"
+  },
+  "extensionNameDisabled": {
+    "message": "Control Panel for YouTube (отключено)"
+  },
+  "features": {
+    "message": "Функции"
+  },
+  "fixGhostCards": {
+    "message": "Исправить заполнители при загрузке сетки"
+  },
+  "fullSizeTheaterMode": {
+    "message": "Полноразмерный режим театра"
+  },
+  "fullSizeTheaterModeHideHeader": {
+    "message": "Скрывать шапку"
+  },
+  "fullWidthChannelPage": {
+    "message": "Страница канала на всю ширину"
+  },
+  "gridItemsPerRow": {
+    "message": "Элементов в сетке на строку"
+  },
+  "hiddenChannelsSummary": {
+    "message": "Скрытые каналы ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
+  },
+  "hideAI": {
+    "message": "Скрывать сводки AI"
+  },
+  "hideAskButton": {
+    "message": "Скрывать кнопку «Спросить»"
+  },
+  "hideAutoDubbed": {
+    "message": "Скрывать автоматически дублированные видео"
+  },
+  "hideAutoDubbedNote": {
+    "message": "Только там, где это явно указано"
+  },
+  "hideChannelBanner": {
+    "message": "Скрывать баннеры каналов"
+  },
+  "hideChannelWatermark": {
+    "message": "Скрывать водяные знаки каналов"
+  },
+  "hideChannels": {
+    "message": "Скрывать каналы"
+  },
+  "hideChannelsNote": {
+    "message": "Добавляет «Скрыть канал» в меню видео"
+  },
+  "hideChat": {
+    "message": "Скрывать чат"
+  },
+  "hideChatFullScreen": {
+    "message": "Только в полноэкранном режиме"
+  },
+  "hideCollaborations": {
+    "message": "Скрывать коллаборации в «Подписках»"
+  },
+  "hideComments": {
+    "message": "Скрывать комментарии"
+  },
+  "hideEmbedPauseOverlay": {
+    "message": "Скрывать оверлей паузы"
+  },
+  "hideEmbedShareButton": {
+    "message": "Скрывать кнопку «Поделиться»"
+  },
+  "hideEndCards": {
+    "message": "Скрывать конечные карточки видео"
+  },
+  "hideEndVideos": {
+    "message": "Скрывать содержимое конечного экрана видео"
+  },
+  "hideExperiencingInterruptions": {
+    "message": "Скрывать окно «Возникли перебои?»"
+  },
+  "hideExploreButton": {
+    "message": "Скрывать кнопку «Обзор» на главной"
+  },
+  "hideHiddenVideos": {
+    "message": "Скрывать скрытые видео"
+  },
+  "hideHiddenVideosNote": {
+    "message": "Скрывать кнопку «Отменить» через 5 секунд"
+  },
+  "hideHomeCategories": {
+    "message": "Скрывать категории на главной"
+  },
+  "hideHomePosts": {
+    "message": "Скрывать публикации на главной"
+  },
+  "hideInfoPanels": {
+    "message": "Скрывать информационные панели"
+  },
+  "hideJumpAheadButton": {
+    "message": "Скрывать кнопку Premium «Перейти вперёд»"
+  },
+  "hideLive": {
+    "message": "Скрывать прямые трансляции"
+  },
+  "hideLowViews": {
+    "message": "Скрывать видео с малым числом просмотров в похожих видео"
+  },
+  "hideMembersOnly": {
+    "message": "Скрывать видео только для участников"
+  },
+  "hideMerchEtc": {
+    "message": "Скрывать товары, предложения и т. п."
+  },
+  "hideMetadata": {
+    "message": "Скрывать метаданные видео"
+  },
+  "hideMixes": {
+    "message": "Скрывать миксы"
+  },
+  "hideMoviesAndTV": {
+    "message": "Скрывать фильмы и ТВ"
+  },
+  "hideNextButton": {
+    "message": "Скрывать кнопку «Следующее»"
+  },
+  "hideNextButtonNote": {
+    "message": "Когда видео не воспроизводится из плейлиста"
+  },
+  "hideOpenApp": {
+    "message": "Скрывать ссылки «Открыть в приложении»"
+  },
+  "hidePlaylists": {
+    "message": "Скрывать плейлисты"
+  },
+  "hidePremiumUpsells": {
+    "message": "Скрывать предложения Premium"
+  },
+  "hideRelated": {
+    "message": "Скрывать похожие видео"
+  },
+  "hideRelatedBelow": {
+    "message": "Только когда они отображаются под видео"
+  },
+  "hideShareThanksClip": {
+    "message": "Скрывать «Поделиться», «Спасибо», «Клип» и т. п."
+  },
+  "hideShorts": {
+    "message": "Скрывать Shorts"
+  },
+  "hideShortsMetadataUntilHover": {
+    "message": "Скрывать метаданные Shorts до наведения"
+  },
+  "hideShortsMusicLink": {
+    "message": "Скрывать ссылку на музыку"
+  },
+  "hideShortsRelatedLink": {
+    "message": "Скрывать ссылку на похожий Short того же канала"
+  },
+  "hideShortsRemixButton": {
+    "message": "Скрывать кнопку «Ремикс»"
+  },
+  "hideShortsSuggestedActions": {
+    "message": "Скрывать предлагаемые действия"
+  },
+  "hideSidebarSubscriptions": {
+    "message": "Скрывать список подписок"
+  },
+  "hideSidebarWhenEmpty": {
+    "message": "Скрывать боковую панель, если она пустая"
+  },
+  "hideSponsored": {
+    "message": "Скрывать спонсорские видео и промо"
+  },
+  "hideStreamed": {
+    "message": "Скрывать трансляции"
+  },
+  "hideSubscriptionsChannelList": {
+    "message": "Скрывать список каналов в «Подписках»"
+  },
+  "hideSubscriptionsLatestBar": {
+    "message": "Скрывать панель «Последние» в «Подписках»"
+  },
+  "hideSuggestedSections": {
+    "message": "Скрывать предлагаемые разделы"
+  },
+  "hideUpcoming": {
+    "message": "Скрывать предстоящие видео"
+  },
+  "hideVoiceSearch": {
+    "message": "Скрывать «Голосовой поиск»"
+  },
+  "hideWatchSideMenu": {
+    "message": "Скрывать боковое меню страницы видео"
+  },
+  "hideWatched": {
+    "message": "Скрывать просмотренные видео"
+  },
+  "hideWatchedThreshold": {
+    "message": "Просмотрено, %"
+  },
+  "inHomeAndSubscriptionsNote": {
+    "message": "На главной и в «Подписках»"
+  },
+  "large": {
+    "message": "Большой"
+  },
+  "light": {
+    "message": "Светлая"
+  },
+  "medium": {
+    "message": "Средний"
+  },
+  "minimumShortsPerRow": {
+    "message": "Минимум Shorts в строке"
+  },
+  "mobileGridView": {
+    "message": "Использовать вид сетки для «Подписок» и поиска (только книжная ориентация)"
+  },
+  "mobileOnly": {
+    "message": "Только для мобильных"
+  },
+  "newVideoPlayerUI": {
+    "message": "Новый интерфейс видеоплеера"
+  },
+  "pauseChannelTrailers": {
+    "message": "Автоматически ставить трейлеры каналов на паузу"
+  },
+  "playerControlsBg": {
+    "message": "Фон элементов управления плеером"
+  },
+  "playerFixFullScreenButton": {
+    "message": "Восстановить переключение полноэкранного режима нажатием на угол"
+  },
+  "playerHideFullScreenControls": {
+    "message": "Скрывать новые элементы управления в полноэкранном режиме"
+  },
+  "playerHideFullScreenMoreActions": {
+    "message": "Скрывать меню «Другие действия» в полноэкранном режиме"
+  },
+  "playerHideFullScreenMoreVideos": {
+    "message": "Скрывать «Другие видео» в полноэкранном режиме"
+  },
+  "playerHideFullScreenTitle": {
+    "message": "Скрывать заголовок в полноэкранном режиме"
+  },
+  "playerHideFullScreenVoting": {
+    "message": "Скрывать кнопки «Нравится»/«Не нравится» в полноэкранном режиме"
+  },
+  "playerRemoveDelhiExperimentFlags": {
+    "message": "Отключить новую полосу прогресса и элементы управления"
+  },
+  "playerRemoveDelhiExperimentFlagsNote": {
+    "message": "Примечание: перестанет работать после удаления YouTube старого интерфейса плеера"
+  },
+  "qualityFull": {
+    "message": "Максимальное"
+  },
+  "qualityHigh": {
+    "message": "Высокое"
+  },
+  "qualityLow": {
+    "message": "Низкое"
+  },
+  "qualityMedium": {
+    "message": "Среднее"
+  },
+  "recentChanges": {
+    "message": "Последние изменения YouTube"
+  },
+  "redirectLogoToSubscriptions": {
+    "message": "Сделать логотип YouTube ссылкой на «Подписки»"
+  },
+  "redirectShorts": {
+    "message": "Перенаправлять Shorts в обычный плеер"
+  },
+  "removePink": {
+    "message": "Удалить розовый градиент с полос прогресса"
+  },
+  "requiresPageRefresh": {
+    "message": "Для применения требуется обновить страницу"
+  },
+  "restoreMiniplayerButton": {
+    "message": "Восстановить кнопку мини-плеера"
+  },
+  "restoreSidebarSubscriptionsLink": {
+    "message": "Восстановить ссылку «Подписки» в боковой панели"
+  },
+  "revertGiantRelated": {
+    "message": "Восстановить расположение боковой панели похожих видео"
+  },
+  "revertSidebarOrder": {
+    "message": "Восстановить порядок элементов боковой панели"
+  },
+  "searchThumbnailSize": {
+    "message": "Размер миниатюр в поиске"
+  },
+  "shorts": {
+    "message": "Shorts"
+  },
+  "showChannelHeadersInListView": {
+    "message": "Показывать заголовки каналов в режиме списка"
+  },
+  "showFullVideoTitles": {
+    "message": "Показывать полные названия видео"
+  },
+  "small": {
+    "message": "Маленький"
+  },
+  "snapshotFormat": {
+    "message": "Формат снимка"
+  },
+  "snapshotQuality": {
+    "message": "Качество"
+  },
+  "stopShortsLooping": {
+    "message": "Остановить зацикливание Shorts"
+  },
+  "tidyGuideSidebar": {
+    "message": "Упорядочить боковую панель «Гид»"
+  },
+  "transparent": {
+    "message": "Прозрачный"
+  },
+  "uiTweaks": {
+    "message": "Настройки интерфейса"
+  },
+  "useSquareCorners": {
+    "message": "Использовать квадратные углы для миниатюр и видео"
+  },
+  "videoLists": {
+    "message": "Списки видео"
+  },
+  "videoPages": {
+    "message": "Страницы видео"
+  },
+  "xsmall": {
+    "message": "Очень маленький"
+  }
+}
