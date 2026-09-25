@@ -193,6 +193,7 @@ for (let translationId of [
   'shorts',
   'showChannelHeadersInListView',
   'showFullVideoTitles',
+  'showFullVideoDetails',
   'snapshotFormat',
   'snapshotQuality',
   'stopShortsLooping',
@@ -274,6 +275,7 @@ let defaultConfig = {
   redirectShorts: true,
   removePink: true,
   showFullVideoTitles: false,
+  showFullVideoDetails: false,
   stopShortsLooping: true,
   useSquareCorners: false,
   // Desktop only
