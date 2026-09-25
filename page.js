@@ -5303,15 +5303,24 @@ function onDocumentClick(e) {
     }
   }
   if (desktop && config.redirectShorts) {
-    let $shortsLink = /** @type {HTMLAnchorElement} */ ($lastClickedElement?.closest('a[href^="/shorts/'))
+    let $shortsLink = /** @type {HTMLAnchorElement} */ ($lastClickedElement?.closest('a[href^="/shorts/"]'))
     if ($shortsLink) {
+      let videoId = $shortsLink.pathname.split('/').at(-1)
+      if (!videoId) return
+      let watchUrl = `/watch?v=${videoId}`
       // @ts-expect-error
-      let webCommandMetadata = $shortsLink._data?.commandMetadata?.webCommandMetadata
+      let navigationEndpoint = $shortsLink._data ?? $shortsLink.data ?? $shortsLink.closest('ytm-shorts-lockup-view-model')?.data?.onTap?.innertubeCommand
+      let webCommandMetadata = navigationEndpoint?.commandMetadata?.webCommandMetadata
+      log('redirecting Shorts video click to normal player')
+      $shortsLink.href = watchUrl
       if (webCommandMetadata) {
-        log('redirecting Shorts video click to normal player')
-        webCommandMetadata.url = `/watch?v=${$shortsLink.pathname.split('/').at(-1)}`
+        webCommandMetadata.url = watchUrl
         webCommandMetadata.webPageType = 'WEB_PAGE_TYPE_WATCH'
         return
+      }
+      if (navigationEndpoint?.reelWatchEndpoint) {
+        navigationEndpoint.watchEndpoint = {videoId}
+        delete navigationEndpoint.reelWatchEndpoint
       }
     }
   }
