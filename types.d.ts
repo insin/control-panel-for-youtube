@@ -56,6 +56,7 @@ export type SiteConfig = {
   debugManualHiding?: boolean
   alwaysShowShortsProgressBar: boolean
   blockAds: boolean
+  disableAIGeneratedChapters: boolean
   disableAmbientMode: boolean
   disableAutoplay: boolean
   disableHomeFeed: boolean
@@ -108,7 +109,6 @@ export type SiteConfig = {
   alwaysUseOriginalAudio: boolean
   alwaysUseTheaterMode: boolean
   animateHiding: boolean
-  disableAIGeneratedChapters: boolean
   disableContinueWatching: boolean
   disableNumberKeySeeking: boolean
   disableThemedHover: boolean

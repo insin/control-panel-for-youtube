@@ -93,7 +93,6 @@ ${messages.recentChanges}:
 • ${messages.hideWatchSideMenu}${messages.desktopVersion}
 • ${messages.displaySubscriptionsGridAsList}${messages.desktopVersion}
 • ${messages.displayHomeGridAsList}${messages.desktopVersion}
-• ${messages.disableAIGeneratedChapters}${messages.desktopVersion}
 
 ${messages.newVideoPlayerUI}:
 
@@ -109,6 +108,7 @@ ${messages.newVideoPlayerUI}:
 ${messages.annoyances}:
 
 • ${messages.hideAI}
+• ${messages.disableAIGeneratedChapters}
 • ${messages.hideExperiencingInterruptions}${messages.desktopVersion}
 • ${messages.disableContinueWatching}${messages.desktopVersion}
 • ${messages.allowBackgroundPlay}${messages.mobileVersion}

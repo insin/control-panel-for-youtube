@@ -10,6 +10,7 @@ let defaultConfig = {
   debugManualHiding: false,
   alwaysShowShortsProgressBar: true,
   blockAds: true,
+  disableAIGeneratedChapters: true,
   disableAmbientMode: true,
   disableAutoplay: true,
   disableHomeFeed: false,
@@ -60,7 +61,6 @@ let defaultConfig = {
   alwaysUseOriginalAudio: true,
   alwaysUseTheaterMode: false,
   animateHiding: !prefersReducedMotion,
-  disableAIGeneratedChapters: true,
   disableContinueWatching: false,
   disableNumberKeySeeking: false,
   disableThemedHover: true,
@@ -6016,7 +6016,7 @@ function getResponsePatcher(endpoint) {
   let responseConfig = config ?? defaultConfig
   if (!responseConfig.enabled) return
   let ads = responseConfig.blockAds
-  let chapters = desktop && responseConfig.disableAIGeneratedChapters
+  let chapters = responseConfig.disableAIGeneratedChapters
   if (endpoint == 'get_watch' && (ads || chapters)) {
     return (data, source) => {
       if (ads) removePlayerAds(data, source)
