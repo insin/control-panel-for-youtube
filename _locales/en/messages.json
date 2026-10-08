@@ -89,6 +89,9 @@
   "device": {
     "message": "Device theme"
   },
+  "disableAIGeneratedChapters": {
+    "message": "Disable AI-generated video chapters"
+  },
   "disableAmbientMode": {
     "message": "Disable Ambient mode"
   },

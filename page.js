@@ -60,6 +60,7 @@ let defaultConfig = {
   alwaysUseOriginalAudio: true,
   alwaysUseTheaterMode: false,
   animateHiding: !prefersReducedMotion,
+  disableAIGeneratedChapters: true,
   disableContinueWatching: false,
   disableNumberKeySeeking: false,
   disableThemedHover: true,
@@ -144,6 +145,8 @@ function warn(...args) {
 
 /** @type {import("./types").SiteConfig} */
 let config
+
+const patchInitialResponses = patchRequests()
 
 //#region Locales
 /**
@@ -6004,174 +6007,245 @@ function waitForDesktopVideoOverlay($video, uniqueId) {
 }
 //#endregion
 
-//#region Global patching
-let adGlobalsPatched = false
-let getFlagDefnHooked = false
+//#region Response patching
+function getResponseEndpoint(url) {
+  return url?.match(/\/(player|next|get_watch|reel_watch_sequence)(?:\?|$)/)?.[1]
+}
 
-let Request_clone = Request.prototype.clone
-let Response_clone = Response.prototype.clone
-let ytInitialPlayerResponse
-let ytInitialReelWatchSequenceResponse
-
-function blockAds() {
-  if (adGlobalsPatched) return
-
-  log('blockAds: patching globals')
-  adGlobalsPatched = true
-
-  function filterShortsAd(entry) {
-    return entry.command?.reelWatchEndpoint?.adClientParams?.isAd != true
-  }
-
-  function patchPlayerResponse(playerResponse) {
-    delete playerResponse.adPlacements
-    delete playerResponse.adSlots
-    delete playerResponse.playerAds
-  }
-
-  function processPlayerResponse(data, source) {
-    if (data.videoDetails) {
-      patchPlayerResponse(data)
-      log(`blockAds: patched /player response format (${source})`)
-    }
-    else if (Array.isArray(data) && data[0]?.playerResponse?.videoDetails) {
-      patchPlayerResponse(data[0].playerResponse)
-      log(`blockAds: patched /get_watch response format (${source})`)
+function getResponsePatcher(endpoint) {
+  let responseConfig = config ?? defaultConfig
+  if (!responseConfig.enabled) return
+  let ads = responseConfig.blockAds
+  let chapters = desktop && responseConfig.disableAIGeneratedChapters
+  if (endpoint == 'get_watch' && (ads || chapters)) {
+    return (data, source) => {
+      if (ads) removePlayerAds(data, source)
+      if (chapters) removeAutoChapters(data[0]?.response, source)
     }
   }
-
-  function processReelWatchSequenceResponse(data) {
-    if (Array.isArray(data.entries) && data.entries[0]?.command?.reelWatchEndpoint) {
-      data.entries = data.entries.filter(filterShortsAd)
-    }
-    if (Array.isArray(data.reelWatchSequenceResponse?.entries) &&
-        data.reelWatchSequenceResponse.entries[0]?.command?.reelWatchEndpoint) {
-      data.reelWatchSequenceResponse.entries = data.reelWatchSequenceResponse.entries.filter(filterShortsAd)
-    }
+  else if (endpoint == 'next' && chapters) {
+    return removeAutoChapters
   }
+  else if (endpoint == 'player' && ads) {
+    return removePlayerAds
+  }
+  else if (endpoint == 'reel_watch_sequence' && ads) {
+    return removeShortsAds
+  }
+}
 
-  function proxyFetch(target, thisArg, argArray) {
-    let request = argArray?.[0]
-    let url = request?.url
-    if (
-      (config && !(config.enabled && config.blockAds)) ||
-      !(request instanceof Request) ||
-      !url || !url.includes('/player') && !url.includes('/get_watch') && !url.includes('/reel_watch_sequence') ||
+function patchResponseText(responseText, patcher, source) {
+  try {
+    let prefix = responseText.match(/^(\)\]\}'\n?)/)?.[1] ?? ''
+    let data = JSON.parse(responseText.slice(prefix.length))
+    patcher(data, source)
+    return prefix + JSON.stringify(data)
+  } catch (error) {
+    warn('patchRequests: error patching', source, 'response:', error)
+    return responseText
+  }
+}
+
+function patchRequests() {
+  // History navigation can restore cached responses without making a request
+  window.addEventListener('yt-page-data-fetched', event => {
+    let patcher = getResponsePatcher('next')
+    let data = /** @type {CustomEvent} */ (event).detail?.pageData?.response
+    if (data != null && patcher) patcher(data, 'yt-page-data-fetched')
+  }, true)
+
+  let Request_clone = Request.prototype.clone
+  let Response_clone = Response.prototype.clone
+  let XMLHttpRequest_open = XMLHttpRequest.prototype.open
+  /** @type {[string, () => any][]} */
+  let responseGetters = [
+    ['response', Object.getOwnPropertyDescriptor(XMLHttpRequest.prototype, 'response').get],
+    ['responseText', Object.getOwnPropertyDescriptor(XMLHttpRequest.prototype, 'responseText').get],
+  ]
+
+  window.fetch = new Proxy(window.fetch, {
+    apply(target, thisArg, argArray) {
+      let request = argArray[0]
+      if (!(request instanceof Request)) return Reflect.apply(target, thisArg, argArray)
+
+      let endpoint = getResponseEndpoint(request.url)
       // Ignore adblock detection requests with data: URL payloads
-      !Request_clone.call(request).url.startsWith('https://')
-    ) {
-      return Reflect.apply(target, thisArg, argArray)
-    }
+      if (!endpoint || !Request_clone.call(request).url.startsWith('https://')) {
+        return Reflect.apply(target, thisArg, argArray)
+      }
 
-    return Reflect.apply(target, thisArg, argArray).then(response => {
-      return Response_clone.call(response).text().then(responseText => {
+      return Reflect.apply(target, thisArg, argArray).then(async response => {
+        let patcher = getResponsePatcher(endpoint)
+        if (!patcher) return response
         try {
-          let data = JSON.parse(responseText)
-          if (url.includes('/player') || url.includes('/get_watch')) {
-            log('blockAds: patching', url, 'response')
-            processPlayerResponse(data, 'fetch')
+          let original = await Response_clone.call(response).text()
+          let patched = patchResponseText(original, patcher, 'fetch')
+          if (patched != original) {
+            return new Response(patched, {
+              status: response.status,
+              statusText: response.statusText,
+              headers: response.headers,
+            })
           }
-          else if (url.includes('/reel_watch_sequence')) {
-            processReelWatchSequenceResponse(data)
-          }
-          return new Response(JSON.stringify(data), {
-            status: response.status,
-            statusText: response.statusText,
-            headers: response.headers,
-          })
         } catch (error) {
-          warn('blockAds: error patching', url, 'fetch response:', error, responseText)
+          warn('patchRequests: error patching', endpoint, 'fetch response:', error)
         }
         return response
       })
-    })
-  }
+    },
+  })
 
-  try {
-    Object.defineProperty(window, 'ytInitialPlayerResponse', {
-      set(data) {
-        ytInitialPlayerResponse = data
-        if (ytInitialPlayerResponse != null && config?.enabled && config.blockAds) {
-          processPlayerResponse(ytInitialPlayerResponse, 'ytInitialPlayerResponse')
-        }
-      },
-      get() {
-        return ytInitialPlayerResponse
-      }
-    })
-  } catch(error) {
-    if (config?.enabled && config.blockAds) {
-      warn('blockAds: error defining ytInitialPlayerResponse:', error)
-    }
-  }
-
-  try {
-    Object.defineProperty(window, 'ytInitialReelWatchSequenceResponse', {
-      set(data) {
-        ytInitialReelWatchSequenceResponse = data
-        if (ytInitialReelWatchSequenceResponse != null && config?.enabled && config.blockAds) {
-          processReelWatchSequenceResponse(ytInitialReelWatchSequenceResponse)
-        }
-      },
-      get() {
-        return ytInitialReelWatchSequenceResponse
-      }
-    })
-  } catch(error) {
-    if (config?.enabled && config.blockAds) {
-      warn('blockAds: error defining ytInitialReelWatchSequenceResponse:', error)
-    }
-  }
-
-  try {
-    window.fetch = new Proxy(window.fetch, {apply: proxyFetch})
-  } catch (error) {
-    if (config?.enabled && config.blockAds) {
-      warn('blockAds: error proxying fetch:', error)
-    }
-  }
-
-  let urlProp = crypto.randomUUID()
-  let XMLHttpRequest_open = XMLHttpRequest.prototype.open
+  // Patch response reads
+  let xhrResponseOverrides = new WeakSet()
   XMLHttpRequest.prototype.open = function(_, url) {
-    if (config?.enabled && config?.blockAds && (url?.includes('/player') || url?.includes('/get_watch'))) {
-      this[urlProp] = url
+    if (xhrResponseOverrides.has(this)) {
+      Reflect.deleteProperty(this, 'response')
+      Reflect.deleteProperty(this, 'responseText')
+      xhrResponseOverrides.delete(this)
+    }
+    let endpoint = getResponseEndpoint(url)
+    if (endpoint) {
+      xhrResponseOverrides.add(this)
+      let processed = false
+      let patchedResponse
+      for (let [name, getter] of responseGetters) {
+        Object.defineProperty(this, name, {
+          configurable: true,
+          get() {
+            let value = getter.call(this)
+            if (this.readyState != 4 || typeof value != 'string') return value
+            if (!processed) {
+              processed = true
+              let patcher = getResponsePatcher(endpoint)
+              patchedResponse = patcher ? patchResponseText(value, patcher, 'XHR') : value
+            }
+            return patchedResponse
+          },
+        })
+      }
     }
     return XMLHttpRequest_open.apply(this, arguments)
   }
 
-  let onloadProp = crypto.randomUUID()
-  let XMLHttpRequest_send = XMLHttpRequest.prototype.send
-  XMLHttpRequest.prototype.send = function(body) {
-    if (this[urlProp] && this.onload) {
-      this[onloadProp] = this.onload
-      this.onload = (...args) => {
-        if (typeof this.response == 'string') {
-          try {
-            let prefix = this.response.match(/^(\)\]\}'\n?)/)?.[1] ?? ''
-            let data = JSON.parse(this.response.slice(prefix.length))
-            processPlayerResponse(data, 'XHR')
-            let patched = prefix + JSON.stringify(data)
-            Object.defineProperty(this, 'response', {
-              configurable: true,
-              writable: false,
-              value: patched,
-            })
-            Object.defineProperty(this, 'responseText', {
-              configurable: true,
-              writable: false,
-              value: patched,
-            })
-          } catch (error) {
-            warn('blockAds: error patching', this[urlProp], 'XHR response:', error, this.response)
-          }
-        }
-        this[onloadProp]?.apply(this, args)
-      }
+  let initialResponses = [
+    ['ytInitialData', 'next'],
+    ['ytInitialPlayerResponse', 'player'],
+    ['ytInitialReelWatchSequenceResponse', 'reel_watch_sequence'],
+  ]
+  function patchInitialResponse(data, endpoint, name) {
+    let patcher = getResponsePatcher(endpoint)
+    if (data != null && patcher) patcher(data, name)
+  }
+  for (let [name, endpoint] of initialResponses) {
+    let value = window[name]
+    try {
+      Object.defineProperty(window, name, {
+        configurable: true,
+        enumerable: true,
+        set(data) {
+          value = data
+          patchInitialResponse(data, endpoint, name)
+        },
+        get() {
+          return value
+        },
+      })
+    } catch (error) {
+      warn('patchRequests: error defining', name, ':', error)
     }
-    return XMLHttpRequest_send.call(this, body)
+  }
+  return function patchInitialResponses() {
+    for (let [name, endpoint] of initialResponses) {
+      patchInitialResponse(window[name], endpoint, name)
+    }
   }
 }
+
+function removeAutoChapters(data, source) {
+  const panelId = 'engagement-panel-macro-markers-auto-chapters'
+
+  function isAutoChapterPanel(panel) {
+    let renderer = panel.engagementPanelSectionListRenderer
+    return renderer?.panelIdentifier == panelId || renderer?.targetId == panelId
+  }
+
+  if (!data?.engagementPanels?.some(isAutoChapterPanel)) return
+
+  function filterEntries(object, key, remove) {
+    if (object?.[key]) object[key] = object[key].filter(entry => !remove(entry))
+  }
+
+  function targetsAutoChapterPanel(command) {
+    return command?.updateEngagementPanelContentCommand?.contentSourcePanelIdentifier?.tag == panelId ||
+      command?.changeEngagementPanelVisibilityAction?.targetId == panelId ||
+      command?.commandExecutorCommand?.commands?.some(targetsAutoChapterPanel) == true
+  }
+
+  // Player timeline and "View Chapters" button
+  let overlay = data.playerOverlays?.playerOverlayRenderer
+  let decoratedBar = overlay?.decoratedPlayerBarRenderer?.decoratedPlayerBarRenderer
+  let markers = decoratedBar?.playerBar?.multiMarkersPlayerBarRenderer
+  let hasAutoChapters = markers?.markersMap?.some(marker => marker.key == 'AUTO_CHAPTERS')
+  filterEntries(markers, 'markersMap', marker => marker.key == 'AUTO_CHAPTERS')
+  if (markers?.visibleOnLoad?.key == 'AUTO_CHAPTERS') {
+    delete markers.visibleOnLoad
+  }
+  if (hasAutoChapters && !markers.markersMap.length) {
+    delete overlay.decoratedPlayerBarRenderer
+  } else if (targetsAutoChapterPanel(decoratedBar?.playerBarActionButton?.buttonRenderer?.command)) {
+    delete decoratedBar.playerBarActionButton
+    delete decoratedBar.buttonType
+  }
+
+  // Marker loading and entity updates
+  function isAutoChapterKey(key) {
+    // Keys are URL-encoded base64url protobufs
+    return atob(decodeURIComponent(key).replace(/-/g, '+').replace(/_/g, '/')).includes('AUTO_CHAPTERS')
+  }
+  for (let endpoint of data.onResponseReceivedEndpoints ?? []) {
+    let command = endpoint.loadMarkersCommand
+    for (let key of ['entityKeys', 'visibleOnLoadKeys']) {
+      filterEntries(command, key, isAutoChapterKey)
+    }
+  }
+  let update = data.frameworkUpdates?.entityBatchUpdate
+  filterEntries(update, 'mutations', mutation => isAutoChapterKey(mutation.entityKey))
+
+  // Chapters sidebar (also provides video scrubber titles), selector chip and description carousel
+  filterEntries(data, 'engagementPanels', isAutoChapterPanel)
+  for (let panel of data.engagementPanels ?? []) {
+    let renderer = panel.engagementPanelSectionListRenderer
+    let chipBar = renderer?.header?.engagementPanelTitleHeaderRenderer?.subheader?.chipBarViewModel
+    filterEntries(chipBar, 'chips', chip => targetsAutoChapterPanel(chip.chipViewModel?.tapCommand?.innertubeCommand))
+    let description = renderer?.content?.structuredDescriptionContentRenderer
+    filterEntries(description, 'items', item => targetsAutoChapterPanel(
+      item.horizontalCardListRenderer?.header?.richListHeaderRenderer?.navigationButton?.buttonRenderer?.command
+    ))
+  }
+
+  log(`disableAIGeneratedChapters: patched auto-generated chapters response (${source})`)
+}
+
+function removePlayerAds(data, source) {
+  let playerResponse = data.videoDetails ? data : Array.isArray(data) ? data[0]?.playerResponse : null
+  if (!playerResponse?.videoDetails) return
+  delete playerResponse.adPlacements
+  delete playerResponse.adSlots
+  delete playerResponse.playerAds
+  log(`blockAds: patched player response (${source})`)
+}
+
+function removeShortsAds(data, source) {
+  for (let response of [data, data.reelWatchSequenceResponse]) {
+    if (!Array.isArray(response?.entries)) continue
+    response.entries = response.entries.filter(entry => entry.command?.reelWatchEndpoint?.adClientParams?.isAd != true)
+  }
+  log(`blockAds: patched Shorts response (${source})`)
+}
+//#endregion
+
+//#region Global patching
+let getFlagDefnHooked = false
 
 function disableVideoPreviews() {
   if (getFlagDefnHooked) return
@@ -6211,9 +6285,6 @@ let channel = new BroadcastChannel(channelName)
 
 function main() {
   if (config.enabled) {
-    if (config.blockAds) {
-      blockAds()
-    }
     if (config.disableStableVolume) {
       let pref = JSON.parse(localStorage['yt-player-drc-pref'] || 'null')
       if (pref?.data !== '0' || (pref?.expiration ?? 0) < Date.now()) {
@@ -6286,9 +6357,6 @@ function main() {
 function configChanged(changes) {
   if (!Object.hasOwn(changes, 'enabled')) {
     log('config changed', changes)
-    if (config.blockAds) {
-      blockAds()
-    }
     if (desktop && changes.enforceTheme && config.enforceTheme != 'default') {
       enforceTheme()
     }
@@ -6327,10 +6395,10 @@ function receiveConfigFromContentScript({data: {type, siteConfig}}) {
     debug = config.debug
     debugManualHiding = config.debugManualHiding
     log('initial config', config, {version, lang, loggedIn})
-
+    // Patch responses based on initial config
+    patchInitialResponses()
     // Let the options page know which version is being used
     storeConfigChanges({version})
-
     main()
     return
   }

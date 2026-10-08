@@ -89,6 +89,9 @@
   "device": {
     "message": "设备主题"
   },
+  "disableAIGeneratedChapters": {
+    "message": "禁用AI生成的视频章节"
+  },
   "disableAmbientMode": {
     "message": "停用环境光效"
   },

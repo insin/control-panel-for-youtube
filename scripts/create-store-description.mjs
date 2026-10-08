@@ -93,6 +93,7 @@ ${messages.recentChanges}:
 • ${messages.hideWatchSideMenu}${messages.desktopVersion}
 • ${messages.displaySubscriptionsGridAsList}${messages.desktopVersion}
 • ${messages.displayHomeGridAsList}${messages.desktopVersion}
+• ${messages.disableAIGeneratedChapters}${messages.desktopVersion}
 
 ${messages.newVideoPlayerUI}:
 

@@ -89,6 +89,9 @@
   "device": {
     "message": "Gerätethema"
   },
+  "disableAIGeneratedChapters": {
+    "message": "KI-generierte Videokapitel deaktivieren"
+  },
   "disableAmbientMode": {
     "message": "Ambientemodus deaktivieren"
   },

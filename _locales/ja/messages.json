@@ -89,6 +89,9 @@
   "device": {
     "message": "デバイスのテーマ"
   },
+  "disableAIGeneratedChapters": {
+    "message": "AI生成の動画チャプターを無効にする"
+  },
   "disableAmbientMode": {
     "message": "アンビエントモードを無効にする"
   },
