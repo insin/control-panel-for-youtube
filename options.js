@@ -51,7 +51,7 @@ for (let optionValue of [
 for (let gridItemsRelative of ['1', '2', '3']) {
   let $option = document.querySelector(`select[name="minimumGridItemsPerRow"] option[value="+${gridItemsRelative}"]`)
   if ($option) {
-    $option.textContent = chrome.i18n.getMessage('autoPlusX', gridItemsRelative)
+    $option.textContent = chrome.i18n.getMessage('autoPlusX', `+${gridItemsRelative}`)
   } else {
     console.warn('could not find <option> for gridItemsRelative', gridItemsRelative)
   }

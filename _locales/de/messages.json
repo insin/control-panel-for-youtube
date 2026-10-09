@@ -39,11 +39,11 @@
     "message": "Automatisch"
   },
   "autoPlusX": {
-    "message": "Automatisch +$AMOUNT$",
+    "message": "Automatisch $AMOUNT$",
     "placeholders": {
       "amount": {
         "content": "$1",
-        "example": "1"
+        "example": "+1"
       }
     }
   },

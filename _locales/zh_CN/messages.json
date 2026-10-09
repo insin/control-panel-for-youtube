@@ -39,11 +39,11 @@
     "message": "自动"
   },
   "autoPlusX": {
-    "message": "自动 +$AMOUNT$",
+    "message": "自动 $AMOUNT$",
     "placeholders": {
       "amount": {
         "content": "$1",
-        "example": "1"
+        "example": "+1"
       }
     }
   },
