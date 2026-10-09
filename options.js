@@ -165,6 +165,7 @@ for (let translationId of [
   'hideWatched',
   'hideWatchedThreshold',
   'hideWatchSideMenu',
+  'minimumShortsPerRow',
   'mobileGridView',
   'newVideoPlayerUI',
   'pauseChannelTrailers',
