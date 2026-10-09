@@ -193,6 +193,7 @@ ${messages.uiTweaks}:
 • ${messages.redirectLogoToSubscriptions}${messages.desktopVersion}
 • ${messages.tidyGuideSidebar}${messages.desktopVersion}
 • ${messages.hideSubscriptionsLatestBar}${messages.desktopVersion}
+• ${messages.hideNotifications}${messages.desktopVersion}
 • ${messages.fixGhostCards}${messages.desktopVersion}
 • ${messages.mobileGridView}${messages.mobileVersion}
 • ${messages.hideExploreButton}${messages.mobileVersion}

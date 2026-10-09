@@ -276,6 +276,9 @@
   "hideNextButtonNote": {
     "message": "Wenn Sie kein Video aus einer Wiedergabelisten ansehen"
   },
+  "hideNotifications": {
+    "message": "Benachrichtigungen ausblenden"
+  },
   "hideOpenApp": {
     "message": "\"App-Links öffnen\" ausblenden"
   },

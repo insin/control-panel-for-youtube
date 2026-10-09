@@ -276,6 +276,9 @@
   "hideNextButtonNote": {
     "message": "When not watching a video in a playlist"
   },
+  "hideNotifications": {
+    "message": "Hide Notifications"
+  },
   "hideOpenApp": {
     "message": "Hide Open App links"
   },

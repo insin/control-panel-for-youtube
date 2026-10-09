@@ -276,6 +276,9 @@
   "hideNextButtonNote": {
     "message": "Quand une vidéo n'est pas dans une playlist"
   },
+  "hideNotifications": {
+    "message": "Masquer les Notifications"
+  },
   "hideOpenApp": {
     "message": "Masquer les liens « Ouvrir app »"
   },

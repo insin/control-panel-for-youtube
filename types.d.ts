@@ -128,6 +128,7 @@ export type SiteConfig = {
   hideExperiencingInterruptions: boolean
   hideJumpAheadButton: boolean
   hideMerchEtc: boolean
+  hideNotifications: boolean
   hideRelatedBelow: boolean
   hideSidebarSubscriptions: boolean
   hideSidebarWhenEmpty: boolean

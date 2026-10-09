@@ -81,6 +81,7 @@ let defaultConfig = {
   hideExperiencingInterruptions: false,
   hideJumpAheadButton: false,
   hideMerchEtc: true,
+  hideNotifications: false,
   hideRelatedBelow: true,
   hideSidebarSubscriptions: false,
   hideSidebarWhenEmpty: false,
@@ -2770,6 +2771,9 @@ const configureCss = (() => {
           // Offers
           '#offer-module',
         )
+      }
+      if (config.hideNotifications) {
+        hideCssSelectors.push('ytd-notification-topbar-button-renderer')
       }
       if (config.hideSidebarWhenEmpty) {
         cssRules.push(`

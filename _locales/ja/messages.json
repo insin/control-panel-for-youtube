@@ -275,6 +275,9 @@
   "hideNextButtonNote": {
     "message": "プレイリスト内の動画を視聴していない場合"
   },
+  "hideNotifications": {
+    "message": "通知を非表示"
+  },
   "hideOpenApp": {
     "message": "アプリを開くリンクを非表示"
   },

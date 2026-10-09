@@ -276,6 +276,9 @@
   "hideNextButtonNote": {
     "message": "当不在播放列表中观看视频时"
   },
+  "hideNotifications": {
+    "message": "隐藏通知"
+  },
   "hideOpenApp": {
     "message": "隐藏打开应用程序链接"
   },
