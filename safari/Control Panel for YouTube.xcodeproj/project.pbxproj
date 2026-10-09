@@ -747,7 +747,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube Extension";
+				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube Dev Extension";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -759,7 +759,7 @@
 					"-framework",
 					SafariServices,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube.Extension";
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube.Debug.Extension";
 				PRODUCT_NAME = "Control Panel for YouTube Extension";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -807,7 +807,7 @@
 				CURRENT_PROJECT_VERSION = 94;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "iOS (App)/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube";
+				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube Dev";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -826,7 +826,7 @@
 					"-framework",
 					WebKit,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube";
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube.Debug";
 				PRODUCT_NAME = "Control Panel for YouTube";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -882,7 +882,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube Extension";
+				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube Dev Extension";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -894,7 +894,7 @@
 					"-framework",
 					SafariServices,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube.Extension";
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube.Debug.Extension";
 				PRODUCT_NAME = "Control Panel for YouTube Extension";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -943,7 +943,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube";
+				INFOPLIST_KEY_CFBundleDisplayName = "Control Panel for YouTube Dev";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -958,7 +958,7 @@
 					"-framework",
 					WebKit,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube";
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.jbscript.Control-Panel-for-YouTube.Debug";
 				PRODUCT_NAME = "Control Panel for YouTube";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
