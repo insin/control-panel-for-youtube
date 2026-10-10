@@ -1,4 +1,5 @@
 .DS_Store
+.scratch
 TODO.md
 browser_action.html
 manifest.json

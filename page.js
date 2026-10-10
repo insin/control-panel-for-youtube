@@ -89,7 +89,6 @@ let defaultConfig = {
   hideShortsRemixButton: true,
   hideSubscriptionsLatestBar: true,
   hideViewsIcon: false,
-  hideWatchSideMenu: true,
   minimumGridItemsPerRow: '+1',
   minimumShortsPerRow: '8',
   pauseChannelTrailers: true,
@@ -105,6 +104,7 @@ let defaultConfig = {
   restoreSidebarSubscriptionsLink: true,
   revertGiantRelated: true,
   revertSidebarOrder: true,
+  revertWatchLayout: false,
   searchThumbnailSize: 'xsmall',
   snapshotFormat: 'jpeg',
   snapshotQuality: '0.92',
@@ -145,8 +145,16 @@ function warn(...args) {
   }
 }
 
+/** @type {import("./types").SiteConfigKey[]} */
+const cachedConfigKeys = [
+  'blockAds',
+  'disableAIGeneratedChapters',
+  'enabled',
+  'playerRemoveDelhiExperimentFlags',
+  'revertWatchLayout',
+]
 /** @type {import("./types").SiteConfig} */
-let config
+let config = {...defaultConfig, ...getCachedConfig()}
 
 const patchInitialResponses = patchRequests()
 
@@ -2846,7 +2854,7 @@ const configureCss = (() => {
       if (config.hideViewsIcon) {
         hideCssSelectors.push(`.ytContentMetadataViewModelLeadingIcon:has(path[d="${Svgs.VIEWS_ICON}"])`)
       }
-      if (config.hideWatchSideMenu) {
+      if (config.revertWatchLayout) {
         cssRules.push(`
           ytd-watch-flexy {
             --ytd-watch-flexy-fixed-side-menu-width: 0 !important;
@@ -6285,6 +6293,118 @@ function removeShortsAds(data, source) {
 //#region Global patching
 let getFlagDefnHooked = false
 
+/** @type {WeakMap<object, Map<string, import("./types").PropertyHook>>} */
+const hookedProperties = new WeakMap()
+
+/**
+ * Watches property paths, including later assignments and replacements.
+ * Subscriptions persist until disconnect, including on replaced objects.
+ * Disconnect removes subscriptions but leaves shared accessors installed.
+ *
+ * @param {string | string[]} paths
+ * @param {import("./types").PropertyWatcher} watcher
+ * @param {{name: string}} options
+ */
+function watchPaths(paths, watcher, {name}) {
+  globalObservers.get(name)?.disconnect()
+  const subscriptions = (Array.isArray(paths) ? paths : [paths]).map(path => ({parts: path.split('.'), id: {}}))
+  /** @type {Map<Map<object, import("./types").PropertyWatcher>, Set<object>>} */
+  const cleanups = new Map()
+  let active = true
+
+  /**
+   * @param {unknown} target
+   * @param {string[]} parts
+   * @param {object} id
+   */
+  function watchPath(target, parts, id) {
+    if (!active || target == null || typeof target != 'object') return
+    let [name, ...rest] = parts
+    watchProperty(target, name, id, rest.length ? {
+      onChange: value => watchPath(value, rest, id),
+    } : watcher)
+  }
+
+  /**
+   * @param {unknown} target
+   * @param {string} name
+   * @param {object} id
+   * @param {import("./types").PropertyWatcher} options
+   */
+  function watchProperty(target, name, id, options) {
+    // Wait for real config objects rather than creating placeholders
+    if (!active || target == null || typeof target != 'object') return
+    let hooked = hookedProperties.get(target)
+    let hook = hooked?.get(name)
+    let descriptor = Object.getOwnPropertyDescriptor(target, name)
+    if (!hook || descriptor?.get !== hook.get) {
+      // Respect existing hooks & reinstall ours if a data property replaced it
+      if (descriptor && (!descriptor.configurable || !Object.hasOwn(descriptor, 'value'))) {
+        options.onChange?.(target[name])
+        return
+      }
+      let value = target[name]
+      const watchers = hook?.watchers || new Map()
+      function get() {
+        let result = value
+        for (let {getValue} of watchers.values()) {
+          if (getValue) result = getValue(result, name)
+        }
+        return result
+      }
+      try {
+        Object.defineProperty(target, name, {
+          configurable: true,
+          enumerable: descriptor?.enumerable ?? true,
+          get,
+          set: descriptor?.writable === false ? undefined : next => {
+            value = next
+            for (let {onChange} of watchers.values()) {
+              try {
+                onChange?.(value)
+              } catch (error) {
+                warn('watchPaths: error patching', name, error)
+              }
+            }
+          },
+        })
+      } catch (error) {
+        warn('watchPaths: could not hook', name, error)
+        return
+      }
+      hook = {get, watchers}
+      if (!hooked) hookedProperties.set(target, hooked = new Map())
+      hooked.set(name, hook)
+    }
+    hook.watchers.set(id, options)
+    let cleanup = cleanups.get(hook.watchers)
+    if (!cleanup) cleanups.set(hook.watchers, cleanup = new Set())
+    cleanup.add(id)
+    options.onChange?.(target[name])
+  }
+
+  function scan() {
+    for (let {parts, id} of subscriptions) watchPath(window, parts, id)
+  }
+
+  scan()
+  document.addEventListener('load', scan, true)
+  window.addEventListener('yt-navigate-start', scan)
+  function disconnect() {
+    if (!active) return
+    active = false
+    document.removeEventListener('load', scan, true)
+    window.removeEventListener('yt-navigate-start', scan)
+    for (let [watchers, ids] of cleanups) {
+      for (let id of ids) watchers.delete(id)
+    }
+    cleanups.clear()
+    globalObservers.delete(name)
+    log('watchPaths: disconnected', name)
+  }
+  globalObservers.set(name, {disconnect})
+}
+
 function disableVideoPreviews() {
   if (getFlagDefnHooked) return
 
@@ -6315,13 +6435,121 @@ function disableVideoPreviews() {
     }
   }
 }
+
+function removeDelhiExperimentFlags() {
+  const name = 'player experiment flags'
+  if (!config.enabled || !config.playerRemoveDelhiExperimentFlags) {
+    globalObservers.get(name)?.disconnect()
+    return
+  }
+  log('removeDelhiExperimentFlags: watching player serializedExperimentFlags')
+  if (globalObservers.has(name)) return
+  removeSerializedFlags(
+    [
+      'yt.config_.WEB_PLAYER_CONTEXT_CONFIGS.WEB_PLAYER_CONTEXT_CONFIG_ID_KEVLAR_WATCH.serializedExperimentFlags',
+      'ytcfg.data_.WEB_PLAYER_CONTEXT_CONFIGS.WEB_PLAYER_CONTEXT_CONFIG_ID_KEVLAR_WATCH.serializedExperimentFlags',
+    ],
+    ['delhi_modern_web_player', 'delhi_modern_web_player_icons'],
+    {name},
+  )
+}
+
+function revertWatchLayout() {
+  const name = 'watch layout flags'
+  if (!config.enabled || !config.revertWatchLayout) {
+    globalObservers.get(name)?.disconnect()
+    return
+  }
+  log('revertWatchLayout: watching EXPERIMENT_FLAGS flags')
+  if (globalObservers.has(name)) return
+  tweakFlags(
+    ['yt.config_.EXPERIMENT_FLAGS', 'ytcfg.data_.EXPERIMENT_FLAGS'],
+    // From https://www.reddit.com/r/youtube/comments/1wzmupx/ublock_filter_to_revert_the_new_layout/
+    {
+      disable_theater_mode: false,
+      enable_web_side_rail: false,
+      kevlar_watch_cinematics: false,
+      kevlar_watch_hide_comments_while_panel_open: false,
+      web_engagement_panel_show_description: false,
+      web_fixed_panel_watch_next_grid_swap: false,
+      web_live_chat_panel_watch_next_grid_swap: false,
+      web_side_rail_dismissible_panels: false,
+      web_watch_eligible_to_switch_to_grid: false,
+      web_watch_enable_single_column_grid_view: false,
+      web_watch_fixed_default_panels: false,
+      web_watch_hero_list: false,
+      web_watch_move_summary_to_sd: false,
+      web_watch_split_scroll: false,
+    },
+    {name},
+  )
+}
+
+/**
+ * @param {string | string[]} paths
+ * @param {string[]} flagNames
+ * @param {{name: string}} options
+ */
+function removeSerializedFlags(paths, flagNames, options) {
+  const removed = new Set(flagNames)
+  watchPaths(paths, {
+    getValue: value => typeof value == 'string'
+      ? value.split('&').filter(flag => !removed.has(flag.split('=', 1)[0])).join('&')
+      : value,
+  }, options)
+}
+
+/**
+ * @param {string | string[]} paths
+ * @param {Record<string, boolean | number | string>} overrides
+ * @param {{name: string}} options
+ */
+function tweakFlags(paths, overrides, options) {
+  const flagPaths = (Array.isArray(paths) ? paths : [paths])
+    .flatMap(path => Object.keys(overrides).map(flag => `${path}.${flag}`))
+  watchPaths(flagPaths, {
+    getValue: (_, name) => overrides[name],
+  }, options)
+}
 //#endregion
 
 //#region Main
 let channelName = crypto.randomUUID()
 let channel = new BroadcastChannel(channelName)
 
+/** @returns {Partial<import("./types").SiteConfig>} */
+function getCachedConfig() {
+  try {
+    let cached = JSON.parse(localStorage.getItem('cpfyt:startup-config') || 'null')
+    if (cached == null || typeof cached != 'object' || Array.isArray(cached)) return {}
+    return Object.fromEntries(
+      cachedConfigKeys
+        .filter(key => typeof cached[key] == 'boolean')
+        .map(key => [key, cached[key]])
+    )
+  } catch (error) {
+    warn('could not read cached config', error)
+    return {}
+  }
+}
+
+function storeCachedConfig() {
+  try {
+    let cached = JSON.stringify(Object.fromEntries(cachedConfigKeys.map(key => [key, config[key]])))
+    if (localStorage.getItem('cpfyt:startup-config') != cached) {
+      localStorage.setItem('cpfyt:startup-config', cached)
+    }
+  } catch (error) {
+    warn('could not store cached config', error)
+  }
+}
+
 function main() {
+  if (desktop) {
+    removeDelhiExperimentFlags()
+    revertWatchLayout()
+  }
+
   if (config.enabled) {
     if (config.disableStableVolume) {
       let pref = JSON.parse(localStorage['yt-player-drc-pref'] || 'null')
@@ -6353,29 +6581,6 @@ function main() {
         triggerVideoPageResize()
       }
     })
-    if (desktop && config.playerRemoveDelhiExperimentFlags) {
-      function removeFlags() {
-        // @ts-expect-error
-        let watchConfig = window.yt?.config_?.WEB_PLAYER_CONTEXT_CONFIGS?.WEB_PLAYER_CONTEXT_CONFIG_ID_KEVLAR_WATCH
-        if (typeof watchConfig?.serializedExperimentFlags == 'string') {
-          log('playerDisableDelhiExperiments: removing delhi_modern_web_player experiment flags')
-          watchConfig.serializedExperimentFlags = watchConfig.serializedExperimentFlags
-            .replace(/&delhi_modern_web_player=true/g, '')
-            .replace(/&delhi_modern_web_player_icons=true/g, '')
-          return true
-        }
-      }
-      function waitForFlags(e) {
-        // Wait for the bootstrap <script> to init window.yt
-        if (e?.target?.tagName != 'SCRIPT') return
-        if (removeFlags()) {
-          document.documentElement.removeEventListener('load', waitForFlags, true)
-        }
-      }
-      if (!removeFlags()) {
-        document.documentElement.addEventListener('load', waitForFlags, true)
-      }
-    }
     if (desktop) {
       configureGridCss()
       handleDesktopGuideBar()
@@ -6402,6 +6607,12 @@ function configChanged(changes) {
       Object.hasOwn(changes, 'fixGhostCards') || Object.hasOwn(changes, 'minimumGridItemsPerRow')
     )) {
       configureGridCss()
+    }
+    if (desktop && Object.hasOwn(changes, 'playerRemoveDelhiExperimentFlags')) {
+      removeDelhiExperimentFlags()
+    }
+    if (desktop && Object.hasOwn(changes, 'revertWatchLayout')) {
+      revertWatchLayout()
     }
     configureCss()
     triggerVideoPageResize()
@@ -6433,6 +6644,7 @@ function receiveConfigFromContentScript({data: {type, siteConfig}}) {
     debug = config.debug
     debugManualHiding = config.debugManualHiding
     log('initial config', config, {version, lang, loggedIn})
+    storeCachedConfig()
     // Patch responses based on initial config
     patchInitialResponses()
     // Let the options page know which version is being used
@@ -6462,6 +6674,9 @@ function receiveConfigFromContentScript({data: {type, siteConfig}}) {
   }
 
   Object.assign(config, siteConfig)
+  if (cachedConfigKeys.some(key => Object.hasOwn(siteConfig, key))) {
+    storeCachedConfig()
+  }
   configChanged(siteConfig)
 }
 
@@ -6471,6 +6686,11 @@ function storeConfigChanges(configChanges) {
 }
 
 channel.addEventListener('message', receiveConfigFromContentScript)
+if (desktop) {
+  // Run global patching early when cached config is present
+  removeDelhiExperimentFlags()
+  revertWatchLayout()
+}
 window.postMessage({
   type: 'init',
   channelName,

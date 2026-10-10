@@ -91,7 +91,7 @@ ${messages.recentChanges}:
 • ${messages.revertGiantRelated}${messages.desktopVersion}
 • ${messages.hideViewsIcon}${messages.desktopVersion}
 • ${messages.showViewsOnSeparateLine}${messages.desktopVersion}
-• ${messages.hideWatchSideMenu}${messages.desktopVersion}
+• ${messages.revertWatchLayout}${messages.desktopVersion} - ${messages.revertWatchLayoutNote}
 • ${messages.displaySubscriptionsGridAsList}${messages.desktopVersion}
 • ${messages.displayHomeGridAsList}${messages.desktopVersion}
 

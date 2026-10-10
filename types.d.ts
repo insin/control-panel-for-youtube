@@ -21,6 +21,16 @@ export type EmbedConfig = {
   removePink: boolean
 }
 
+export type PropertyHook = {
+  get: () => any
+  watchers: Map<object, PropertyWatcher>
+}
+
+export type PropertyWatcher = {
+  onChange?: (value: any) => void
+  getValue?: (value: any, name: string) => any
+}
+
 export type Locale = {
   [key in LocaleKey]?: string
 }
@@ -136,7 +146,6 @@ export type SiteConfig = {
   hideShortsRemixButton: boolean
   hideSubscriptionsLatestBar: boolean
   hideViewsIcon: boolean
-  hideWatchSideMenu: boolean
   minimumGridItemsPerRow: 'auto' | '+1' | '+2' | '+3' | '3' | '4' | '5' | '6'
   minimumShortsPerRow: 'auto' | '4' | '5' | '6' | '7' | '8' | '9'
   pauseChannelTrailers: boolean
@@ -152,6 +161,7 @@ export type SiteConfig = {
   restoreSidebarSubscriptionsLink: boolean
   revertGiantRelated: boolean
   revertSidebarOrder: boolean
+  revertWatchLayout: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small' | 'xsmall'
   showChannelHeadersInListView: boolean
   showViewsOnSeparateLine: boolean
@@ -166,6 +176,8 @@ export type SiteConfig = {
   hideSubscriptionsChannelList: boolean
   mobileGridView: boolean
 }
+
+export type SiteConfigKey = keyof SiteConfig
 
 export type SiteConfigMessage = {
   type: 'initial' | 'change'

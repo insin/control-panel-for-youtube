@@ -348,9 +348,6 @@
   "hideVoiceSearch": {
     "message": "Hide Search with your voice"
   },
-  "hideWatchSideMenu": {
-    "message": "Hide video page side menu"
-  },
   "hideWatched": {
     "message": "Hide watched videos"
   },
@@ -452,6 +449,12 @@
   },
   "revertSidebarOrder": {
     "message": "Restore order of sidebar items"
+  },
+  "revertWatchLayout": {
+    "message": "Disable new video page layout"
+  },
+  "revertWatchLayoutNote": {
+    "message": "Experimental: reload to apply"
   },
   "searchThumbnailSize": {
     "message": "Search thumbnail size"

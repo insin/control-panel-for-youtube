@@ -348,9 +348,6 @@
   "hideVoiceSearch": {
     "message": "\"Mit deiner Stimme suchen\" ausblenden"
   },
-  "hideWatchSideMenu": {
-    "message": "Seitenmenü der Videoseite ausblenden"
-  },
   "hideWatched": {
     "message": "Gesehene Videos ausblenden"
   },
@@ -452,6 +449,12 @@
   },
   "revertSidebarOrder": {
     "message": "Reihenfolge der Seitenleistenelemente wiederherstellen"
+  },
+  "revertWatchLayout": {
+    "message": "Neues Layout der Videoseite deaktivieren"
+  },
+  "revertWatchLayoutNote": {
+    "message": "Experimentell: zum Anwenden neu laden"
   },
   "searchThumbnailSize": {
     "message": "Miniaturbildgröße suchen"

@@ -348,9 +348,6 @@
   "hideVoiceSearch": {
     "message": "Masquer la recherche vocale"
   },
-  "hideWatchSideMenu": {
-    "message": "Masquer le menu latéral de la page vidéo"
-  },
   "hideWatched": {
     "message": "Masquer les vidéos vues"
   },
@@ -452,6 +449,12 @@
   },
   "revertSidebarOrder": {
     "message": "Restaurer l'ordre des éléments de la barre latérale"
+  },
+  "revertWatchLayout": {
+    "message": "Désactiver la nouvelle disposition de la page vidéo"
+  },
+  "revertWatchLayoutNote": {
+    "message": "Expérimental : recharger pour appliquer"
   },
   "searchThumbnailSize": {
     "message": "Taille des miniatures dans les résultats de recherche"

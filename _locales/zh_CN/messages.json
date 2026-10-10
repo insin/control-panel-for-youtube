@@ -348,9 +348,6 @@
   "hideVoiceSearch": {
     "message": "隐藏语音搜索"
   },
-  "hideWatchSideMenu": {
-    "message": "隐藏视频页侧边菜单"
-  },
   "hideWatched": {
     "message": "隐藏已观看的视频"
   },
@@ -452,6 +449,12 @@
   },
   "revertSidebarOrder": {
     "message": "恢复侧边栏项目的顺序"
+  },
+  "revertWatchLayout": {
+    "message": "禁用新版视频页面布局"
+  },
+  "revertWatchLayoutNote": {
+    "message": "实验性功能：重新加载以应用"
   },
   "searchThumbnailSize": {
     "message": "搜索缩略图大小"

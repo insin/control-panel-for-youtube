@@ -347,9 +347,6 @@
   "hideVoiceSearch": {
     "message": "音声検索を非表示"
   },
-  "hideWatchSideMenu": {
-    "message": "動画ページのサイドメニューを非表示"
-  },
   "hideWatched": {
     "message": "視聴済みの動画を非表示"
   },
@@ -451,6 +448,12 @@
   },
   "revertSidebarOrder": {
     "message": "サイドバーの項目の並び順を復元する"
+  },
+  "revertWatchLayout": {
+    "message": "新しい動画ページのレイアウトを無効にする"
+  },
+  "revertWatchLayoutNote": {
+    "message": "実験的機能：再読み込みで適用"
   },
   "searchThumbnailSize": {
     "message": "検索サムネイルのサイズ"
