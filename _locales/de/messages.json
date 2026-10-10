@@ -465,6 +465,9 @@
   "showFullVideoTitles": {
     "message": "Vollständige Videotitel anzeigen"
   },
+  "showViewsOnSeparateLine": {
+    "message": "Aufrufe in separater Zeile anzeigen"
+  },
   "small": {
     "message": "Klein"
   },

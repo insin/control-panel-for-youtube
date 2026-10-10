@@ -465,6 +465,9 @@
   "showFullVideoTitles": {
     "message": "Show full video titles"
   },
+  "showViewsOnSeparateLine": {
+    "message": "Show views on a separate line"
+  },
   "small": {
     "message": "Small"
   },

@@ -464,6 +464,9 @@
   "showFullVideoTitles": {
     "message": "動画のタイトルを全文表示する"
   },
+  "showViewsOnSeparateLine": {
+    "message": "視聴回数を別の行に表示"
+  },
   "small": {
     "message": "小"
   },

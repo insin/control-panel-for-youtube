@@ -195,6 +195,7 @@ for (let translationId of [
   'shorts',
   'showChannelHeadersInListView',
   'showFullVideoTitles',
+  'showViewsOnSeparateLine',
   'snapshotFormat',
   'snapshotQuality',
   'stopShortsLooping',
@@ -332,6 +333,7 @@ let defaultConfig = {
   snapshotFormat: 'jpeg',
   snapshotQuality: '0.92',
   showChannelHeadersInListView: true,
+  showViewsOnSeparateLine: true,
   tidyGuideSidebar: true,
   // Mobile only
   allowBackgroundPlay: true,

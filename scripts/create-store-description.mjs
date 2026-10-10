@@ -90,6 +90,7 @@ ${messages.recentChanges}:
 • ${messages.revertSidebarOrder}${messages.desktopVersion}
 • ${messages.revertGiantRelated}${messages.desktopVersion}
 • ${messages.hideViewsIcon}${messages.desktopVersion}
+• ${messages.showViewsOnSeparateLine}${messages.desktopVersion}
 • ${messages.hideWatchSideMenu}${messages.desktopVersion}
 • ${messages.displaySubscriptionsGridAsList}${messages.desktopVersion}
 • ${messages.displayHomeGridAsList}${messages.desktopVersion}

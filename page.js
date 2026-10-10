@@ -109,6 +109,7 @@ let defaultConfig = {
   snapshotFormat: 'jpeg',
   snapshotQuality: '0.92',
   showChannelHeadersInListView: true,
+  showViewsOnSeparateLine: true,
   tidyGuideSidebar: true,
   // Mobile only
   allowBackgroundPlay: true,
@@ -2622,6 +2623,12 @@ const configureCss = (() => {
                 .ytDismissibleItemAspectRatio16By9 {
                   min-height: 178px;
                 }
+                ${config.showViewsOnSeparateLine ? `
+                /* Hide verified badge when displaying views on a separate line */
+                .ytContentMetadataViewModelMetadataRow:first-child:has(> .ytContentMetadataViewModelLeadingIcon) > .ytContentMetadataViewModelIcon {
+                  display: none;
+                }
+                ` : ''}
               }
             }
           `)
@@ -3039,6 +3046,33 @@ const configureCss = (() => {
               small: 360,
               xsmall: 280,
             }[config.searchThumbnailSize]}px !important;
+          }
+        `)
+      }
+      if (config.showViewsOnSeparateLine) {
+        cssRules.push(`
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-item-renderer:not([is-slim-media]) {
+            /* Show views on a separate line */
+            .ytContentMetadataViewModelMetadataRow:has(> .ytContentMetadataViewModelLeadingIcon) {
+              display: block !important;
+              white-space: nowrap;
+              overflow: hidden;
+            }
+            .ytContentMetadataViewModelMetadataRow:has(> .ytContentMetadataViewModelLeadingIcon) > span {
+              vertical-align: middle;
+            }
+            .ytContentMetadataViewModelDelimiter:has(+ .ytContentMetadataViewModelLeadingIcon) {
+              display: block !important;
+              height: 0;
+            }
+            /* Restore the bullet between views and date */
+            .ytContentMetadataViewModelDelimiter:has(+ .ytContentMetadataViewModelMetadataTextLastPart) {
+              margin-left: 2px;
+              margin-right: 5px;
+              &::after {
+                content: "•";
+              }
+            }
           }
         `)
       }

@@ -154,6 +154,7 @@ export type SiteConfig = {
   revertSidebarOrder: boolean
   searchThumbnailSize: 'large' | 'medium' | 'small' | 'xsmall'
   showChannelHeadersInListView: boolean
+  showViewsOnSeparateLine: boolean
   snapshotFormat: 'jpeg' | 'png'
   snapshotQuality: string
   tidyGuideSidebar: boolean
