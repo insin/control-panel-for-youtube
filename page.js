@@ -5452,14 +5452,26 @@ function onDocumentClick(e) {
     }
   }
   if (desktop && config.redirectShorts) {
-    let $shortsLink = /** @type {HTMLAnchorElement} */ ($lastClickedElement?.closest('a[href^="/shorts/'))
+    let $shortsLink = /** @type {HTMLAnchorElement} */ ($lastClickedElement?.closest('a[href^="/shorts/"]'))
     if ($shortsLink) {
+      let videoId = $shortsLink.pathname.split('/')[2]
+      if (!videoId) return
       // @ts-expect-error
-      let webCommandMetadata = $shortsLink._data?.commandMetadata?.webCommandMetadata
+      let linkData = $shortsLink.data || $shortsLink._data
+      if (!linkData) {
+        // Shorts view models keep the click command on the card instead of the link
+        // @ts-expect-error
+        linkData = $shortsLink.closest('ytm-shorts-lockup-view-model')?.data?.onTap?.innertubeCommand
+      }
+      let webCommandMetadata = linkData?.commandMetadata?.webCommandMetadata
       if (webCommandMetadata) {
         log('redirecting Shorts video click to normal player')
-        webCommandMetadata.url = `/watch?v=${$shortsLink.pathname.split('/').at(-1)}`
+        webCommandMetadata.url = $shortsLink.href = `/watch?v=${videoId}${$shortsLink.search.replace('?', '&')}`
         webCommandMetadata.webPageType = 'WEB_PAGE_TYPE_WATCH'
+        webCommandMetadata.rootVe = 3832
+        // Keeping this loads a Shorts response without comments or related videos
+        delete linkData.reelWatchEndpoint
+        linkData.watchEndpoint = {videoId}
         return
       }
     }
