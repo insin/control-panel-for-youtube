@@ -1119,10 +1119,12 @@ function getCurrentUrl() {
 
 /**
  * @typedef {{
+ *   context?: Document | HTMLElement
+ *   mutationObserverOptions?: MutationObserverInit
  *   name?: string
+ *   observers?: Map<string, import("./types").Disconnectable>
  *   stopIf?: () => boolean
  *   timeout?: number
- *   context?: Document | HTMLElement
  * }} GetElementOptions
  *
  * @param {string} selector
@@ -1130,51 +1132,62 @@ function getCurrentUrl() {
  * @returns {Promise<HTMLElement | null>}
  */
 function getElement(selector, {
- name = null,
- stopIf = null,
- timeout = Infinity,
- context = document,
+  context = document.body || document.documentElement,
+  mutationObserverOptions = {childList: true, subtree: true},
+  name = null,
+  observers = pageObservers,
+  stopIf = null,
+  timeout = Infinity,
 } = {}) {
- return new Promise((resolve) => {
-   let startTime = Date.now()
-   let rafId
-   let timeoutId
+  return new Promise((resolve) => {
+    let startTime = Date.now()
+    let observer
+    let intervalId
+    let timeoutId
+    let resolved = false
 
-   function stop($element, reason) {
-     if ($element == null) {
-       warn(`stopped waiting for ${name || selector} after ${reason}`)
-     }
-     else if (Date.now() > startTime) {
-       log(`${name || selector} appeared after`, Date.now() - startTime, 'ms')
-     }
-     if (rafId) {
-       cancelAnimationFrame(rafId)
-     }
-     if (timeoutId) {
-       clearTimeout(timeoutId)
-     }
-     resolve($element)
-   }
+    function stop($element, reason) {
+      if (resolved) return
+      resolved = true
+      if ($element == null) {
+        log(`stopped waiting for ${name || selector} after ${reason}`)
+      }
+      else if (Date.now() > startTime) {
+        log(`${name || selector} appeared after`, Date.now() - startTime, 'ms')
+      }
+      observer?.disconnect()
+      if (timeoutId) clearTimeout(timeoutId)
+      if (intervalId) clearInterval(intervalId)
+      resolve($element)
+    }
 
-   if (timeout !== Infinity) {
-     timeoutId = setTimeout(stop, timeout, null, `${timeout}ms timeout`)
-   }
+    if (stopIf?.() === true) return stop(null, 'stopIf condition met (initial query)')
 
-   function queryElement() {
-     let $element = context.querySelector(selector)
-     if ($element) {
-       stop($element)
-     }
-     else if (stopIf?.() === true) {
-       stop(null, 'stopIf condition met')
-     }
-     else {
-       rafId = requestAnimationFrame(queryElement)
-     }
-   }
+    let $element = context.querySelector(selector)
+    if ($element) return stop($element)
 
-   queryElement()
- })
+    observer = observeElement(context, () => {
+      if (stopIf?.() === true) return stop(null, 'stopIf condition met (observer)')
+      let $element = context.querySelector(selector)
+      if ($element) stop($element)
+    }, {
+      name: `getElement: ${name || selector}`,
+      observers,
+      onDisconnect() {
+        if (!resolved) stop(null, 'observer disconnected')
+      },
+    }, mutationObserverOptions)
+
+    if (stopIf) {
+      intervalId = setInterval(() => {
+        if (stopIf() === true) stop(null, 'stopIf condition met (interval)')
+      }, 250)
+    }
+
+    if (timeout !== Infinity) {
+      timeoutId = setTimeout(stop, timeout, null, `${timeout}ms timeout`)
+    }
+  })
 }
 
 function getGridPagesNeedingGhostCardFix() {
@@ -3792,7 +3805,7 @@ function downloadTranscript() {
 }
 
 async function enforceTheme() {
-  let ytdApp = await getElement('ytd-app', {name: 'ytd-app'})
+  let ytdApp = await getElement('ytd-app', {name: 'ytd-app', observers: globalObservers})
   log('enforceTheme: enforcing', config.enforceTheme)
   ytdApp?.[`handleSignalActionToggleDark${{
     device: 'ThemeDevice',
@@ -4759,7 +4772,8 @@ async function observePopups() {
 
     // Desktop dialogs and menus appear in <ytd-popup-container>. Once created,
     // the same elements are reused.
-    let $popupContainer = await getElement('ytd-popup-container', {name: 'popup container'})
+    let $popupContainer = await getElement('ytd-popup-container', {name: 'popup container', observers: globalObservers})
+    if (!$popupContainer) return
     let $dialog = /** @type {HTMLElement} */ ($popupContainer.querySelector('tp-yt-paper-dialog'))
     // YouTube currently has multiple dropdown styles, with one element each
     let $dropdowns = /** @type {NodeListOf<HTMLElement>} */ ($popupContainer.querySelectorAll('tp-yt-iron-dropdown'))
@@ -4800,7 +4814,12 @@ async function observePopups() {
   if (mobile) {
     // Depending on resolution, mobile menus appear in <bottom-sheet-container>
     // (lower res) or as a #menu child of <body> (higher res).
-    let $body = await getElement('body', {name: '<body>'})
+    let $body = await getElement('body', {
+      name: '<body>',
+      context: document.documentElement,
+      mutationObserverOptions: {childList: true},
+      observers: globalObservers,
+    })
     if (!$body) return
 
     let $menu = /** @type {HTMLElement} */ (document.querySelector('body > #menu'))
@@ -4823,7 +4842,7 @@ async function observePopups() {
     })
 
     // When switching between screens, <bottom-sheet-container> is replaced
-    let $app = await getElement('ytm-app', {name: '<ytm-app>'})
+    let $app = await getElement('ytm-app', {name: '<ytm-app>', observers: globalObservers})
     if (!$app) return
 
     let $bottomSheet = /** @type {HTMLElement} */ ($app.querySelector('bottom-sheet-container'))
@@ -5078,7 +5097,12 @@ async function observeSearchResultSections(options) {
  * Detect navigation between pages for features which apply to specific pages.
  */
 async function observeTitle() {
-  let $title = await getElement('title', {name: '<title>'})
+  let $title = await getElement('title', {
+    name: '<title>',
+    context: document.head || document.documentElement,
+    observers: globalObservers,
+  })
+  if (!$title) return
   let seenUrl
   observeElement($title, () => {
     let currentUrl = getCurrentUrl()
@@ -5589,7 +5613,9 @@ ${supportsAnchorPositioning ? `
 async function handleDesktopGuideBar() {
   let $sidebarSectionsContainer = await getElement('ytd-guide-renderer > #sections', {
     name: 'sidebar sections container',
+    observers: globalObservers,
   })
+  if (!$sidebarSectionsContainer) return
 
   /**
    * @param {HTMLElement} $section
@@ -6427,6 +6453,7 @@ async function disableVideoPreviews() {
 
   let $app = await getElement('ytd-app', {
     name: 'video preview app',
+    observers: globalObservers,
     stopIf: () => !active,
   })
   if (!active) return
