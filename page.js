@@ -1297,20 +1297,47 @@ function s(n) {
 /**
  * @param {() => any} fn
  * @param {string} name
+ * @param {{
+ *   interval?: number,
+ *   observers?: Map<string, import("./types").Disconnectable>
+ *   stopIf?: () => boolean
+ *   timeout?: number
+ * }} options
+ * @returns {Promise<boolean>}
  */
-function waitFor(fn, name) {
+function waitFor(fn, name, {
+  interval = 100,
+  observers = pageObservers,
+  stopIf = null,
+  timeout = Infinity,
+} = {}) {
   return new Promise((resolve) => {
     let startTime = Date.now()
-    function check() {
-      if (fn()) {
+    let timerId
+    let timeoutId
+    let resolved = false
+    let observerName = `waitFor: ${name}`
+    observers.get(observerName)?.disconnect()
+    function finish(ready) {
+      if (resolved) return
+      resolved = true
+      clearTimeout(timerId)
+      clearTimeout(timeoutId)
+      observers.delete(observerName)
+      if (ready) {
         let elapsed = Date.now() - startTime
-        if (elapsed > 0) {
-          log(name, 'became available after', Date.now() - startTime, 'ms')
-        }
-        resolve(undefined)
-        return
+        if (elapsed > 0) log(name, 'became available after', elapsed, 'ms')
+      } else {
+        log('stopped waiting for', name)
       }
-      requestAnimationFrame(check)
+      resolve(ready)
+    }
+    observers.set(observerName, {disconnect: () => finish(false)})
+    if (timeout !== Infinity) timeoutId = setTimeout(finish, timeout, false)
+    function check() {
+      if (stopIf?.()) return finish(false)
+      if (fn()) return finish(true)
+      timerId = setTimeout(check, interval)
     }
     check()
   })
@@ -1323,6 +1350,7 @@ const configureCss = (() => {
   let $style
 
   return function configureCss() {
+    configureTranslationCss()
     if (!config.enabled) {
       log('removing main stylesheet')
       $style?.remove()
@@ -1595,8 +1623,6 @@ const configureCss = (() => {
           '#comments-button.ytd-reel-player-overlay-renderer',
           // Shorts button (new UI)
           'reel-action-bar-view-model > button-view-model:nth-of-type(1)',
-          // Full screen button
-          `yt-player-quick-action-buttons > toggle-button-view-model:has(button[aria-label="${getYtString('COMMENTS')}"])`,
           // Full screen panel
           //'ytd-watch-flexy[engagement-panel-expanded] #panels-full-bleed-container:has(ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-comments-section"][visibility="ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"])'
         )
@@ -1784,8 +1810,6 @@ const configureCss = (() => {
           '.tab-content:is([tab-identifier="FEwhat_to_watch"], [tab-identifier="FEsubscriptions"]) ytm-rich-item-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])',
           // Search
           'ytm-search ytm-video-with-context-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])',
-          // Playlist in channel Home tab
-          `ytm-browse .tab-content[tab-title="${getYtString('HOME')}"] ytm-shelf-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])`,
         )
       }
     }
@@ -1883,14 +1907,6 @@ const configureCss = (() => {
             display: revert !important;
           }
         `)
-      }
-      if (mobile) {
-        hideCssSelectors.push(
-          // Hide the Previous button when it's disabled, as it otherwise takes you to the previously-watched video
-          `.player-controls-middle-core-buttons button[aria-label="${getYtString('PREVIOUS_VIDEO')}"][aria-disabled="true"]`,
-          // Always hide the Next button as it takes you to a random video, even if you just used Previous
-          `.player-controls-middle-core-buttons button[aria-label="${getYtString('NEXT_VIDEO')}"]`,
-        )
       }
     }
 
@@ -3381,6 +3397,52 @@ const configureGridCss = (() => {
   }
 })()
 //#endregion
+
+//#region Translation CSS
+const configureTranslationCss = (() => {
+  /** @type {HTMLStyleElement} */
+  let $style
+
+  return function configureTranslationCss() {
+    let hideCssSelectors = []
+
+    // @ts-expect-error
+    if (config.enabled && window.ytcfg?.msgs) {
+      if (desktop && config.hideComments) {
+        hideCssSelectors.push(
+          `yt-player-quick-action-buttons > toggle-button-view-model:has(button[aria-label="${getYtString('COMMENTS')}"])`,
+        )
+      }
+      if (mobile && config.hideMembersOnly) {
+        hideCssSelectors.push(
+          `ytm-browse .tab-content[tab-title="${getYtString('HOME')}"] ytm-shelf-renderer:has(ytm-badge[data-type="BADGE_STYLE_TYPE_MEMBERS_ONLY"])`,
+        )
+      }
+      if (mobile && config.hideNextButton) {
+        hideCssSelectors.push(
+          // Hide disabled Previous and always hide Next, which plays a random video
+          `.player-controls-middle-core-buttons button[aria-label="${getYtString('PREVIOUS_VIDEO')}"][aria-disabled="true"]`,
+          `.player-controls-middle-core-buttons button[aria-label="${getYtString('NEXT_VIDEO')}"]`,
+        )
+      }
+    }
+
+    if (hideCssSelectors.length == 0) {
+      $style?.remove()
+      $style = null
+      return
+    }
+
+    let css = `${hideCssSelectors.join(',\n')} { display: none !important; }`
+    if (desktop) css = `ytd-app { ${css} }`
+    if ($style == null) {
+      $style = addStyle(css)
+    } else {
+      $style.textContent = css
+    }
+  }
+})()
+//#endregion
 //#endregion
 
 function isHomePage() {
@@ -3717,13 +3779,21 @@ async function disableAutoplay() {
   }
 }
 
-function disableContinueWatching() {
-  let $watch = document.querySelector('ytd-watch-flexy, ytd-watch-grid')
-  // @ts-expect-error
-  if (!$watch || typeof $watch.youthereDataChanged_ != 'function') {
-    warn('disableContinueWatching: watch element or youthereDataChanged_ not found')
-    return
-  }
+async function disableContinueWatching() {
+  let stopIf = currentUrlChanges()
+  let $watch = await getElement('ytd-watch-flexy, ytd-watch-grid', {
+    name: 'disableContinueWatching: watch element',
+    stopIf,
+  })
+  if (!$watch) return
+
+  let ready = await waitFor(() => {
+    // @ts-expect-error
+    return typeof $watch.youthereDataChanged_ == 'function'
+  }, 'disableContinueWatching: watch controller', {
+    stopIf,
+  })
+  if (!ready) return
 
   // @ts-expect-error
   let youthereDataChanged = $watch.youthereDataChanged_
@@ -5726,7 +5796,7 @@ function takeSnapshot() {
 }
 
 /**
- * Forces the video to resize if options which affect its size are used.
+ * Forces the video to resize when options which affect its size are used.
  */
 function triggerVideoPageResize() {
   if (desktop && isVideoPage()) {
@@ -6441,13 +6511,12 @@ async function disableVideoPreviews() {
   if (globalObservers.has(name)) return
 
   let active = true
-  let retryId
   /** @type {() => void} */
   let restore
   function disconnect() {
     if (!active) return
     active = false
-    clearTimeout(retryId)
+    globalObservers.get('waitFor: video preview controller')?.disconnect()
     restore?.()
     globalObservers.delete(name)
     log('disableVideoPreviews: disconnected')
@@ -6465,43 +6534,42 @@ async function disableVideoPreviews() {
     return
   }
 
-  function hookController() {
-    if (!active) return
+  let ready = await waitFor(() => {
     const app = /** @type {any} */ ($app).polymerController || $app
-    // Wait for the controller to become available
-    if (typeof app.updateIsInlinePreviewDisabled != 'function') {
-      retryId = setTimeout(hookController, 100)
-      return
-    }
-    const descriptor = Object.getOwnPropertyDescriptor(app, 'updateIsInlinePreviewDisabled')
-    const original = app.updateIsInlinePreviewDisabled
-    /** @this {any} */
-    function updateIsInlinePreviewDisabled() {
-      const result = original.apply(this, arguments)
-      if (active) {
-        this.isInlinePreviewDisabled = true
-        // Updates animatedThumbnailEnabled
-        this.isInlinePreviewEnabledChanged?.()
-      }
-      return result
-    }
-    app.updateIsInlinePreviewDisabled = updateIsInlinePreviewDisabled
-    restore = () => {
-      if (app.updateIsInlinePreviewDisabled === updateIsInlinePreviewDisabled) {
-        if (descriptor) {
-          Object.defineProperty(app, 'updateIsInlinePreviewDisabled', descriptor)
-        } else {
-          delete app.updateIsInlinePreviewDisabled
-        }
-      }
-      app.updateIsInlinePreviewDisabled()
-      app.isInlinePreviewEnabledChanged?.()
-    }
-    log('disableVideoPreviews: overriding video preview preference')
-    app.updateIsInlinePreviewDisabled()
-  }
+    return typeof app.updateIsInlinePreviewDisabled == 'function'
+  }, 'video preview controller', {
+    observers: globalObservers,
+    stopIf: () => !active,
+  })
+  if (!ready || !active) return
 
-  hookController()
+  const app = /** @type {any} */ ($app).polymerController || $app
+  const descriptor = Object.getOwnPropertyDescriptor(app, 'updateIsInlinePreviewDisabled')
+  const original = app.updateIsInlinePreviewDisabled
+  /** @this {any} */
+  function updateIsInlinePreviewDisabled() {
+    const result = original.apply(this, arguments)
+    if (active) {
+      this.isInlinePreviewDisabled = true
+      // Updates animatedThumbnailEnabled
+      this.isInlinePreviewEnabledChanged?.()
+    }
+    return result
+  }
+  app.updateIsInlinePreviewDisabled = updateIsInlinePreviewDisabled
+  restore = () => {
+    if (app.updateIsInlinePreviewDisabled === updateIsInlinePreviewDisabled) {
+      if (descriptor) {
+        Object.defineProperty(app, 'updateIsInlinePreviewDisabled', descriptor)
+      } else {
+        delete app.updateIsInlinePreviewDisabled
+      }
+    }
+    app.updateIsInlinePreviewDisabled()
+    app.isInlinePreviewEnabledChanged?.()
+  }
+  log('disableVideoPreviews: overriding video preview preference')
+  app.updateIsInlinePreviewDisabled()
 }
 
 function removeDelhiExperimentFlags() {
@@ -6639,18 +6707,23 @@ function main() {
     if (mobile && config.allowBackgroundPlay) {
       allowBackgroundPlay()
     }
-    // CSS uses some of YouTube's own translations
-    // @ts-expect-error
-    waitFor(() => window.ytcfg?.msgs, 'ytcfg.msgs').then(() => {
-      configureCss()
-      if (desktop) {
-        triggerVideoPageResize()
-      }
-    })
+    configureCss()
     if (desktop) {
       configureGridCss()
       handleDesktopGuideBar()
     }
+    // @ts-expect-error
+    if (!window.ytcfg?.msgs) {
+      // @ts-expect-error
+      waitFor(() => window.ytcfg?.msgs, 'ytcfg.msgs', {
+        observers: globalObservers,
+        stopIf: () => !config.enabled,
+      }).then(ready => {
+        if (!ready || !config.enabled) return
+        configureTranslationCss()
+      })
+    }
+    triggerVideoPageResize()
     observeTitle()
     observePopups()
     document.addEventListener('click', onDocumentClick, true)
