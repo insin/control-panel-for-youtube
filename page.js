@@ -5173,7 +5173,7 @@ async function observeSearchResultSections(options) {
 async function observeTitle() {
   let $title = await getElement('title', {
     name: '<title>',
-    context: document.head || document.documentElement,
+    context: document,
     observers: globalObservers,
   })
   if (!$title) return
