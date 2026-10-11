@@ -2045,7 +2045,7 @@ const configureCss = (() => {
     }
 
     if (config.hideShortsRelatedLink) {
-      hideCssSelectors.push('.ytReelMetapanelViewModelMetapanelItem:has(> yt-reel-multi-format-link-view-model)')
+      hideCssSelectors.push('.ytReelMetapanelViewModelMetapanelItem:has(> :is(yt-reel-carousel-view-model, yt-reel-multi-format-link-view-model))')
     }
 
     if (config.hideShortsSuggestedActions) {
@@ -2824,11 +2824,11 @@ const configureCss = (() => {
       }
       if (config.hideShortsMetadataUntilHover) {
         cssRules.push(`
-          ytd-reel-player-overlay-renderer > .metadata-container {
+          yt-reel-player-overlay-view-model > .ytReelPlayerOverlayViewModelMetadataContainer {
             opacity: 0;
             transition: opacity .25s cubic-bezier(0,0,.2,1);
           }
-          #reel-video-renderer:hover ytd-reel-player-overlay-renderer > .metadata-container {
+          #reel-video-renderer:hover yt-reel-player-overlay-view-model > .ytReelPlayerOverlayViewModelMetadataContainer {
             opacity: 100;
             transition: opacity .1s cubic-bezier(.4,0,1,1);
           }
