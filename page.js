@@ -6291,8 +6291,6 @@ function removeShortsAds(data, source) {
 //#endregion
 
 //#region Global patching
-let getFlagDefnHooked = false
-
 /** @type {WeakMap<object, Map<string, import("./types").PropertyHook>>} */
 const hookedProperties = new WeakMap()
 
@@ -6405,35 +6403,75 @@ function watchPaths(paths, watcher, {name}) {
   globalObservers.set(name, {disconnect})
 }
 
-function disableVideoPreviews() {
-  if (getFlagDefnHooked) return
+async function disableVideoPreviews() {
+  const name = 'video previews'
+  if (!config.enabled || !config.disableVideoPreviews) {
+    globalObservers.get(name)?.disconnect()
+    return
+  }
+  if (globalObservers.has(name)) return
 
-  log('disableVideoPreviews: hooking getFlag definition')
-  getFlagDefnHooked = true
+  let active = true
+  let retryId
+  /** @type {() => void} */
+  let restore
+  function disconnect() {
+    if (!active) return
+    active = false
+    clearTimeout(retryId)
+    restore?.()
+    globalObservers.delete(name)
+    log('disableVideoPreviews: disconnected')
+  }
+  globalObservers.set(name, {disconnect})
 
-  let getFlagProp = crypto.randomUUID()
+  let $app = await getElement('ytd-app', {
+    name: 'video preview app',
+    stopIf: () => !active,
+  })
+  if (!active) return
+  if (!$app) {
+    disconnect()
+    return
+  }
 
-  try {
-    Object.defineProperty(Object.prototype, 'getFlag', {
-      set(getFlag) {
-        this[getFlagProp] = getFlag
-      },
-      get() {
-        return function(code) {
-          // 186 maps to f7 in PREF cookie, result sets isInlinePreviewDisabled
-          if (code === 186) {
-            log('disableVideoPreviews: setting isInlinePreviewDisabled = true')
-            return true
-          }
-          return this[getFlagProp]?.apply(this, arguments)
+  function hookController() {
+    if (!active) return
+    const app = /** @type {any} */ ($app).polymerController || $app
+    // Wait for the controller to become available
+    if (typeof app.updateIsInlinePreviewDisabled != 'function') {
+      retryId = setTimeout(hookController, 100)
+      return
+    }
+    const descriptor = Object.getOwnPropertyDescriptor(app, 'updateIsInlinePreviewDisabled')
+    const original = app.updateIsInlinePreviewDisabled
+    /** @this {any} */
+    function updateIsInlinePreviewDisabled() {
+      const result = original.apply(this, arguments)
+      if (active) {
+        this.isInlinePreviewDisabled = true
+        // Updates animatedThumbnailEnabled
+        this.isInlinePreviewEnabledChanged?.()
+      }
+      return result
+    }
+    app.updateIsInlinePreviewDisabled = updateIsInlinePreviewDisabled
+    restore = () => {
+      if (app.updateIsInlinePreviewDisabled === updateIsInlinePreviewDisabled) {
+        if (descriptor) {
+          Object.defineProperty(app, 'updateIsInlinePreviewDisabled', descriptor)
+        } else {
+          delete app.updateIsInlinePreviewDisabled
         }
       }
-    })
-  } catch (error) {
-    if (config?.enabled && config.disableVideoPreviews) {
-      warn('disableVideoPreviews: error hooking getFlag definition:', error)
+      app.updateIsInlinePreviewDisabled()
+      app.isInlinePreviewEnabledChanged?.()
     }
+    log('disableVideoPreviews: overriding video preview preference')
+    app.updateIsInlinePreviewDisabled()
   }
+
+  hookController()
 }
 
 function removeDelhiExperimentFlags() {
@@ -6546,6 +6584,7 @@ function storeCachedConfig() {
 
 function main() {
   if (desktop) {
+    disableVideoPreviews()
     removeDelhiExperimentFlags()
     revertWatchLayout()
   }
@@ -6563,9 +6602,6 @@ function main() {
       } else {
         log('Stable Volume already disabled')
       }
-    }
-    if (desktop && config.disableVideoPreviews) {
-      disableVideoPreviews()
     }
     if (desktop && config.enforceTheme != 'default') {
       enforceTheme()
@@ -6600,6 +6636,9 @@ function main() {
 function configChanged(changes) {
   if (!Object.hasOwn(changes, 'enabled')) {
     log('config changed', changes)
+    if (desktop && Object.hasOwn(changes, 'disableVideoPreviews')) {
+      disableVideoPreviews()
+    }
     if (desktop && changes.enforceTheme && config.enforceTheme != 'default') {
       enforceTheme()
     }
