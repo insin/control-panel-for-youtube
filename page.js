@@ -170,6 +170,7 @@ const locales = {
     ORIGINAL: 'oorspronklike',
     SHARE: 'Deel',
     SHORTS: "Kortvideo's",
+    VIEWS: 'kyke',
   },
   'am-ET': {
     ADS_BLOCKED: 'ከቪዲዮ በፊት ያሉ ማስታወቂያዎች በተሳካ ሁኔታ ታግደዋል!',
@@ -179,6 +180,7 @@ const locales = {
     ORIGINAL: 'የመጀመሪያ',
     SHARE: 'አጋራ',
     SHORTS: 'ቁምጣ',
+    VIEWS: 'ዕይታዎች',
   },
   ar: {
     ADS_BLOCKED: 'تم حظر إعلانات ما قبل الفيديو بنجاح!',
@@ -188,6 +190,7 @@ const locales = {
     ORIGINAL: 'أصلي',
     SHARE: 'مشاركة',
     SHORTS: 'Shorts',
+    VIEWS: 'مشاهدات',
   },
   'as-IN': {
     ADS_BLOCKED: "ভিডিঅ'ৰ আগৰ বিজ্ঞাপনসমূহ সফলতাৰে অৱৰোধ কৰা হৈছে!",
@@ -197,6 +200,7 @@ const locales = {
     ORIGINAL: 'মূল',
     SHARE: 'শ্বেয়াৰ কৰক',
     SHORTS: 'Shorts',
+    VIEWS: 'ভিউ',
   },
   'az-Latn-AZ': {
     ADS_BLOCKED: 'Video öncəsi reklamlar uğurla bloklandı!',
@@ -206,6 +210,7 @@ const locales = {
     ORIGINAL: 'orijinal',
     SHARE: 'Paylaşın',
     SHORTS: 'Shorts',
+    VIEWS: 'baxış',
   },
   'be-BY': {
     ADS_BLOCKED: 'Рэклама перад відэа паспяхова заблакіравана!',
@@ -215,6 +220,7 @@ const locales = {
     ORIGINAL: 'арыгінальны',
     SHARE: 'Абагуліць',
     SHORTS: 'Кароткія відэа',
+    VIEWS: 'праглядаў',
   },
   'bg-BG': {
     ADS_BLOCKED: 'Рекламите преди видеото са блокирани успешно!',
@@ -224,6 +230,7 @@ const locales = {
     ORIGINAL: 'оригинален',
     SHARE: 'Споделяне',
     SHORTS: 'Кратки видеоклипове',
+    VIEWS: 'показвания',
   },
   'bn-BD': {
     ADS_BLOCKED: 'ভিডিওর শুরুর বিজ্ঞাপন সফলভাবে ব্লক করা হয়েছে!',
@@ -233,6 +240,7 @@ const locales = {
     ORIGINAL: 'মূল',
     SHARE: 'শেয়ার করুন',
     SHORTS: 'Shorts',
+    VIEWS: 'ভিউ',
   },
   'bs-Latn-BA': {
     ADS_BLOCKED: 'Reklame prije videa su uspješno blokirane!',
@@ -242,6 +250,7 @@ const locales = {
     ORIGINAL: 'original',
     SHARE: 'Dijeli',
     SHORTS: 'Shorts',
+    VIEWS: 'pregleda',
   },
   'ca-ES': {
     ADS_BLOCKED: 'Anuncis pre-roll bloquejats amb èxit!',
@@ -251,6 +260,7 @@ const locales = {
     ORIGINAL: 'original',
     SHARE: 'Comparteix',
     SHORTS: 'Curts',
+    VIEWS: 'visualitzacions',
   },
   'cs-CZ': {
     ADS_BLOCKED: 'Reklamy před videem byly úspěšně zablokovány!',
@@ -260,6 +270,7 @@ const locales = {
     ORIGINAL: 'původní',
     SHARE: 'Sdílet',
     SHORTS: 'Shorts',
+    VIEWS: 'zhlédnutí',
   },
   'da-DK': {
     ADS_BLOCKED: 'Pre-roll reklamer blokeret!',
@@ -269,6 +280,7 @@ const locales = {
     ORIGINAL: 'originalt',
     SHARE: 'Del',
     SHORTS: 'Shorts',
+    VIEWS: 'visninger',
   },
   'de-DE': {
     ADS_BLOCKED: 'Pre-Roll-Anzeigen erfolgreich blockiert!',
@@ -285,6 +297,7 @@ const locales = {
     STREAMED_TITLE_ARIA_LABEL_RE: 'Aufrufe vor .* \\bgestreamt\\b',
     TAKE_SNAPSHOT: 'Screenshot erstellen',
     UNHIDE_CHANNEL: 'Kanal einblenden',
+    VIEWS: 'Aufrufe',
   },
   'el-GR': {
     ADS_BLOCKED: 'Οι διαφημίσεις στην αρχή του βίντεο αποκλείστηκαν!',
@@ -294,6 +307,7 @@ const locales = {
     ORIGINAL: 'πρωτότυπο',
     SHARE: 'Κοινοποίηση',
     SHORTS: 'Shorts',
+    VIEWS: 'προβολές',
   },
   en: {
     ADS_BLOCKED: 'Pre-roll ads successfully blocked!',
@@ -312,6 +326,7 @@ const locales = {
     TAKE_SNAPSHOT: 'Take snapshot',
     THANKS: 'Thanks',
     UNHIDE_CHANNEL: 'Unhide channel',
+    VIEWS: 'views',
   },
   'es-419': {
     ADS_BLOCKED: '¡Anuncios pre-roll bloqueados con éxito!',
@@ -321,6 +336,7 @@ const locales = {
     ORIGINAL: 'original',
     SHARE: 'Compartir',
     SHORTS: 'Shorts',
+    VIEWS: 'vistas',
   },
   'es-ES': {
     ADS_BLOCKED: '¡Anuncios pre-roll bloqueados con éxito!',
@@ -330,6 +346,7 @@ const locales = {
     ORIGINAL: 'original',
     SHARE: 'Compartir',
     SHORTS: 'Shorts',
+    VIEWS: 'visualizaciones',
   },
   'es-US': {
     ADS_BLOCKED: '¡Anuncios pre-roll bloqueados con éxito!',
@@ -339,6 +356,7 @@ const locales = {
     ORIGINAL: 'original',
     SHARE: 'Compartir',
     SHORTS: 'Shorts',
+    VIEWS: 'vistas',
   },
   'et-EE': {
     ADS_BLOCKED: 'Videolaadsed reklaamid edukalt blokeeritud!',
@@ -348,6 +366,7 @@ const locales = {
     ORIGINAL: 'algne',
     SHARE: 'Jagamine',
     SHORTS: 'Lühivideod',
+    VIEWS: 'vaatamist',
   },
   'eu-ES': {
     ADS_BLOCKED: 'Bideo aurreko iragarkiak ondo blokeatu dira!',
@@ -357,6 +376,7 @@ const locales = {
     ORIGINAL: 'jatorrizkoa',
     SHARE: 'Partekatu',
     SHORTS: 'Film laburrak',
+    VIEWS: 'ikustaldi',
   },
   'fa-IR': {
     ADS_BLOCKED: 'تبلیغات ابتدای ویدیو با موفقیت مسدود شد!',
@@ -366,6 +386,7 @@ const locales = {
     ORIGINAL: 'اصلی',
     SHARE: 'هم‌رسانی',
     SHORTS: 'کوته‌ویدیوهای YouTube',
+    VIEWS: 'بازدید',
   },
   'fil-PH': {
     ADS_BLOCKED: 'Matagumpay na na-block ang mga pre-roll ad!',
@@ -375,6 +396,7 @@ const locales = {
     ORIGINAL: 'orihinal',
     SHARE: 'Ibahagi',
     SHORTS: 'Shorts',
+    VIEWS: 'panonood',
   },
   'fr-CA': {
     ADS_BLOCKED: 'Publicités avant la vidéo bloquées avec succès !',
@@ -384,6 +406,7 @@ const locales = {
     ORIGINAL: 'originale',
     SHARE: 'Partager',
     SHORTS: 'Shorts',
+    VIEWS: 'visionnements',
   },
   'fr-FR': {
     ADS_BLOCKED: 'Publicités avant la vidéo bloquées avec succès !',
@@ -401,6 +424,7 @@ const locales = {
     TAKE_SNAPSHOT: 'Prendre une capture',
     THANKS: 'Merci',
     UNHIDE_CHANNEL: 'Afficher la chaîne',
+    VIEWS: 'vues',
   },
   'gl-ES': {
     ADS_BLOCKED: 'Anuncios pre-roll bloqueados con éxito!',
@@ -410,6 +434,7 @@ const locales = {
     ORIGINAL: 'orixinal',
     SHARE: 'Compartir',
     SHORTS: 'Curtas',
+    VIEWS: 'reproducións',
   },
   'gu-IN': {
     ADS_BLOCKED: 'વીડિયો પહેલાની જાહેરાતો સફળતાપૂર્વક બ્લોક કરી!',
@@ -419,6 +444,7 @@ const locales = {
     ORIGINAL: 'ઑરિજિનલ',
     SHARE: 'શેર કરો',
     SHORTS: 'Shorts',
+    VIEWS: 'જોવાયાની સંખ્યા',
   },
   'he-IL': {
     ADS_BLOCKED: 'פרסומות לפני הסרטון נחסמו בהצלחה!',
@@ -428,6 +454,7 @@ const locales = {
     ORIGINAL: 'מקור',
     SHARE: 'שיתוף',
     SHORTS: 'סרטוני Shorts',
+    VIEWS: 'צפיות',
   },
   'hi-IN': {
     ADS_BLOCKED: 'वीडियो से पहले आने वाले विज्ञापन सफलतापूर्वक ब्लॉक किए गए!',
@@ -437,6 +464,7 @@ const locales = {
     ORIGINAL: 'मूल',
     SHARE: 'शेयर करें',
     SHORTS: 'Shorts',
+    VIEWS: 'व्यू',
   },
   'hr-HR': {
     ADS_BLOCKED: 'Oglasi prije videa uspješno blokirani!',
@@ -446,6 +474,7 @@ const locales = {
     ORIGINAL: 'izvorno',
     SHARE: 'Podijelite',
     SHORTS: 'Shorts',
+    VIEWS: 'pregleda',
   },
   'hu-HU': {
     ADS_BLOCKED: 'Videó előtti hirdetések sikeresen blokkolva!',
@@ -455,6 +484,7 @@ const locales = {
     ORIGINAL: 'eredeti',
     SHARE: 'Megosztás',
     SHORTS: 'Rövid videók',
+    VIEWS: 'megtekintés',
   },
   'hy-AM': {
     ADS_BLOCKED: 'Տեսանյութից առաջ գովազդները հաջողությամբ արգելափակվեցին:',
@@ -464,6 +494,7 @@ const locales = {
     ORIGINAL: 'բնօրինակ',
     SHARE: 'Կիսվել',
     SHORTS: 'Կարճ հոլովակներ',
+    VIEWS: 'դիտում',
   },
   'id-ID': {
     ADS_BLOCKED: 'Iklan pre-roll berhasil diblokir!',
@@ -473,6 +504,7 @@ const locales = {
     ORIGINAL: 'asli',
     SHARE: 'Bagikan',
     SHORTS: 'Shorts',
+    VIEWS: 'x ditonton',
   },
   'is-IS': {
     ADS_BLOCKED: 'Forauglýsingar lokaðar!',
@@ -482,6 +514,7 @@ const locales = {
     ORIGINAL: 'upprunalegt',
     SHARE: 'Deila',
     SHORTS: 'Shorts',
+    VIEWS: 'áhorf',
   },
   'it-IT': {
     ADS_BLOCKED: 'Annunci pre-roll bloccati con successo!',
@@ -491,6 +524,7 @@ const locales = {
     ORIGINAL: 'originale',
     SHARE: 'Condividi',
     SHORTS: 'Short',
+    VIEWS: 'visualizzazioni',
   },
   'ja-JP': {
     ADS_BLOCKED: '動画再生前の広告をブロックしました！',
@@ -508,6 +542,7 @@ const locales = {
     STREAMED_TITLE_ARIA_LABEL_RE: '前 に配信済み',
     TAKE_SNAPSHOT: 'スナップショットを撮る',
     UNHIDE_CHANNEL: 'チャンネルの再表示',
+    VIEWS: '回視聴',
   },
   'ka-GE': {
     ADS_BLOCKED: 'რეკლამები ვიდეომდე წარმატებით დაიბლოკა!',
@@ -517,6 +552,7 @@ const locales = {
     ORIGINAL: 'ორიგინალია',
     SHARE: 'გაზიარება',
     SHORTS: 'Shorts',
+    VIEWS: 'ნახვა',
   },
   'kk-KZ': {
     ADS_BLOCKED: 'Бейне алдындағы жарнамалар сәтті бұғатталды!',
@@ -526,6 +562,7 @@ const locales = {
     ORIGINAL: 'түпнұсқа',
     SHARE: 'Бөлісу',
     SHORTS: 'Shorts',
+    VIEWS: 'рет көрілді',
   },
   'km-KH': {
     ADS_BLOCKED: 'ការផ្សាយពាណិជ្ជកម្មមុនវីដេអូត្រូវបានទប់ស្កាត់ដោយជោគជ័យ!',
@@ -535,6 +572,7 @@ const locales = {
     ORIGINAL: 'ដើម',
     SHARE: 'ចែករំលែក',
     SHORTS: 'Shorts',
+    VIEWS: 'ចំនួនមើល',
   },
   'kn-IN': {
     ADS_BLOCKED: 'ವೀಡಿಯೊಗೆ ಮುಂಚಿನ ಜಾಹೀರಾತುಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ!',
@@ -544,6 +582,7 @@ const locales = {
     ORIGINAL: 'ಮೂಲ',
     SHARE: 'ಹಂಚಿಕೊಳ್ಳಿ',
     SHORTS: 'Shorts',
+    VIEWS: 'ವೀಕ್ಷಣೆಗಳು',
   },
   'ko-KR': {
     ADS_BLOCKED: '동영상 시작 전 광고가 차단되었습니다!',
@@ -553,6 +592,7 @@ const locales = {
     ORIGINAL: '원본',
     SHARE: '공유',
     SHORTS: 'Shorts',
+    VIEWS: '조회수',
   },
   'ky-KG': {
     ADS_BLOCKED: 'Видеонун алдындагы жарнамалар ийгиликтүү бөгөттөлдү!',
@@ -562,6 +602,7 @@ const locales = {
     ORIGINAL: 'түпнуска',
     SHARE: 'Бөлүшүү',
     SHORTS: 'Кыска видеолор',
+    VIEWS: 'жолу көрүлдү',
   },
   'lo-LA': {
     ADS_BLOCKED: 'ບລັອກໂຄສະນາກ່ອນວິດີໂອສຳເລັດແລ້ວ!',
@@ -571,6 +612,7 @@ const locales = {
     ORIGINAL: 'ຕົ້ນສະບັບ',
     SHARE: 'ແບ່ງປັນ',
     SHORTS: 'Shorts',
+    VIEWS: 'ຍອດເບິ່ງ',
   },
   'lt-LT': {
     ADS_BLOCKED: 'Reklama prieš vaizdo įrašą sėkmingai užblokuota!',
@@ -580,6 +622,7 @@ const locales = {
     ORIGINAL: 'pradinis',
     SHARE: 'Bendrinti',
     SHORTS: 'Klipukai',
+    VIEWS: 'peržiūrų',
   },
   'lv-LV': {
     ADS_BLOCKED: 'Reklāmas pirms video veiksmīgi bloķētas!',
@@ -589,6 +632,7 @@ const locales = {
     ORIGINAL: 'oriģināls',
     SHARE: 'Kopīgot',
     SHORTS: 'Īsie videoklipi',
+    VIEWS: 'skatījumi',
   },
   'mk-MK': {
     ADS_BLOCKED: 'Рекламите пред видеото се успешно блокирани!',
@@ -598,6 +642,7 @@ const locales = {
     ORIGINAL: 'оригинален',
     SHARE: 'Споделете',
     SHORTS: 'Shorts',
+    VIEWS: 'прегледи',
   },
   'ml-IN': {
     ADS_BLOCKED: 'വീഡിയോയ്ക്ക് മുമ്പുള്ള പരസ്യങ്ങൾ വിജയകരമായി തടഞ്ഞു!',
@@ -607,6 +652,7 @@ const locales = {
     ORIGINAL: 'ഒറിജിനൽ',
     SHARE: 'പങ്കിടുക',
     SHORTS: 'Shorts',
+    VIEWS: 'കാഴ്‌ച',
   },
   'mn-MN': {
     ADS_BLOCKED: 'Видеоны өмнөх сурталчилгааг амжилттай хаасан!',
@@ -616,6 +662,7 @@ const locales = {
     ORIGINAL: 'эх хувь',
     SHARE: 'Хуваалцах',
     SHORTS: 'Shorts',
+    VIEWS: 'үзэлт',
   },
   'mr-IN': {
     ADS_BLOCKED:
@@ -626,6 +673,7 @@ const locales = {
     ORIGINAL: 'मूळ',
     SHARE: 'शेअर करा',
     SHORTS: 'शॉर्ट',
+    VIEWS: 'व्ह्यू',
   },
   'ms-MY': {
     ADS_BLOCKED: 'Iklan pra-roll berjaya disekat!',
@@ -635,6 +683,7 @@ const locales = {
     ORIGINAL: 'asal',
     SHARE: 'Kongsi',
     SHORTS: 'Shorts',
+    VIEWS: 'tontonan',
   },
   'my-MM': {
     ADS_BLOCKED: 'ဗီဒီယိုမစမီ ကြော်ငြာများကို အောင်မြင်စွာ ပိတ်လိုက်ပါပြီ!',
@@ -644,6 +693,7 @@ const locales = {
     ORIGINAL: 'မူရင်း',
     SHARE: 'မျှဝေရန်',
     SHORTS: 'Shorts',
+    VIEWS: 'ကြည့်ရှုမှု',
   },
   'nb-NO': {
     ADS_BLOCKED: 'Pre-roll annonser blokkert!',
@@ -653,6 +703,7 @@ const locales = {
     ORIGINAL: 'original',
     SHARE: 'Del',
     SHORTS: 'Shorts',
+    VIEWS: 'avspillinger',
   },
   'ne-NP': {
     ADS_BLOCKED: 'भिडियो सुरु हुनु अघिको विज्ञापन सफलतापूर्वक रोकियो!',
@@ -662,6 +713,7 @@ const locales = {
     ORIGINAL: 'मूल',
     SHARE: 'सेयर गर्नुहोस्',
     SHORTS: 'Shorts',
+    VIEWS: 'भ्यु',
   },
   'nl-NL': {
     ADS_BLOCKED: 'Pre-roll advertenties succesvol geblokkeerd!',
@@ -671,6 +723,7 @@ const locales = {
     ORIGINAL: 'Originele',
     SHARE: 'Delen',
     SHORTS: 'Shorts',
+    VIEWS: 'weergaven',
   },
   'or-IN': {
     ADS_BLOCKED: 'ଭିଡିଓ ପୂର୍ବର ବିଜ୍ଞାପନ ସଫଳତାର ସହ ଅବରୋଧ କରାଗଲା!',
@@ -680,6 +733,7 @@ const locales = {
     ORIGINAL: 'ମୂଳ',
     SHARE: 'ସେୟାର କରନ୍ତୁ',
     SHORTS: 'Shorts',
+    VIEWS: 'ଭ୍ୟୁ',
   },
   'pa-Guru-IN': {
     ADS_BLOCKED: 'ਵੀਡੀਓ ਤੋਂ ਪਹਿਲਾਂ ਵਾਲੇ ਇਸ਼ਤਿਹਾਰ ਸਫਲਤਾਪੂਰਵਕ ਬਲੌਕ ਕੀਤੇ ਗਏ!',
@@ -689,6 +743,7 @@ const locales = {
     ORIGINAL: 'ਮੂਲ',
     SHARE: 'ਸਾਂਝਾ ਕਰੋ',
     SHORTS: 'Shorts',
+    VIEWS: 'ਵਾਰ ਦੇਖਿਆ',
   },
   'pl-PL': {
     ADS_BLOCKED: 'Reklamy przed filmem pomyślnie zablokowane!',
@@ -698,6 +753,7 @@ const locales = {
     ORIGINAL: 'oryginalny',
     SHARE: 'Udostępnij',
     SHORTS: 'Shorts',
+    VIEWS: 'wyświetleń',
   },
   'pt-BR': {
     ADS_BLOCKED: 'Anúncios pré-roll bloqueados com sucesso!',
@@ -707,6 +763,7 @@ const locales = {
     ORIGINAL: 'original',
     SHARE: 'Compartilhar',
     SHORTS: 'Shorts',
+    VIEWS: 'visualizações',
   },
   'pt-PT': {
     ADS_BLOCKED: 'Anúncios pré-roll bloqueados com sucesso!',
@@ -716,6 +773,7 @@ const locales = {
     ORIGINAL: 'original',
     SHARE: 'Partilhar',
     SHORTS: 'Shorts',
+    VIEWS: 'visualizações',
   },
   'ro-RO': {
     ADS_BLOCKED: 'Reclamele pre-roll au fost blocate cu succes!',
@@ -725,6 +783,7 @@ const locales = {
     ORIGINAL: 'original',
     SHARE: 'Trimite',
     SHORTS: 'Shorts',
+    VIEWS: 'vizionări',
   },
   'ru-RU': {
     ADS_BLOCKED: 'Реклама перед видео успешно заблокирована!',
@@ -734,6 +793,7 @@ const locales = {
     ORIGINAL: 'оригинальная',
     SHARE: 'Поделиться',
     SHORTS: 'Shorts',
+    VIEWS: 'просмотров',
   },
   'si-LK': {
     ADS_BLOCKED: 'වීඩියෝවට පෙර දැන්වීම් සාර්ථකව අවහිර කරන ලදී!',
@@ -743,6 +803,7 @@ const locales = {
     ORIGINAL: 'මුල්',
     SHARE: 'බෙදාගන්න',
     SHORTS: 'Shorts',
+    VIEWS: 'බැලීම්',
   },
   'sk-SK': {
     ADS_BLOCKED: 'Reklamy pred videom boli úspešne zablokované!',
@@ -752,6 +813,7 @@ const locales = {
     ORIGINAL: 'pôvodná',
     SHARE: 'Zdieľať',
     SHORTS: 'Shorts',
+    VIEWS: 'zhliadnutí',
   },
   'sl-SI': {
     ADS_BLOCKED: 'Oglasi pred predvajanjem uspešno blokirani!',
@@ -761,6 +823,7 @@ const locales = {
     ORIGINAL: 'Izvirnik',
     SHARE: 'Deli',
     SHORTS: 'Kratki videoposnetki',
+    VIEWS: 'ogledov',
   },
   'sq-AL': {
     ADS_BLOCKED: 'Reklamat para videos u bllokuan me sukses!',
@@ -770,6 +833,7 @@ const locales = {
     ORIGINAL: 'origjinale',
     SHARE: 'Ndaj',
     SHORTS: 'Shorts',
+    VIEWS: 'shikime',
   },
   'sr-Cyrl-RS': {
     ADS_BLOCKED: 'Рекламе пре видеа су успешно блокиране!',
@@ -779,6 +843,7 @@ const locales = {
     ORIGINAL: 'оригинална',
     SHARE: 'Дели',
     SHORTS: 'Шортси',
+    VIEWS: 'прегледа',
   },
   'sr-Latn-RS': {
     ADS_BLOCKED: 'Reklame pre videa su uspešno blokirane!',
@@ -788,6 +853,7 @@ const locales = {
     ORIGINAL: 'originalna',
     SHARE: 'Deli',
     SHORTS: 'Šortsi',
+    VIEWS: 'pregleda',
   },
   'sw-TZ': {
     ADS_BLOCKED: 'Matangazo ya kabla ya video yamezuiwa!',
@@ -797,6 +863,7 @@ const locales = {
     ORIGINAL: 'halisi',
     SHARE: 'Tuma',
     SHORTS: 'Video Fupi',
+    VIEWS: 'Kutazamwa:',
   },
   'ta-IN': {
     ADS_BLOCKED: 'வீடியோவிற்கு முந்தைய விளம்பரங்கள் வெற்றிகரமாக முடக்கப்பட்டன!',
@@ -806,6 +873,7 @@ const locales = {
     ORIGINAL: 'அசல்',
     SHARE: 'பகிர்',
     SHORTS: 'Shorts வீடியோக்கள்',
+    VIEWS: 'பார்வைகள்',
   },
   'te-IN': {
     ADS_BLOCKED: 'వీడియోకి ముందు వచ్చే యాడ్స్ విజయవంతంగా నిరోధించబడ్డాయి!',
@@ -815,6 +883,7 @@ const locales = {
     ORIGINAL: 'అసలైనది',
     SHARE: 'షేర్ చేయండి',
     SHORTS: 'షార్ట్‌లు',
+    VIEWS: 'వీక్షణలు',
   },
   'th-TH': {
     ADS_BLOCKED: 'บล็อกโฆษณาก่อนเล่นวิดีโอเรียบร้อยแล้ว!',
@@ -824,6 +893,7 @@ const locales = {
     ORIGINAL: 'เสียงต้นฉบับ',
     SHARE: 'แชร์',
     SHORTS: 'วิดีโอสั้น',
+    VIEWS: 'การดู',
   },
   'tr-TR': {
     ADS_BLOCKED: 'Video öncesi reklamlar başarıyla engellendi!',
@@ -833,6 +903,7 @@ const locales = {
     ORIGINAL: 'orijinal',
     SHARE: 'Paylaş',
     SHORTS: 'Shorts',
+    VIEWS: 'görüntüleme',
   },
   'uk-UA': {
     ADS_BLOCKED: 'Рекламу перед відео успішно заблоковано!',
@@ -842,6 +913,7 @@ const locales = {
     ORIGINAL: 'оригінал',
     SHARE: 'Поділитися',
     SHORTS: 'Відео Shorts',
+    VIEWS: 'переглядів',
   },
   'ur-PK': {
     ADS_BLOCKED: 'ویڈیو سے پہلے آنے والے اشتہارات کامیابی سے بلاک کر دیے گئے!',
@@ -851,6 +923,7 @@ const locales = {
     ORIGINAL: 'اصل',
     SHARE: 'اشتراک کریں',
     SHORTS: 'Shorts',
+    VIEWS: 'ملاحظات',
   },
   'uz-Latn-UZ': {
     ADS_BLOCKED: 'Video oldidan reklamalar muvaffaqiyatli bloklandi!',
@@ -860,6 +933,7 @@ const locales = {
     ORIGINAL: 'original',
     SHARE: 'Ulashish',
     SHORTS: 'Shorts',
+    VIEWS: 'marta',
   },
   'vi-VN': {
     ADS_BLOCKED: 'Đã chặn thành công quảng cáo đầu video!',
@@ -869,6 +943,7 @@ const locales = {
     ORIGINAL: 'gốc',
     SHARE: 'Chia sẻ',
     SHORTS: 'Shorts',
+    VIEWS: 'lượt xem',
   },
   'zh-Hans-CN': {
     ADS_BLOCKED: '片头广告已成功拦截！',
@@ -887,6 +962,7 @@ const locales = {
     TAKE_SNAPSHOT: '截取快照',
     THANKS: '感谢',
     UNHIDE_CHANNEL: '取消隐藏频道',
+    VIEWS: '次观看',
   },
   'zh-Hant-HK': {
     ADS_BLOCKED: '影片前廣告已成功封鎖！',
@@ -896,6 +972,7 @@ const locales = {
     ORIGINAL: '原聲',
     SHARE: '分享',
     SHORTS: 'Shorts',
+    VIEWS: '收看次數：',
   },
   'zh-Hant-TW': {
     ADS_BLOCKED: '影片前廣告已成功封鎖！',
@@ -905,6 +982,7 @@ const locales = {
     ORIGINAL: '原文',
     SHARE: '分享',
     SHORTS: 'Shorts',
+    VIEWS: '觀看次數：',
   },
   'zu-ZA': {
     ADS_BLOCKED: 'Izikhangiso zangaphambi kwevidiyo zivinjwe ngempumelelo!',
@@ -914,6 +992,7 @@ const locales = {
     ORIGINAL: 'yokuqala',
     SHARE: 'Yabelana',
     SHORTS: 'Okufushane',
+    VIEWS: 'ukubukwa',
   },
 }
 
@@ -3101,6 +3180,22 @@ const configureCss = (() => {
             /* Adjust bullet spacing when the delimiter contains whitespace */
             .ytContentMetadataViewModelDelimiter:not(:empty):has(+ .ytContentMetadataViewModelMetadataTextLastPart) {
               margin-left: 2px;
+            }
+          }
+          /* Restore "views" label where it's easy/possible with CSS */
+          yt-lockup-view-model .ytContentMetadataViewModelMetadataText:has(+ .ytContentMetadataViewModelDelimiter + .ytContentMetadataViewModelMetadataTextLastPart),
+          ytd-search ytd-video-renderer #metadata-line > span.inline-metadata-item:first-of-type {
+            &::after {
+              content: ${JSON.stringify(` ${getString('VIEWS')}`)};
+            }
+            /* Prefix languages */
+            html:is([lang|="km"], [lang|="ko"], [lang|="lo"], [lang|="my"], [lang|="si"], [lang|="sw"], [lang|="th"], [lang|="zh-Hant"]) & {
+              &::before {
+                content: ${JSON.stringify(`${getString('VIEWS')} `)};
+              }
+              &::after {
+                content: none;
+              }
             }
           }
           yt-lockup-view-model .ytContentMetadataViewModelDelimiter:has(+ .ytContentMetadataViewModelMetadataTextLastPart) {

@@ -53,6 +53,7 @@ export type LocaleKey =
   | 'TAKE_SNAPSHOT'
   | 'THANKS'
   | 'UNHIDE_CHANNEL'
+  | 'VIEWS'
 
 export type OptionsConfig = EmbedConfig & SiteConfig & {
   version?: Version
