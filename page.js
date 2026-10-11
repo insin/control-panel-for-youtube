@@ -4242,9 +4242,17 @@ function getChannelDetailsFromVideo($video) {
 }
 
 async function observeDesktopEndscreenVideos() {
+  let stopIf = currentUrlChanges()
+  let $player = await getElement('#movie_player', {
+    name: 'endscreen player',
+    stopIf,
+  })
+  if (!$player) return
+
   let $endscreenContent = await getElement('.ytp-endscreen-content', {
     name: 'endscreen content',
-    stopIf: currentUrlChanges(),
+    context: $player,
+    stopIf,
   })
   if (!$endscreenContent) return
 
@@ -5824,9 +5832,10 @@ async function tweakHomePage() {
 }
 
 async function tweakChannelPage() {
-    let $channelContent = await getElement('ytd-browse[page-subtype="channels"] ytd-two-column-browse-results-renderer > #primary', {
+  let stopIf = currentUrlChanges()
+  let $channelContent = await getElement('ytd-browse[page-subtype="channels"] ytd-two-column-browse-results-renderer > #primary', {
     name: 'channel content',
-    stopIf: () => !isChannelPage(),
+    stopIf,
   })
   if (!$channelContent) return
 
@@ -5849,8 +5858,8 @@ async function tweakChannelPage() {
     let $channelTrailer = /** @type {HTMLVideoElement} */ (
       await getElement('ytd-channel-video-player-renderer video', {
         name: `channel trailer`,
-        stopIf: () => getChannelTab() != 'featured',
-        timeout: 2000,
+        context: $channelContent,
+        stopIf,
       })
     )
     if (!$channelTrailer) return
@@ -5881,15 +5890,22 @@ async function tweakChannelPage() {
 function tweakSearchPage() {
   if (desktop && config.hideShorts) {
     run(async function() {
-      let $chips = await getElement('ytd-search #chip-bar #chips', {
-        name: 'search chip bar (hideShorts)',
-        stopIf: currentUrlChanges(),
-        timeout: 500,
+      let stopIf = currentUrlChanges()
+      let $search = await getElement('ytd-search', {
+        name: 'search element (hideShorts)',
+        stopIf,
+      })
+      if (!$search) return
+      let $chips = await getElement('#chip-bar #chips', {
+        name: 'search chips (hideShorts)',
+        context: $search,
+        stopIf,
       })
       if (!$chips) return
       for (let $chip of $chips.children) {
-        if (/** @type {HTMLElement} */ ($chip).innerText == getString('SHORTS')) {
+        if ($chip.textContent.trim() == getString('SHORTS')) {
           $chip.classList.add('HideShorts')
+          log('hideShorts: Shorts chip hidden')
           break
         }
       }
