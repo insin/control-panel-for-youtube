@@ -177,7 +177,6 @@ ${messages.shorts}:
 • ${messages.redirectShorts}
 • ${messages.hideShortsSuggestedActions}
 • ${messages.hideShortsRelatedLink}
-• ${messages.alwaysShowShortsProgressBar}
 • ${messages.stopShortsLooping}
 • ${messages.hideShortsRemixButton}${messages.desktopVersion}
 • ${messages.hideShortsMetadataUntilHover}${messages.desktopVersion}

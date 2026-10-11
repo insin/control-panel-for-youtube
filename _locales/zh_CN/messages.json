@@ -8,9 +8,6 @@
   "allowBackgroundPlay": {
     "message": "允许视频在后台播放"
   },
-  "alwaysShowShortsProgressBar": {
-    "message": "始终显示进度条"
-  },
   "alwaysUseOriginalAudio": {
     "message": "始终使用原始音频"
   },

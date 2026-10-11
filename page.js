@@ -8,7 +8,6 @@ let defaultConfig = {
   debug: false,
   debugLogGridObservers: false,
   debugManualHiding: false,
-  alwaysShowShortsProgressBar: true,
   blockAds: true,
   disableAIGeneratedChapters: true,
   disableAmbientMode: true,
@@ -1383,15 +1382,6 @@ const configureCss = (() => {
       }
     `]
     let hideCssSelectors = []
-
-    if (config.alwaysShowShortsProgressBar) {
-      if (desktop) {
-        cssRules.push('.ytPlayerProgressBarHostHidden { opacity: 100 !important; }')
-      }
-      if (mobile) {
-        cssRules.push('.ytMwebShortsPlayerControlsHostHideProgressBar { visibility: visible !important; }')
-      }
-    }
 
     if (config.disableAmbientMode) {
       if (desktop) {

@@ -8,9 +8,6 @@
   "allowBackgroundPlay": {
     "message": "Autoriser la lecture en arrière-plan"
   },
-  "alwaysShowShortsProgressBar": {
-    "message": "Toujours afficher la barre de progression"
-  },
   "alwaysUseOriginalAudio": {
     "message": "Toujours utiliser l'audio d'origine"
   },

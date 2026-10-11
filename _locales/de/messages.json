@@ -8,9 +8,6 @@
   "allowBackgroundPlay": {
     "message": "Hintergrundwiedergabe zulassen"
   },
-  "alwaysShowShortsProgressBar": {
-    "message": "Fortschrittsbalken immer anzeigen"
-  },
   "alwaysUseOriginalAudio": {
     "message": "Immer den Originalton verwenden"
   },

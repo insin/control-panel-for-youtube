@@ -8,9 +8,6 @@
   "allowBackgroundPlay": {
     "message": "Allow background playback"
   },
-  "alwaysShowShortsProgressBar": {
-    "message": "Always show progress bar"
-  },
   "alwaysUseOriginalAudio": {
     "message": "Always use original audio"
   },
