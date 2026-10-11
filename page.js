@@ -2441,6 +2441,9 @@ const configureCss = (() => {
       if (config.disableThemedHover) {
         cssRules.push(`
           /* Videos */
+          .ytLockupViewModelHost {
+            --yt-lockup-metadata-themed-menu-button-additive-background: var(--cpfyt-additive-background) !important;
+          }
           .ytSpecTouchFeedbackShapeHoverEffect {
             display: none !important;
           }
