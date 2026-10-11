@@ -3098,13 +3098,15 @@ const configureCss = (() => {
               display: block !important;
               height: 0;
             }
-            /* Restore the bullet between views and date */
-            .ytContentMetadataViewModelDelimiter:has(+ .ytContentMetadataViewModelMetadataTextLastPart) {
+            /* Adjust bullet spacing when the delimiter contains whitespace */
+            .ytContentMetadataViewModelDelimiter:not(:empty):has(+ .ytContentMetadataViewModelMetadataTextLastPart) {
               margin-left: 2px;
-              margin-right: 5px;
-              &::after {
-                content: "•";
-              }
+            }
+          }
+          yt-lockup-view-model .ytContentMetadataViewModelDelimiter:has(+ .ytContentMetadataViewModelMetadataTextLastPart) {
+            /* Restore the bullet between views and date */
+            &::after {
+              content: "•";
             }
           }
         `)
