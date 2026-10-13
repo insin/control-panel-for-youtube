@@ -62,6 +62,9 @@
   "debug": {
     "message": "Mode débogage"
   },
+  "debugLogGetElementStats": {
+    "message": "Journaliser les statistiques de getElement()"
+  },
   "debugLogGridObservers": {
     "message": "Logs des observateurs de grille"
   },

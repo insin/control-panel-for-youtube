@@ -79,6 +79,7 @@ for (let translationId of [
   'blockAdsNote',
   'channelPages',
   'debug',
+  'debugLogGetElementStats',
   'debugLogGridObservers',
   'debugManualHiding',
   'debugManualHidingNote',
@@ -232,6 +233,7 @@ let defaultConfig = {
   collapsedOptions: [],
   // Default based on platform until the content script runs
   version: /(Android|iP(ad|hone))/.test(navigator.userAgent) ? 'mobile' : 'desktop',
+  debugLogGetElementStats: false,
   blockAds: true,
   disableAIGeneratedChapters: true,
   disableAmbientMode: true,

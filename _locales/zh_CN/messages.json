@@ -62,6 +62,9 @@
   "debug": {
     "message": "调试模式"
   },
+  "debugLogGetElementStats": {
+    "message": "记录 getElement() 的统计信息"
+  },
   "debugLogGridObservers": {
     "message": "记录网格观察器日志"
   },

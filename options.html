@@ -119,8 +119,8 @@
             <input type="checkbox" name="displayHomeGridAsList">
             <span class="toggle"></span>
           </label>
-          <div class="sub-options">
-            <section class="checkbox displayingGridAsList">
+          <div class="sub-options displayingGridAsList">
+            <section class="checkbox">
               <label>
                 <span id="showChannelHeadersInListView">Show channel headers in list view</span>
                 <input type="checkbox" name="showChannelHeadersInListView">
@@ -430,8 +430,8 @@
             <input type="checkbox" name="hideWatched">
             <span class="toggle"></span>
           </label>
-          <div class="sub-options">
-            <section class="select hidingWatched">
+          <div class="sub-options hidingWatched">
+            <section class="select">
               <label>
                 <span id="hideWatchedThreshold">Watched %</span>
                 <select name="hideWatchedThreshold">
@@ -456,8 +456,8 @@
             <span class="toggle"></span>
           </label>
           <p id="hideHiddenVideosNote">Hides the "Undo" button after 5 seconds</p>
-          <div class="sub-options">
-            <section class="checkbox desktop hidingHiddenVideos">
+          <div class="sub-options desktop hidingHiddenVideos">
+            <section class="checkbox">
               <label>
                 <span id="animateHiding">Animate hiding</span>
                 <input type="checkbox" name="animateHiding">
@@ -540,8 +540,8 @@
             <input type="checkbox" name="fullSizeTheaterMode">
             <span class="toggle"></span>
           </label>
-          <div class="sub-options">
-            <section class="checkbox fullSizeTheaterMode">
+          <div class="sub-options fullSizeTheaterMode">
+            <section class="checkbox">
               <label>
                 <span id="fullSizeTheaterModeHideHeader">Hide header</span>
                 <input type="checkbox" name="fullSizeTheaterModeHideHeader">
@@ -563,8 +563,8 @@
             <input type="checkbox" name="hideRelated">
             <span class="toggle"></span>
           </label>
-          <div class="sub-options">
-            <section class="checkbox desktop">
+          <div class="sub-options desktop">
+            <section class="checkbox">
               <label>
                 <span id="hideRelatedBelow">Only when they appear below the video</span>
                 <input type="checkbox" name="hideRelatedBelow">
@@ -668,8 +668,8 @@
             <input type="checkbox" name="addTakeSnapshot">
             <span class="toggle"></span>
           </label>
-          <div class="sub-options">
-            <section class="select snapshot">
+          <div class="sub-options snapshot">
+            <section class="select">
               <label>
                 <span id="snapshotFormat">Snapshot format</span>
                 <select name="snapshotFormat">
@@ -678,7 +678,7 @@
                 </select>
               </label>
             </section>
-            <section class="select snapshot jpegSnapshot">
+            <section class="select jpegSnapshot">
               <label>
                 <span id="snapshotQuality">Quality</span>
                 <select name="snapshotQuality">
@@ -881,8 +881,8 @@
             <input type="checkbox" name="tidyGuideSidebar">
             <span class="toggle"></span>
           </label>
-          <div class="sub-options">
-            <section class="checkbox tidyingGuideSidebar">
+          <div class="sub-options tidyingGuideSidebar">
+            <section class="checkbox">
               <label>
                 <span id="hideSidebarSubscriptions">Hide Subscriptions list</span>
                 <input type="checkbox" name="hideSidebarSubscriptions">
@@ -971,8 +971,15 @@
             <span class="toggle"></span>
           </label>
           <p id="debugNote">Enables debug logging</p>
-          <div class="sub-options">
-            <section class="checkbox debugging">
+          <div class="sub-options debugging">
+            <section class="checkbox">
+              <label>
+                <span id="debugLogGetElementStats">Log getElement() stats</span>
+                <input type="checkbox" name="debugLogGetElementStats">
+                <span class="toggle"></span>
+              </label>
+            </section>
+            <section class="checkbox">
               <label>
                 <span id="debugLogGridObservers">Log grid observers</span>
                 <input type="checkbox" name="debugLogGridObservers">

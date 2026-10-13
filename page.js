@@ -6,6 +6,7 @@ let prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
 let defaultConfig = {
   enabled: true,
   debug: false,
+  debugLogGetElementStats: false,
   debugLogGridObservers: false,
   debugManualHiding: false,
   blockAds: true,
@@ -121,6 +122,7 @@ let defaultConfig = {
 //#endregion
 
 let debug = false
+let debugLogGetElementStats = false
 let debugLogGridObservers = false
 let debugManualHiding = false
 
@@ -1143,15 +1145,16 @@ function getElement(selector, {
     let intervalId
     let timeoutId
     let resolved = false
+    let queryCount = 0
 
     function stop($element, reason) {
       if (resolved) return
       resolved = true
       if ($element == null) {
-        log(`stopped waiting for ${name || selector} after ${reason}`)
+        log(`getElement: stopped waiting for ${name || selector} after ${reason}`)
       }
-      else if (Date.now() > startTime) {
-        log(`${name || selector} appeared after`, Date.now() - startTime, 'ms')
+      else if (debugLogGetElementStats && reason != 'initial query') {
+        log(`getElement: got ${name || selector} after ${Date.now() - startTime}ms (${queryCount} ${queryCount == 1 ? 'query' : 'queries'})`)
       }
       observer?.disconnect()
       if (timeoutId) clearTimeout(timeoutId)
@@ -1162,10 +1165,11 @@ function getElement(selector, {
     if (stopIf?.() === true) return stop(null, 'stopIf condition met (initial query)')
 
     let $element = context.querySelector(selector)
-    if ($element) return stop($element)
+    if ($element) return stop($element, 'initial query')
 
     observer = observeElement(context, () => {
       if (stopIf?.() === true) return stop(null, 'stopIf condition met (observer)')
+      queryCount++
       let $element = context.querySelector(selector)
       if ($element) stop($element)
     }, {
@@ -6847,6 +6851,7 @@ function receiveConfigFromContentScript({data: {type, siteConfig}}) {
   if (type == 'initial') {
     config = {...defaultConfig, ...siteConfig}
     debug = config.debug
+    debugLogGetElementStats = config.debugLogGetElementStats
     debugManualHiding = config.debugManualHiding
     log('initial config', config, {version, lang, loggedIn})
     storeCachedConfig()
@@ -6862,6 +6867,12 @@ function receiveConfigFromContentScript({data: {type, siteConfig}}) {
     log('disabling debug mode')
     debug = siteConfig.debug
     log('enabled debug mode')
+    return
+  }
+
+  if (Object.hasOwn(siteConfig, 'debugLogGetElementStats')) {
+    debugLogGetElementStats = siteConfig.debugLogGetElementStats
+    log(`${debugLogGetElementStats ? 'en' : 'dis'}abled logging of getElement() stats`)
     return
   }
 

@@ -62,6 +62,9 @@
   "debug": {
     "message": "デバッグモード"
   },
+  "debugLogGetElementStats": {
+    "message": "getElement() の統計をログに出力"
+  },
   "debugLogGridObservers": {
     "message": "グリッドオブザーバーのログ出力"
   },

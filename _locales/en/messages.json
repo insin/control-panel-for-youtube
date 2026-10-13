@@ -62,6 +62,9 @@
   "debug": {
     "message": "Debug mode"
   },
+  "debugLogGetElementStats": {
+    "message": "Log getElement() stats"
+  },
   "debugLogGridObservers": {
     "message": "Log grid observers"
   },

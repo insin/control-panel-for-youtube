@@ -62,6 +62,7 @@ export type SiteConfig = {
   enabled: boolean
   collapsedOptions?: string[]
   debug?: boolean
+  debugLogGetElementStats?: boolean
   debugLogGridObservers?: boolean
   debugManualHiding?: boolean
   blockAds: boolean
