@@ -153,9 +153,7 @@ const cachedConfigKeys = [
   'revertWatchLayout',
 ]
 /** @type {import("./types").SiteConfig} */
-let config = {...defaultConfig, ...getCachedConfig()}
-
-const patchInitialResponses = patchRequests()
+let config = {...defaultConfig}
 
 //#region Locales
 /**
@@ -6176,15 +6174,74 @@ function waitForDesktopVideoOverlay($video, uniqueId) {
 //#endregion
 
 //#region Response patching
+/** @type {Map<string, () => void>} */
+const initialResponseHooks = new Map()
+
+const initialResponses = [
+  ['ytInitialData', 'next'],
+  ['ytInitialPlayerResponse', 'player'],
+  ['ytInitialReelWatchSequenceResponse', 'reel_watch_sequence'],
+]
+
+function configureInitialResponses() {
+  for (let [name, endpoint] of initialResponses) {
+    if (!getResponsePatcher(endpoint)) {
+      initialResponseHooks.get(name)?.()
+      initialResponseHooks.delete(name)
+      continue
+    }
+    if (!initialResponseHooks.has(name)) {
+      let descriptor = Object.getOwnPropertyDescriptor(window, name)
+      // Leave other extensions' accessors and read-only properties intact.
+      if (!descriptor || descriptor.configurable && Object.hasOwn(descriptor, 'value') && descriptor.writable) {
+        let value = window[name]
+        function get() { return value }
+        try {
+          Object.defineProperty(window, name, {
+            configurable: true,
+            enumerable: descriptor?.enumerable ?? true,
+            get,
+            set(data) {
+              value = data
+              patchInitialResponse(data, endpoint, name)
+            },
+          })
+          initialResponseHooks.set(name, () => {
+            if (Object.getOwnPropertyDescriptor(window, name)?.get !== get) {
+              log('configureInitialResponses: leaving replacement hook intact', name)
+              return
+            }
+            Object.defineProperty(window, name, descriptor
+              ? {...descriptor, value}
+              : {configurable: true, enumerable: true, writable: true, value})
+            log('configureInitialResponses: removed hook', name)
+          })
+          log('configureInitialResponses: installed hook', name)
+        } catch (error) {
+          warn('configureInitialResponses: error defining', name, ':', error)
+        }
+      } else {
+        log('configureInitialResponses: preserving existing accessor or read-only property', name)
+      }
+    }
+    patchInitialResponse(window[name], endpoint, name)
+  }
+  if (debug) log('configureInitialResponses: registered hooks', [...initialResponseHooks.keys()])
+}
+
 function getResponseEndpoint(url) {
   return url?.match(/\/(player|next|get_watch|reel_watch_sequence)(?:\?|$)/)?.[1]
 }
 
+function patchInitialResponse(data, endpoint, name) {
+  let patcher = getResponsePatcher(endpoint)
+  if (data != null && patcher) patcher(data, name)
+}
+
 function getResponsePatcher(endpoint) {
-  let responseConfig = config ?? defaultConfig
-  if (!responseConfig.enabled) return
-  let ads = responseConfig.blockAds
-  let chapters = responseConfig.disableAIGeneratedChapters
+  if (!config.enabled) return
+  let ads = config.blockAds
+  let chapters = config.disableAIGeneratedChapters
   if (endpoint == 'get_watch' && (ads || chapters)) {
     return (data, source) => {
       if (ads) removePlayerAds(data, source)
@@ -6272,7 +6329,7 @@ function patchRequests() {
       xhrResponseOverrides.delete(this)
     }
     let endpoint = getResponseEndpoint(url)
-    if (endpoint) {
+    if (getResponsePatcher(endpoint)) {
       xhrResponseOverrides.add(this)
       let processed = false
       let patchedResponse
@@ -6293,39 +6350,6 @@ function patchRequests() {
       }
     }
     return XMLHttpRequest_open.apply(this, arguments)
-  }
-
-  let initialResponses = [
-    ['ytInitialData', 'next'],
-    ['ytInitialPlayerResponse', 'player'],
-    ['ytInitialReelWatchSequenceResponse', 'reel_watch_sequence'],
-  ]
-  function patchInitialResponse(data, endpoint, name) {
-    let patcher = getResponsePatcher(endpoint)
-    if (data != null && patcher) patcher(data, name)
-  }
-  for (let [name, endpoint] of initialResponses) {
-    let value = window[name]
-    try {
-      Object.defineProperty(window, name, {
-        configurable: true,
-        enumerable: true,
-        set(data) {
-          value = data
-          patchInitialResponse(data, endpoint, name)
-        },
-        get() {
-          return value
-        },
-      })
-    } catch (error) {
-      warn('patchRequests: error defining', name, ':', error)
-    }
-  }
-  return function patchInitialResponses() {
-    for (let [name, endpoint] of initialResponses) {
-      patchInitialResponse(window[name], endpoint, name)
-    }
   }
 }
 
@@ -6673,37 +6697,34 @@ function tweakFlags(paths, overrides, options) {
 //#endregion
 
 //#region Main
-let channelName = crypto.randomUUID()
-let channel = new BroadcastChannel(channelName)
-
-/** @returns {Partial<import("./types").SiteConfig>} */
-function getCachedConfig() {
-  try {
-    let cached = JSON.parse(localStorage.getItem('cpfyt:startup-config') || 'null')
-    if (cached == null || typeof cached != 'object' || Array.isArray(cached)) return {}
-    return Object.fromEntries(
-      cachedConfigKeys
-        .filter(key => typeof cached[key] == 'boolean')
-        .map(key => [key, cached[key]])
-    )
-  } catch (error) {
-    warn('could not read cached config', error)
-    return {}
-  }
-}
-
-function storeCachedConfig() {
-  try {
-    let cached = JSON.stringify(Object.fromEntries(cachedConfigKeys.map(key => [key, config[key]])))
-    if (localStorage.getItem('cpfyt:startup-config') != cached) {
-      localStorage.setItem('cpfyt:startup-config', cached)
-    }
-  } catch (error) {
-    warn('could not store cached config', error)
-  }
-}
+/** @type {BroadcastChannel} */
+let channel
 
 function main() {
+  let cachedConfig = getCachedConfig()
+  config = {...defaultConfig, ...cachedConfig}
+
+  patchRequests()
+  // Avoid installing initial-response hooks the user may have disabled
+  if (['enabled', 'blockAds', 'disableAIGeneratedChapters'].every(key => Object.hasOwn(cachedConfig, key))) {
+    configureInitialResponses()
+  }
+  if (desktop) {
+    // Run global patching early when cached config is present
+    removeDelhiExperimentFlags()
+    revertWatchLayout()
+  }
+
+  channel = new BroadcastChannel(crypto.randomUUID())
+  channel.addEventListener('message', receiveConfigFromContentScript)
+  window.postMessage({
+    type: 'init',
+    channelName: channel.name,
+    configKeys: Object.keys(defaultConfig),
+  }, location.origin)
+}
+
+function configurePage() {
   if (desktop) {
     disableVideoPreviews()
     removeDelhiExperimentFlags()
@@ -6760,6 +6781,9 @@ function main() {
 
 /** @param {Partial<import("./types").SiteConfig>} changes */
 function configChanged(changes) {
+  if (['enabled', 'blockAds', 'disableAIGeneratedChapters'].some(key => Object.hasOwn(changes, key))) {
+    configureInitialResponses()
+  }
   if (!Object.hasOwn(changes, 'enabled')) {
     log('config changed', changes)
     if (desktop && Object.hasOwn(changes, 'disableVideoPreviews')) {
@@ -6790,13 +6814,29 @@ function configChanged(changes) {
 
   log(`${changes.enabled ? 'en' : 'dis'}abling extension functionality`)
   if (changes.enabled) {
-    main()
+    configurePage()
   } else {
     configureCss()
     configureGridCss()
     triggerVideoPageResize()
     disconnectObservers(pageObservers, 'page')
     disconnectObservers(globalObservers,' global')
+  }
+}
+
+/** @returns {Partial<import("./types").SiteConfig>} */
+function getCachedConfig() {
+  try {
+    let cached = JSON.parse(localStorage.getItem('cpfyt:startup-config') || 'null')
+    if (cached == null || typeof cached != 'object' || Array.isArray(cached)) return {}
+    return Object.fromEntries(
+      cachedConfigKeys
+        .filter(key => typeof cached[key] == 'boolean')
+        .map(key => [key, cached[key]])
+    )
+  } catch (error) {
+    warn('could not read cached config', error)
+    return {}
   }
 }
 
@@ -6810,11 +6850,11 @@ function receiveConfigFromContentScript({data: {type, siteConfig}}) {
     debugManualHiding = config.debugManualHiding
     log('initial config', config, {version, lang, loggedIn})
     storeCachedConfig()
-    // Patch responses based on initial config
-    patchInitialResponses()
+    // Configure initial-response hooks and patch existing data
+    configureInitialResponses()
     // Let the options page know which version is being used
     storeConfigChanges({version})
-    main()
+    configurePage()
     return
   }
 
@@ -6845,22 +6885,23 @@ function receiveConfigFromContentScript({data: {type, siteConfig}}) {
   configChanged(siteConfig)
 }
 
+function storeCachedConfig() {
+  try {
+    let cached = JSON.stringify(Object.fromEntries(cachedConfigKeys.map(key => [key, config[key]])))
+    if (localStorage.getItem('cpfyt:startup-config') != cached) {
+      localStorage.setItem('cpfyt:startup-config', cached)
+    }
+  } catch (error) {
+    warn('could not store cached config', error)
+  }
+}
+
 /** @param {Partial<import("./types").OptionsConfig>} configChanges */
 function storeConfigChanges(configChanges) {
   channel.postMessage(configChanges)
 }
 
-channel.addEventListener('message', receiveConfigFromContentScript)
-if (desktop) {
-  // Run global patching early when cached config is present
-  removeDelhiExperimentFlags()
-  revertWatchLayout()
-}
-window.postMessage({
-  type: 'init',
-  channelName,
-  configKeys: Object.keys(defaultConfig),
-}, location.origin)
+main()
 //#endregion
 
 }()
