@@ -1482,7 +1482,7 @@ const configureCss = (() => {
         hideCssSelectors.push('button[data-tooltip-target-id="ytp-autonav-toggle-button"]')
       }
       if (mobile) {
-        hideCssSelectors.push('button.ytm-autonav-toggle-button-container')
+        hideCssSelectors.push('button.ytm-autonav-toggle-button-container, button.ytwAutonavToggleButtonHost')
       }
     }
 
@@ -3927,7 +3927,7 @@ async function disableAutoplay() {
     observeElement($customControl, (_, observer) => {
       if ($customControl.childElementCount == 0) return
 
-      let $autoplayButton = /** @type {HTMLElement} */ ($customControl.querySelector('button.ytm-autonav-toggle-button-container'))
+      let $autoplayButton = /** @type {HTMLElement} */ ($customControl.querySelector('button.ytm-autonav-toggle-button-container, button.ytwAutonavToggleButtonHost'))
       if (!$autoplayButton) return
 
       if ($autoplayButton.getAttribute('aria-pressed') == 'true') {
@@ -5709,7 +5709,10 @@ function hideWatched($video) {
     $progressBar = $video.querySelector('#progress, .ytThumbnailOverlayProgressBarHostWatchedProgressBarSegment')
   }
   if (mobile) {
-    $progressBar = $video.querySelector('.YtmThumbnailOverlayResumePlaybackRendererThumbnailOverlayResumePlaybackProgress')
+    $progressBar = $video.querySelector(`
+      .YtmThumbnailOverlayResumePlaybackRendererThumbnailOverlayResumePlaybackProgress,
+      .ytwThumbnailOverlayResumePlaybackRendererThumbnailOverlayResumePlaybackProgress
+    `)
   }
   let hide = false
   if ($progressBar) {
