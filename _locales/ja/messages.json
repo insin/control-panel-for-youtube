@@ -182,6 +182,9 @@
   "hideAskButton": {
     "message": "「質問する」ボタンを非表示にする"
   },
+  "hideAskYouTubeSearch": {
+    "message": "検索の「YouTube に質問」を非表示"
+  },
   "hideAutoDubbed": {
     "message": "オートダビング版を非表示にする"
   },

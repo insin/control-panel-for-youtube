@@ -183,6 +183,9 @@
   "hideAskButton": {
     "message": "Masquer le bouton « Demander »"
   },
+  "hideAskYouTubeSearch": {
+    "message": "Masquer \"Demander à YouTube\" dans la recherche"
+  },
   "hideAutoDubbed": {
     "message": "Masquer les vidéos doublées automatiquement"
   },

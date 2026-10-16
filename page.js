@@ -73,6 +73,7 @@ let defaultConfig = {
   fullSizeTheaterMode: false,
   fullSizeTheaterModeHideHeader: true,
   fullWidthChannelPage: false,
+  hideAskYouTubeSearch: true,
   hideChat: false,
   hideChatFullScreen: false,
   hideCollaborations: true,
@@ -168,6 +169,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+kyke$',
     MINIPLAYER: 'Minispeler',
     ORIGINAL: 'oorspronklike',
+    SEARCH: 'Soek',
     SHARE: 'Deel',
     SHORTS: "Kortvideo's",
   },
@@ -177,6 +179,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+ዕይታዎች$',
     MINIPLAYER: 'ትንሽ አጫዋች',
     ORIGINAL: 'የመጀመሪያ',
+    SEARCH: 'ፍለጋ',
     SHARE: 'አጋራ',
     SHORTS: 'ቁምጣ',
   },
@@ -186,6 +189,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+مشاهدات$',
     MINIPLAYER: 'المشغّل المصغّر',
     ORIGINAL: 'أصلي',
+    SEARCH: 'بحث',
     SHARE: 'مشاركة',
     SHORTS: 'Shorts',
   },
@@ -195,6 +199,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})টা\\s+ভিউ$',
     MINIPLAYER: 'মিনিপ্লে’য়াৰ',
     ORIGINAL: 'মূল',
+    SEARCH: 'সন্ধান কৰক',
     SHARE: 'শ্বেয়াৰ কৰক',
     SHORTS: 'Shorts',
   },
@@ -204,6 +209,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+baxış$',
     MINIPLAYER: 'Minipleyer',
     ORIGINAL: 'orijinal',
+    SEARCH: 'Axtar',
     SHARE: 'Paylaşın',
     SHORTS: 'Shorts',
   },
@@ -213,6 +219,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+праглядаў$',
     MINIPLAYER: 'Міні-прайгравальнік',
     ORIGINAL: 'арыгінальны',
+    SEARCH: 'Пошук',
     SHARE: 'Абагуліць',
     SHORTS: 'Кароткія відэа',
   },
@@ -222,6 +229,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+показвания$',
     MINIPLAYER: 'Миниплейър',
     ORIGINAL: 'оригинален',
+    SEARCH: 'Търсене',
     SHARE: 'Споделяне',
     SHORTS: 'Кратки видеоклипове',
   },
@@ -231,6 +239,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})টি\\s+ভিউ$',
     MINIPLAYER: 'মিনিপ্লেয়ার',
     ORIGINAL: 'মূল',
+    SEARCH: 'সার্চ করুন',
     SHARE: 'শেয়ার করুন',
     SHORTS: 'Shorts',
   },
@@ -240,6 +249,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+pregleda$',
     MINIPLAYER: 'Miniplejer',
     ORIGINAL: 'original',
+    SEARCH: 'Pretražite',
     SHARE: 'Dijeli',
     SHORTS: 'Shorts',
   },
@@ -249,6 +259,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+visualitzacions$',
     MINIPLAYER: 'Minireproductor',
     ORIGINAL: 'original',
+    SEARCH: 'Cerca',
     SHARE: 'Comparteix',
     SHORTS: 'Curts',
   },
@@ -258,6 +269,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+zhlédnutí$',
     MINIPLAYER: 'Minipřehrávač',
     ORIGINAL: 'původní',
+    SEARCH: 'Hledat',
     SHARE: 'Sdílet',
     SHORTS: 'Shorts',
   },
@@ -267,6 +279,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+visninger$',
     MINIPLAYER: 'Miniafspiller',
     ORIGINAL: 'originalt',
+    SEARCH: 'Søg',
     SHARE: 'Del',
     SHORTS: 'Shorts',
   },
@@ -279,6 +292,7 @@ const locales = {
     MINIPLAYER: 'Miniplayer',
     MIXES: 'Mixe',
     ORIGINAL: 'Original',
+    SEARCH: 'Suchen',
     SHARE: 'Teilen',
     SHORTS: 'Shorts',
     STREAMED_METADATA_INNERTEXT_RE: '\\bgestreamt$',
@@ -292,6 +306,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+προβολές$',
     MINIPLAYER: 'Ελαχιστοποιημένο player',
     ORIGINAL: 'πρωτότυπο',
+    SEARCH: 'Αναζήτηση',
     SHARE: 'Κοινοποίηση',
     SHORTS: 'Shorts',
   },
@@ -305,6 +320,7 @@ const locales = {
     MINIPLAYER: 'Miniplayer',
     MIXES: 'Mixes',
     ORIGINAL: 'original',
+    SEARCH: 'Search',
     SHARE: 'Share',
     SHORTS: 'Shorts',
     STREAMED_METADATA_INNERTEXT_RE: '(?:^|\\n)\\s*Streamed',
@@ -319,6 +335,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+vistas$',
     MINIPLAYER: 'Reproductor en miniatura',
     ORIGINAL: 'original',
+    SEARCH: 'Buscar',
     SHARE: 'Compartir',
     SHORTS: 'Shorts',
   },
@@ -328,6 +345,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+visualizaciones$',
     MINIPLAYER: 'Minirreproductor',
     ORIGINAL: 'original',
+    SEARCH: 'Búsqueda',
     SHARE: 'Compartir',
     SHORTS: 'Shorts',
   },
@@ -337,6 +355,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+vistas$',
     MINIPLAYER: 'Reproductor en miniatura',
     ORIGINAL: 'original',
+    SEARCH: 'Buscar',
     SHARE: 'Compartir',
     SHORTS: 'Shorts',
   },
@@ -346,6 +365,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+vaatamist$',
     MINIPLAYER: 'Minipleier',
     ORIGINAL: 'algne',
+    SEARCH: 'Otsing',
     SHARE: 'Jagamine',
     SHORTS: 'Lühivideod',
   },
@@ -355,6 +375,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+ikustaldi$',
     MINIPLAYER: 'Erreproduzigailu txikia',
     ORIGINAL: 'jatorrizkoa',
+    SEARCH: 'Bilatu',
     SHARE: 'Partekatu',
     SHORTS: 'Film laburrak',
   },
@@ -364,6 +385,7 @@ const locales = {
     LOW_VIEWS_RE: '^\\u200f(\\d{1,3})\\s+بازدید$',
     MINIPLAYER: 'پخش‌کننده کوچک',
     ORIGINAL: 'اصلی',
+    SEARCH: 'جستجو',
     SHARE: 'هم‌رسانی',
     SHORTS: 'کوته‌ویدیوهای YouTube',
   },
@@ -373,6 +395,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+panonood$',
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'orihinal',
+    SEARCH: 'Maghanap',
     SHARE: 'Ibahagi',
     SHORTS: 'Shorts',
   },
@@ -382,6 +405,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+visionnements$',
     MINIPLAYER: 'Minilecteur',
     ORIGINAL: 'originale',
+    SEARCH: 'Rechercher',
     SHARE: 'Partager',
     SHORTS: 'Shorts',
   },
@@ -394,6 +418,7 @@ const locales = {
     MINIPLAYER: 'Lecteur réduit',
     MIXES: 'Mix',
     ORIGINAL: 'original',
+    SEARCH: 'Rechercher',
     SHARE: 'Partager',
     SHORTS: 'Shorts',
     STREAMED_METADATA_INNERTEXT_RE: '(?:^|\\n)\\s*Diffusé',
@@ -408,6 +433,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+reproducións$',
     MINIPLAYER: 'Reprodutor minimizado',
     ORIGINAL: 'orixinal',
+    SEARCH: 'Buscar',
     SHARE: 'Compartir',
     SHORTS: 'Curtas',
   },
@@ -417,6 +443,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+જોવાયાની\\s+સંખ્યા$',
     MINIPLAYER: 'મીનીપ્લેયર',
     ORIGINAL: 'ઑરિજિનલ',
+    SEARCH: 'શોધો',
     SHARE: 'શેર કરો',
     SHORTS: 'Shorts',
   },
@@ -426,6 +453,7 @@ const locales = {
     LOW_VIEWS_RE: '^\\u202b(\\d{1,3})\\u202c\\s+צפיות$',
     MINIPLAYER: 'מיני-נגן',
     ORIGINAL: 'מקור',
+    SEARCH: 'חיפוש',
     SHARE: 'שיתוף',
     SHORTS: 'סרטוני Shorts',
   },
@@ -435,6 +463,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+व्यू$',
     MINIPLAYER: 'मिनी प्लेयर',
     ORIGINAL: 'मूल',
+    SEARCH: 'खोजें',
     SHARE: 'शेयर करें',
     SHORTS: 'Shorts',
   },
@@ -444,6 +473,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+pregleda$',
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'izvorno',
+    SEARCH: 'Pretraživanje',
     SHARE: 'Podijelite',
     SHORTS: 'Shorts',
   },
@@ -453,6 +483,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+megtekintés$',
     MINIPLAYER: 'Minilejátszó',
     ORIGINAL: 'eredeti',
+    SEARCH: 'Keresés',
     SHARE: 'Megosztás',
     SHORTS: 'Rövid videók',
   },
@@ -462,6 +493,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+դիտում$',
     MINIPLAYER: 'Մինի նվագարկիչ',
     ORIGINAL: 'բնօրինակ',
+    SEARCH: 'Որոնել',
     SHARE: 'Կիսվել',
     SHORTS: 'Կարճ հոլովակներ',
   },
@@ -471,6 +503,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+x\\s+ditonton$',
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'asli',
+    SEARCH: 'Telusuri',
     SHARE: 'Bagikan',
     SHORTS: 'Shorts',
   },
@@ -480,6 +513,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+áhorf$',
     MINIPLAYER: 'Smáspilari',
     ORIGINAL: 'upprunalegt',
+    SEARCH: 'Leit',
     SHARE: 'Deila',
     SHORTS: 'Shorts',
   },
@@ -489,6 +523,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+visualizzazioni$',
     MINIPLAYER: 'Mini player',
     ORIGINAL: 'originale',
+    SEARCH: 'Cerca',
     SHARE: 'Condividi',
     SHORTS: 'Short',
   },
@@ -502,6 +537,7 @@ const locales = {
     MINIPLAYER: 'ミニプレーヤー',
     MIXES: 'ミックス',
     ORIGINAL: 'オリジナル',
+    SEARCH: '検索',
     SHARE: '共有',
     SHORTS: 'ショート',
     STREAMED_METADATA_INNERTEXT_RE: 'に配信済み\\s*$',
@@ -515,6 +551,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+ნახვა$',
     MINIPLAYER: 'მინიდამკვრელი',
     ORIGINAL: 'ორიგინალია',
+    SEARCH: 'ძიება',
     SHARE: 'გაზიარება',
     SHORTS: 'Shorts',
   },
@@ -524,6 +561,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+рет\\s+көрілді$',
     MINIPLAYER: 'Шағын ойнатқыш',
     ORIGINAL: 'түпнұсқа',
+    SEARCH: 'Іздеу',
     SHARE: 'Бөлісу',
     SHORTS: 'Shorts',
   },
@@ -533,6 +571,7 @@ const locales = {
     LOW_VIEWS_RE: '^ចំនួនមើល\\s+(\\d{1,3})$',
     MINIPLAYER: 'កម្មវិធី​ចាក់ខ្នាត​តូច',
     ORIGINAL: 'ដើម',
+    SEARCH: 'ស្វែងរក',
     SHARE: 'ចែករំលែក',
     SHORTS: 'Shorts',
   },
@@ -542,6 +581,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+ವೀಕ್ಷಣೆಗಳು$',
     MINIPLAYER: 'ಮಿನಿಪ್ಲೇಯರ್',
     ORIGINAL: 'ಮೂಲ',
+    SEARCH: 'ಹುಡುಕಿ',
     SHARE: 'ಹಂಚಿಕೊಳ್ಳಿ',
     SHORTS: 'Shorts',
   },
@@ -551,6 +591,7 @@ const locales = {
     LOW_VIEWS_RE: '^조회수\\s+(\\d{1,3})회$',
     MINIPLAYER: '소형 플레이어',
     ORIGINAL: '원본',
+    SEARCH: '검색',
     SHARE: '공유',
     SHORTS: 'Shorts',
   },
@@ -560,6 +601,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+жолу\\s+көрүлдү$',
     MINIPLAYER: 'Мини ойноткуч',
     ORIGINAL: 'түпнуска',
+    SEARCH: 'Издөө',
     SHARE: 'Бөлүшүү',
     SHORTS: 'Кыска видеолор',
   },
@@ -569,6 +611,7 @@ const locales = {
     LOW_VIEWS_RE: '^ຍອດເບິ່ງ\\s+(\\d{1,3})\\s+ເທື່ອ$',
     MINIPLAYER: 'ຕົວຫຼິ້ນຂະໜາດນ້ອຍ',
     ORIGINAL: 'ຕົ້ນສະບັບ',
+    SEARCH: 'ຊອກຫາ',
     SHARE: 'ແບ່ງປັນ',
     SHORTS: 'Shorts',
   },
@@ -578,6 +621,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+views$',
     MINIPLAYER: 'Sumažinta leistuvė',
     ORIGINAL: 'pradinis',
+    SEARCH: 'Paieška',
     SHARE: 'Bendrinti',
     SHORTS: 'Klipukai',
   },
@@ -587,6 +631,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+skatījumi$',
     MINIPLAYER: 'Mini atskaņotājs',
     ORIGINAL: 'oriģināls',
+    SEARCH: 'Meklēt',
     SHARE: 'Kopīgot',
     SHORTS: 'Īsie videoklipi',
   },
@@ -596,6 +641,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+прегледи$',
     MINIPLAYER: 'Миниплеер',
     ORIGINAL: 'оригинален',
+    SEARCH: 'Пребарување',
     SHARE: 'Споделете',
     SHORTS: 'Shorts',
   },
@@ -605,6 +651,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+കാഴ്‌ച$',
     MINIPLAYER: 'മിനിപ്ലേയർ',
     ORIGINAL: 'ഒറിജിനൽ',
+    SEARCH: 'തിരയുക',
     SHARE: 'പങ്കിടുക',
     SHORTS: 'Shorts',
   },
@@ -614,6 +661,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+үзэлт$',
     MINIPLAYER: 'Мини тоглуулагч',
     ORIGINAL: 'эх хувь',
+    SEARCH: 'Хайх',
     SHARE: 'Хуваалцах',
     SHORTS: 'Shorts',
   },
@@ -624,6 +672,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+व्ह्यू$',
     MINIPLAYER: 'मिनीप्लेअर',
     ORIGINAL: 'मूळ',
+    SEARCH: 'शोधा',
     SHARE: 'शेअर करा',
     SHORTS: 'शॉर्ट',
   },
@@ -633,6 +682,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+tontonan$',
     MINIPLAYER: 'Pemain mini',
     ORIGINAL: 'asal',
+    SEARCH: 'Cari',
     SHARE: 'Kongsi',
     SHORTS: 'Shorts',
   },
@@ -642,6 +692,7 @@ const locales = {
     LOW_VIEWS_RE: '^ကြည့်ရှုမှု\\s+(\\d{1,3})$',
     MINIPLAYER: 'မီနီပလေယာ',
     ORIGINAL: 'မူရင်း',
+    SEARCH: 'ရှာရန်',
     SHARE: 'မျှဝေရန်',
     SHORTS: 'Shorts',
   },
@@ -651,6 +702,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+avspillinger$',
     MINIPLAYER: 'Minispiller',
     ORIGINAL: 'original',
+    SEARCH: 'Søk',
     SHARE: 'Del',
     SHORTS: 'Shorts',
   },
@@ -660,6 +712,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+भ्यु$',
     MINIPLAYER: 'मिनिप्लेयर',
     ORIGINAL: 'मूल',
+    SEARCH: 'खोज्नुहोस्',
     SHARE: 'सेयर गर्नुहोस्',
     SHORTS: 'Shorts',
   },
@@ -669,6 +722,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+weergaven$',
     MINIPLAYER: 'Minispeler',
     ORIGINAL: 'Originele',
+    SEARCH: 'Zoeken',
     SHARE: 'Delen',
     SHORTS: 'Shorts',
   },
@@ -678,6 +732,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})ଟି\\s+ଭ୍ୟୁ$',
     MINIPLAYER: 'ମିନି ପ୍ଲେୟାର',
     ORIGINAL: 'ମୂଳ',
+    SEARCH: 'ସର୍ଚ୍ଚ କରନ୍ତୁ',
     SHARE: 'ସେୟାର କରନ୍ତୁ',
     SHORTS: 'Shorts',
   },
@@ -687,6 +742,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+ਵਾਰ\\s+ਦੇਖਿਆ$',
     MINIPLAYER: 'ਮਿਨੀ ਪਲੇਅਰ',
     ORIGINAL: 'ਮੂਲ',
+    SEARCH: 'ਖੋਜੋ',
     SHARE: 'ਸਾਂਝਾ ਕਰੋ',
     SHORTS: 'Shorts',
   },
@@ -696,6 +752,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+wyświetleń$',
     MINIPLAYER: 'Miniodtwarzacz',
     ORIGINAL: 'oryginalny',
+    SEARCH: 'Szukaj',
     SHARE: 'Udostępnij',
     SHORTS: 'Shorts',
   },
@@ -705,6 +762,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+visualizações$',
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'original',
+    SEARCH: 'Pesquisa',
     SHARE: 'Compartilhar',
     SHORTS: 'Shorts',
   },
@@ -714,6 +772,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+visualizações$',
     MINIPLAYER: 'Minileitor',
     ORIGINAL: 'original',
+    SEARCH: 'Pesquisar',
     SHARE: 'Partilhar',
     SHORTS: 'Shorts',
   },
@@ -723,6 +782,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+vizionări$',
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'original',
+    SEARCH: 'Caută',
     SHARE: 'Trimite',
     SHORTS: 'Shorts',
   },
@@ -732,6 +792,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+просмотров$',
     MINIPLAYER: 'Мини-проигрыватель',
     ORIGINAL: 'оригинальная',
+    SEARCH: 'Поиск',
     SHARE: 'Поделиться',
     SHORTS: 'Shorts',
   },
@@ -741,6 +802,7 @@ const locales = {
     LOW_VIEWS_RE: '^බැලීම්\\s+(\\d{1,3})$',
     MINIPLAYER: 'කුඩා වාදකය',
     ORIGINAL: 'මුල්',
+    SEARCH: 'සෙවීම',
     SHARE: 'බෙදාගන්න',
     SHORTS: 'Shorts',
   },
@@ -750,6 +812,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+zhliadnutí$',
     MINIPLAYER: 'Miniprehrávač',
     ORIGINAL: 'pôvodná',
+    SEARCH: 'Hľadať',
     SHARE: 'Zdieľať',
     SHORTS: 'Shorts',
   },
@@ -759,6 +822,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+ogledov$',
     MINIPLAYER: 'Minipredvajalnik',
     ORIGINAL: 'Izvirnik',
+    SEARCH: 'Iskanje',
     SHARE: 'Deli',
     SHORTS: 'Kratki videoposnetki',
   },
@@ -768,6 +832,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+shikime$',
     MINIPLAYER: 'Miniluajtësi',
     ORIGINAL: 'origjinale',
+    SEARCH: 'Kërko',
     SHARE: 'Ndaj',
     SHORTS: 'Shorts',
   },
@@ -777,6 +842,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+прегледа$',
     MINIPLAYER: 'Мини-плејер',
     ORIGINAL: 'оригинална',
+    SEARCH: 'Претражи',
     SHARE: 'Дели',
     SHORTS: 'Шортси',
   },
@@ -786,6 +852,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+pregleda$',
     MINIPLAYER: 'Mini-plejer',
     ORIGINAL: 'originalna',
+    SEARCH: 'Pretraži',
     SHARE: 'Deli',
     SHORTS: 'Šortsi',
   },
@@ -795,6 +862,7 @@ const locales = {
     LOW_VIEWS_RE: '^Kutazamwa:\\s+(\\d{1,3})$',
     MINIPLAYER: 'Kichezaji kidogo',
     ORIGINAL: 'halisi',
+    SEARCH: 'Tafuta',
     SHARE: 'Tuma',
     SHORTS: 'Video Fupi',
   },
@@ -804,6 +872,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+பார்வைகள்$',
     MINIPLAYER: 'மினிபிளேயர்',
     ORIGINAL: 'அசல்',
+    SEARCH: 'தேடுக',
     SHARE: 'பகிர்',
     SHORTS: 'Shorts வீடியோக்கள்',
   },
@@ -813,6 +882,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+వీక్షణలు$',
     MINIPLAYER: 'మినీ ప్లేయర్',
     ORIGINAL: 'అసలైనది',
+    SEARCH: 'సెర్చ్',
     SHARE: 'షేర్ చేయండి',
     SHORTS: 'షార్ట్‌లు',
   },
@@ -822,6 +892,7 @@ const locales = {
     LOW_VIEWS_RE: '^การดู\\s+(\\d{1,3})\\s+ครั้ง$',
     MINIPLAYER: 'มินิเพลเยอร์',
     ORIGINAL: 'เสียงต้นฉบับ',
+    SEARCH: 'ค้นหา',
     SHARE: 'แชร์',
     SHORTS: 'วิดีโอสั้น',
   },
@@ -831,6 +902,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+görüntüleme$',
     MINIPLAYER: 'Mini oynatıcı',
     ORIGINAL: 'orijinal',
+    SEARCH: 'Ara',
     SHARE: 'Paylaş',
     SHORTS: 'Shorts',
   },
@@ -840,6 +912,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+переглядів$',
     MINIPLAYER: 'Мініпрогравач',
     ORIGINAL: 'оригінал',
+    SEARCH: 'Пошук',
     SHARE: 'Поділитися',
     SHORTS: 'Відео Shorts',
   },
@@ -849,6 +922,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+ملاحظات$',
     MINIPLAYER: 'مِنی پلیئر',
     ORIGINAL: 'اصل',
+    SEARCH: 'تلاش کریں',
     SHARE: 'اشتراک کریں',
     SHORTS: 'Shorts',
   },
@@ -858,6 +932,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+marta$',
     MINIPLAYER: 'Miniplayer',
     ORIGINAL: 'original',
+    SEARCH: 'Qidiruv',
     SHARE: 'Ulashish',
     SHORTS: 'Shorts',
   },
@@ -867,6 +942,7 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+lượt\\s+xem$',
     MINIPLAYER: 'Trình phát thu nhỏ',
     ORIGINAL: 'gốc',
+    SEARCH: 'Tìm kiếm',
     SHARE: 'Chia sẻ',
     SHORTS: 'Shorts',
   },
@@ -880,6 +956,7 @@ const locales = {
     MINIPLAYER: '迷你播放器',
     MIXES: '合辑',
     ORIGINAL: '原始',
+    SEARCH: '搜索',
     SHARE: '分享',
     SHORTS: '短视频',
     STREAMED_METADATA_INNERTEXT_RE: '直播时间：',
@@ -894,6 +971,7 @@ const locales = {
     LOW_VIEWS_RE: '^收看次數：(\\d{1,3})\\s+次$',
     MINIPLAYER: '迷你播放器',
     ORIGINAL: '原聲',
+    SEARCH: '搜尋',
     SHARE: '分享',
     SHORTS: 'Shorts',
   },
@@ -903,6 +981,7 @@ const locales = {
     LOW_VIEWS_RE: '^觀看次數：(\\d{1,3})次$',
     MINIPLAYER: '迷你播放器',
     ORIGINAL: '原文',
+    SEARCH: '搜尋',
     SHARE: '分享',
     SHORTS: 'Shorts',
   },
@@ -912,10 +991,12 @@ const locales = {
     LOW_VIEWS_RE: '^(\\d{1,3})\\s+ukubukwa$',
     MINIPLAYER: 'Isidlali Esincane',
     ORIGINAL: 'yokuqala',
+    SEARCH: 'Sesha',
     SHARE: 'Yabelana',
     SHORTS: 'Okufushane',
   },
 }
+
 
 const langCodes = lang.split('-')
   .map((_, index, parts) => parts.slice(0, parts.length - index).join('-'))
@@ -1448,6 +1529,51 @@ const configureCss = (() => {
       if (mobile) {
         hideCssSelectors.push(`button-view-model:has(path[d="${Svgs.GEMINI_PATH_MOBILE}"])`)
       }
+    }
+
+    if (desktop && config.hideAskYouTubeSearch) {
+      cssRules.push(`
+        /* Hide Ask YouTube and its suggested prompts */
+        yt-searchbox [client-ve-type="307188"],
+        yt-searchbox .ytSearchboxComponentAiSuggestionsContainer {
+          display: none !important;
+        }
+        /* Move the search button up */
+        yt-searchbox.ytSearchboxComponentHostUnified:has([client-ve-type="307188"]) {
+          /* Keep the input, mic/clear buttons and Search on one row */
+          .ytSearchboxComponentInputContainerIsFocused.ytSearchboxComponentInputContainerUnified {
+            flex-direction: row;
+            padding-bottom: 0;
+          }
+          /* Remove space between input mic/clear buttons and Search */
+          .ytSearchboxComponentInputBoxVoiceSearchButtonFocused,
+          .ytSearchboxComponentClearButtonWrapper {
+            padding-right: 0 !important;
+          }
+          .ytSearchboxComponentActions {
+            /* Prevent search container expanding to take up space */
+            width: auto;
+            /* Allow Search to sit flush with the outer container */
+            margin-right: 0;
+            padding-right: 0;
+          }
+          /* Allow Search to sit flush with the outer container */
+          button-view-model.ytSearchboxComponentActionsButton {
+            padding-right: 0;
+          }
+          /* Round the bottom of the container when there are no suggestions below it */
+          &:has(input[name="search_query"]:placeholder-shown) {
+            .ytSearchboxComponentInputWrapperIsFocused {
+              border-radius: 28px;
+            }
+          }
+        }
+
+        /* Hide search suggestions when the search input is empty */
+        yt-searchbox:has(input[name="search_query"]:placeholder-shown) .ytSearchboxComponentSuggestionsContainer {
+          display: none !important;
+        }
+      `)
     }
 
     if (config.hideAutoDubbed) {
@@ -2204,7 +2330,11 @@ const configureCss = (() => {
 
     if (config.hideVoiceSearch) {
       if (desktop) {
-        hideCssSelectors.push('#voice-search-button')
+        hideCssSelectors.push(
+          '#voice-search-button',
+          // Inside the search input with Ask YouTube
+          'yt-searchbox.ytSearchboxComponentHostUnified .ytSearchboxComponentInputBox > button-view-model',
+        )
       }
       if (mobile) {
         hideCssSelectors.push(
@@ -3717,6 +3847,35 @@ function animateHidingHiddenItems(itemsToHide) {
   }
 }
 
+async function configureSearchPlaceholder() {
+  let $input = /** @type {HTMLInputElement} */ (await getElement('ytd-masthead yt-searchbox input[name="search_query"]', {
+    name: 'hideAskYouTubeSearch: search placeholder',
+    stopIf: currentUrlChanges(),
+  }))
+  if (!$input || !config.enabled || !config.hideAskYouTubeSearch) return
+
+  let original = $input.placeholder
+  let replacement = getString('SEARCH')
+  if (original == replacement) return
+
+  // YouTube can reapply the AI placeholder without navigating
+  observeElement($input, () => {
+    if (!$input.placeholder || $input.placeholder == replacement) return
+    original = $input.placeholder
+    $input.placeholder = replacement
+  }, {
+    leading: true,
+    name: 'hideAskYouTubeSearch: search placeholder',
+    observers: pageObservers,
+    onDisconnect() {
+      if ($input.placeholder == replacement) $input.placeholder = original
+    },
+  }, {
+    attributes: true,
+    attributeFilter: ['placeholder'],
+  })
+}
+
 async function disableAutoplay() {
   if (desktop) {
     let $autoplayButton = await getElement('button[data-tooltip-target-id="ytp-autonav-toggle-button"]', {
@@ -3887,6 +4046,10 @@ async function enforceTheme() {
 function handleCurrentUrl() {
   log('handling', getCurrentUrl())
   disconnectObservers(pageObservers, 'page')
+
+  if (desktop && config.enabled && config.hideAskYouTubeSearch) {
+    configureSearchPlaceholder()
+  }
 
   let page = ''
   let channelTab = ''

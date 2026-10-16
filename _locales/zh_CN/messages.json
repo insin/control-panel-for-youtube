@@ -183,6 +183,9 @@
   "hideAskButton": {
     "message": "隐藏“提问”按钮"
   },
+  "hideAskYouTubeSearch": {
+    "message": "隐藏搜索中的“向 YouTube 提问”"
+  },
   "hideAutoDubbed": {
     "message": "隐藏自动配音视频"
   },

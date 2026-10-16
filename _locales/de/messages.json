@@ -183,6 +183,9 @@
   "hideAskButton": {
     "message": "\"Fragen\"-Schaltfläche ausblenden"
   },
+  "hideAskYouTubeSearch": {
+    "message": "„Frag YouTube“ in der Suche ausblenden"
+  },
   "hideAutoDubbed": {
     "message": "Automatisch synchronisierte Videos ausblenden"
   },

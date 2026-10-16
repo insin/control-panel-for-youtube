@@ -11,6 +11,7 @@ const desktopMessagesKeys = {
 }
 
 const mobileMessagesKeys = {
+  SEARCH: 'SEARCH',
   SHORTS: 'SHORTS_TAB_LABEL',
 }
 

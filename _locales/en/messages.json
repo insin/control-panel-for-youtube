@@ -183,6 +183,9 @@
   "hideAskButton": {
     "message": "Hide Ask button"
   },
+  "hideAskYouTubeSearch": {
+    "message": "Hide Ask YouTube in search"
+  },
   "hideAutoDubbed": {
     "message": "Hide Auto-dubbed videos"
   },

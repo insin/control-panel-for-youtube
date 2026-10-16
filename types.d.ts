@@ -45,6 +45,7 @@ export type LocaleKey =
   | 'MINIPLAYER'
   | 'MIXES'
   | 'ORIGINAL'
+  | 'SEARCH'
   | 'SHARE'
   | 'SHORTS'
   // This needs to match both innerText and textContent
@@ -131,6 +132,7 @@ export type SiteConfig = {
   fullSizeTheaterMode: boolean
   fullSizeTheaterModeHideHeader: boolean
   fullWidthChannelPage: boolean
+  hideAskYouTubeSearch: boolean
   hideChat: boolean
   hideChatFullScreen: boolean
   hideEndCards: boolean
