@@ -151,8 +151,10 @@ function warn(...args) {
 /** @type {import("./types").SiteConfigKey[]} */
 const cachedConfigKeys = [
   'blockAds',
+  'debug',
   'disableAIGeneratedChapters',
   'enabled',
+  'hideExperiencingInterruptions',
   'playerRemoveDelhiExperimentFlags',
   'revertWatchLayout',
 ]
@@ -6617,6 +6619,60 @@ function removeShortsAds(data, source) {
 //#endregion
 
 //#region Global patching
+function suppressPlaybackInterruptions() {
+  const name = 'playback interruptions'
+  if (!config.enabled || !config.hideExperiencingInterruptions) {
+    globalObservers.get(name)?.disconnect()
+    return
+  }
+  if (globalObservers.has(name)) return
+
+  let active = true
+  const originalThen = Promise.prototype.then
+  const originalSetTimeout = window.setTimeout
+  const functionToString = Function.prototype.toString
+  const suppressionMessage = 'hideExperiencingInterruptions: suppressed onAbnormalityDetected callback'
+
+  // uBlock's YouTube quick fixes prevent the callback which sets up
+  // onAbnormalityDetected and shorten a matching 17-second timeout.
+  // https://github.com/uBlockOrigin/uAssets/blob/master/filters/quick-fixes.txt
+  const then = new Proxy(originalThen, {
+    apply(target, thisArg, args) {
+      const callback = args[0]
+      if (active && typeof callback == 'function' && functionToString.call(callback).includes('onAbnormalityDetected')) {
+        args[0] = function(...callbackArgs) {
+          // A callback queued before the option was disabled should still run.
+          if (!active) return Reflect.apply(callback, this, callbackArgs)
+          log(suppressionMessage)
+        }
+      }
+      return Reflect.apply(target, thisArg, args)
+    },
+  })
+  const setTimeout = new Proxy(originalSetTimeout, {
+    apply(target, thisArg, args) {
+      if (active && args[1] === 17000 && typeof args[0] == 'function' && functionToString.call(args[0]).includes('[native code]')) {
+        args[1] = 17
+        log('hideExperiencingInterruptions: shortened playback timeout from 17000ms to 17ms')
+      }
+      return Reflect.apply(target, thisArg, args)
+    },
+  })
+  Promise.prototype.then = then
+  window.setTimeout = setTimeout
+  globalObservers.set(name, {
+    disconnect() {
+      active = false
+      // Preserve any hooks installed by YouTube or other extensions after ours.
+      if (Promise.prototype.then === then) Promise.prototype.then = originalThen
+      if (window.setTimeout === setTimeout) window.setTimeout = originalSetTimeout
+      globalObservers.delete(name)
+      log('hideExperiencingInterruptions: removed playback interruption hooks')
+    },
+  })
+  log('hideExperiencingInterruptions: installed playback interruption hooks')
+}
+
 /** @type {WeakMap<object, Map<string, import("./types").PropertyHook>>} */
 const hookedProperties = new WeakMap()
 
@@ -6883,6 +6939,7 @@ let channel
 function main() {
   let cachedConfig = getCachedConfig()
   config = {...defaultConfig, ...cachedConfig}
+  debug = config.debug
 
   patchRequests()
   // Avoid installing initial-response hooks the user may have disabled
@@ -6891,6 +6948,7 @@ function main() {
   }
   if (desktop) {
     // Run global patching early when cached config is present
+    suppressPlaybackInterruptions()
     removeDelhiExperimentFlags()
     revertWatchLayout()
   }
@@ -6906,6 +6964,7 @@ function main() {
 
 function configurePage() {
   if (desktop) {
+    suppressPlaybackInterruptions()
     disableVideoPreviews()
     removeDelhiExperimentFlags()
     revertWatchLayout()
@@ -6963,6 +7022,9 @@ function configurePage() {
 function configChanged(changes) {
   if (['enabled', 'blockAds', 'disableAIGeneratedChapters'].some(key => Object.hasOwn(changes, key))) {
     configureInitialResponses()
+  }
+  if (desktop && ['enabled', 'hideExperiencingInterruptions'].some(key => Object.hasOwn(changes, key))) {
+    suppressPlaybackInterruptions()
   }
   if (!Object.hasOwn(changes, 'enabled')) {
     log('config changed', changes)
@@ -7041,7 +7103,8 @@ function receiveConfigFromContentScript({data: {type, siteConfig}}) {
 
   if (Object.hasOwn(siteConfig, 'debug')) {
     log('disabling debug mode')
-    debug = siteConfig.debug
+    debug = config.debug = siteConfig.debug
+    storeCachedConfig()
     log('enabled debug mode')
     return
   }
