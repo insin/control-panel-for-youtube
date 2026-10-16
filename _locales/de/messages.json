@@ -213,6 +213,9 @@
   "hideCollaborations": {
     "message": "Kooperationen in Abonnements ausblenden"
   },
+  "hideCommentGifs": {
+    "message": "GIFs in Kommentaren ausblenden"
+  },
   "hideComments": {
     "message": "Kommentare ausblenden"
   },

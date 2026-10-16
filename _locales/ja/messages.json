@@ -212,6 +212,9 @@
   "hideCollaborations": {
     "message": "登録チャンネルのコラボレーションを非表示にする"
   },
+  "hideCommentGifs": {
+    "message": "コメントのGIFを非表示"
+  },
   "hideComments": {
     "message": "コメントを非表示"
   },

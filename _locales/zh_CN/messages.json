@@ -213,6 +213,9 @@
   "hideCollaborations": {
     "message": "隐藏订阅中的联合创作"
   },
+  "hideCommentGifs": {
+    "message": "隐藏评论中的GIF"
+  },
   "hideComments": {
     "message": "隐藏注释"
   },

@@ -22,6 +22,7 @@ let defaultConfig = {
   hideChannelBanner: false,
   hideChannelWatermark: true,
   hideChannels: true,
+  hideCommentGifs: true,
   hideComments: false,
   hideHiddenVideos: true,
   hideHomeCategories: false,
@@ -1732,6 +1733,15 @@ const configureCss = (() => {
     } else {
       // Hide menu item if config is changed after it's added
       hideCssSelectors.push('#cpfyt-hide-channel-menu-item')
+    }
+
+    if (config.hideCommentGifs) {
+      if (desktop) {
+        hideCssSelectors.push('ytd-comment-view-model ytw-comment-image-attachment-view-model')
+      }
+      if (mobile) {
+        hideCssSelectors.push('ytm-comment-renderer .YtmCommentRendererUnsupportedText')
+      }
     }
 
     if (config.hideComments) {

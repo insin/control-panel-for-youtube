@@ -80,6 +80,7 @@ export type SiteConfig = {
   hideChannelWatermark: boolean
   hideChannels: boolean
   hideCollaborations: boolean
+  hideCommentGifs: boolean
   hideComments: boolean
   hideHiddenVideos: boolean
   hideHomeCategories: boolean
