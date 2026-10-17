@@ -1486,6 +1486,7 @@ const configureCss = (() => {
       }
     `]
     let hideCssSelectors = []
+    let manualHideRules = []
 
     if (config.disableAmbientMode) {
       if (desktop) {
@@ -1645,12 +1646,10 @@ const configureCss = (() => {
         )
       }
       if (mobile) {
-        let selector = `html[cpfyt-page="subscriptions"] .${Classes.COLLABORATION}`
-        if (debugManualHiding) {
-          cssRules.push(`${selector} { outline: 2px solid aqua !important; }`)
-        } else {
-          hideCssSelectors.push(selector)
-        }
+        manualHideRules.push({
+          selector: `html[cpfyt-page="subscriptions"] .${Classes.COLLABORATION}`,
+          reason: 'collaboration',
+        })
       }
     }
 
@@ -1672,11 +1671,7 @@ const configureCss = (() => {
     // We only hide channels in Home, Search and Related videos
     if (config.hideChannels) {
       if (config.hiddenChannels.length > 0) {
-        if (debugManualHiding) {
-          cssRules.push(`.${Classes.HIDE_CHANNEL} { outline: 2px solid red !important; }`)
-        } else {
-          hideCssSelectors.push(`.${Classes.HIDE_CHANNEL}`)
-        }
+        manualHideRules.push({selector: `.${Classes.HIDE_CHANNEL}`, reason: 'blocked channel'})
       }
       if (desktop) {
         // Custom elements can't be cloned so we need to style our own menu items
@@ -1863,11 +1858,7 @@ const configureCss = (() => {
           }
         `)
       }
-      if (debugManualHiding) {
-        cssRules.push(`.${Classes.HIDE_HIDDEN} { outline: 2px solid magenta !important; }`)
-      } else {
-        hideCssSelectors.push(`.${Classes.HIDE_HIDDEN}`)
-      }
+      manualHideRules.push({selector: `.${Classes.HIDE_HIDDEN}`, reason: 'dismissed'})
     }
 
     if (config.hideInfoPanels) {
@@ -1921,11 +1912,7 @@ const configureCss = (() => {
     }
 
     if (config.hideLowViews) {
-      if (debugManualHiding) {
-        cssRules.push(`.${Classes.HIDE_LOW_VIEWS} { outline: 2px solid hotpink !important; }`)
-      } else {
-        hideCssSelectors.push(`.${Classes.HIDE_LOW_VIEWS}`)
-      }
+      manualHideRules.push({selector: `.${Classes.HIDE_LOW_VIEWS}`, reason: 'low views'})
     }
 
     if (config.hideMembersOnly) {
@@ -2278,11 +2265,7 @@ const configureCss = (() => {
     }
 
     if (config.hideStreamed) {
-      if (debugManualHiding) {
-        cssRules.push(`.${Classes.HIDE_STREAMED} { outline: 2px solid blue !important; }`)
-      } else {
-        hideCssSelectors.push(`.${Classes.HIDE_STREAMED}`)
-      }
+      manualHideRules.push({selector: `.${Classes.HIDE_STREAMED}`, reason: 'streamed'})
     }
 
     if (config.hideSuggestedSections) {
@@ -2387,11 +2370,7 @@ const configureCss = (() => {
     }
 
     if (config.hideWatched) {
-      if (debugManualHiding) {
-        cssRules.push(`.${Classes.HIDE_WATCHED} { outline: 2px solid green !important; }`)
-      } else {
-        hideCssSelectors.push(`.${Classes.HIDE_WATCHED}`)
-      }
+      manualHideRules.push({selector: `.${Classes.HIDE_WATCHED}`, reason: 'watched'})
     }
 
     if (config.playerHideFullScreenMoreActions) {
@@ -3436,6 +3415,63 @@ const configureCss = (() => {
       }
     }
     //#endregion
+
+    if (debugManualHiding && manualHideRules.length > 0) {
+      let selector = `:where(${manualHideRules.map(rule => rule.selector).join(', ')})`
+      cssRules.push(`
+        ${selector} {
+          /* Reset inherited reasons when tagged containers are nested */
+          ${manualHideRules.map((_, i) => `--cpfyt-debug-hide-${i}: "";`).join('\n')}
+          /* Keep overlays below the sticky player and other page UI */
+          isolation: isolate;
+        }
+        /* Endscreen tiles are already absolutely positioned */
+        ${selector}:not(.ytp-videowall-still) {
+          position: relative !important;
+        }
+        ${selector}::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          /* Desktop Search channel names use z-index: 300 */
+          z-index: 301;
+          pointer-events: none;
+          background: rgba(255, 0, 51, .16);
+          border: 2px solid #f03;
+          border-radius: 12px;
+          box-sizing: border-box;
+        }
+        ${selector}::after {
+          content: ${manualHideRules.map((_, i) => `var(--cpfyt-debug-hide-${i})`).join(' ')};
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: max-content;
+          max-width: calc(100% - 16px);
+          box-sizing: border-box;
+          z-index: 302;
+          pointer-events: none;
+          padding: 6px 10px;
+          border: 1px solid rgba(255, 255, 255, .2);
+          border-radius: 8px;
+          background: #e1002d;
+          color: #fff;
+          font: 600 14px/1.4 Roboto, Arial, sans-serif;
+          text-align: center;
+          white-space: normal;
+        }
+      `)
+      for (let [i, rule] of manualHideRules.entries()) {
+        cssRules.push(`${rule.selector} { --cpfyt-debug-hide-${i}: "${rule.reason}"; }`)
+        if (i > 0) {
+          let previousSelectors = manualHideRules.slice(0, i).map(rule => rule.selector).join(', ')
+          cssRules.push(`${rule.selector}:is(${previousSelectors}) { --cpfyt-debug-hide-${i}: " · ${rule.reason}"; }`)
+        }
+      }
+    } else {
+      hideCssSelectors.push(...manualHideRules.map(rule => rule.selector))
+    }
 
     if (hideCssSelectors.length > 0) {
       let hideCssRule = `${hideCssSelectors.join(',\n')} { display: none !important; }`
