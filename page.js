@@ -5762,7 +5762,10 @@ function manuallyTagVideo($video, {hideDismissed = false} = {}) {
       }
     }
     if (mobile) {
-      let $videoTitleWithLabel = $video.querySelector('.media-item-headline [aria-label]')
+      let $videoTitleWithLabel = $video.querySelector(`
+        .media-item-headline [aria-label],
+        .ytLockupMetadataViewModelTitle[aria-label]
+      `)
       if ($videoTitleWithLabel) {
         hide = Boolean($videoTitleWithLabel.getAttribute('aria-label').match(getString('STREAMED_TITLE_ARIA_LABEL_RE')))
       }
