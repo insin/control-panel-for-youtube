@@ -113,10 +113,6 @@ input[type=checkbox] {
   flex-shrink: 0;
 }
 
-details {
-  margin-left: 12px;
-}
-
 summary {
   padding-top: 4px;
   padding-bottom: 4px;

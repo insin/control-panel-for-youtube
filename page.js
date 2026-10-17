@@ -1288,11 +1288,28 @@ function html(strings, ...values) {
   return /** @type {string} */ (policy.createHTML(strings.reduce((acc, str, i) => acc + str + (values[i] || ''), '')))
 }
 
+/**
+ * @param {import("./types").Channel} channel
+ * @param {import("./types").Channel} other
+ */
+function channelsMatch(channel, other) {
+  return channel.url && other.url ? channel.url == other.url : channel.name == other.name
+}
+
 /** @param {import("./types").Channel} channel */
 function isChannelHidden(channel) {
-  return config.hiddenChannels.some((hiddenChannel) =>
-    channel.url && hiddenChannel.url ? channel.url == hiddenChannel.url : hiddenChannel.name == channel.name
-  )
+  return config.hiddenChannels.some(hiddenChannel => channelsMatch(channel, hiddenChannel))
+}
+
+/** @param {import("./types").Channel} channel */
+function toggleHiddenChannel(channel) {
+  if (isChannelHidden(channel)) {
+    log('unhiding channel', channel)
+    config.hiddenChannels = config.hiddenChannels.filter(hiddenChannel => !channelsMatch(channel, hiddenChannel))
+  } else {
+    log('hiding channel', channel)
+    config.hiddenChannels.unshift(channel)
+  }
 }
 
 let logObserverDisconnects = true
@@ -1729,6 +1746,15 @@ const configureCss = (() => {
             line-height: 2rem;
             margin-right: 24px;
             white-space: nowrap;
+          }
+        `)
+      }
+      if (mobile) {
+        cssRules.push(`
+          yt-list-view-model #cpfyt-hide-channel-menu-item:focus-within {
+            outline: 2px solid currentColor;
+            outline-offset: -2px;
+            border-radius: 8px;
           }
         `)
       }
@@ -4180,16 +4206,7 @@ function handleDesktopWatchChannelMenu($menu) {
     let hidden = isChannelHidden(channel)
 
     function toggleHideChannel() {
-      let hidden = isChannelHidden(lastClickedChannel)
-      if (hidden) {
-        log('unhiding channel', lastClickedChannel)
-        config.hiddenChannels = config.hiddenChannels.filter((hiddenChannel) =>
-          hiddenChannel.url ? lastClickedChannel.url != hiddenChannel.url : hiddenChannel.name != lastClickedChannel.name
-        )
-      } else {
-        log('hiding channel', lastClickedChannel)
-        config.hiddenChannels.unshift(lastClickedChannel)
-      }
+      toggleHiddenChannel(lastClickedChannel)
       configureMenuItem(lastClickedChannel)
       storeConfigChanges({hiddenChannels: config.hiddenChannels})
       configureCss()
@@ -4274,9 +4291,8 @@ function addHideChannelToDesktopVideoMenu($menu) {
 </div>
   `)
   let $item = $menuItems.querySelector('#cpfyt-hide-channel-menu-item')
-  function hideChannel() {
-    log('hiding channel', lastClickedChannel)
-    config.hiddenChannels.unshift(lastClickedChannel)
+  function toggleHideChannel() {
+    toggleHiddenChannel(lastClickedChannel)
     storeConfigChanges({hiddenChannels: config.hiddenChannels})
     configureCss()
     handleCurrentUrl()
@@ -4289,11 +4305,11 @@ function addHideChannelToDesktopVideoMenu($menu) {
       $menu.setAttribute('aria-hidden', 'true')
     }
   }
-  $item.addEventListener('click', hideChannel)
+  $item.addEventListener('click', toggleHideChannel)
   $item.addEventListener('keydown', /** @param {KeyboardEvent} e */ (e) => {
     if (e.key == ' ' || e.key == 'Enter') {
       e.preventDefault()
-      hideChannel()
+      toggleHideChannel()
     }
   })
 }
@@ -4303,7 +4319,7 @@ async function addHideChannelToMobileVideoMenu($menu) {
   if (!(isHomePage() || isSearchPage() || isVideoPage())) return
 
   /** @type {HTMLElement} */
-  let $video = $lastClickedElement?.closest('ytm-video-with-context-renderer')
+  let $video = $lastClickedElement?.closest('ytm-video-with-context-renderer, yt-lockup-view-model')
   if (!$video) return
 
   log('found clicked video')
@@ -4311,14 +4327,40 @@ async function addHideChannelToMobileVideoMenu($menu) {
   if (!channel) return
   lastClickedChannel = channel
 
-  let $menuItems = $menu.querySelector($menu.id == 'menu' ? '.menu-content' : '.bottom-sheet-media-menu-item')
+  if ($menu.querySelector('#cpfyt-hide-channel-menu-item')) return
+
+  // Old menus: <ytm-menu-item> in a centred menu (.menu-content) or bottom sheet
+  // New menus: <yt-list-view-model> with <yt-list-item-view-model>
+  let $menuItems = $menu.querySelector('.menu-content, .bottom-sheet-media-menu-item, yt-list-view-model')
   if (!$menuItems) return
 
+  // Old centred menus don't show icons but can have them in the DOM
   let hasIcon = Boolean($menuItems.querySelector('c3-icon'))
-  let hideChannelMenuItemHTML = html`
+  let hideChannelMenuItemHTML = $menuItems.tagName == 'YT-LIST-VIEW-MODEL' ? html`
+    <yt-list-item-view-model id="cpfyt-hide-channel-menu-item" class="ytListItemViewModelHost" role="presentation">
+      <div class="ytListItemViewModelLayoutWrapper ytListItemViewModelContainer ytListItemViewModelTappable ytListItemViewModelInPopup ytListItemViewModelNoTrailingText">
+        <div class="ytListItemViewModelMainContainer">
+          ${hasIcon ? `<div class="ytListItemViewModelImageContainer ytListItemViewModelLeading" aria-hidden="true">
+            <c3-icon class="ytListItemViewModelAccessory ytListItemViewModelImage" fill-icon="false">
+              <div style="width: 100%; height: 100%; fill: currentcolor;">
+                ${Svgs.DELETE}
+              </div>
+            </c3-icon>
+          </div>` : ''}
+          <button type="button" class="ytButtonOrAnchorHost ytButtonOrAnchorButton ytListItemViewModelButtonOrAnchor ytListItemViewModelTextWrapper" role="menuitem">
+            <div>
+              <div class="ytListItemViewModelTitleWrapper">
+                <span class="ytAttributedStringHost ytListItemViewModelTitle ytAttributedStringWhiteSpacePreWrap" role="text">${getString('HIDE_CHANNEL')}</span>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </yt-list-item-view-model>
+  ` : html`
     <ytm-menu-item id="cpfyt-hide-channel-menu-item">
-      <button class="menu-item-button">
-        ${hasIcon ? `<c3-icon>
+      <button type="button" class="menu-item-button">
+        ${hasIcon ? `<c3-icon aria-hidden="true">
           <div style="width: 100%; height: 100%; fill: currentcolor;">
             ${Svgs.DELETE}
           </div>
@@ -4329,16 +4371,18 @@ async function addHideChannelToMobileVideoMenu($menu) {
       </button>
     </ytm-menu-item>
   `
-  let $cancelMenuItem = $menu.querySelector('ytm-menu-item:has(.menu-cancel-button')
+
+  // Old centred menus end with a Cancel item our item should display before
+  let $cancelMenuItem = $menu.querySelector('ytm-menu-item:has(.menu-cancel-button)')
   if ($cancelMenuItem) {
     $cancelMenuItem.insertAdjacentHTML('beforebegin', hideChannelMenuItemHTML)
   } else {
     $menuItems.insertAdjacentHTML('beforeend', hideChannelMenuItemHTML)
   }
-  let $button = $menuItems.querySelector('#cpfyt-hide-channel-menu-item button')
-  $button.addEventListener('click', () => {
-    log('hiding channel', lastClickedChannel)
-    config.hiddenChannels.unshift(lastClickedChannel)
+
+  let $item = $menuItems.querySelector('#cpfyt-hide-channel-menu-item')
+  $item.addEventListener('click', () => {
+    toggleHiddenChannel(lastClickedChannel)
     storeConfigChanges({hiddenChannels: config.hiddenChannels})
     configureCss()
     handleCurrentUrl()
@@ -4351,7 +4395,7 @@ async function addHideChannelToMobileVideoMenu($menu) {
  */
 function getChannelDetailsFromVideo($video) {
   if (desktop) {
-    if ($video.tagName == 'YTD-RICH-ITEM-RENDERER') {
+    if ($video.tagName == 'YTD-RICH-ITEM-RENDERER' || $video.tagName == 'YTD-VIDEO-RENDERER') {
       let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('#text.ytd-channel-name a'))
       if ($link) {
         return {
@@ -4359,35 +4403,10 @@ function getChannelDetailsFromVideo($video) {
           url: $link.pathname,
         }
       }
-      // Home nests a yt-lockup-view-model inside - fall back to checking it
-      $video = $video.querySelector('yt-lockup-view-model')
-      if (!$video) return
-    }
-
-    if ($video.tagName == 'YTD-VIDEO-RENDERER') {
-      let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('#text.ytd-channel-name a'))
-      if ($link) {
-        return {
-          name: $link.textContent,
-          url: $link.pathname,
-        }
-      }
-    }
-    else if ($video.tagName == 'YT-LOCKUP-VIEW-MODEL') {
-      // Home and Subscriptions videos have a channel link
-      let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('yt-content-metadata-view-model a'))
-      if ($link) {
-        return {
-          name: $link.textContent,
-          url: $link.pathname,
-        }
-      }
-      // Assumption: channel name is always the first text in this element
-      let $name = $video.querySelector('yt-content-metadata-view-model [role="text"]')
-      if ($name) {
-        return {
-          name: $name.textContent,
-        }
+      if ($video.tagName == 'YTD-RICH-ITEM-RENDERER') {
+        // Home nests a yt-lockup-view-model inside - fall back to checking it
+        $video = $video.querySelector('yt-lockup-view-model')
+        if (!$video) return
       }
     }
     // TODO Remove after confirming all Related videos have moved to yt-lockup-view-model
@@ -4400,8 +4419,33 @@ function getChannelDetailsFromVideo($video) {
       }
     }
   }
+
+  if (mobile && $video.tagName == 'YTM-RICH-ITEM-RENDERER') {
+    $video = $video.querySelector('yt-lockup-view-model') || $video
+  }
+
+  if ($video.tagName == 'YT-LOCKUP-VIEW-MODEL') {
+    let $link = /** @type {HTMLAnchorElement} */ ($video.querySelector('yt-content-metadata-view-model a'))
+    if ($link) {
+      return {
+        name: $link.textContent,
+        url: $link.pathname,
+      }
+    }
+    // Assumption: channel name is always the first text in this element
+    let $name = $video.querySelector('yt-content-metadata-view-model [role="text"]')
+    if ($name) {
+      return {
+        name: $name.textContent,
+      }
+    }
+  }
+
   if (mobile) {
-    let $thumbnailLink =/** @type {HTMLAnchorElement} */ ($video.querySelector('ytm-channel-thumbnail-with-link-renderer > a'))
+    let $thumbnailLink = /** @type {HTMLAnchorElement} */ ($video.querySelector(`:is(
+      ytm-channel-thumbnail-with-link-renderer,
+      ytw-channel-thumbnail-with-link-renderer
+    ) > a`))
     let $name = /** @type {HTMLElement} */ ($video.querySelector('ytm-badge-and-byline-renderer .ytAttributedStringHost'))
     if ($name) {
       return {
@@ -5065,8 +5109,8 @@ async function observePopups() {
   }
 
   if (mobile) {
-    // Depending on resolution, mobile menus appear in <bottom-sheet-container>
-    // (lower res) or as a #menu child of <body> (higher res).
+    // Old menus switch between <bottom-sheet-container> and body > #menu by resolution
+    // New menus always use use bottom sheets
     let $body = await getElement('body', {
       name: '<body>',
       context: document.documentElement,
