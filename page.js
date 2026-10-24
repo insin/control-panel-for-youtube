@@ -15,6 +15,7 @@ let defaultConfig = {
   disableAutoplay: true,
   disableHomeFeed: false,
   disableStableVolume: false,
+  disableVoiceBoost: false,
   hiddenChannels: [],
   hideAI: true,
   hideAskButton: false,
@@ -7047,6 +7048,20 @@ function main() {
   }, location.origin)
 }
 
+function updateLocalStorage(key, feature) {
+  let pref = JSON.parse(localStorage[key] || 'null')
+  if (pref?.data !== '0' || (pref?.expiration ?? 0) < Date.now()) {
+    log(`Disabling ${feature}`)
+    localStorage[key] = JSON.stringify({
+      data: '0',
+      creation: Date.now(),
+      expiration: Date.now() + 365 * 24 * 60 * 60 * 1000,
+    })
+  } else {
+    log(`${feature} already disabled`)
+  }
+}
+
 function configurePage() {
   if (desktop) {
     suppressPlaybackInterruptions()
@@ -7057,17 +7072,10 @@ function configurePage() {
 
   if (config.enabled) {
     if (config.disableStableVolume) {
-      let pref = JSON.parse(localStorage['yt-player-drc-pref'] || 'null')
-      if (pref?.data !== '0' || (pref?.expiration ?? 0) < Date.now()) {
-        log('Disabling Stable Volume')
-        localStorage['yt-player-drc-pref'] = JSON.stringify({
-          data: '0',
-          creation: Date.now(),
-          expiration: Date.now() + 365 * 24 * 60 * 60 * 1000,
-        })
-      } else {
-        log('Stable Volume already disabled')
-      }
+      updateLocalStorage('yt-player-drc-pref', 'Stable Volume')
+    }
+    if (config.disableVoiceBoost) {
+      updateLocalStorage('yt-player-voice-boost', 'Voice Boost')
     }
     if (desktop && config.enforceTheme != 'default') {
       enforceTheme()
