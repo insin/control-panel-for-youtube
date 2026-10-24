@@ -1,0 +1,471 @@
+{
+  "addTakeSnapshot": {
+    "message": "在影片選單新增「擷取畫面」"
+  },
+  "ads": {
+    "message": "廣告"
+  },
+  "allowBackgroundPlay": {
+    "message": "允許背景播放"
+  },
+  "alwaysShowShortsProgressBar": {
+    "message": "一律顯示進度列"
+  },
+  "alwaysUseOriginalAudio": {
+    "message": "一律使用原始音訊"
+  },
+  "alwaysUseTheaterMode": {
+    "message": "一律使用劇院模式"
+  },
+  "animateHiding": {
+    "message": "隱藏時顯示動畫"
+  },
+  "annoyances": {
+    "message": "惱人元素"
+  },
+  "anyPercent": {
+    "message": "任何 %"
+  },
+  "atLeastX": {
+    "message": "至少 $AMOUNT$",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "auto": {
+    "message": "自動"
+  },
+  "autoPlusX": {
+    "message": "自動 +$AMOUNT$",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
+  },
+  "blockAds": {
+    "message": "阻擋廣告"
+  },
+  "blockAdsNote": {
+    "message": "停用可避免與其他廣告封鎖擴充功能衝突"
+  },
+  "blur": {
+    "message": "模糊"
+  },
+  "dark": {
+    "message": "深色"
+  },
+  "debug": {
+    "message": "偵錯模式"
+  },
+  "debugLogGridObservers": {
+    "message": "記錄格狀版面觀察器"
+  },
+  "debugManualHiding": {
+    "message": "偵錯手動隱藏"
+  },
+  "debugManualHidingNote": {
+    "message": "改為醒目提示元素，而非隱藏"
+  },
+  "debugNote": {
+    "message": "啟用偵錯記錄"
+  },
+  "debugOptions": {
+    "message": "偵錯選項"
+  },
+  "default": {
+    "message": "預設"
+  },
+  "desktopOnly": {
+    "message": "僅限桌面"
+  },
+  "device": {
+    "message": "跟隨裝置主題"
+  },
+  "disableAmbientMode": {
+    "message": "停用環境光模式"
+  },
+  "disableAutoplay": {
+    "message": "停用自動播放"
+  },
+  "disableHomeFeed": {
+    "message": "關閉首頁動態"
+  },
+  "disableHomeFeedNote": {
+    "message": "僅在已登入時——重新導向至訂閱頁面"
+  },
+  "disableStableVolume": {
+    "message": "停用穩定音量"
+  },
+  "disableThemedHover": {
+    "message": "停用主題式懸浮效果"
+  },
+  "disableThemedHoverNote": {
+    "message": "適用於首頁與影片說明"
+  },
+  "disableVideoPreviews": {
+    "message": "停用影片預覽"
+  },
+  "displayHomeGridAsList": {
+    "message": "將首頁格狀改為清單顯示"
+  },
+  "displaySubscriptionsGridAsList": {
+    "message": "將訂閱頁格狀改為清單顯示"
+  },
+  "downloadTranscript": {
+    "message": "允許下載逐字稿"
+  },
+  "embeddedVideos": {
+    "message": "嵌入影片"
+  },
+  "enabled": {
+    "message": "啟用"
+  },
+  "enforceTheme": {
+    "message": "強制主題"
+  },
+  "experimentalFeatures": {
+    "message": "實驗性功能"
+  },
+  "extensionDescription": {
+    "message": "補上缺少的選項並改善介面，讓您更能掌控 YouTube",
+    "description": "<= 112 characters"
+  },
+  "extensionName": {
+    "message": "YouTube 控制台"
+  },
+  "extensionNameDisabled": {
+    "message": "YouTube 控制台（已停用）"
+  },
+  "features": {
+    "message": "功能"
+  },
+  "fixGhostCards": {
+    "message": "修正格狀載入占位符"
+  },
+  "fullSizeTheaterMode": {
+    "message": "全螢幕劇院模式"
+  },
+  "fullSizeTheaterModeHideHeader": {
+    "message": "隱藏頁首"
+  },
+  "gridItemsPerRow": {
+    "message": "每列格狀項目數"
+  },
+  "hiddenChannelsSummary": {
+    "message": "隱藏頻道 ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
+  },
+  "hideAI": {
+    "message": "隱藏 AI 摘要"
+  },
+  "hideAskButton": {
+    "message": "隱藏「發問」按鈕"
+  },
+  "hideAutoDubbed": {
+    "message": "隱藏自動配音影片"
+  },
+  "hideAutoDubbedNote": {
+    "message": "僅在有明確標示處"
+  },
+  "hideChannelBanner": {
+    "message": "隱藏頻道橫幅圖"
+  },
+  "hideChannelWatermark": {
+    "message": "隱藏頻道浮水印"
+  },
+  "hideChannels": {
+    "message": "隱藏頻道"
+  },
+  "hideChannelsNote": {
+    "message": "在影片選單中新增「隱藏頻道」"
+  },
+  "hideChat": {
+    "message": "隱藏聊天室"
+  },
+  "hideChatFullScreen": {
+    "message": "僅在全螢幕時"
+  },
+  "hideCollaborations": {
+    "message": "在訂閱頁隱藏聯合創作"
+  },
+  "hideComments": {
+    "message": "隱藏留言"
+  },
+  "hideEmbedPauseOverlay": {
+    "message": "隱藏暫停時覆蓋層"
+  },
+  "hideEmbedShareButton": {
+    "message": "隱藏分享按鈕"
+  },
+  "hideEndCards": {
+    "message": "隱藏結尾資訊卡"
+  },
+  "hideEndVideos": {
+    "message": "隱藏影片片尾畫面"
+  },
+  "hideExperiencingInterruptions": {
+    "message": "隱藏「觀看中斷？」彈出視窗"
+  },
+  "hideExploreButton": {
+    "message": "在首頁隱藏「探索」按鈕"
+  },
+  "hideHiddenVideos": {
+    "message": "隱藏已隱藏的影片"
+  },
+  "hideHiddenVideosNote": {
+    "message": "隱藏「復原」按鈕 5 秒後"
+  },
+  "hideHomeCategories": {
+    "message": "隱藏首頁分類"
+  },
+  "hideHomePosts": {
+    "message": "隱藏首頁貼文"
+  },
+  "hideInfoPanels": {
+    "message": "隱藏資訊面板"
+  },
+  "hideJumpAheadButton": {
+    "message": "隱藏 Premium「跳著看」按鈕"
+  },
+  "hideLive": {
+    "message": "隱藏直播"
+  },
+  "hideLowViews": {
+    "message": "在相關影片中隱藏低觀看次數影片"
+  },
+  "hideMembersOnly": {
+    "message": "隱藏僅限會員影片"
+  },
+  "hideMerchEtc": {
+    "message": "隱藏周邊商品、優惠等"
+  },
+  "hideMetadata": {
+    "message": "隱藏影片中繼資料"
+  },
+  "hideMixes": {
+    "message": "隱藏合輯／Mix"
+  },
+  "hideMoviesAndTV": {
+    "message": "隱藏電影與電視"
+  },
+  "hideNextButton": {
+    "message": "隱藏「下一部」按鈕"
+  },
+  "hideNextButtonNote": {
+    "message": "在非播放清單中觀看影片時"
+  },
+  "hideOpenApp": {
+    "message": "隱藏開啟應用程式連結"
+  },
+  "hidePlaylists": {
+    "message": "隱藏播放清單"
+  },
+  "hidePremiumUpsells": {
+    "message": "隱藏 Premium 升級宣傳"
+  },
+  "hideRelated": {
+    "message": "隱藏相關影片"
+  },
+  "hideRelatedBelow": {
+    "message": "僅在顯示於影片下方時"
+  },
+  "hideShareThanksClip": {
+    "message": "隱藏分享／感謝／剪輯等"
+  },
+  "hideShorts": {
+    "message": "隱藏 Shorts"
+  },
+  "hideShortsMetadataUntilHover": {
+    "message": "懸停前隱藏 Shorts 中繼資料"
+  },
+  "hideShortsMusicLink": {
+    "message": "隱藏音樂連結"
+  },
+  "hideShortsRelatedLink": {
+    "message": "隱藏同頻道相關 Short 連結"
+  },
+  "hideShortsRemixButton": {
+    "message": "隱藏 Remix 按鈕"
+  },
+  "hideShortsSuggestedActions": {
+    "message": "隱藏建議操作"
+  },
+  "hideSidebarSubscriptions": {
+    "message": "隱藏訂閱清單"
+  },
+  "hideSidebarWhenEmpty": {
+    "message": "側邊欄空白時隱藏"
+  },
+  "hideSponsored": {
+    "message": "隱藏贊助內容與宣傳影片"
+  },
+  "hideStreamed": {
+    "message": "隱藏串流影片"
+  },
+  "hideSubscriptionsChannelList": {
+    "message": "在訂閱頁隱藏頻道清單"
+  },
+  "hideSubscriptionsLatestBar": {
+    "message": "隱藏訂閱頁「最新上傳」列"
+  },
+  "hideSuggestedSections": {
+    "message": "隱藏建議區塊"
+  },
+  "hideUpcoming": {
+    "message": "隱藏即將播放"
+  },
+  "hideVoiceSearch": {
+    "message": "隱藏語音搜尋"
+  },
+  "hideWatched": {
+    "message": "隱藏已看過的影片"
+  },
+  "hideWatchedThreshold": {
+    "message": "觀看 %"
+  },
+  "inHomeAndSubscriptionsNote": {
+    "message": "於首頁與訂閱頁"
+  },
+  "large": {
+    "message": "大"
+  },
+  "light": {
+    "message": "淺色"
+  },
+  "medium": {
+    "message": "中"
+  },
+  "minimumShortsPerRow": {
+    "message": "每列最少 Shorts 數"
+  },
+  "mobileGridView": {
+    "message": "訂閱與搜尋使用格狀檢視（僅直向時）"
+  },
+  "mobileOnly": {
+    "message": "僅限行動裝置"
+  },
+  "newVideoPlayerUI": {
+    "message": "新影片播放器介面"
+  },
+  "pauseChannelTrailers": {
+    "message": "自動暫停頻道預告片"
+  },
+  "playerControlsBg": {
+    "message": "播放器控制列背景"
+  },
+  "playerFixFullScreenButton": {
+    "message": "還原角落點擊切換全螢幕"
+  },
+  "playerHideFullScreenControls": {
+    "message": "隱藏新版全螢幕控制列"
+  },
+  "playerHideFullScreenMoreVideos": {
+    "message": "全螢幕時隱藏「更多影片」"
+  },
+  "playerHideFullScreenTitle": {
+    "message": "隱藏全螢幕標題"
+  },
+  "playerHideFullScreenVoting": {
+    "message": "隱藏全螢幕讚／倒讚按鈕"
+  },
+  "playerRemoveDelhiExperimentFlags": {
+    "message": "停用新版進度列與控制項"
+  },
+  "playerRemoveDelhiExperimentFlagsNote": {
+    "message": "注意：YouTube 移除舊版播放器後可能失效"
+  },
+  "qualityFull": {
+    "message": "完整"
+  },
+  "qualityHigh": {
+    "message": "高"
+  },
+  "qualityLow": {
+    "message": "低"
+  },
+  "qualityMedium": {
+    "message": "中"
+  },
+  "recentChanges": {
+    "message": "YouTube 近期變更"
+  },
+  "redirectLogoToSubscriptions": {
+    "message": "YouTube 標誌連結至訂閱"
+  },
+  "redirectShorts": {
+    "message": "將 Shorts 重新導向一般播放器"
+  },
+  "removePink": {
+    "message": "從進度列移除粉紅漸層"
+  },
+  "requiresPageRefresh": {
+    "message": "需重新整理頁面才會套用"
+  },
+  "restoreMiniplayerButton": {
+    "message": "還原迷你播放器按鈕"
+  },
+  "restoreSidebarSubscriptionsLink": {
+    "message": "還原側邊欄訂閱連結"
+  },
+  "revertGiantRelated": {
+    "message": "還原相關影片側欄版面"
+  },
+  "revertSidebarOrder": {
+    "message": "還原側邊欄項目順序"
+  },
+  "searchThumbnailSize": {
+    "message": "搜尋結果縮圖大小"
+  },
+  "shorts": {
+    "message": "Shorts"
+  },
+  "showChannelHeadersInListView": {
+    "message": "清單檢視顯示頻道標題列"
+  },
+  "showFullVideoTitles": {
+    "message": "顯示完整影片標題"
+  },
+  "small": {
+    "message": "小"
+  },
+  "snapshotFormat": {
+    "message": "擷取畫面格式"
+  },
+  "snapshotQuality": {
+    "message": "畫質"
+  },
+  "stopShortsLooping": {
+    "message": "停止 Shorts 循環播放"
+  },
+  "tidyGuideSidebar": {
+    "message": "整理側邊欄訂閱清單"
+  },
+  "transparent": {
+    "message": "透明"
+  },
+  "uiTweaks": {
+    "message": "介面微調"
+  },
+  "useSquareCorners": {
+    "message": "縮圖與影片使用直角"
+  },
+  "videoLists": {
+    "message": "影片清單"
+  },
+  "videoPages": {
+    "message": "影片頁面"
+  },
+  "xsmall": {
+    "message": "極小"
+  }
+}
