@@ -1097,6 +1097,8 @@ let lastElementsPerRow
 let onDialogClosed
 /** @type {Map<string, import("./types").Disconnectable>} */
 let pageObservers = new Map()
+/** @type {ReturnType<typeof createPlaybackController> | null} */
+let playbackController = null
 /** @type {boolean} */
 let realDocumentHidden
 //#endregion
@@ -2946,7 +2948,10 @@ const configureCss = (() => {
         hideCssSelectors.push('.ExperiencingInterruptions')
       } else {
         // Hide "Find out why" link
-        hideCssSelectors.push('.ExperiencingInterruptions #action-button')
+        hideCssSelectors.push(
+          '.ExperiencingInterruptions #action-button',
+          '.ExperiencingInterruptions .snackbarViewModelButtonClassWrapper',
+        )
       }
       if (config.hideJumpAheadButton) {
         hideCssSelectors.push('#movie_player .ytp-timely-actions-content')
@@ -4122,6 +4127,7 @@ async function enforceTheme() {
 function handleCurrentUrl() {
   log('handling', getCurrentUrl())
   disconnectObservers(pageObservers, 'page')
+  configurePlaybackController()
 
   if (desktop && config.enabled && config.hideAskYouTubeSearch) {
     configureSearchPlaceholder()
@@ -5031,6 +5037,8 @@ function observeDesktopContextMenu($popupContainer) {
 
 async function observePopups() {
   if (desktop) {
+    observeSnackbars()
+
     /** @param {HTMLElement} $dialog */
     function observeDialog($dialog) {
       observeElement($dialog, () => {
@@ -5069,39 +5077,69 @@ async function observePopups() {
       })
     }
 
-    function observeNotificationRenderer($notificationRenderer) {
-      observeElement($notificationRenderer, (_, observer)  => {
-        let $toast = $notificationRenderer.querySelector('tp-yt-paper-toast')
-        if (!$toast) return
-        observer.disconnect()
-        observeElement($toast, () => {
-          if ($toast.getAttribute('aria-hidden') == 'true') return
-          let $text = $toast.querySelector('#text-container #text')
-          if (!(
+    function observeInterruptionMessages($container, {messageSelector, textSelector, name}) {
+      // Messages and their contents can be populated or replaced after opening
+      observeElement($container, () => {
+        for (let $toast of $container.querySelectorAll(messageSelector)) {
+          if ($toast.getAttribute('aria-hidden') == 'true') continue
+          let $text = $toast.querySelector(textSelector)
+          let text = $text?.textContent.trim()
+          let wasInterruption = $toast.classList.contains('ExperiencingInterruptions')
+          let isInterruption = !!(
             $toast.querySelector('a[href^="https://support.google.com/youtube/answer/3037019"]') ||
-            $text?.textContent == getString('EXPERIENCING_INTERRUPTIONS')
-          )) return
-          $toast.classList.add('ExperiencingInterruptions')
+            text == getString('EXPERIENCING_INTERRUPTIONS') ||
+            wasInterruption && text == getString('ADS_BLOCKED')
+          )
+          // YouTube reuses the same elements for unrelated notifications
+          $toast.classList.toggle('ExperiencingInterruptions', isInterruption)
+          if (!isInterruption) continue
           if (config.hideExperiencingInterruptions) {
-            log('hideExperiencingInterruptions: hiding toast')
+            if (!wasInterruption) {
+              log('hideExperiencingInterruptions: hiding toast')
+              playbackController?.interruption(messageSelector)
+            }
           } else {
-            if ($text) {
+            if ($text && text != getString('ADS_BLOCKED')) {
               log('hideExperiencingInterruptions: making message more accurate')
               $text.textContent = getString('ADS_BLOCKED')
             }
           }
-        }, {
-          name: '<tp-yt-paper-toast> (for "Experiencing interruptions?" message)',
-          observers: globalObservers,
-        },{
-          attributes: true,
-          attributeFilter: ['aria-hidden'] ,
-          childList: true,
-        })
+        }
       }, {
         leading: true,
-        name: '<yt-notification-action-renderer> (for <tp-yt-paper-toast> being added)',
+        name,
         observers: globalObservers,
+      }, {
+        attributes: true,
+        attributeFilter: ['aria-hidden', 'href'],
+        childList: true,
+        characterData: true,
+        subtree: true,
+      })
+    }
+
+    let notificationCount = 1
+    function observeNotificationRenderer($notificationRenderer) {
+      observeInterruptionMessages($notificationRenderer, {
+        messageSelector: 'tp-yt-paper-toast',
+        textSelector: '#text-container #text',
+        name: `<yt-notification-action-renderer> ${notificationCount++} (for "Experiencing interruptions?" message)`,
+      })
+    }
+
+    async function observeSnackbars() {
+      // New toasts render snackbars directly under ytd-app
+      let $container = await getElement('ytd-app > snackbar-container', {
+        name: 'snackbar container',
+        observers: globalObservers,
+      })
+      if (!$container || !config.enabled) return
+      observeInterruptionMessages($container, {
+        // Keep the outer container's enter/exit animations running: YouTube
+        // relies on animationend to remove the message and advance its queue.
+        messageSelector: 'snackbar-view-model',
+        textSelector: '.snackbarViewModelTitle',
+        name: '<snackbar-container> (for "Experiencing interruptions?" message)',
       })
     }
 
@@ -5118,8 +5156,9 @@ async function observePopups() {
         observeDropdown($dropdown)
       }
     }
-    let $notificationRenderer = $popupContainer.querySelector('yt-notification-action-renderer')
-    if ($notificationRenderer) observeNotificationRenderer($notificationRenderer)
+    for (let $notificationRenderer of $popupContainer.querySelectorAll('yt-notification-action-renderer')) {
+      observeNotificationRenderer($notificationRenderer)
+    }
 
     observeElement($popupContainer, (mutations) => {
       for (let mutation of mutations) {
@@ -6541,6 +6580,7 @@ function patchResponseText(responseText, patcher, source) {
 function patchRequests() {
   // History navigation can restore cached responses without making a request
   window.addEventListener('yt-page-data-fetched', event => {
+    if (playbackController?.url !== getCurrentUrl()) configurePlaybackController()
     let patcher = getResponsePatcher('next')
     let data = /** @type {CustomEvent} */ (event).detail?.pageData?.response
     if (data != null && patcher) patcher(data, 'yt-page-data-fetched')
@@ -6703,6 +6743,287 @@ function removeShortsAds(data, source) {
 }
 //#endregion
 
+//#region Playback interruptions
+async function configurePlaybackController() {
+  if (!desktop || !config.enabled || !config.hideExperiencingInterruptions || !isVideoPage()) {
+    playbackController?.disconnect('playback option inactive or not a watch page')
+    return
+  }
+  if (playbackController?.url === getCurrentUrl()) {
+    return
+  }
+  playbackController?.disconnect('watch URL changed')
+
+  const controller = createPlaybackController()
+  playbackController = controller
+  // Preserve startup timing and signals across title/config reprocessing of
+  // this URL. Navigation or disabling the option ends the controller.
+  globalObservers.set('playback controller', controller)
+  const stopIf = () => playbackController !== controller || controller.url !== getCurrentUrl()
+  // Cached options can start this before the document element exists
+  const rootReady = await waitFor(() => document.documentElement, 'playback controller document', {observers: globalObservers, stopIf})
+  if (!rootReady || stopIf()) return
+  const $player = await getElement('#movie_player', {
+    name: 'player (playback controller)',
+    observers: globalObservers,
+    stopIf,
+  })
+  if (!$player || stopIf()) return
+  const ready = await waitFor(() => typeof $player['getPlayerState'] == 'function', 'playback controller player API', {
+    observers: globalObservers,
+    stopIf,
+  })
+  if (ready && !stopIf()) controller.attach($player)
+}
+
+function createPlaybackController() {
+  const url = getCurrentUrl()
+  const params = new URL(url).searchParams
+  const videoId = params.get('v')
+  /** @type {import('./types').PlaybackControllerPlayer | null} */
+  let $player = null
+  let active = true
+  let interruptionSeen = false
+  let playbackProgress = false
+  let hasPlayed = false
+  let playingTime = null
+  let recoveryState = 'idle'
+  let recoveryAttempts = 0
+  let recoveryRequests = 0
+  let recoveryTimer = null
+  let recoveryPoll = null
+  let recoveryStartedAt = 0
+  let recoveryPosition = 0
+  const playerListeners = new Map()
+  const mediaEvents = ['playing', 'timeupdate', 'seeking', 'seeked']
+
+  function snapshot() {
+    try {
+      const response = $player?.getPlayerResponse?.()
+      const flags = $player?.getPlayerStateObject?.()
+      const stats = $player?.getStatsForNerds?.()
+      const progress = $player?.getProgressState?.()
+      const $video = $player?.querySelector('video.html5-main-video')
+      const playerVideoId = response?.videoDetails?.videoId || $player?.getVideoData?.()?.video_id || null
+      const matchingVideo = playerVideoId === videoId
+      const adShowing = $player?.classList.contains('ad-showing') || stats?.debug_info?.startsWith('SSAP, AD') || false
+      return {
+        playerVideoId, matchingVideo, adShowing,
+        playability: response?.playabilityStatus?.status,
+        captcha: !!response?.playabilityStatus?.errorScreen?.playerErrorMessageRenderer?.playerCaptchaViewModel,
+        startTime: response?.playerConfig?.playbackStartConfig?.startSeconds,
+        live: response?.videoDetails?.isLive === true,
+        paused: flags?.isPaused, seeking: flags?.isSeeking, uiSeeking: flags?.isUiSeeking,
+        currentTime: progress?.current,
+        media: $video instanceof HTMLVideoElement ? {currentTime: $video.currentTime, paused: $video.paused, seeking: $video.seeking} : null,
+        startupStallCandidate: interruptionSeen && matchingVideo && !adShowing && !playbackProgress &&
+          flags?.isBuffering === true && flags?.isUnstarted === true && stats?.buffer_health_seconds === '0.00 s' && stats?.resolution === '0x0',
+      }
+    } catch {
+      return {matchingVideo: false}
+    }
+  }
+
+  function record(event, details = {}) {
+    log('hideExperiencingInterruptions: ' + event, {videoId, ...details})
+  }
+
+  function observePlaying() {
+    const state = snapshot()
+    if (!state.matchingVideo || state.adShowing) return
+    hasPlayed = true
+    playingTime = state.currentTime ?? state.media?.currentTime ?? null
+  }
+
+  function recoveryAllowed(state, duringRetry = false) {
+    const ownError = duringRetry && (state.playability == 'UNPLAYABLE' || state.playability == 'ERROR')
+    return active && config.enabled && config.hideExperiencingInterruptions && getCurrentUrl() === url &&
+      document.querySelector('#movie_player') === $player && (state.matchingVideo || duringRetry && state.playerVideoId == null) && !playbackProgress &&
+      !state.adShowing && !state.live && !state.captcha && (!state.paused || ownError) && !state.uiSeeking && !params.has('list')
+  }
+
+  function endRecovery(reason) {
+    clearTimeout(recoveryTimer)
+    clearInterval(recoveryPoll)
+    recoveryTimer = recoveryPoll = null
+    if (recoveryState == 'finished') return
+    recoveryState = 'finished'
+    record('recovery ended', {reason, attempts: recoveryAttempts, modifiedRequests: recoveryRequests})
+  }
+
+  function startPosition(state) {
+    if (Number.isFinite(state.currentTime) && state.currentTime > 0) return state.currentTime
+    if (Number.isFinite(state.startTime) && state.startTime > 0) return state.startTime
+    const time = params.get('t') || params.get('start') || params.get('time_continue') || ''
+    if (/^\d+(?:\.\d+)?s?$/.test(time)) return parseFloat(time)
+    const units = time.match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/)
+    return units ? Number(units[1] || 0) * 3600 + Number(units[2] || 0) * 60 + Number(units[3] || 0) : 0
+  }
+
+  function restorePlayback(reason) {
+    const state = snapshot()
+    const restore = recoveryState == 'retrying' && recoveryRequests > 0 && recoveryAllowed(state, true) && state.matchingVideo &&
+      !state.captcha && !hasPlayed && (state.playability == 'UNPLAYABLE' || state.playability == 'ERROR' || state.startupStallCandidate)
+    // End request variation before asking YouTube to load the original again
+    endRecovery(reason)
+    if (!restore) return
+    recoveryAttempts++
+    record('recovery attempt', {attempt: recoveryAttempts, variant: 'original', startSeconds: recoveryPosition, reason})
+    try {
+      $player.loadVideoById(videoId, recoveryPosition)
+    } catch (error) {
+      record('recovery load failed', {name: error.name})
+    }
+  }
+
+  function confirmRecovery(source) {
+    if (recoveryState != 'idle' || recoveryAttempts > 0 || hasPlayed || !recoveryAllowed(snapshot())) return
+    const state = snapshot()
+    // YouTube reports isSeeking while applying the initial timestamp even
+    // before it has media. User/UI and native media seeking still exclude it.
+    if (!state.startupStallCandidate || state.playability != 'OK' || state.captcha || state.media?.seeking || typeof $player?.loadVideoById != 'function') return
+    recoveryState = 'confirming'
+    record('recovery confirmation scheduled', {source, confirmationMs: 200})
+    recoveryTimer = setTimeout(() => {
+      recoveryTimer = null
+      const current = snapshot()
+      if (recoveryState != 'confirming' || !recoveryAllowed(current) || !current.startupStallCandidate ||
+          current.playability != 'OK' || current.captcha || current.media?.seeking || hasPlayed) {
+        endRecovery('stall cleared or playback changed during confirmation')
+        return
+      }
+      recoveryState = 'retrying'
+      recoveryAttempts = 1
+      recoveryPosition = startPosition(current)
+      recoveryStartedAt = performance.now()
+      record('recovery attempt', {attempt: 1, variant: 'lactmilli', startSeconds: recoveryPosition, source})
+      try {
+        $player.loadVideoById(videoId, recoveryPosition)
+      } catch (error) {
+        record('recovery load failed', {name: error.name})
+        endRecovery('loadVideoById failed')
+        return
+      }
+      if (recoveryState != 'retrying') return
+      recoveryPoll = setInterval(() => {
+        const current = snapshot()
+        if (!recoveryAllowed(current, true)) {
+          endRecovery('navigation, pause, ad, or playback changed')
+        } else if (current.captcha || current.playability && !['OK', 'UNPLAYABLE', 'ERROR'].includes(current.playability)) {
+          endRecovery('playability requires user action')
+        } else if (recoveryRequests > 0 && (current.playability == 'UNPLAYABLE' || current.playability == 'ERROR')) {
+          restorePlayback('varied request was unplayable')
+        } else if (performance.now() - recoveryStartedAt >= 5000) {
+          restorePlayback('recovery wait ended')
+        }
+      }, 100)
+    }, 200)
+  }
+
+  function onUserInput(event) {
+    if (recoveryState != 'confirming' && recoveryState != 'retrying') return
+    const target = event.target
+    if (event.type == 'pointerdown' && target instanceof Node && $player?.contains(target) ||
+        event.type == 'keydown' && [' ', 'k', 'K', 'j', 'J', 'l', 'L', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'MediaPlayPause', 'MediaPause'].includes(event.key) &&
+        !(target instanceof Element && target.closest('input, textarea, [contenteditable="true"]'))) {
+      endRecovery('user playback control')
+    }
+  }
+
+  function onPlayerEvent(name, value) {
+    if (name == 'onSnackbarMessage' && value === 1 && snapshot().matchingVideo) interruptionSeen = true
+    if (name == 'onStateChange' && value === 1) observePlaying()
+    if (name == 'onSnackbarMessage' && value === 1) confirmRecovery('onSnackbarMessage')
+  }
+
+  function onMediaEvent(event) {
+    if (!(event.target instanceof HTMLVideoElement) || !event.target.classList.contains('html5-main-video')) return
+    if (event.type == 'timeupdate') {
+      if (playbackProgress || playingTime == null || event.target.paused || event.target.seeking) return
+      const state = snapshot()
+      if (!state.matchingVideo || state.adShowing || state.seeking || state.uiSeeking || event.target.currentTime <= playingTime + 0.05) return
+      playbackProgress = true
+      if (recoveryState == 'confirming' || recoveryState == 'retrying') endRecovery('content playback progressing')
+      record('content playback progressing')
+      return
+    }
+    if (event.type == 'playing') observePlaying()
+    if (event.type == 'seeking') playingTime = null
+    if (event.type == 'seeked' && $player?.getPlayerState?.() === 1) observePlaying()
+  }
+
+  function onNavigation() {
+    controller.disconnect('navigation started')
+  }
+
+  const controller = {
+    url,
+    /** @param {HTMLElement} player */
+    attach(player) {
+      if (!active) return
+      $player = player
+      for (let name of ['onStateChange', 'onSnackbarMessage']) {
+        const listener = value => onPlayerEvent(name, value)
+        playerListeners.set(name, listener)
+        $player.addEventListener(name, listener)
+      }
+      // YouTube overrides the player's addEventListener for its own event bus.
+      // Native capture listeners also see video events when the video is replaced.
+      for (let name of mediaEvents) EventTarget.prototype.addEventListener.call($player, name, onMediaEvent, true)
+      if ($player.getPlayerState?.() === 1) observePlaying()
+      record('player attached')
+    },
+    interruption(source) {
+      if (snapshot().matchingVideo) interruptionSeen = true
+      record('interruption popup', {source})
+      confirmRecovery('interruption popup')
+    },
+    patchRequest(data) {
+      if (recoveryState != 'retrying' || data?.videoId !== videoId || data?.context?.client?.clientName !== 'WEB' || !recoveryAllowed(snapshot(), true)) return data
+      const client = data.context.client
+      const content = data.playbackContext?.contentPlaybackContext
+      if (!Object.hasOwn(data, 'attestationRequest') || typeof client.userAgent != 'string' ||
+          !/Mozilla\/5\.0 \([^)]+/.test(client.userAgent) || typeof content?.referer != 'string') return data
+      const amended = {
+        ...data, params: '8AUB',
+        context: {...data.context, client: {...client, userAgent: client.userAgent.includes('; lactmilli') ? client.userAgent : client.userAgent.replace(/Mozilla\/5\.0 \([^)]+/, value => value + '; lactmilli')}},
+        playbackContext: {...data.playbackContext, contentPlaybackContext: {
+          ...content, lactMilliseconds: String(Date.now()), referer: content.referer.replace(/(?:#reloadxhr)?$/, '#reloadxhr'),
+        }},
+      }
+      recoveryRequests++
+      record('recovery request varied', {variant: 'lactmilli', requestVideoId: data.videoId, modifiedRequests: recoveryRequests})
+      return amended
+    },
+    disconnect(reason = 'configuration changed') {
+      if (!active) return
+      active = false
+      clearTimeout(recoveryTimer)
+      clearInterval(recoveryPoll)
+      recoveryState = 'finished'
+      window.removeEventListener('yt-navigate-start', onNavigation)
+      window.removeEventListener('pointerdown', onUserInput, true)
+      window.removeEventListener('keydown', onUserInput, true)
+      if ($player) {
+        for (let [name, listener] of playerListeners) $player.removeEventListener(name, listener)
+        for (let name of mediaEvents) EventTarget.prototype.removeEventListener.call($player, name, onMediaEvent, true)
+      }
+      globalObservers.get('getElement: player (playback controller)')?.disconnect()
+      globalObservers.get('waitFor: playback controller document')?.disconnect()
+      globalObservers.get('waitFor: playback controller player API')?.disconnect()
+      if (globalObservers.get('playback controller') === controller) globalObservers.delete('playback controller')
+      if (playbackController === controller) playbackController = null
+      record('stopped', {reason})
+    },
+  }
+  window.addEventListener('yt-navigate-start', onNavigation)
+  window.addEventListener('pointerdown', onUserInput, true)
+  window.addEventListener('keydown', onUserInput, true)
+  record('started')
+  return controller
+}
+//#endregion
+
 //#region Global patching
 function suppressPlaybackInterruptions() {
   const name = 'playback interruptions'
@@ -6715,6 +7036,7 @@ function suppressPlaybackInterruptions() {
   let active = true
   const originalThen = Promise.prototype.then
   const originalSetTimeout = window.setTimeout
+  const originalStringify = JSON.stringify
   const functionToString = Function.prototype.toString
   const suppressionMessage = 'hideExperiencingInterruptions: suppressed onAbnormalityDetected callback'
 
@@ -6743,14 +7065,22 @@ function suppressPlaybackInterruptions() {
       return Reflect.apply(target, thisArg, args)
     },
   })
+  const stringify = new Proxy(originalStringify, {
+    apply(target, thisArg, args) {
+      if (active && args.length > 0 && playbackController) args[0] = playbackController.patchRequest(args[0])
+      return Reflect.apply(target, thisArg, args)
+    },
+  })
   Promise.prototype.then = then
   window.setTimeout = setTimeout
+  JSON.stringify = stringify
   globalObservers.set(name, {
     disconnect() {
       active = false
       // Preserve any hooks installed by YouTube or other extensions after ours.
       if (Promise.prototype.then === then) Promise.prototype.then = originalThen
       if (window.setTimeout === setTimeout) window.setTimeout = originalSetTimeout
+      if (JSON.stringify === stringify) JSON.stringify = originalStringify
       globalObservers.delete(name)
       log('hideExperiencingInterruptions: removed playback interruption hooks')
     },
@@ -7026,7 +7356,11 @@ function main() {
   config = {...defaultConfig, ...cachedConfig}
   debug = config.debug
 
+  configurePlaybackController()
   patchRequests()
+  window.addEventListener('yt-navigate-finish', () => {
+    if (playbackController?.url !== getCurrentUrl()) configurePlaybackController()
+  })
   // Avoid installing initial-response hooks the user may have disabled
   if (['enabled', 'blockAds', 'disableAIGeneratedChapters'].every(key => Object.hasOwn(cachedConfig, key))) {
     configureInitialResponses()
@@ -7176,6 +7510,7 @@ function receiveConfigFromContentScript({data: {type, siteConfig}}) {
     debug = config.debug
     debugLogGetElementStats = config.debugLogGetElementStats
     debugManualHiding = config.debugManualHiding
+    configurePlaybackController()
     log('initial config', config, {version, lang, loggedIn})
     storeCachedConfig()
     // Configure initial-response hooks and patch existing data
@@ -7191,6 +7526,7 @@ function receiveConfigFromContentScript({data: {type, siteConfig}}) {
     debug = config.debug = siteConfig.debug
     storeCachedConfig()
     log('enabled debug mode')
+    configurePlaybackController()
     return
   }
 

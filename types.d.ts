@@ -10,6 +10,24 @@ export interface CustomMutationObserver extends MutationObserver {
 
 export type Disconnectable = {disconnect: () => void}
 
+export type PlaybackControllerPlayer = HTMLElement & {
+  loadVideoById?: (videoId: string, startSeconds: number) => void
+  getPlayerState?: () => number
+  getPlayerStateObject?: () => Record<string, boolean>
+  getPlayerResponse?: () => {
+    videoDetails?: {videoId?: string, isLive?: boolean}
+    playabilityStatus?: {status?: string, errorScreen?: {playerErrorMessageRenderer?: {playerCaptchaViewModel?: unknown}}}
+    playerConfig?: {playbackStartConfig?: {startSeconds?: number}}
+  }
+  getVideoData?: () => {video_id?: string}
+  getProgressState?: () => {current?: number}
+  getStatsForNerds?: () => {
+    buffer_health_seconds?: string
+    resolution?: string
+    debug_info?: string
+  }
+}
+
 export type EmbedConfig = {
   enabled: boolean
   debug?: boolean;
