@@ -1,0 +1,513 @@
+{
+  "addTakeSnapshot": {
+    "message": "Aggiungi \"Acquisisci fotogramma\" al menu del video"
+  },
+  "ads": {
+    "message": "Pubblicità"
+  },
+  "allowBackgroundPlay": {
+    "message": "Consenti la riproduzione in background"
+  },
+  "alwaysUseOriginalAudio": {
+    "message": "Usa sempre l'audio originale"
+  },
+  "alwaysUseTheaterMode": {
+    "message": "Usa sempre la modalità cinema"
+  },
+  "animateHiding": {
+    "message": "Anima la scomparsa degli elementi"
+  },
+  "annoyances": {
+    "message": "Elementi di disturbo"
+  },
+  "anyPercent": {
+    "message": "qualsiasi %"
+  },
+  "atLeastX": {
+    "message": "Almeno $AMOUNT$",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "auto": {
+    "message": "Auto"
+  },
+  "autoPlusX": {
+    "message": "Auto $AMOUNT$",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "+1"
+      }
+    }
+  },
+  "blockAds": {
+    "message": "Blocca la pubblicità"
+  },
+  "blockAdsNote": {
+    "message": "Disattiva per evitare conflitti con altri strumenti di blocco della pubblicità"
+  },
+  "blur": {
+    "message": "Sfocato"
+  },
+  "channelPages": {
+    "message": "Pagine dei canali"
+  },
+  "dark": {
+    "message": "Scuro"
+  },
+  "debug": {
+    "message": "Modalità debug"
+  },
+  "debugLogGetElementStats": {
+    "message": "Registra le statistiche di getElement()"
+  },
+  "debugLogGridObservers": {
+    "message": "Registra gli observer della griglia"
+  },
+  "debugManualHiding": {
+    "message": "Debug degli elementi nascosti manualmente"
+  },
+  "debugManualHidingNote": {
+    "message": "Evidenzia gli elementi anziché nasconderli"
+  },
+  "debugNote": {
+    "message": "Attiva i log di debug"
+  },
+  "debugOptions": {
+    "message": "Opzioni di debug"
+  },
+  "default": {
+    "message": "Predefinito"
+  },
+  "desktopOnly": {
+    "message": "Solo desktop"
+  },
+  "device": {
+    "message": "Tema del dispositivo"
+  },
+  "disableAIGeneratedChapters": {
+    "message": "Disattiva i capitoli video generati dall'IA"
+  },
+  "disableAmbientMode": {
+    "message": "Disattiva la modalità Ambient"
+  },
+  "disableAutoplay": {
+    "message": "Disattiva la riproduzione automatica"
+  },
+  "disableContinueWatching": {
+    "message": "Disattiva il popup \"Video in pausa. Stai ancora guardando?\""
+  },
+  "disableHomeFeed": {
+    "message": "Disattiva il feed della Home"
+  },
+  "disableHomeFeedNote": {
+    "message": "Solo con accesso effettuato: reindirizza a Iscrizioni"
+  },
+  "disableNumberKeySeeking": {
+    "message": "Disattiva lo spostamento nel video con i tasti numerici"
+  },
+  "disableStableVolume": {
+    "message": "Disattiva il volume stabile"
+  },
+  "disableThemedHover": {
+    "message": "Disattiva gli effetti a tema al passaggio del mouse"
+  },
+  "disableVideoPreviews": {
+    "message": "Disattiva le anteprime video"
+  },
+  "displayHomeGridAsList": {
+    "message": "Mostra la griglia della Home come elenco"
+  },
+  "displaySubscriptionsGridAsList": {
+    "message": "Mostra la griglia di Iscrizioni come elenco"
+  },
+  "downloadTranscript": {
+    "message": "Consenti di scaricare la trascrizione"
+  },
+  "embeddedVideos": {
+    "message": "Video incorporati"
+  },
+  "enabled": {
+    "message": "Attivata"
+  },
+  "enforceTheme": {
+    "message": "Imposta il tema"
+  },
+  "experimentalFeatures": {
+    "message": "Funzioni sperimentali"
+  },
+  "extensionDescription": {
+    "message": "Più controllo su YouTube con opzioni aggiuntive e miglioramenti dell'interfaccia",
+    "description": "<= 112 characters"
+  },
+  "extensionName": {
+    "message": "Control Panel for YouTube"
+  },
+  "extensionNameDisabled": {
+    "message": "Control Panel for YouTube (disattivato)"
+  },
+  "features": {
+    "message": "Funzioni"
+  },
+  "fixGhostCards": {
+    "message": "Correggi i segnaposto di caricamento della griglia"
+  },
+  "fullSizeTheaterMode": {
+    "message": "Modalità cinema a tutta finestra"
+  },
+  "fullSizeTheaterModeHideHeader": {
+    "message": "Nascondi l'intestazione"
+  },
+  "fullWidthChannelPage": {
+    "message": "Pagina del canale a tutta larghezza"
+  },
+  "gridItemsPerRow": {
+    "message": "Elementi della griglia per riga"
+  },
+  "hiddenChannelsSummary": {
+    "message": "Canali nascosti ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
+  },
+  "hideAI": {
+    "message": "Nascondi i riepiloghi generati dall'IA"
+  },
+  "hideAskButton": {
+    "message": "Nascondi il pulsante Chiedi"
+  },
+  "hideAskYouTubeSearch": {
+    "message": "Nascondi Chiedi a YouTube nella ricerca"
+  },
+  "hideAutoDubbed": {
+    "message": "Nascondi i video doppiati automaticamente"
+  },
+  "hideAutoDubbedNote": {
+    "message": "Se indicato esplicitamente"
+  },
+  "hideChannelBanner": {
+    "message": "Nascondi i banner dei canali"
+  },
+  "hideChannelWatermark": {
+    "message": "Nascondi la filigrana del canale"
+  },
+  "hideChannels": {
+    "message": "Nascondi i canali"
+  },
+  "hideChannelsNote": {
+    "message": "Aggiunge \"Nascondi canale\" ai menu dei video"
+  },
+  "hideChat": {
+    "message": "Nascondi la chat"
+  },
+  "hideChatFullScreen": {
+    "message": "Solo a schermo intero"
+  },
+  "hideCollaborations": {
+    "message": "Nascondi le collaborazioni in Iscrizioni"
+  },
+  "hideCommentGifs": {
+    "message": "Nascondi le GIF nei commenti"
+  },
+  "hideComments": {
+    "message": "Nascondi i commenti"
+  },
+  "hideEmbedPauseOverlay": {
+    "message": "Nascondi gli elementi sovrapposti durante la pausa"
+  },
+  "hideEmbedShareButton": {
+    "message": "Nascondi il pulsante Condividi"
+  },
+  "hideEndCards": {
+    "message": "Nascondi le schede alla fine dei video"
+  },
+  "hideEndVideos": {
+    "message": "Nascondi i contenuti della schermata finale"
+  },
+  "hideExperiencingInterruptions": {
+    "message": "Nascondi il popup \"Hai riscontrato interruzioni?\""
+  },
+  "hideExploreButton": {
+    "message": "Nascondi il pulsante Esplora nella Home"
+  },
+  "hideHiddenVideos": {
+    "message": "Rimuovi i video nascosti"
+  },
+  "hideHiddenVideosNote": {
+    "message": "Nasconde il pulsante \"Annulla\" dopo 5 secondi"
+  },
+  "hideHomeCategories": {
+    "message": "Nascondi le categorie nella Home"
+  },
+  "hideHomePosts": {
+    "message": "Nascondi i post nella Home"
+  },
+  "hideInfoPanels": {
+    "message": "Nascondi i riquadri informativi"
+  },
+  "hideJumpAheadButton": {
+    "message": "Nascondi il pulsante Salta avanti di Premium"
+  },
+  "hideLive": {
+    "message": "Nascondi le dirette"
+  },
+  "hideLowViews": {
+    "message": "Nascondi i video con poche visualizzazioni nei suggerimenti"
+  },
+  "hideMembersOnly": {
+    "message": "Nascondi i video riservati agli abbonati"
+  },
+  "hideMerchEtc": {
+    "message": "Nascondi merchandising, offerte e simili"
+  },
+  "hideMetadata": {
+    "message": "Nascondi i metadati dei video"
+  },
+  "hideMixes": {
+    "message": "Nascondi i Mix"
+  },
+  "hideMoviesAndTV": {
+    "message": "Nascondi film e programmi TV"
+  },
+  "hideNextButton": {
+    "message": "Nascondi il pulsante Avanti"
+  },
+  "hideNextButtonNote": {
+    "message": "Quando non guardi un video da una playlist"
+  },
+  "hideNotifications": {
+    "message": "Nascondi le notifiche"
+  },
+  "hideOpenApp": {
+    "message": "Nascondi i link Apri app"
+  },
+  "hidePlaylists": {
+    "message": "Nascondi le playlist"
+  },
+  "hidePremiumUpsells": {
+    "message": "Nascondi le promozioni di Premium"
+  },
+  "hideRelated": {
+    "message": "Nascondi i video suggeriti"
+  },
+  "hideRelatedBelow": {
+    "message": "Solo quando compaiono sotto il video"
+  },
+  "hideShareThanksClip": {
+    "message": "Nascondi Condividi, Grazie, Clip e simili"
+  },
+  "hideShorts": {
+    "message": "Nascondi gli Short"
+  },
+  "hideShortsMetadataUntilHover": {
+    "message": "Mostra i metadati degli Short solo al passaggio del mouse"
+  },
+  "hideShortsMusicLink": {
+    "message": "Nascondi il link alla musica"
+  },
+  "hideShortsRelatedLink": {
+    "message": "Nascondi il link allo Short correlato dello stesso canale"
+  },
+  "hideShortsRemixButton": {
+    "message": "Nascondi il pulsante Remix"
+  },
+  "hideShortsSuggestedActions": {
+    "message": "Nascondi le azioni suggerite"
+  },
+  "hideSidebarSubscriptions": {
+    "message": "Nascondi l'elenco delle iscrizioni"
+  },
+  "hideSidebarWhenEmpty": {
+    "message": "Nascondi la barra laterale quando è vuota"
+  },
+  "hideSponsored": {
+    "message": "Nascondi video sponsorizzati e promozioni"
+  },
+  "hideStreamed": {
+    "message": "Nascondi le registrazioni delle dirette"
+  },
+  "hideSubscriptionsChannelList": {
+    "message": "Nascondi l'elenco dei canali in Iscrizioni"
+  },
+  "hideSubscriptionsLatestBar": {
+    "message": "Nascondi la barra \"Più recenti\" in Iscrizioni"
+  },
+  "hideSuggestedSections": {
+    "message": "Nascondi le sezioni suggerite"
+  },
+  "hideThumbnailBadges": {
+    "message": "Nascondi le etichette sulle miniature (Nuovo, 4K e simili)"
+  },
+  "hideUpcoming": {
+    "message": "Nascondi i video in programma"
+  },
+  "hideViewsIcon": {
+    "message": "Nascondi l'icona delle visualizzazioni"
+  },
+  "hideVoiceSearch": {
+    "message": "Nascondi la ricerca vocale"
+  },
+  "hideWatched": {
+    "message": "Nascondi i video già guardati"
+  },
+  "hideWatchedThreshold": {
+    "message": "Percentuale guardata"
+  },
+  "inHomeAndSubscriptionsNote": {
+    "message": "Nella Home e in Iscrizioni"
+  },
+  "large": {
+    "message": "Grandi"
+  },
+  "light": {
+    "message": "Chiaro"
+  },
+  "medium": {
+    "message": "Medie"
+  },
+  "minimumShortsPerRow": {
+    "message": "Numero minimo di Short per riga"
+  },
+  "mobileGridView": {
+    "message": "Usa la griglia in Iscrizioni e Ricerca (solo in verticale)"
+  },
+  "mobileOnly": {
+    "message": "Solo dispositivi mobili"
+  },
+  "newVideoPlayerUI": {
+    "message": "Nuova interfaccia del player video"
+  },
+  "pauseChannelTrailers": {
+    "message": "Metti in pausa automaticamente i trailer dei canali"
+  },
+  "playerControlsBg": {
+    "message": "Sfondo dei controlli del player"
+  },
+  "playerFixFullScreenButton": {
+    "message": "Ripristina il clic nell'angolo per attivare/disattivare lo schermo intero"
+  },
+  "playerHideFullScreenControls": {
+    "message": "Nascondi i nuovi controlli a schermo intero"
+  },
+  "playerHideFullScreenMoreActions": {
+    "message": "Nascondi il menu \"Altre azioni\" a schermo intero"
+  },
+  "playerHideFullScreenMoreVideos": {
+    "message": "Nascondi \"Altri video\" a schermo intero"
+  },
+  "playerHideFullScreenTitle": {
+    "message": "Nascondi il titolo a schermo intero"
+  },
+  "playerHideFullScreenVoting": {
+    "message": "Nascondi i pulsanti Mi piace/Non mi piace a schermo intero"
+  },
+  "playerRemoveDelhiExperimentFlags": {
+    "message": "Disattiva la nuova barra di avanzamento e i nuovi controlli"
+  },
+  "playerRemoveDelhiExperimentFlagsNote": {
+    "message": "Nota: non funzionerà più quando YouTube rimuoverà il vecchio player"
+  },
+  "qualityFull": {
+    "message": "Massima"
+  },
+  "qualityHigh": {
+    "message": "Alta"
+  },
+  "qualityLow": {
+    "message": "Bassa"
+  },
+  "qualityMedium": {
+    "message": "Media"
+  },
+  "recentChanges": {
+    "message": "Modifiche recenti di YouTube"
+  },
+  "redirectChannelToVideos": {
+    "message": "Apri i canali nella scheda Video"
+  },
+  "redirectLogoToSubscriptions": {
+    "message": "Collega il logo di YouTube a Iscrizioni"
+  },
+  "redirectShorts": {
+    "message": "Apri gli Short nel player normale"
+  },
+  "removePink": {
+    "message": "Rimuovi la sfumatura rosa dalle barre di avanzamento"
+  },
+  "requiresPageRefresh": {
+    "message": "Ricarica la pagina per applicare"
+  },
+  "restoreMiniplayerButton": {
+    "message": "Ripristina il pulsante Mini player"
+  },
+  "restoreSidebarSubscriptionsLink": {
+    "message": "Ripristina il link Iscrizioni nella barra laterale"
+  },
+  "revertGiantRelated": {
+    "message": "Ripristina il layout dei suggerimenti nella barra laterale"
+  },
+  "revertSidebarOrder": {
+    "message": "Ripristina l'ordine degli elementi nella barra laterale"
+  },
+  "revertWatchLayout": {
+    "message": "Disattiva il nuovo layout della pagina del video"
+  },
+  "revertWatchLayoutNote": {
+    "message": "Sperimentale: ricarica per applicare"
+  },
+  "searchThumbnailSize": {
+    "message": "Dimensioni delle miniature nella ricerca"
+  },
+  "shorts": {
+    "message": "Short"
+  },
+  "showChannelHeadersInListView": {
+    "message": "Mostra le intestazioni dei canali nella vista elenco"
+  },
+  "showFullVideoTitles": {
+    "message": "Mostra i titoli completi dei video"
+  },
+  "showViewsOnSeparateLine": {
+    "message": "Mostra le visualizzazioni su una riga separata"
+  },
+  "small": {
+    "message": "Piccole"
+  },
+  "snapshotFormat": {
+    "message": "Formato del fotogramma"
+  },
+  "snapshotQuality": {
+    "message": "Qualità"
+  },
+  "stopShortsLooping": {
+    "message": "Disattiva la ripetizione automatica degli Short"
+  },
+  "tidyGuideSidebar": {
+    "message": "Semplifica il menu di navigazione laterale"
+  },
+  "transparent": {
+    "message": "Trasparente"
+  },
+  "uiTweaks": {
+    "message": "Modifiche all'interfaccia"
+  },
+  "useSquareCorners": {
+    "message": "Usa angoli retti per miniature e video"
+  },
+  "videoLists": {
+    "message": "Elenchi di video"
+  },
+  "videoPages": {
+    "message": "Pagine dei video"
+  },
+  "xsmall": {
+    "message": "Molto piccole"
+  }
+}

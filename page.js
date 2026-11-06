@@ -529,7 +529,7 @@ const locales = {
     ORIGINAL: 'originale',
     SEARCH: 'Cerca',
     SHARE: 'Condividi',
-    SHORTS: 'Short',
+    SHORTS: 'Shorts',
   },
   'ja-JP': {
     ADS_BLOCKED: '動画再生前の広告をブロックしました！',
@@ -1032,6 +1032,7 @@ function getYtString(...keys) {
 //#region Constants
 const ANIMATE_HIDE_DURATION_MS = 350
 const UNDO_HIDE_DELAY_MS = 5000
+const SHORTS_LABELS = new Set(lang.split('-')[0] == 'it' ? ['Short', 'Shorts'] : [getString('SHORTS')])
 
 const Classes = {
   COLLABORATION: 'cpfyt-collaboration',
@@ -2149,19 +2150,23 @@ const configureCss = (() => {
     if (config.hideShorts) {
       hideCssSelectors.push('.HideShorts')
       if (desktop) {
+        for (let shortsLabel of SHORTS_LABELS) {
+          hideCssSelectors.push(
+            // Side nav item
+            `ytd-guide-entry-renderer:has(> a[title="${shortsLabel}"])`,
+            // Mini side nav item
+            `ytd-mini-guide-entry-renderer:has(> a[aria-label="${shortsLabel}"])`,
+            // Chips
+            `yt-chip-cloud-chip-renderer:has(> #chip-container > yt-formatted-string[title="${shortsLabel}"])`,
+          )
+        }
         hideCssSelectors.push(
-          // Side nav item
-          `ytd-guide-entry-renderer:has(> a[title="${getString('SHORTS')}"])`,
-          // Mini side nav item
-          `ytd-mini-guide-entry-renderer:has(> a[aria-label="${getString('SHORTS')}"])`,
           // Grid shelf
           'ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer[is-shorts])',
           // Group of 3 Shorts in Home grid
           'ytd-browse[page-subtype="home"] ytd-rich-grid-group',
           // Individual Short in Home grid
           'ytd-browse[page-subtype="home"] ytd-rich-item-renderer[is-slim-media][rendered-from-rich-grid]',
-          // Chips
-          `yt-chip-cloud-chip-renderer:has(> #chip-container > yt-formatted-string[title="${getString('SHORTS')}"])`,
           // List shelf (except History, so watched Shorts can be removed)
           'ytd-browse:not([page-subtype="history"]) ytd-reel-shelf-renderer',
           'ytd-search ytd-reel-shelf-renderer',
@@ -6218,10 +6223,9 @@ function tweakSearchPage() {
       })
       if (!$chips) return
       for (let $chip of $chips.children) {
-        if ($chip.textContent.trim() == getString('SHORTS')) {
+        if (SHORTS_LABELS.has($chip.textContent.trim())) {
           $chip.classList.add('HideShorts')
           log('hideShorts: Shorts chip hidden')
-          break
         }
       }
     })
