@@ -360,6 +360,9 @@
   "hideWatchedThreshold": {
     "message": "Pourcentage visionné"
   },
+  "inGridItemsNote": {
+    "message": "Dans les éléments de la grille"
+  },
   "inHomeAndSubscriptionsNote": {
     "message": "Dans Accueil et Abonnements"
   },

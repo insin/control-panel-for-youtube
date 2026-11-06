@@ -217,6 +217,7 @@ for (let translationId of [
 }
 
 for (let translationClass of [
+  'inGridItemsNote',
   'inHomeAndSubscriptionsNote',
   'requiresPageRefresh',
 ]) {

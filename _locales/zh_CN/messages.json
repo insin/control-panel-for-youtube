@@ -360,6 +360,9 @@
   "hideWatchedThreshold": {
     "message": "观看 %"
   },
+  "inGridItemsNote": {
+    "message": "在网格项目中"
+  },
   "inHomeAndSubscriptionsNote": {
     "message": "在主页和订阅中"
   },

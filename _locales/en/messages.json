@@ -360,6 +360,9 @@
   "hideWatchedThreshold": {
     "message": "Watched %"
   },
+  "inGridItemsNote": {
+    "message": "In grid items"
+  },
   "inHomeAndSubscriptionsNote": {
     "message": "In Home and Subscriptions"
   },

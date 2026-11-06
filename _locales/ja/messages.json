@@ -359,6 +359,9 @@
   "hideWatchedThreshold": {
     "message": "視聴済みの割合"
   },
+  "inGridItemsNote": {
+    "message": "グリッドアイテム内"
+  },
   "inHomeAndSubscriptionsNote": {
     "message": "ホームと登録チャンネルで適用"
   },

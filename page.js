@@ -3240,7 +3240,7 @@ const configureCss = (() => {
       }
       if (config.showViewsOnSeparateLine) {
         cssRules.push(`
-          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"]) ytd-rich-item-renderer:not([is-slim-media]) {
+          ytd-browse:is([page-subtype="home"], [page-subtype="subscriptions"], [page-subtype="channels"]) ytd-rich-item-renderer:not([is-slim-media]) {
             /* Show views on a separate line */
             .ytContentMetadataViewModelMetadataRow:has(> .ytContentMetadataViewModelLeadingIcon) {
               display: block !important;
