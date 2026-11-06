@@ -154,6 +154,7 @@ export type SiteConfig = {
   hideAskYouTubeSearch: boolean
   hideChat: boolean
   hideChatFullScreen: boolean
+  hideCreateButton: boolean
   hideEndCards: boolean
   hideEndVideos: boolean
   hideExperiencingInterruptions: boolean

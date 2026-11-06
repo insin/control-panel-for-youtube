@@ -219,6 +219,9 @@
   "hideComments": {
     "message": "Masquer les commentaires"
   },
+  "hideCreateButton": {
+    "message": "Masquer le bouton Créer"
+  },
   "hideEmbedPauseOverlay": {
     "message": "Masquer la superposition de paus"
   },

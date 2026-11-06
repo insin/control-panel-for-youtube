@@ -219,6 +219,9 @@
   "hideComments": {
     "message": "隐藏注释"
   },
+  "hideCreateButton": {
+    "message": "隐藏“创建”按钮"
+  },
   "hideEmbedPauseOverlay": {
     "message": "隐藏暂停覆盖"
   },

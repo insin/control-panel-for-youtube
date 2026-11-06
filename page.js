@@ -78,6 +78,7 @@ let defaultConfig = {
   hideChat: false,
   hideChatFullScreen: false,
   hideCollaborations: true,
+  hideCreateButton: false,
   hideEndCards: true,
   hideEndVideos: true,
   hideExperiencingInterruptions: false,
@@ -2965,6 +2966,9 @@ const configureCss = (() => {
           // Offers
           '#offer-module',
         )
+      }
+      if (config.hideCreateButton) {
+        hideCssSelectors.push('#buttons.ytd-masthead > ytd-button-renderer:has(+ ytd-notification-topbar-button-renderer)')
       }
       if (config.hideNotifications) {
         hideCssSelectors.push('ytd-notification-topbar-button-renderer')

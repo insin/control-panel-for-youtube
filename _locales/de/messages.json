@@ -219,6 +219,9 @@
   "hideComments": {
     "message": "Kommentare ausblenden"
   },
+  "hideCreateButton": {
+    "message": "Button „Erstellen“ ausblenden"
+  },
   "hideEmbedPauseOverlay": {
     "message": "Pause-Overlay ausblenden"
   },

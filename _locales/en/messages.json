@@ -219,6 +219,9 @@
   "hideComments": {
     "message": "Hide Comments"
   },
+  "hideCreateButton": {
+    "message": "Hide Create button"
+  },
   "hideEmbedPauseOverlay": {
     "message": "Hide pause overlay"
   },
