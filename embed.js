@@ -104,6 +104,23 @@ const configureCss = (() => {
 })()
 //#endregion
 
+/**
+ * Wait for background initialization before reading settings or enabling writers.
+ * Falling back preserves ordinary extension behavior if the background is unavailable.
+ * @param {(config: Record<string, any>) => void} callback
+ */
+function getInitialConfig(callback) {
+  chrome.runtime.sendMessage({type: 'get-initial-config'}, (storedConfig) => {
+    let error = chrome.runtime.lastError
+    if (error || !storedConfig) {
+      console.warn('[config] Initialization unavailable; using local settings')
+      chrome.storage.local.get(callback)
+      return
+    }
+    callback(storedConfig)
+  })
+}
+
 //#region Main
 function main() {
   if (config.enabled) {
@@ -144,7 +161,7 @@ function onConfigChange(storageChanges) {
   configChanged(configChanges)
 }
 
-chrome.storage.local.get((storedConfig) => {
+getInitialConfig((storedConfig) => {
   Object.assign(
     config,
     Object.fromEntries(

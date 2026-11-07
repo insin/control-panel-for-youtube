@@ -1,3 +1,20 @@
+/**
+ * Wait for background initialization before reading settings or enabling writers.
+ * Falling back preserves ordinary extension behavior if the background is unavailable.
+ * @param {(config: Record<string, any>) => void} callback
+ */
+function getInitialConfig(callback) {
+  chrome.runtime.sendMessage({type: 'get-initial-config'}, (storedConfig) => {
+    let error = chrome.runtime.lastError
+    if (error || !storedConfig) {
+      console.warn('[config] Initialization unavailable; using local settings')
+      chrome.storage.local.get(callback)
+      return
+    }
+    callback(storedConfig)
+  })
+}
+
 /** @type {BroadcastChannel} */
 let channel
 /** @type {Set<string>} */
@@ -8,11 +25,11 @@ window.addEventListener('message', (event) => {
   if (event.data.type != 'init' || !event.data.channelName || !event.data.configKeys) return
   channel = new BroadcastChannel(event.data.channelName)
   configKeys = new Set(event.data.configKeys)
-  channel.addEventListener('message', storeConfigChangesFromPageScript)
-  chrome.storage.local.get((storedConfig) => {
+  getInitialConfig((storedConfig) => {
     let siteConfig = Object.fromEntries(
       Object.entries(storedConfig).filter(([key]) => configKeys.has(key))
     )
+    channel.addEventListener('message', storeConfigChangesFromPageScript)
     chrome.storage.local.onChanged.addListener(onStorageChanged)
     channel.postMessage({type: 'initial', siteConfig})
   })
