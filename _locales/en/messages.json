@@ -113,6 +113,9 @@
   "disableStableVolume": {
     "message": "Disable Stable Volume"
   },
+  "disableVoiceBoost": {
+    "message": "Disable Voice Boost"
+  },
   "disableThemedHover": {
     "message": "Disable themed hover effects"
   },

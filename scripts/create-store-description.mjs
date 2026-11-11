@@ -146,6 +146,7 @@ ${messages.videoPages}:
 
 • ${messages.disableAutoplay}
 • ${messages.disableStableVolume}
+• ${messages.disableVoiceBoost}
 • ${messages.disableAmbientMode}
 • ${messages.hideRelated}
 • ${messages.hideNextButton}

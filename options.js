@@ -92,6 +92,7 @@ for (let translationId of [
   'disableHomeFeed',
   'disableHomeFeedNote',
   'disableStableVolume',
+  'disableVoiceBoost',
   'disableNumberKeySeeking',
   'disableThemedHover',
   'disableVideoPreviews',

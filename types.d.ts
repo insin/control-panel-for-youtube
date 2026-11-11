@@ -90,6 +90,7 @@ export type SiteConfig = {
   disableAutoplay: boolean
   disableHomeFeed: boolean
   disableStableVolume: boolean
+  disableVoiceBoost: boolean
   hiddenChannels: Channel[]
   hideAI: boolean
   hideAskButton: boolean
