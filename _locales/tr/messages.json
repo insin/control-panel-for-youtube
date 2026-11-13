@@ -219,6 +219,9 @@
   "hideComments": {
     "message": "Yorumları gizle"
   },
+   "hideCreateButton": {
+    "message": "Oluştur düğmesini gizle"
+  },
   "hideEmbedPauseOverlay": {
     "message": "Duraklatma örtüsünü gizle"
   },
