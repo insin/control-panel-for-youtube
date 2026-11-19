@@ -468,6 +468,12 @@
   "revertWatchLayoutNote": {
     "message": "Experimental: reload to apply"
   },
+  "searchSettings": {
+    "message": "Search settings"
+  },
+  "searchSettingsNoResults": {
+    "message": "No settings found"
+  },
   "searchThumbnailSize": {
     "message": "Search thumbnail size"
   },

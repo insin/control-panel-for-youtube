@@ -468,6 +468,12 @@
   "revertWatchLayoutNote": {
     "message": "Sperimentale: ricarica per applicare"
   },
+  "searchSettings": {
+    "message": "Cerca impostazioni"
+  },
+  "searchSettingsNoResults": {
+    "message": "Nessuna impostazione trovata"
+  },
   "searchThumbnailSize": {
     "message": "Dimensioni delle miniature nella ricerca"
   },
