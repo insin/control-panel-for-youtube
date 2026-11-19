@@ -9,6 +9,7 @@
   --group-label-weight: 600;
   --hover-background: rgba(31, 31, 31, 0.08);
   --label-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+  --settings-search-height: 57px;
   --text-error: rgb(197, 57, 41);
   --text-primary: rgb(31, 31, 31);
   --text-secondary: rgb(95, 99, 104);
@@ -47,6 +48,58 @@ body.browser-ios.browserAction {
 body.browser-mac.browserAction {
   min-width: 340px;
 }
+
+/* #region Settings search */
+#settingsSearchBar {
+  align-items: center;
+  background: var(--background);
+  box-sizing: border-box;
+  display: flex;
+  height: var(--settings-search-height);
+  padding: 12px 12px 7px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+body.mac #settingsSearchBar {
+  background: Canvas;
+}
+#settingsSearch {
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: var(--text-primary);
+  font: inherit;
+  height: 38px;
+  min-width: 0;
+  padding-inline: 12px;
+  width: 100%;
+}
+#settingsSearch::placeholder {
+  color: var(--text-secondary);
+  opacity: 1;
+}
+#settingsSearch:focus {
+  outline: 2px solid Highlight;
+  outline-offset: 1px;
+}
+#settingsSearch:disabled {
+  opacity: 0.6;
+}
+#searchSettingsNoResults {
+  margin: 12px;
+}
+body:not(.searching) #searchSettingsNoResults,
+body.searching .search-hidden,
+body.searching #version,
+body.searching section.collapsible > label > svg {
+  display: none;
+}
+body.searching section.collapsible > label {
+  cursor: default;
+}
+/* #endregion */
 
 /* #region Hide state */
 body.desktop .mobile,
@@ -175,10 +228,11 @@ body:is(.firefox, .chrome, .edge) {
   section.labelled > label {
     background: var(--background);
     position: sticky;
-    top: 0;
+    top: var(--settings-search-height);
     z-index: 10;
   }
-  section.labelled:not(.collapsed) > label.stuck {
+  section.labelled:not(.collapsed) > label.stuck,
+  &.searching section.labelled > label.stuck {
     box-shadow: var(--label-shadow);
   }
   section.labelled > label.unstick {
@@ -196,7 +250,7 @@ section.collapsible > label > svg {
 section.collapsed label > svg {
   transform: rotate(180deg);
 }
-body:not(.ios) section.collapsed > .options {
+body:not(.ios, .searching) section.collapsed > .options {
   display: none;
 }
 

@@ -168,6 +168,7 @@ for (let translationId of [
   'hideVoiceSearch',
   'hideWatched',
   'hideWatchedThreshold',
+  'minimumShortsPerRow',
   'mobileGridView',
   'newVideoPlayerUI',
   'pauseChannelTrailers',
@@ -366,6 +367,9 @@ let $hiddenChannels = /** @type {HTMLElement} */ (document.querySelector('#hidde
 let $hiddenChannelsDetails = /** @type {HTMLDetailsElement} */ (document.querySelector('#hiddenChannelsDetails'))
 let $hiddenChannelsSummary = /** @type {HTMLElement} */ (document.querySelector('#hiddenChannelsSummary'))
 let $optionsIcon = /** @type {HTMLImageElement} */ (document.querySelector('#optionsIcon'))
+let $settingsSearch = /** @type {HTMLInputElement} */ (document.querySelector('#settingsSearch'))
+let $searchNoResults = document.querySelector('#searchSettingsNoResults')
+let $searchGroups = $form.querySelectorAll('section.group.labelled')
 let $stickySentinels = document.querySelectorAll('.stickySentinel')
 //#endregion
 
@@ -403,8 +407,67 @@ function h(tagName, attributes, ...children) {
 //#endregion
 
 //#region Options page functions
+let searchLabel = chrome.i18n.getMessage('searchSettings')
+$settingsSearch.placeholder = searchLabel
+$settingsSearch.setAttribute('aria-label', searchLabel)
+
+/** @param {string} text */
+function normalizeSearchText(text) {
+  return text.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '').replace(/[^\p{L}\p{N}]+/gu, ' ').trim()
+}
+
+function updateSettingsSearch() {
+  $settingsSearch.disabled = !optionsConfig.enabled
+  $body.classList.remove('searching')
+  let query = normalizeSearchText($settingsSearch.value)
+  if (!query || !optionsConfig.enabled) {
+    $searchNoResults.textContent = ''
+    return
+  }
+
+  let terms = query.split(' ')
+
+  /**
+   * @param {Element} $option
+   * @param {string} context
+   * @param {boolean} parentMatches
+   * @returns {boolean}
+   */
+  function filterOption($option, context, parentMatches = false) {
+    if (getComputedStyle($option).display == 'none') return false
+
+    let labels = Array.from($option.querySelectorAll(':scope > label > span, :scope > p'), ($el) => $el.textContent)
+    let text = normalizeSearchText([context, ...labels].join(' '))
+    let matches = parentMatches || terms.every(term => text.includes(term))
+    let show = matches
+    let $subOptions = $option.querySelector(':scope > .sub-options')
+    if ($subOptions && getComputedStyle($subOptions).display != 'none') {
+      for (let $subOption of $subOptions.children) {
+        if (filterOption($subOption, text, matches)) show = true
+      }
+    }
+    $option.classList.toggle('search-hidden', !show)
+    return show
+  }
+
+  let found = false
+  for (let $group of $searchGroups) {
+    if (getComputedStyle($group).display == 'none') continue
+
+    let context = $group.querySelector(':scope > label').textContent
+    let showGroup = false
+    for (let $option of $group.querySelectorAll(':scope > .options > section')) {
+      if (filterOption($option, context)) showGroup = true
+    }
+    $group.classList.toggle('search-hidden', !showGroup)
+    if (showGroup) found = true
+  }
+  $searchNoResults.textContent = found ? '' : chrome.i18n.getMessage('searchSettingsNoResults')
+  $body.classList.add('searching')
+}
+
 function onToggleCollapse(e) {
-  if (theme == 'ios') return
+  if (theme == 'ios' || $body.classList.contains('searching')) return
   let collapsedOptions = optionsConfig.collapsedOptions.slice()
   let collapseId = e.currentTarget.getAttribute('data-collapse-id')
   let index = collapsedOptions.indexOf(collapseId)
@@ -486,6 +549,7 @@ function updateDisplay() {
   }
   updateCollapsedOptionsDisplay()
   updateHiddenChannelsDisplay()
+  updateSettingsSearch()
 }
 
 function updateCollapsedOptionsDisplay() {
@@ -531,8 +595,13 @@ function main() {
       setFormValue(prop, value)
     }
 
+    $body.classList.toggle('debug', Boolean(optionsConfig.debug || optionsConfig.debugManualHiding))
     updateDisplay()
 
+    $settingsSearch.addEventListener('input', () => {
+      updateSettingsSearch()
+      window.scrollTo(0, 0)
+    })
     $form.addEventListener('change', onFormChanged)
     for (let $label of $collapsibleLabels) {
       $label.addEventListener('click', onToggleCollapse)
@@ -544,20 +613,20 @@ function main() {
         // Ignore hidden sentinels
         if ($sentinel.offsetParent == null) continue
         let $label = $sentinel.closest('section.labelled').querySelector('label')
+        let passedSearchBar = !entry.isIntersecting && entry.boundingClientRect.top < entry.rootBounds?.top
         if ($sentinel.classList.contains('top')) {
-          $label.classList.toggle('stuck', !entry.isIntersecting && entry.boundingClientRect.top < 0)
+          $label.classList.toggle('stuck', passedSearchBar)
         }
         if ($sentinel.classList.contains('bottom')) {
-          $label.classList.toggle('unstick', !entry.isIntersecting && entry.boundingClientRect.top < 0)
+          $label.classList.toggle('unstick', passedSearchBar)
         }
       }
-    })
+    }, {rootMargin: `-${$settingsSearch.parentElement.offsetHeight}px 0px 0px`})
     for (let $sentinel of $stickySentinels) {
       stickyObserver.observe($sentinel)
     }
     chrome.storage.local.onChanged.addListener(onStorageChanged)
 
-    $body.classList.toggle('debug', Boolean(optionsConfig.debug || optionsConfig.debugManualHiding))
     if (!optionsConfig.debug && !optionsConfig.debugManualHiding) {
       let $version = document.querySelector('#version')
       let $debugCountdown = document.querySelector('#debugCountdown')
@@ -572,6 +641,7 @@ function main() {
 
         if (debugCountdown == 0) {
           $body.classList.add('debug')
+          updateSettingsSearch()
           $debugCountdown.textContent = ''
           $form.removeEventListener('click', onClick)
         }
