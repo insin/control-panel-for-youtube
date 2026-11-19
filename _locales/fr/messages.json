@@ -219,6 +219,9 @@
   "hideComments": {
     "message": "Masquer les commentaires"
   },
+  "hideCreateButton": {
+    "message": "Masquer le bouton Créer"
+  },
   "hideEmbedPauseOverlay": {
     "message": "Masquer la superposition de paus"
   },
@@ -359,6 +362,9 @@
   },
   "hideWatchedThreshold": {
     "message": "Pourcentage visionné"
+  },
+  "inGridItemsNote": {
+    "message": "Dans les éléments de la grille"
   },
   "inHomeAndSubscriptionsNote": {
     "message": "Dans Accueil et Abonnements"

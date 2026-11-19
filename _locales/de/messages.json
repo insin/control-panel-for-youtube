@@ -219,6 +219,9 @@
   "hideComments": {
     "message": "Kommentare ausblenden"
   },
+  "hideCreateButton": {
+    "message": "Button „Erstellen“ ausblenden"
+  },
   "hideEmbedPauseOverlay": {
     "message": "Pause-Overlay ausblenden"
   },
@@ -359,6 +362,9 @@
   },
   "hideWatchedThreshold": {
     "message": "% Gesehen"
+  },
+  "inGridItemsNote": {
+    "message": "In Rasterelementen"
   },
   "inHomeAndSubscriptionsNote": {
     "message": "Auf Startseite und unter Abonnements"

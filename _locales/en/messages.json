@@ -219,6 +219,9 @@
   "hideComments": {
     "message": "Hide Comments"
   },
+  "hideCreateButton": {
+    "message": "Hide Create button"
+  },
   "hideEmbedPauseOverlay": {
     "message": "Hide pause overlay"
   },
@@ -359,6 +362,9 @@
   },
   "hideWatchedThreshold": {
     "message": "Watched %"
+  },
+  "inGridItemsNote": {
+    "message": "In grid items"
   },
   "inHomeAndSubscriptionsNote": {
     "message": "In Home and Subscriptions"

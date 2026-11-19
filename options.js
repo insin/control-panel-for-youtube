@@ -120,6 +120,7 @@ for (let translationId of [
   'hideCollaborations',
   'hideCommentGifs',
   'hideComments',
+  'hideCreateButton',
   'hideEmbedPauseOverlay',
   'hideEmbedShareButton',
   'hideEndCards',
@@ -218,6 +219,7 @@ for (let translationId of [
 }
 
 for (let translationClass of [
+  'inGridItemsNote',
   'inHomeAndSubscriptionsNote',
   'requiresPageRefresh',
 ]) {
@@ -306,6 +308,7 @@ let defaultConfig = {
   hideChat: false,
   hideChatFullScreen: false,
   hideCollaborations: true,
+  hideCreateButton: false,
   hideEndCards: true,
   hideEndVideos: true,
   hideExperiencingInterruptions: false,

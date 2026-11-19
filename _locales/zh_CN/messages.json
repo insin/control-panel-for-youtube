@@ -219,6 +219,9 @@
   "hideComments": {
     "message": "隐藏注释"
   },
+  "hideCreateButton": {
+    "message": "隐藏“创建”按钮"
+  },
   "hideEmbedPauseOverlay": {
     "message": "隐藏暂停覆盖"
   },
@@ -359,6 +362,9 @@
   },
   "hideWatchedThreshold": {
     "message": "观看 %"
+  },
+  "inGridItemsNote": {
+    "message": "在网格项目中"
   },
   "inHomeAndSubscriptionsNote": {
     "message": "在主页和订阅中"

@@ -218,6 +218,9 @@
   "hideComments": {
     "message": "コメントを非表示"
   },
+  "hideCreateButton": {
+    "message": "「作成」ボタンを非表示"
+  },
   "hideEmbedPauseOverlay": {
     "message": "一時停止オーバーレイを非表示"
   },
@@ -358,6 +361,9 @@
   },
   "hideWatchedThreshold": {
     "message": "視聴済みの割合"
+  },
+  "inGridItemsNote": {
+    "message": "グリッドアイテム内"
   },
   "inHomeAndSubscriptionsNote": {
     "message": "ホームと登録チャンネルで適用"

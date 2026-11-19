@@ -27,21 +27,23 @@
   },
   "webExt": {
     "ignoreFiles": [
-      "*.md",
-      "icons/chrome-webstore-icon.png",
-      "icons/icon.svg",
-      "icons/icon256.png",
-      "icons/icon512.png",
-      "icons/toolbar-*.png",
-      "jsconfig.json",
-      "manifest.mv2.json",
-      "manifest.mv3.json",
-      "package.json",
-      "safari/",
-      "screenshots/",
-      "scripts/",
-      "types.d.ts",
-      "wip/"
+      "**/*",
+      "!_locales",
+      "!_locales/**",
+      "!icons",
+      "!icons/icon{16,32,48,64,96,128}{,-disabled}.png",
+      "!background.js",
+      "!browser_action.html",
+      "!content.js",
+      "!embed.js",
+      "!manifest.json",
+      "!NOTICE",
+      "!options-icon.png",
+      "!options-icon-disabled.png",
+      "!options.css",
+      "!options.html",
+      "!options.js",
+      "!page.js"
     ]
   },
   "devDependencies": {
