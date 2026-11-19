@@ -219,6 +219,9 @@
   "hideComments": {
     "message": "Nascondi i commenti"
   },
+  "hideCreateButton": {
+    "message": "Nascondi il pulsante Crea"
+  },
   "hideEmbedPauseOverlay": {
     "message": "Nascondi gli elementi sovrapposti durante la pausa"
   },
@@ -359,6 +362,9 @@
   },
   "hideWatchedThreshold": {
     "message": "Percentuale guardata"
+  },
+  "inGridItemsNote": {
+    "message": "Negli elementi della griglia"
   },
   "inHomeAndSubscriptionsNote": {
     "message": "Nella Home e in Iscrizioni"
