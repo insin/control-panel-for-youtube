@@ -1547,9 +1547,11 @@ const configureCss = (() => {
     }
 
     if (config.hideAskButton) {
-      // Requires certain regions, e.g. en-US
       if (desktop) {
-        hideCssSelectors.push(`yt-button-view-model:has(path[d="${Svgs.GEMINI_PATH_DESKTOP}"])`)
+        hideCssSelectors.push(
+          `yt-button-view-model:has(path[d="${Svgs.GEMINI_PATH_DESKTOP}"])`,
+          `yt-player-quick-action-buttons > button-view-model:has(path[d="${Svgs.GEMINI_PATH_DESKTOP}"])`,
+        )
       }
       if (mobile) {
         hideCssSelectors.push(`button-view-model:has(path[d="${Svgs.GEMINI_PATH_MOBILE}"])`)

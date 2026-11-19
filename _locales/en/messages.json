@@ -181,7 +181,7 @@
     "message": "Hide AI summaries"
   },
   "hideAskButton": {
-    "message": "Hide Ask button"
+    "message": "Hide Ask button (including full screen)"
   },
   "hideAskYouTubeSearch": {
     "message": "Hide Ask YouTube in search"

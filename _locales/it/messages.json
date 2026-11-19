@@ -181,7 +181,7 @@
     "message": "Nascondi i riepiloghi generati dall'IA"
   },
   "hideAskButton": {
-    "message": "Nascondi il pulsante Chiedi"
+    "message": "Nascondi il pulsante Chiedi (Ask), anche a schermo intero"
   },
   "hideAskYouTubeSearch": {
     "message": "Nascondi Chiedi a YouTube nella ricerca"
